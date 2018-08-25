@@ -4,6 +4,7 @@ const Index = require('../src/index');
 
 const models = Index.loadJsonInDir(path.join(__dirname, "models"));
 const indices = Index.loadJsonInDir(path.join(__dirname, "indices"));
+const mappings = Index.loadJsonInDir(path.join(__dirname, "mappings"));
 
 describe('Testing index', () => {
   let index;
@@ -17,70 +18,10 @@ describe('Testing index', () => {
     });
   });
 
-  it('Testing registration', () => {
-    expect(index.index.list()).to.deep.equal(["offer"]);
-    expect(index.index.getMapping("offer")).to.deep.equal({
-      mappings: {
-        offer: {
-          properties: {
-            id: {
-              type: "keyword"
-            },
-            headline: {
-              type: "text"
-            },
-            locations: {
-              type: "nested",
-              properties: {
-                id: {
-                  type: "keyword"
-                },
-                name: {
-                  type: "text"
-                },
-                address: {
-                  type: "nested",
-                  properties: {
-                    id: {
-                      type: "keyword"
-                    },
-                    street: {
-                      type: "text"
-                    },
-                    city: {
-                      type: "text"
-                    },
-                    country: {
-                      type: "text"
-                    },
-                    centre: {
-                      type: "geo_point"
-                    },
-                    area: {
-                      type: "geo_shape"
-                    },
-                    timezone: {
-                      type: "text"
-                    }
-                  }
-                },
-                tags: {
-                  type: "nested",
-                  properties: {
-                    id: {
-                      type: "keyword"
-                    },
-                    name: {
-                      type: "text"
-                    }
-                  },
-                  include_in_root: true
-                }
-              }
-            }
-          }
-        }
-      }
+  it('Testing mappings', () => {
+    expect(index.index.list()).to.deep.equal(Object.keys(mappings).sort());
+    Object.entries(mappings).forEach(([k, v]) => {
+      expect(index.index.getMapping(k)).to.deep.equal(v);
     });
   });
 });
