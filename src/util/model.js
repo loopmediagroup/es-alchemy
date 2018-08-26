@@ -5,12 +5,10 @@ const fieldDefinitions = require("../resources/field-definitions");
 module.exports = ({
   compile: (specs) => {
     assert(typeof specs.fields === "object" && !Array.isArray(specs.fields));
-    assert(specs.rels === undefined || (typeof specs.rels === "object" && !Array.isArray(specs.fields)));
     return Object.assign({}, specs, {
       fields: Object
         .entries(specs.fields)
-        .reduce((prev, [key, value]) => Object.assign(prev, { [key]: fieldDefinitions[value] }), {}),
-      rels: specs.rels || {}
+        .reduce((prev, [key, value]) => Object.assign(prev, { [key]: fieldDefinitions[value] }), {})
     });
   }
 });

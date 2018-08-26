@@ -28,8 +28,5 @@ module.exports = ({
         properties: buildPropertiesRec(specs, models)
       }
     }
-  }),
-  validate: () => {
-    // todo: ....
-  }
+  })
 });

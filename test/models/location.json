@@ -2,9 +2,5 @@
   "fields": {
     "id": "uuid",
     "name": "string"
-  },
-  "rels": {
-    "address": "address",
-    "tags": "tag[]"
   }
 }
