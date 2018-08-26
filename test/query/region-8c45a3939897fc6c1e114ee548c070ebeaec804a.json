@@ -1,0 +1,37 @@
+{
+  "orderBy": [
+    [
+      "id",
+      "asc"
+    ]
+  ],
+  "index": {
+    "fields": [
+      "id",
+      "area"
+    ],
+    "model": "region",
+    "sources": [
+      ""
+    ]
+  },
+  "limit": 100,
+  "result": {
+    "sort": [
+      {
+        "id": {
+          "order": "asc",
+          "mode": "max"
+        }
+      }
+    ],
+    "size": 100,
+    "_source": [
+      ""
+    ]
+  },
+  "filterBy": null,
+  "toReturn": null,
+  "offset": 0,
+  "scoreBy": null
+}

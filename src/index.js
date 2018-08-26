@@ -2,6 +2,7 @@ const cloneDeep = require("lodash.clonedeep");
 const model = require("./util/model");
 const index = require("./util/index");
 const data = require("./util/data");
+const query = require("./util/query");
 const loadJsonInDir = require("./util/load-json-in-dir");
 
 module.exports = () => {
@@ -34,6 +35,9 @@ module.exports = () => {
     },
     data: {
       remap: (idx, input) => data.remap(indices[idx].specs, input)
+    },
+    query: {
+      build: (options = {}) => query.build(options)
     }
   };
 };

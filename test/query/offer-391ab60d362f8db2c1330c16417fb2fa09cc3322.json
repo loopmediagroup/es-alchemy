@@ -1,0 +1,726 @@
+{
+  "orderBy": [
+    [
+      "is_limited",
+      "desc"
+    ],
+    [
+      "flagged",
+      "desc"
+    ],
+    [
+      "placement_priority",
+      "desc"
+    ]
+  ],
+  "index": {
+    "fields": [
+      "id",
+      "name",
+      "desc",
+      "starts",
+      "ends",
+      "enabled",
+      "exclusive",
+      "flagged",
+      "is_limited",
+      "placement_priority",
+      "returned_for_type_a",
+      "returned_for_type_c",
+      "returned_for_type_b",
+      "notify_type_b",
+      "notify_type_a",
+      "min_version"
+    ],
+    "model": "offer",
+    "nested": {
+      "venues": {
+        "flat": true,
+        "model": "venue",
+        "fields": [
+          "id",
+          "location",
+          "name",
+          "desc"
+        ],
+        "sources": [
+          "venues"
+        ]
+      },
+      "types": {
+        "sources": [
+          "types",
+          "venues.types"
+        ],
+        "model": "loop",
+        "fields": [
+          "id"
+        ]
+      },
+      "collections": {
+        "sources": [
+          "collections"
+        ],
+        "model": "collection",
+        "fields": [
+          "id"
+        ]
+      },
+      "availabilities": {
+        "sources": [
+          "availabilities"
+        ],
+        "model": "schedule",
+        "fields": [
+          "id",
+          "starts",
+          "ends",
+          "enabled",
+          "created"
+        ]
+      },
+      "keywords": {
+        "sources": [
+          "keywords"
+        ],
+        "model": "keyword",
+        "fields": [
+          "id",
+          "names"
+        ]
+      },
+      "business": {
+        "sources": [
+          "business"
+        ],
+        "model": "business",
+        "fields": [
+          "id",
+          "name"
+        ]
+      },
+      "regions": {
+        "sources": [
+          "regions",
+          "regions.intersects",
+          "venues.regions",
+          "venues.regions.intersects"
+        ],
+        "model": "region",
+        "fields": [
+          "id",
+          "location"
+        ]
+      },
+      "categories": {
+        "sources": [
+          "venues.categories"
+        ],
+        "model": "category",
+        "fields": [
+          "id",
+          "name"
+        ]
+      },
+      "primary_types": {
+        "flat": true,
+        "model": "loop",
+        "fields": [
+          "id",
+          "score_distance_scale",
+          "score_random_scale"
+        ],
+        "sources": [
+          "types",
+          "venues.loop"
+        ]
+      }
+    },
+    "sources": [
+      ""
+    ]
+  },
+  "limit": 24,
+  "result": {
+    "sort": [
+      {
+        "is_limited": {
+          "order": "desc",
+          "mode": "max"
+        }
+      },
+      {
+        "flagged": {
+          "order": "desc",
+          "mode": "max"
+        }
+      },
+      {
+        "placement_priority": {
+          "order": "desc",
+          "mode": "max"
+        }
+      },
+      {
+        "id": {
+          "order": "asc",
+          "mode": "max"
+        }
+      },
+      {
+        "_score": {
+          "order": "desc"
+        }
+      }
+    ],
+    "query": {
+      "function_score": {
+        "query": {
+          "bool": {
+            "filter": [
+              {
+                "match": {
+                  "enabled": {
+                    "query": true,
+                    "operator": "and"
+                  }
+                }
+              },
+              {
+                "range": {
+                  "starts": {
+                    "lte": "now+4d/d"
+                  }
+                }
+              },
+              {
+                "range": {
+                  "ends": {
+                    "gte": "now-4d/d"
+                  }
+                }
+              },
+              {
+                "match": {
+                  "returned_for_type_b": {
+                    "query": true,
+                    "operator": "and"
+                  }
+                }
+              },
+              {
+                "bool": {
+                  "minimum_should_match": 1,
+                  "should": [
+                    {
+                      "bool": {
+                        "filter": [
+                          {
+                            "wildcard": {
+                              "name": {
+                                "value": "lose*"
+                              }
+                            }
+                          },
+                          {
+                            "wildcard": {
+                              "name": {
+                                "value": "fast*"
+                              }
+                            }
+                          },
+                          {
+                            "wildcard": {
+                              "name": {
+                                "value": "message*"
+                              }
+                            }
+                          },
+                          {
+                            "wildcard": {
+                              "name": {
+                                "value": "certain*"
+                              }
+                            }
+                          },
+                          {
+                            "wildcard": {
+                              "name": {
+                                "value": "final*"
+                              }
+                            }
+                          },
+                          {
+                            "wildcard": {
+                              "name": {
+                                "value": "mark*"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "bool": {
+                        "filter": [
+                          {
+                            "wildcard": {
+                              "desc": {
+                                "value": "lose*"
+                              }
+                            }
+                          },
+                          {
+                            "wildcard": {
+                              "desc": {
+                                "value": "fast*"
+                              }
+                            }
+                          },
+                          {
+                            "wildcard": {
+                              "desc": {
+                                "value": "message*"
+                              }
+                            }
+                          },
+                          {
+                            "wildcard": {
+                              "desc": {
+                                "value": "certain*"
+                              }
+                            }
+                          },
+                          {
+                            "wildcard": {
+                              "desc": {
+                                "value": "final*"
+                              }
+                            }
+                          },
+                          {
+                            "wildcard": {
+                              "desc": {
+                                "value": "mark*"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "nested": {
+                        "path": "keywords",
+                        "query": {
+                          "bool": {
+                            "filter": [
+                              {
+                                "bool": {
+                                  "filter": [
+                                    {
+                                      "wildcard": {
+                                        "keywords.names": {
+                                          "value": "lose*"
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "wildcard": {
+                                        "keywords.names": {
+                                          "value": "fast*"
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "wildcard": {
+                                        "keywords.names": {
+                                          "value": "message*"
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "wildcard": {
+                                        "keywords.names": {
+                                          "value": "certain*"
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "wildcard": {
+                                        "keywords.names": {
+                                          "value": "final*"
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "wildcard": {
+                                        "keywords.names": {
+                                          "value": "mark*"
+                                        }
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "nested": {
+                        "path": "categories",
+                        "query": {
+                          "bool": {
+                            "filter": [
+                              {
+                                "bool": {
+                                  "filter": [
+                                    {
+                                      "wildcard": {
+                                        "categories.name": {
+                                          "value": "lose*"
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "wildcard": {
+                                        "categories.name": {
+                                          "value": "fast*"
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "wildcard": {
+                                        "categories.name": {
+                                          "value": "message*"
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "wildcard": {
+                                        "categories.name": {
+                                          "value": "certain*"
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "wildcard": {
+                                        "categories.name": {
+                                          "value": "final*"
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "wildcard": {
+                                        "categories.name": {
+                                          "value": "mark*"
+                                        }
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "nested": {
+                        "path": "venues",
+                        "query": {
+                          "bool": {
+                            "filter": [
+                              {
+                                "bool": {
+                                  "filter": [
+                                    {
+                                      "wildcard": {
+                                        "venues.name": {
+                                          "value": "lose*"
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "wildcard": {
+                                        "venues.name": {
+                                          "value": "fast*"
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "wildcard": {
+                                        "venues.name": {
+                                          "value": "message*"
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "wildcard": {
+                                        "venues.name": {
+                                          "value": "certain*"
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "wildcard": {
+                                        "venues.name": {
+                                          "value": "final*"
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "wildcard": {
+                                        "venues.name": {
+                                          "value": "mark*"
+                                        }
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "nested": {
+                        "path": "venues",
+                        "query": {
+                          "bool": {
+                            "filter": [
+                              {
+                                "bool": {
+                                  "filter": [
+                                    {
+                                      "wildcard": {
+                                        "venues.desc": {
+                                          "value": "lose*"
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "wildcard": {
+                                        "venues.desc": {
+                                          "value": "fast*"
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "wildcard": {
+                                        "venues.desc": {
+                                          "value": "message*"
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "wildcard": {
+                                        "venues.desc": {
+                                          "value": "certain*"
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "wildcard": {
+                                        "venues.desc": {
+                                          "value": "final*"
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "wildcard": {
+                                        "venues.desc": {
+                                          "value": "mark*"
+                                        }
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "nested": {
+                  "path": "regions",
+                  "query": {
+                    "bool": {
+                      "filter": [
+                        {
+                          "match": {
+                            "regions.id": {
+                              "query": "0c2cc1c0-8642-4ba3-8958-9736e34256a6",
+                              "operator": "and"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              },
+              {
+                "nested": {
+                  "path": "availabilities",
+                  "query": {
+                    "bool": {
+                      "filter": [
+                        {
+                          "match": {
+                            "availabilities.enabled": {
+                              "query": true,
+                              "operator": "and"
+                            }
+                          }
+                        },
+                        {
+                          "range": {
+                            "availabilities.starts": {
+                              "lte": "now"
+                            }
+                          }
+                        },
+                        {
+                          "range": {
+                            "availabilities.ends": {
+                              "gte": "now"
+                            }
+                          }
+                        },
+                        {
+                          "range": {
+                            "availabilities.created": {
+                              "lte": "now-0m"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "functions": [
+          {
+            "script_score": {
+              "script": {
+                "lang": "painless",
+                "inline": "return doc[params.field].values.contains(true) ? 1 : 0;",
+                "params": {
+                  "field": "is_limited"
+                }
+              }
+            }
+          },
+          {
+            "script_score": {
+              "script": {
+                "lang": "painless",
+                "inline": "\nint a = [doc['id'].value, params.seed].hashCode();\na -= (a<<6);a ^= (a>>17);a -= (a<<9);a ^= (a<<4);\na -= (a<<3);a ^= (a<<10);a ^= (a>>15);\ndouble scale = Collections.max(doc[params.scale_field].getValues()) / 100.0;\ndouble value = (Math.abs(a) / (double)Integer.MAX_VALUE) - 0.5;\nreturn scale * value\n",
+                "params": {
+                  "scale_field": "primary_types.score_random_scale",
+                  "seed": "2018-08-17136-10c2cc1c0-8642-4ba3-8958-9736e34256a6"
+                }
+              }
+            }
+          }
+        ],
+        "score_mode": "sum",
+        "boost_mode": "replace"
+      }
+    },
+    "size": 24,
+    "_source": [
+      ""
+    ]
+  },
+  "filterBy": {
+    "and": [
+      [
+        "availabilities.enabled",
+        "==",
+        true
+      ],
+      "availabilities.starts <= now",
+      "availabilities.ends >= now",
+      [
+        "availabilities.created",
+        "<=",
+        "now-0m"
+      ],
+      [
+        "enabled",
+        "==",
+        true
+      ],
+      "starts <= now+4d/d",
+      "ends >= now-4d/d",
+      [
+        "regions.id",
+        "==",
+        "0c2cc1c0-8642-4ba3-8958-9736e34256a6"
+      ],
+      [
+        "returned_for_type_b",
+        "==",
+        true
+      ],
+      {
+        "or": [
+          [
+            "name",
+            "search",
+            "Lose fast message certain final mark"
+          ],
+          [
+            "desc",
+            "search",
+            "Lose fast message certain final mark"
+          ],
+          [
+            "keywords.names",
+            "search",
+            "Lose fast message certain final mark"
+          ],
+          [
+            "venues.name",
+            "search",
+            "Lose fast message certain final mark"
+          ],
+          [
+            "venues.desc",
+            "search",
+            "Lose fast message certain final mark"
+          ],
+          [
+            "categories.name",
+            "search",
+            "Lose fast message certain final mark"
+          ]
+        ]
+      }
+    ]
+  },
+  "toReturn": null,
+  "offset": null,
+  "scoreBy": [
+    [
+      "bool",
+      "is_limited"
+    ],
+    [
+      "random",
+      "2018-08-17136-10c2cc1c0-8642-4ba3-8958-9736e34256a6",
+      "primary_types.score_random_scale"
+    ]
+  ]
+}

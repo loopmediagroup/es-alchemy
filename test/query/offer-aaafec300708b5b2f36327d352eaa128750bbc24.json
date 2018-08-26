@@ -1,0 +1,319 @@
+{
+  "orderBy": [
+    [
+      null,
+      "random",
+      0.8515726155087358
+    ]
+  ],
+  "index": {
+    "fields": [
+      "id",
+      "name",
+      "desc",
+      "starts",
+      "ends",
+      "enabled",
+      "exclusive",
+      "flagged",
+      "is_limited",
+      "placement_priority",
+      "returned_for_type_a",
+      "returned_for_type_c",
+      "returned_for_type_b",
+      "notify_type_b",
+      "notify_type_a",
+      "min_version"
+    ],
+    "model": "offer",
+    "nested": {
+      "venues": {
+        "flat": true,
+        "model": "venue",
+        "fields": [
+          "id",
+          "location",
+          "name",
+          "desc"
+        ],
+        "sources": [
+          "venues"
+        ]
+      },
+      "types": {
+        "sources": [
+          "types",
+          "venues.types"
+        ],
+        "model": "loop",
+        "fields": [
+          "id"
+        ]
+      },
+      "collections": {
+        "sources": [
+          "collections"
+        ],
+        "model": "collection",
+        "fields": [
+          "id"
+        ]
+      },
+      "availabilities": {
+        "sources": [
+          "availabilities"
+        ],
+        "model": "schedule",
+        "fields": [
+          "id",
+          "starts",
+          "ends",
+          "enabled",
+          "created"
+        ]
+      },
+      "keywords": {
+        "sources": [
+          "keywords"
+        ],
+        "model": "keyword",
+        "fields": [
+          "id",
+          "names"
+        ]
+      },
+      "business": {
+        "sources": [
+          "business"
+        ],
+        "model": "business",
+        "fields": [
+          "id",
+          "name"
+        ]
+      },
+      "regions": {
+        "sources": [
+          "regions",
+          "regions.intersects",
+          "venues.regions",
+          "venues.regions.intersects"
+        ],
+        "model": "region",
+        "fields": [
+          "id",
+          "location"
+        ]
+      },
+      "categories": {
+        "sources": [
+          "venues.categories"
+        ],
+        "model": "category",
+        "fields": [
+          "id",
+          "name"
+        ]
+      },
+      "primary_types": {
+        "flat": true,
+        "model": "loop",
+        "fields": [
+          "id",
+          "score_distance_scale",
+          "score_random_scale"
+        ],
+        "sources": [
+          "types",
+          "venues.loop"
+        ]
+      }
+    },
+    "sources": [
+      ""
+    ]
+  },
+  "limit": 10000,
+  "result": {
+    "sort": [
+      {
+        "_script": {
+          "script": {
+            "lang": "painless",
+            "inline": "int a = [doc['id'].value, params.seed].hashCode();a -= (a<<6);a ^= (a>>17);a -= (a<<9);a ^= (a<<4);a -= (a<<3);a ^= (a<<10);a ^= (a>>15);return a;",
+            "params": {
+              "seed": "9f00cf3fc7896ae3cd59fea45626aba5"
+            }
+          },
+          "type": "number",
+          "order": "asc"
+        }
+      },
+      {
+        "id": {
+          "order": "asc",
+          "mode": "max"
+        }
+      }
+    ],
+    "query": {
+      "bool": {
+        "filter": [
+          {
+            "match": {
+              "enabled": {
+                "query": true,
+                "operator": "and"
+              }
+            }
+          },
+          {
+            "range": {
+              "starts": {
+                "lte": "now+4d/d"
+              }
+            }
+          },
+          {
+            "range": {
+              "ends": {
+                "gte": "now-4d/d"
+              }
+            }
+          },
+          {
+            "match": {
+              "notify_type_a": {
+                "query": true,
+                "operator": "and"
+              }
+            }
+          },
+          {
+            "nested": {
+              "path": "collections",
+              "query": {
+                "bool": {
+                  "filter": [
+                    {
+                      "match": {
+                        "collections.id": {
+                          "query": "c7e2965d-f9a7-472c-8cb3-119f0648c0a0",
+                          "operator": "and"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "nested": {
+              "path": "regions",
+              "query": {
+                "bool": {
+                  "filter": [
+                    {
+                      "match": {
+                        "regions.id": {
+                          "query": "4b6aea7e-e85a-445d-8726-89e90f28516e",
+                          "operator": "and"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "nested": {
+              "path": "availabilities",
+              "query": {
+                "bool": {
+                  "filter": [
+                    {
+                      "match": {
+                        "availabilities.enabled": {
+                          "query": true,
+                          "operator": "and"
+                        }
+                      }
+                    },
+                    {
+                      "range": {
+                        "availabilities.starts": {
+                          "lte": "now"
+                        }
+                      }
+                    },
+                    {
+                      "range": {
+                        "availabilities.ends": {
+                          "gte": "now"
+                        }
+                      }
+                    },
+                    {
+                      "range": {
+                        "availabilities.created": {
+                          "lte": "now-0m"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "size": 10000,
+    "_source": [
+      ""
+    ]
+  },
+  "filterBy": {
+    "and": [
+      [
+        "availabilities.enabled",
+        "==",
+        true
+      ],
+      "availabilities.starts <= now",
+      "availabilities.ends >= now",
+      [
+        "availabilities.created",
+        "<=",
+        "now-0m"
+      ],
+      [
+        "enabled",
+        "==",
+        true
+      ],
+      "starts <= now+4d/d",
+      "ends >= now-4d/d",
+      [
+        "regions.id",
+        "==",
+        "4b6aea7e-e85a-445d-8726-89e90f28516e"
+      ],
+      [
+        "notify_type_a",
+        "==",
+        true
+      ],
+      [
+        "collections.id",
+        "==",
+        "c7e2965d-f9a7-472c-8cb3-119f0648c0a0"
+      ]
+    ]
+  },
+  "toReturn": null,
+  "offset": 0,
+  "scoreBy": null
+}

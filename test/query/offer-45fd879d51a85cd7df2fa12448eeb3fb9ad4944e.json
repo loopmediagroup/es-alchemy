@@ -1,0 +1,317 @@
+{
+  "orderBy": [
+    [
+      null,
+      "random",
+      0.10910160779210698
+    ]
+  ],
+  "index": {
+    "fields": [
+      "id",
+      "name",
+      "desc",
+      "starts",
+      "ends",
+      "enabled",
+      "exclusive",
+      "flagged",
+      "is_limited",
+      "placement_priority",
+      "returned_for_type_a",
+      "returned_for_type_c",
+      "returned_for_type_b",
+      "notify_type_b",
+      "notify_type_a",
+      "min_version"
+    ],
+    "model": "offer",
+    "nested": {
+      "venues": {
+        "flat": true,
+        "model": "venue",
+        "fields": [
+          "id",
+          "location",
+          "name",
+          "desc"
+        ],
+        "sources": [
+          "venues"
+        ]
+      },
+      "types": {
+        "sources": [
+          "types",
+          "venues.types"
+        ],
+        "model": "loop",
+        "fields": [
+          "id"
+        ]
+      },
+      "collections": {
+        "sources": [
+          "collections"
+        ],
+        "model": "collection",
+        "fields": [
+          "id"
+        ]
+      },
+      "availabilities": {
+        "sources": [
+          "availabilities"
+        ],
+        "model": "schedule",
+        "fields": [
+          "id",
+          "starts",
+          "ends",
+          "enabled",
+          "created"
+        ]
+      },
+      "keywords": {
+        "sources": [
+          "keywords"
+        ],
+        "model": "keyword",
+        "fields": [
+          "id",
+          "names"
+        ]
+      },
+      "business": {
+        "sources": [
+          "business"
+        ],
+        "model": "business",
+        "fields": [
+          "id",
+          "name"
+        ]
+      },
+      "regions": {
+        "sources": [
+          "regions",
+          "regions.intersects",
+          "venues.regions",
+          "venues.regions.intersects"
+        ],
+        "model": "region",
+        "fields": [
+          "id",
+          "location"
+        ]
+      },
+      "categories": {
+        "sources": [
+          "venues.categories"
+        ],
+        "model": "category",
+        "fields": [
+          "id",
+          "name"
+        ]
+      },
+      "primary_types": {
+        "flat": true,
+        "model": "loop",
+        "fields": [
+          "id",
+          "score_distance_scale",
+          "score_random_scale"
+        ],
+        "sources": [
+          "types",
+          "venues.loop"
+        ]
+      }
+    },
+    "sources": [
+      ""
+    ]
+  },
+  "limit": 10000,
+  "result": {
+    "sort": [
+      {
+        "_script": {
+          "script": {
+            "lang": "painless",
+            "inline": "int a = [doc['id'].value, params.seed].hashCode();a -= (a<<6);a ^= (a>>17);a -= (a<<9);a ^= (a<<4);a -= (a<<3);a ^= (a<<10);a ^= (a>>15);return a;",
+            "params": {
+              "seed": "9e550023b06ce1f3911fe18fe96039cf"
+            }
+          },
+          "type": "number",
+          "order": "asc"
+        }
+      },
+      {
+        "id": {
+          "order": "asc",
+          "mode": "max"
+        }
+      }
+    ],
+    "query": {
+      "bool": {
+        "filter": [
+          {
+            "match": {
+              "enabled": {
+                "query": true,
+                "operator": "and"
+              }
+            }
+          },
+          {
+            "range": {
+              "starts": {
+                "lte": "now+4d/d"
+              }
+            }
+          },
+          {
+            "range": {
+              "ends": {
+                "gte": "now-4d/d"
+              }
+            }
+          },
+          {
+            "match": {
+              "notify_type_a": {
+                "query": true,
+                "operator": "and"
+              }
+            }
+          },
+          {
+            "bool": {
+              "must_not": {
+                "terms": {
+                  "id": [
+                    "8831ddc8-b311-4b3d-b030-ee813bb0e79f",
+                    "3eb6da0b-5777-4e80-91cc-6852aff8709d",
+                    "93767649-4565-4c43-804d-3410896051a8"
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "nested": {
+              "path": "regions",
+              "query": {
+                "bool": {
+                  "filter": [
+                    {
+                      "match": {
+                        "regions.id": {
+                          "query": "c14b8c42-fd7b-4719-a253-2e3178f88a05",
+                          "operator": "and"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "nested": {
+              "path": "availabilities",
+              "query": {
+                "bool": {
+                  "filter": [
+                    {
+                      "match": {
+                        "availabilities.enabled": {
+                          "query": true,
+                          "operator": "and"
+                        }
+                      }
+                    },
+                    {
+                      "range": {
+                        "availabilities.starts": {
+                          "lte": "now"
+                        }
+                      }
+                    },
+                    {
+                      "range": {
+                        "availabilities.ends": {
+                          "gte": "now"
+                        }
+                      }
+                    },
+                    {
+                      "range": {
+                        "availabilities.created": {
+                          "lte": "now-0m"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "size": 10000,
+    "_source": [
+      ""
+    ]
+  },
+  "filterBy": {
+    "and": [
+      [
+        "availabilities.enabled",
+        "==",
+        true
+      ],
+      "availabilities.starts <= now",
+      "availabilities.ends >= now",
+      [
+        "availabilities.created",
+        "<=",
+        "now-0m"
+      ],
+      [
+        "enabled",
+        "==",
+        true
+      ],
+      "starts <= now+4d/d",
+      "ends >= now-4d/d",
+      [
+        "regions.id",
+        "==",
+        "c14b8c42-fd7b-4719-a253-2e3178f88a05"
+      ],
+      [
+        "notify_type_a",
+        "==",
+        true
+      ],
+      [
+        "id",
+        "notin",
+        [
+          "8831ddc8-b311-4b3d-b030-ee813bb0e79f",
+          "3eb6da0b-5777-4e80-91cc-6852aff8709d",
+          "93767649-4565-4c43-804d-3410896051a8"
+        ]
+      ]
+    ]
+  },
+  "toReturn": null,
+  "offset": 0,
+  "scoreBy": null
+}
