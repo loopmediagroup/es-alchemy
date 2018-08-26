@@ -16,3 +16,10 @@ Simplification of Elasticsearch interactions
 ```bash
 npm i --save painless-elasticsearch
 ```
+
+## Outline
+
+- model format
+- index format
+- how to use remapping
+- ...
