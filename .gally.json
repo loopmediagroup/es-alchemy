@@ -2,7 +2,7 @@
   "defaultBranch": "master",
   "contribBranch": "dev",
   "repository": {
-    "url": "https://github.com/loopmediagroup/painless-elasticsearch.git"
+    "url": "https://github.com/loopmediagroup/es-alchemy.git"
   },
   "branches": {
     "dev": {

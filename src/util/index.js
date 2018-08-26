@@ -1,4 +1,4 @@
-// Translate index from painless syntax to ES syntax
+// Translate index from esalchemy syntax to ES syntax
 const assert = require("assert");
 const get = require("lodash.get");
 
