@@ -41,21 +41,21 @@
                 }
               },
               "type": "nested"
-            },
-            "tags": {
-              "properties": {
-                "id": {
-                  "type": "keyword"
-                },
-                "name": {
-                  "type": "text"
-                }
-              },
-              "type": "nested",
-              "include_in_root": true
             }
           },
           "type": "nested"
+        },
+        "tags": {
+          "properties": {
+            "id": {
+              "type": "keyword"
+            },
+            "name": {
+              "type": "text"
+            }
+          },
+          "type": "nested",
+          "include_in_root": true
         }
       }
     }
