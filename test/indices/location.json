@@ -1,0 +1,27 @@
+{
+  "model": "location",
+  "fields": [
+    "id",
+    "name"
+  ],
+  "sources": [
+    ""
+  ],
+  "nested": {
+    "address": {
+      "model": "address",
+      "fields": [
+        "id",
+        "street",
+        "city",
+        "country",
+        "centre",
+        "area",
+        "timezone"
+      ],
+      "sources": [
+        "address"
+      ]
+    }
+  }
+}
