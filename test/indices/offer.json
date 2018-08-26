@@ -1,0 +1,50 @@
+{
+  "model": "offer",
+  "fields": [
+    "id",
+    "headline"
+  ],
+  "sources": [
+    ""
+  ],
+  "nested": {
+    "locations": {
+      "model": "location[]",
+      "fields": [
+        "id",
+        "name"
+      ],
+      "sources": [
+        "locations"
+      ],
+      "nested": {
+        "address": {
+          "model": "address",
+          "fields": [
+            "id",
+            "street",
+            "city",
+            "country",
+            "centre",
+            "area",
+            "timezone"
+          ],
+          "sources": [
+            "address"
+          ]
+        },
+        "tags": {
+          "model": "tag[]",
+          "fields": [
+            "id",
+            "name"
+          ],
+          "sources": [
+            "tags"
+          ],
+          "flat": true
+        }
+      }
+    }
+  }
+}

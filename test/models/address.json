@@ -1,0 +1,11 @@
+{
+  "fields": {
+    "id": "uuid",
+    "street": "string",
+    "city": "string",
+    "country": "string",
+    "centre": "point",
+    "area": "shape",
+    "timezone": "string"
+  }
+}

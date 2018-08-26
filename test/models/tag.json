@@ -1,0 +1,6 @@
+{
+  "fields": {
+    "id": "uuid",
+    "name": "string"
+  }
+}

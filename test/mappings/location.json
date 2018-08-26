@@ -1,0 +1,40 @@
+{
+  "mappings": {
+    "location": {
+      "properties": {
+        "id": {
+          "type": "keyword"
+        },
+        "name": {
+          "type": "text"
+        },
+        "address": {
+          "properties": {
+            "id": {
+              "type": "keyword"
+            },
+            "street": {
+              "type": "text"
+            },
+            "city": {
+              "type": "text"
+            },
+            "country": {
+              "type": "text"
+            },
+            "centre": {
+              "type": "geo_point"
+            },
+            "area": {
+              "type": "geo_shape"
+            },
+            "timezone": {
+              "type": "text"
+            }
+          },
+          "type": "nested"
+        }
+      }
+    }
+  }
+}
