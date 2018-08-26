@@ -1,25 +1,24 @@
 const cloneDeep = require("lodash.clonedeep");
 const model = require("./util/model");
 const index = require("./util/index");
+const data = require("./util/data");
 const loadJsonInDir = require("./util/load-json-in-dir");
 
 module.exports = () => {
   const models = {};
   const registerModel = (name, specs) => {
     models[name] = {
-      original: specs,
+      specs,
       compiled: model.compile(specs)
     };
-    return true;
   };
 
   const indices = {};
   const registerIndex = (name, specs) => {
     indices[name] = {
-      original: specs,
+      specs,
       mapping: index.generateMapping(name, specs, models)
     };
-    return true;
   };
 
   return {
@@ -29,7 +28,10 @@ module.exports = () => {
     index: {
       register: registerIndex,
       list: () => Object.keys(indices).sort(),
-      getMapping: key => cloneDeep(indices[key].mapping)
+      getMapping: idx => cloneDeep(indices[idx].mapping)
+    },
+    data: {
+      remap: (idx, input) => data.remap(indices[idx].specs, input)
     }
   };
 };

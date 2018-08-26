@@ -32,19 +32,19 @@
           "sources": [
             "address"
           ]
-        },
-        "tags": {
-          "model": "tag[]",
-          "fields": [
-            "id",
-            "name"
-          ],
-          "sources": [
-            "tags"
-          ],
-          "flat": true
         }
       }
+    },
+    "tags": {
+      "model": "tag[]",
+      "fields": [
+        "id",
+        "name"
+      ],
+      "sources": [
+        "locations.tags"
+      ],
+      "flat": true
     }
   }
 }

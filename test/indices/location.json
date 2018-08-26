@@ -4,9 +4,6 @@
     "id",
     "name"
   ],
-  "sources": [
-    ""
-  ],
   "nested": {
     "address": {
       "model": "address",

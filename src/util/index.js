@@ -1,4 +1,4 @@
-// Translate index from painless syntax to ES syntax
+// Translate index from esalchemy syntax to ES syntax
 const assert = require("assert");
 const get = require("lodash.get");
 
@@ -10,7 +10,6 @@ const buildPropertiesRec = (specs, models) => {
   assert(model !== undefined);
   assert(specs.fields.every(f => model.compiled.fields[f] !== undefined));
   const nested = Object.entries(specs.nested || {});
-  assert(nested.every(([rel, value]) => model.compiled.rels[rel] === value.model));
   return nested.reduce(
     (prev, [key, value]) => Object.assign(prev, {
       [key]: Object.assign(
