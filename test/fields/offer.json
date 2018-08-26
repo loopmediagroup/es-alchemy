@@ -1,0 +1,15 @@
+[
+  "id",
+  "headline",
+  "locations.id",
+  "locations.name",
+  "locations.address.id",
+  "locations.address.street",
+  "locations.address.city",
+  "locations.address.country",
+  "locations.address.centre",
+  "locations.address.area",
+  "locations.address.timezone",
+  "tags.id",
+  "tags.name"
+]

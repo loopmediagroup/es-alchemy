@@ -5,6 +5,7 @@ const Index = require('../src/index');
 const models = Index.loadJsonInDir(path.join(__dirname, "models"));
 const indices = Index.loadJsonInDir(path.join(__dirname, "indices"));
 const mappings = Index.loadJsonInDir(path.join(__dirname, "mappings"));
+const fields = Index.loadJsonInDir(path.join(__dirname, "fields"));
 const remaps = Index.loadJsonInDir(path.join(__dirname, "remaps"));
 
 describe('Testing index', () => {
@@ -23,6 +24,13 @@ describe('Testing index', () => {
     expect(index.index.list()).to.deep.equal(Object.keys(mappings).sort());
     Object.entries(mappings).forEach(([k, v]) => {
       expect(index.index.getMapping(k)).to.deep.equal(v);
+    });
+  });
+
+  it('Testing fields', () => {
+    expect(index.index.list()).to.deep.equal(Object.keys(fields).sort());
+    Object.entries(fields).forEach(([k, v]) => {
+      expect(index.index.getFields(k)).to.deep.equal(v);
     });
   });
 
