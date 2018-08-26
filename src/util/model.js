@@ -1,4 +1,4 @@
-// Translate model from painless syntax to ES syntax
+// Translate model from esalchemy syntax to ES syntax
 const assert = require("assert");
 const fieldDefinitions = require("../resources/field-definitions");
 
