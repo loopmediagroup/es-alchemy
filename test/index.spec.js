@@ -29,7 +29,7 @@ describe('Testing index', () => {
   it('Testing remap', () => {
     Object.entries(remaps).forEach(([k, v]) => {
       const remapped = index.data.remap(v.index, v.input);
-      expect(remapped, JSON.stringify(remapped)).to.deep.equal(v.result);
+      expect(remapped, `Debug: ${JSON.stringify(remapped)}`).to.deep.equal(v.result);
     });
   });
 });
