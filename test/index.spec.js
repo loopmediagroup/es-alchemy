@@ -51,7 +51,7 @@ describe('Testing index', () => {
   describe('Testing Query Creation', () => {
     it('Testing query.build', () => {
       Object.entries(query).forEach(([k, v]) => {
-        const result = index.query.build({
+        const result = index.query.build(null, {
           toReturn: v.toReturn || [""],
           filterBy: v.filterBy || [],
           orderBy: v.orderBy || [],
@@ -94,8 +94,9 @@ describe('Testing index', () => {
       expect(await index.rest.data.update("offer", { upsert: uuids.map(id => ({ id })) })).to.equal(true);
       expect(await index.rest.data.refresh("offer")).to.equal(true);
       expect(await index.rest.data.count("offer")).to.equal(3);
-      expect(await index.rest.data.query("offer", index.query.build({
+      expect(await index.rest.data.query("offer", index.query.build("offer", {
         toReturn: ["id"],
+        filterBy: { and: [["id", "in", uuids]] },
         limit: 1,
         offset: 1
       }))).to.deep.equal({
@@ -138,7 +139,7 @@ describe('Testing index', () => {
       await Object.entries(queryMappings)
         .map(([idx, v]) => index.rest.data.query(
           idx,
-          index.query.build({
+          index.query.build(null, {
             toReturn: v.toReturn,
             filterBy: v.filterBy || [],
             orderBy: v.orderBy || [],
