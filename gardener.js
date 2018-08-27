@@ -6,6 +6,7 @@ if (require.main === module) {
   gardener({
     author: "Loop Media Group",
     license: "MIT",
-    docker: ["lambda"]
+    docker: ["lambda"],
+    ci: ["circle"]
   }).catch(() => process.exit(1));
 }

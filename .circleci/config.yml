@@ -1,0 +1,65 @@
+workflows:
+  version: 2
+  node-multi-build:
+    jobs:
+      - gally
+      - node-v10
+      - node-v8.10
+      - release:
+          requires:
+            - gally
+            - node-v10
+            - node-v8.10
+          filters:
+            branches:
+              only: master
+version: 2
+jobs:
+  gally:
+    docker:
+      - image: 'circleci/node:10'
+    steps:
+      - checkout
+      - run: sudo npm i -g gally
+      - run: ga promote $CIRCLE_BRANCH
+  node-base:
+    steps: &ref_0
+      - checkout
+      - run: npm i
+      - run: npm t
+  node-v10:
+    docker:
+      - image: 'circleci/node:10'
+        environment:
+          elasticSearchEndpoint: 'localhost:9200'
+          elasticSearchProtocol: http
+      - image: 'docker.elastic.co/elasticsearch/elasticsearch:6.3.0'
+        environment:
+          - discovery.type=single-node
+          - http.host=0.0.0.0
+          - transport.host=127.0.0.1
+          - xpack.security.enabled=false
+          - ES_JAVA_OPTS=-Xms750m -Xmx750m
+    steps: *ref_0
+  node-v8.10:
+    docker:
+      - image: 'circleci/node:8.10'
+        environment:
+          elasticSearchEndpoint: 'localhost:9200'
+          elasticSearchProtocol: http
+      - image: 'docker.elastic.co/elasticsearch/elasticsearch:6.3.0'
+        environment:
+          - discovery.type=single-node
+          - http.host=0.0.0.0
+          - transport.host=127.0.0.1
+          - xpack.security.enabled=false
+          - ES_JAVA_OPTS=-Xms750m -Xmx750m
+    steps: *ref_0
+  release:
+    docker:
+      - image: 'circleci/node:10'
+    steps:
+      - checkout
+      - run: npm i
+      - run: npm run coveralls
+      - run: npm run semantic-release
