@@ -266,7 +266,7 @@
     "from": 0,
     "size": 10000,
     "_source": [
-      ""
+      "id"
     ]
   },
   "filterBy": {
@@ -310,7 +310,7 @@
       ]
     ]
   },
-  "toReturn": null,
+  "toReturn": "id",
   "offset": 0,
   "scoreBy": null
 }
