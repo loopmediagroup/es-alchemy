@@ -21,6 +21,14 @@ const buildPropertiesRec = (specs, models) => {
   );
 };
 
+const extractFieldsRec = (specs, prefix = []) => Object
+  .entries(specs.nested || {})
+  .map(([key, value]) => extractFieldsRec(value, [...prefix, key]))
+  .reduce(
+    (p, c) => p.concat(c),
+    specs.fields.map(field => [...prefix, field].join("."))
+  );
+
 module.exports = ({
   generateMapping: (name, specs, models) => ({
     mappings: {
@@ -28,5 +36,6 @@ module.exports = ({
         properties: buildPropertiesRec(specs, models)
       }
     }
-  })
+  }),
+  extractFields: specs => extractFieldsRec(specs)
 });

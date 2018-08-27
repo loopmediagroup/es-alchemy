@@ -1,0 +1,284 @@
+{
+  "orderBy": [
+    [
+      null,
+      "random",
+      "2018-08-17-1"
+    ]
+  ],
+  "index": {
+    "fields": [
+      "id",
+      "name",
+      "desc",
+      "starts",
+      "ends",
+      "enabled",
+      "exclusive",
+      "flagged",
+      "is_limited",
+      "placement_priority",
+      "returned_for_type_a",
+      "returned_for_type_c",
+      "returned_for_type_b",
+      "notify_type_b",
+      "notify_type_a",
+      "min_version"
+    ],
+    "model": "offer",
+    "nested": {
+      "venues": {
+        "flat": true,
+        "model": "venue",
+        "fields": [
+          "id",
+          "location",
+          "name",
+          "desc"
+        ],
+        "sources": [
+          "venues"
+        ]
+      },
+      "types": {
+        "sources": [
+          "types",
+          "venues.types"
+        ],
+        "model": "loop",
+        "fields": [
+          "id"
+        ]
+      },
+      "collections": {
+        "sources": [
+          "collections"
+        ],
+        "model": "collection",
+        "fields": [
+          "id"
+        ]
+      },
+      "availabilities": {
+        "sources": [
+          "availabilities"
+        ],
+        "model": "schedule",
+        "fields": [
+          "id",
+          "starts",
+          "ends",
+          "enabled",
+          "created"
+        ]
+      },
+      "keywords": {
+        "sources": [
+          "keywords"
+        ],
+        "model": "keyword",
+        "fields": [
+          "id",
+          "names"
+        ]
+      },
+      "business": {
+        "sources": [
+          "business"
+        ],
+        "model": "business",
+        "fields": [
+          "id",
+          "name"
+        ]
+      },
+      "regions": {
+        "sources": [
+          "regions",
+          "regions.intersects",
+          "venues.regions",
+          "venues.regions.intersects"
+        ],
+        "model": "region",
+        "fields": [
+          "id",
+          "location"
+        ]
+      },
+      "categories": {
+        "sources": [
+          "venues.categories"
+        ],
+        "model": "category",
+        "fields": [
+          "id",
+          "name"
+        ]
+      },
+      "primary_types": {
+        "flat": true,
+        "model": "loop",
+        "fields": [
+          "id",
+          "score_distance_scale",
+          "score_random_scale"
+        ],
+        "sources": [
+          "types",
+          "venues.loop"
+        ]
+      }
+    },
+    "sources": [
+      ""
+    ]
+  },
+  "limit": 50,
+  "result": {
+    "sort": [
+      {
+        "_script": {
+          "script": {
+            "lang": "painless",
+            "inline": "int a = [doc['id'].value, params.seed].hashCode();a -= (a<<6);a ^= (a>>17);a -= (a<<9);a ^= (a<<4);a -= (a<<3);a ^= (a<<10);a ^= (a>>15);return a;",
+            "params": {
+              "seed": "24a9397c29367f322a42cd39875cc2e8"
+            }
+          },
+          "type": "number",
+          "order": "asc"
+        }
+      },
+      {
+        "id": {
+          "order": "asc",
+          "mode": "max"
+        }
+      }
+    ],
+    "query": {
+      "bool": {
+        "filter": [
+          {
+            "match": {
+              "enabled": {
+                "query": true,
+                "operator": "and"
+              }
+            }
+          },
+          {
+            "range": {
+              "starts": {
+                "lte": "now+4d/d"
+              }
+            }
+          },
+          {
+            "range": {
+              "ends": {
+                "gte": "now-4d/d"
+              }
+            }
+          },
+          {
+            "nested": {
+              "path": "venues",
+              "query": {
+                "bool": {
+                  "filter": [
+                    {
+                      "terms": {
+                        "venues.id": [
+                          "eeeb3902-a641-4d68-b995-833b7455d65b"
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "nested": {
+              "path": "availabilities",
+              "query": {
+                "bool": {
+                  "filter": [
+                    {
+                      "match": {
+                        "availabilities.enabled": {
+                          "query": true,
+                          "operator": "and"
+                        }
+                      }
+                    },
+                    {
+                      "range": {
+                        "availabilities.starts": {
+                          "lte": "now"
+                        }
+                      }
+                    },
+                    {
+                      "range": {
+                        "availabilities.ends": {
+                          "gte": "now"
+                        }
+                      }
+                    },
+                    {
+                      "range": {
+                        "availabilities.created": {
+                          "lte": "now-0m"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "from": 0,
+    "size": 50,
+    "_source": [
+      ""
+    ]
+  },
+  "filterBy": {
+    "and": [
+      [
+        "availabilities.enabled",
+        "==",
+        true
+      ],
+      "availabilities.starts <= now",
+      "availabilities.ends >= now",
+      [
+        "availabilities.created",
+        "<=",
+        "now-0m"
+      ],
+      [
+        "enabled",
+        "==",
+        true
+      ],
+      "starts <= now+4d/d",
+      "ends >= now-4d/d",
+      [
+        "venues.id",
+        "in",
+        [
+          "eeeb3902-a641-4d68-b995-833b7455d65b"
+        ]
+      ]
+    ]
+  },
+  "toReturn": null,
+  "offset": null,
+  "scoreBy": null
+}
