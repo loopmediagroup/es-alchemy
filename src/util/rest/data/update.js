@@ -1,6 +1,4 @@
-const call = require("../call");
-
-module.exports = (idx, { remove = [], upsert = [] }) => {
+module.exports = (call, idx, { remove = [], upsert = [] }) => {
   const payload = [];
   upsert.forEach((doc) => {
     payload.push(JSON.stringify({ update: { _type: idx, _id: doc.id } }));

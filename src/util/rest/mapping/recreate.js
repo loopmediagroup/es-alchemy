@@ -1,4 +1,4 @@
 const del = require("./delete");
 const create = require("./create");
 
-module.exports = (idx, mapping) => del(idx).then(r => r && create(idx, mapping));
+module.exports = (call, idx, mapping) => del(call, idx).then(r => r && create(call, idx, mapping));

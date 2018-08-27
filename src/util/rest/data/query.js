@@ -1,8 +1,7 @@
 const assert = require("assert");
 const get = require("lodash.get");
-const call = require("../call");
 
-module.exports = (idx, filter, { raw = false }) => call('GET', idx, { body: filter, endpoint: "_search" })
+module.exports = (call, idx, filter, { raw = false }) => call('GET', idx, { body: filter, endpoint: "_search" })
   .then((esResult) => {
     assert(esResult.statusCode === 200, JSON.stringify(esResult.body));
     assert(get(esResult.body, '_shards.failed') === 0, JSON.stringify(esResult.body));
