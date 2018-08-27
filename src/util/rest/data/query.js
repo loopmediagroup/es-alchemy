@@ -20,6 +20,7 @@ module.exports = (call, idx, filter, { raw = false }) => call('GET', idx, { body
             offset: Math.max(0, filter.from - filter.size)
           } : null,
           cur: 1 + Math.ceil(filter.from * 1.0 / filter.size),
+          max: Math.max(1, 1 + Math.floor((esResult.body.hits.total - 0.1) / filter.size)),
           size: filter.size
         }
       };
