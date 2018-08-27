@@ -3,13 +3,13 @@ workflows:
   node-multi-build:
     jobs:
       - gally
-      - node-v10
-      - node-v8.10
+      - test-node-v10
+      - test-node-v8.10
       - release:
           requires:
             - gally
-            - node-v10
-            - node-v8.10
+            - test-node-v10
+            - test-node-v8.10
           filters:
             branches:
               only: master
@@ -22,12 +22,7 @@ jobs:
       - checkout
       - run: sudo npm i -g gally
       - run: ga promote $CIRCLE_BRANCH
-  node-base:
-    steps: &ref_0
-      - checkout
-      - run: npm i
-      - run: npm t
-  node-v10:
+  test-node-v10:
     docker:
       - image: 'circleci/node:10'
         environment:
@@ -40,8 +35,11 @@ jobs:
           - transport.host=127.0.0.1
           - xpack.security.enabled=false
           - ES_JAVA_OPTS=-Xms750m -Xmx750m
-    steps: *ref_0
-  node-v8.10:
+    steps:
+      - checkout
+      - run: npm i
+      - run: npm t
+  test-node-v8.10:
     docker:
       - image: 'circleci/node:8.10'
         environment:
@@ -54,7 +52,10 @@ jobs:
           - transport.host=127.0.0.1
           - xpack.security.enabled=false
           - ES_JAVA_OPTS=-Xms750m -Xmx750m
-    steps: *ref_0
+    steps:
+      - checkout
+      - run: npm i
+      - run: npm t
   release:
     docker:
       - image: 'circleci/node:10'
