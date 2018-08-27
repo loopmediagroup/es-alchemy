@@ -1,4 +1,4 @@
-[![Build Status](https://img.shields.io/travis/loopmediagroup/es-alchemy/master.svg)](https://travis-ci.org/loopmediagroup/es-alchemy)
+[![Build Status](https://circleci.com/gh/loopmediagroup/es-alchemy.png?style=shield)](https://circleci.com/gh/loopmediagroup/es-alchemy)
 [![Test Coverage](https://img.shields.io/coveralls/loopmediagroup/es-alchemy/master.svg)](https://coveralls.io/github/loopmediagroup/es-alchemy?branch=master)
 [![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=loopmediagroup/es-alchemy)](https://dependabot.com)
 [![Dependencies](https://david-dm.org/loopmediagroup/es-alchemy/status.svg)](https://david-dm.org/loopmediagroup/es-alchemy)
@@ -15,6 +15,26 @@ Simplification of Elasticsearch interactions
 
 ```bash
 npm i --save es-alchemy
+```
+
+## Tests
+
+All tests need to be run in docker container. Start with:
+
+```bash
+. manage.sh
+```
+
+Test elasticsearch works correctly with
+
+```bash
+curl http://elasticsearch:9200/_cluster/health
+```
+
+Run all tests with
+
+```bash
+npm t
 ```
 
 ## Outline

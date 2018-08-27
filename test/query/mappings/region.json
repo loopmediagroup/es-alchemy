@@ -1,0 +1,14 @@
+{
+  "mappings": {
+    "region": {
+      "properties": {
+        "id": {
+          "type": "keyword"
+        },
+        "area": {
+          "type": "geo_shape"
+        }
+      }
+    }
+  }
+}
