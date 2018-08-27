@@ -55,11 +55,9 @@ module.exports.build = ({
 }) => {
   const result = {
     _source: toReturn,
-    size: limit
+    size: limit,
+    from: typeof offset === "number" ? offset : 0
   };
-  if (typeof offset === "number" && offset !== 0) {
-    result.from = offset;
-  }
   if (filterBy.length !== 0) {
     result.query = buildQueryRec(filterBy)[1];
   }

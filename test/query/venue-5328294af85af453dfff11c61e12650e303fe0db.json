@@ -351,6 +351,7 @@
         "boost_mode": "replace"
       }
     },
+    "from": 0,
     "size": 8,
     "_source": [
       ""

@@ -17,6 +17,26 @@ Simplification of Elasticsearch interactions
 npm i --save es-alchemy
 ```
 
+## Tests
+
+All tests need to be run in docker container. Start with:
+
+```bash
+. manage.sh
+```
+
+Test elasticsearch works correctly with
+
+```bash
+curl http://elasticsearch:9200/_cluster/health
+```
+
+Run all tests with
+
+```bash
+npm t
+```
+
 ## Outline
 
 - model format
