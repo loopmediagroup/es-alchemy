@@ -1,0 +1,77 @@
+{
+  "orderBy": null,
+  "index": {
+    "fields": [
+      "id",
+      "area"
+    ],
+    "model": "region",
+    "sources": [
+      ""
+    ]
+  },
+  "limit": 0,
+  "result": {
+    "query": {
+      "bool": {
+        "filter": [
+          {
+            "geo_shape": {
+              "area": {
+                "shape": {
+                  "type": "point",
+                  "coordinates": [
+                    1,
+                    1
+                  ]
+                },
+                "relation": "contains"
+              }
+            }
+          },
+          {
+            "match": {
+              "id": {
+                "query": "16456cd3-7a4e-4c18-acd7-28978c2539e0",
+                "operator": "and"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "from": 0,
+    "size": 0,
+    "_source": [
+      ""
+    ],
+    "sort": [
+      {
+        "id": {
+          "order": "asc",
+          "mode": "max"
+        }
+      }
+    ]
+  },
+  "filterBy": {
+    "and": [
+      [
+        "area",
+        "contains",
+        [
+          1,
+          1
+        ]
+      ],
+      [
+        "id",
+        "==",
+        "16456cd3-7a4e-4c18-acd7-28978c2539e0"
+      ]
+    ]
+  },
+  "toReturn": null,
+  "offset": 0,
+  "scoreBy": null
+}

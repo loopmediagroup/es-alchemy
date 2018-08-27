@@ -1,0 +1,559 @@
+{
+  "orderBy": [
+    [
+      "is_limited",
+      "desc"
+    ],
+    [
+      "flagged",
+      "desc"
+    ],
+    [
+      "placement_priority",
+      "desc"
+    ]
+  ],
+  "index": {
+    "fields": [
+      "id",
+      "name",
+      "desc",
+      "starts",
+      "ends",
+      "enabled",
+      "exclusive",
+      "flagged",
+      "is_limited",
+      "placement_priority",
+      "returned_for_type_a",
+      "returned_for_type_c",
+      "returned_for_type_b",
+      "notify_type_b",
+      "notify_type_a",
+      "min_version"
+    ],
+    "model": "offer",
+    "nested": {
+      "venues": {
+        "flat": true,
+        "model": "venue",
+        "fields": [
+          "id",
+          "location",
+          "name",
+          "desc"
+        ],
+        "sources": [
+          "venues"
+        ]
+      },
+      "types": {
+        "sources": [
+          "types",
+          "venues.types"
+        ],
+        "model": "loop",
+        "fields": [
+          "id"
+        ]
+      },
+      "collections": {
+        "sources": [
+          "collections"
+        ],
+        "model": "collection",
+        "fields": [
+          "id"
+        ]
+      },
+      "availabilities": {
+        "sources": [
+          "availabilities"
+        ],
+        "model": "schedule",
+        "fields": [
+          "id",
+          "starts",
+          "ends",
+          "enabled",
+          "created"
+        ]
+      },
+      "keywords": {
+        "sources": [
+          "keywords"
+        ],
+        "model": "keyword",
+        "fields": [
+          "id",
+          "names"
+        ]
+      },
+      "business": {
+        "sources": [
+          "business"
+        ],
+        "model": "business",
+        "fields": [
+          "id",
+          "name"
+        ]
+      },
+      "regions": {
+        "sources": [
+          "regions",
+          "regions.intersects",
+          "venues.regions",
+          "venues.regions.intersects"
+        ],
+        "model": "region",
+        "fields": [
+          "id",
+          "location"
+        ]
+      },
+      "categories": {
+        "sources": [
+          "venues.categories"
+        ],
+        "model": "category",
+        "fields": [
+          "id",
+          "name"
+        ]
+      },
+      "primary_types": {
+        "flat": true,
+        "model": "loop",
+        "fields": [
+          "id",
+          "score_distance_scale",
+          "score_random_scale"
+        ],
+        "sources": [
+          "types",
+          "venues.loop"
+        ]
+      }
+    },
+    "sources": [
+      ""
+    ]
+  },
+  "limit": 24,
+  "result": {
+    "sort": [
+      {
+        "is_limited": {
+          "order": "desc",
+          "mode": "max"
+        }
+      },
+      {
+        "flagged": {
+          "order": "desc",
+          "mode": "max"
+        }
+      },
+      {
+        "placement_priority": {
+          "order": "desc",
+          "mode": "max"
+        }
+      },
+      {
+        "id": {
+          "order": "asc",
+          "mode": "max"
+        }
+      },
+      {
+        "_score": {
+          "order": "desc"
+        }
+      }
+    ],
+    "query": {
+      "function_score": {
+        "query": {
+          "bool": {
+            "filter": [
+              {
+                "match": {
+                  "enabled": {
+                    "query": true,
+                    "operator": "and"
+                  }
+                }
+              },
+              {
+                "range": {
+                  "starts": {
+                    "lte": "now+4d/d"
+                  }
+                }
+              },
+              {
+                "range": {
+                  "ends": {
+                    "gte": "now-4d/d"
+                  }
+                }
+              },
+              {
+                "match": {
+                  "returned_for_type_b": {
+                    "query": true,
+                    "operator": "and"
+                  }
+                }
+              },
+              {
+                "bool": {
+                  "minimum_should_match": 1,
+                  "should": [
+                    {
+                      "bool": {
+                        "filter": [
+                          {
+                            "wildcard": {
+                              "name": {
+                                "value": "hoffman*"
+                              }
+                            }
+                          },
+                          {
+                            "wildcard": {
+                              "name": {
+                                "value": "lee*"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "bool": {
+                        "filter": [
+                          {
+                            "wildcard": {
+                              "desc": {
+                                "value": "hoffman*"
+                              }
+                            }
+                          },
+                          {
+                            "wildcard": {
+                              "desc": {
+                                "value": "lee*"
+                              }
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "nested": {
+                        "path": "keywords",
+                        "query": {
+                          "bool": {
+                            "filter": [
+                              {
+                                "bool": {
+                                  "filter": [
+                                    {
+                                      "wildcard": {
+                                        "keywords.names": {
+                                          "value": "hoffman*"
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "wildcard": {
+                                        "keywords.names": {
+                                          "value": "lee*"
+                                        }
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "nested": {
+                        "path": "categories",
+                        "query": {
+                          "bool": {
+                            "filter": [
+                              {
+                                "bool": {
+                                  "filter": [
+                                    {
+                                      "wildcard": {
+                                        "categories.name": {
+                                          "value": "hoffman*"
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "wildcard": {
+                                        "categories.name": {
+                                          "value": "lee*"
+                                        }
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "nested": {
+                        "path": "venues",
+                        "query": {
+                          "bool": {
+                            "filter": [
+                              {
+                                "bool": {
+                                  "filter": [
+                                    {
+                                      "wildcard": {
+                                        "venues.name": {
+                                          "value": "hoffman*"
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "wildcard": {
+                                        "venues.name": {
+                                          "value": "lee*"
+                                        }
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "nested": {
+                        "path": "venues",
+                        "query": {
+                          "bool": {
+                            "filter": [
+                              {
+                                "bool": {
+                                  "filter": [
+                                    {
+                                      "wildcard": {
+                                        "venues.desc": {
+                                          "value": "hoffman*"
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "wildcard": {
+                                        "venues.desc": {
+                                          "value": "lee*"
+                                        }
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "nested": {
+                  "path": "regions",
+                  "query": {
+                    "bool": {
+                      "filter": [
+                        {
+                          "match": {
+                            "regions.id": {
+                              "query": "0c2cc1c0-8642-4ba3-8958-9736e34256a6",
+                              "operator": "and"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              },
+              {
+                "nested": {
+                  "path": "availabilities",
+                  "query": {
+                    "bool": {
+                      "filter": [
+                        {
+                          "match": {
+                            "availabilities.enabled": {
+                              "query": true,
+                              "operator": "and"
+                            }
+                          }
+                        },
+                        {
+                          "range": {
+                            "availabilities.starts": {
+                              "lte": "now"
+                            }
+                          }
+                        },
+                        {
+                          "range": {
+                            "availabilities.ends": {
+                              "gte": "now"
+                            }
+                          }
+                        },
+                        {
+                          "range": {
+                            "availabilities.created": {
+                              "lte": "now-0m"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "functions": [
+          {
+            "script_score": {
+              "script": {
+                "lang": "painless",
+                "inline": "return doc[params.field].values.contains(true) ? 1 : 0;",
+                "params": {
+                  "field": "is_limited"
+                }
+              }
+            }
+          },
+          {
+            "script_score": {
+              "script": {
+                "lang": "painless",
+                "inline": "\nint a = [doc['id'].value, params.seed].hashCode();\na -= (a<<6);a ^= (a>>17);a -= (a<<9);a ^= (a<<4);\na -= (a<<3);a ^= (a<<10);a ^= (a>>15);\ndouble scale = Collections.max(doc[params.scale_field].getValues()) / 100.0;\ndouble value = (Math.abs(a) / (double)Integer.MAX_VALUE) - 0.5;\nreturn scale * value\n",
+                "params": {
+                  "scale_field": "primary_types.score_random_scale",
+                  "seed": "2018-08-17136-10c2cc1c0-8642-4ba3-8958-9736e34256a6"
+                }
+              }
+            }
+          }
+        ],
+        "score_mode": "sum",
+        "boost_mode": "replace"
+      }
+    },
+    "from": 0,
+    "size": 24,
+    "_source": [
+      ""
+    ]
+  },
+  "filterBy": {
+    "and": [
+      [
+        "availabilities.enabled",
+        "==",
+        true
+      ],
+      "availabilities.starts <= now",
+      "availabilities.ends >= now",
+      [
+        "availabilities.created",
+        "<=",
+        "now-0m"
+      ],
+      [
+        "enabled",
+        "==",
+        true
+      ],
+      "starts <= now+4d/d",
+      "ends >= now-4d/d",
+      [
+        "regions.id",
+        "==",
+        "0c2cc1c0-8642-4ba3-8958-9736e34256a6"
+      ],
+      [
+        "returned_for_type_b",
+        "==",
+        true
+      ],
+      {
+        "or": [
+          [
+            "name",
+            "search",
+            "Hoffman-Lee"
+          ],
+          [
+            "desc",
+            "search",
+            "Hoffman-Lee"
+          ],
+          [
+            "keywords.names",
+            "search",
+            "Hoffman-Lee"
+          ],
+          [
+            "venues.name",
+            "search",
+            "Hoffman-Lee"
+          ],
+          [
+            "venues.desc",
+            "search",
+            "Hoffman-Lee"
+          ],
+          [
+            "categories.name",
+            "search",
+            "Hoffman-Lee"
+          ]
+        ]
+      }
+    ]
+  },
+  "toReturn": null,
+  "offset": null,
+  "scoreBy": [
+    [
+      "bool",
+      "is_limited"
+    ],
+    [
+      "random",
+      "2018-08-17136-10c2cc1c0-8642-4ba3-8958-9736e34256a6",
+      "primary_types.score_random_scale"
+    ]
+  ]
+}
