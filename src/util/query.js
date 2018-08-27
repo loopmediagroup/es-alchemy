@@ -1,6 +1,7 @@
 const assert = require('assert');
 const get = require("lodash.get");
 const isEqual = require("lodash.isequal");
+const objectPaths = require("obj-paths");
 const actionMap = require("../resources/action-map");
 
 const buildQueryRec = (filterBy) => {
@@ -54,7 +55,7 @@ module.exports.build = ({
   offset = 0
 }) => {
   const result = {
-    _source: toReturn,
+    _source: typeof toReturn === "string" ? objectPaths.split(toReturn) : toReturn,
     size: limit,
     from: typeof offset === "number" ? offset : 0
   };
