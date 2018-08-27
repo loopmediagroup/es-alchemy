@@ -4,9 +4,10 @@ const isEqual = require("lodash.isequal");
 const objectPaths = require("obj-paths");
 const actionMap = require("../resources/action-map");
 
-const buildQueryRec = (filterBy) => {
+const buildQueryRec = (filterBy, allowedFields) => {
   // handle actual filter clause
   if (Array.isArray(filterBy)) {
+    assert(allowedFields === null || allowedFields.includes(filterBy[0]));
     return [
       filterBy[0].substring(0, filterBy[0].lastIndexOf('.')),
       actionMap.filter[filterBy[1]](filterBy[0], ...filterBy.slice(2))
@@ -23,7 +24,7 @@ const buildQueryRec = (filterBy) => {
   const groups = {};
   filters.forEach((filter) => {
     assert(["string", "object"].includes(typeof filter));
-    const [prefix, logic] = buildQueryRec(typeof filter === 'string' ? filter.split(" ") : filter);
+    const [prefix, logic] = buildQueryRec(typeof filter === 'string' ? filter.split(" ") : filter, allowedFields);
     if (groups[prefix] === undefined) {
       groups[prefix] = [];
     }
@@ -46,7 +47,7 @@ const buildQueryRec = (filterBy) => {
   return ["", actionMap.filter[clause](results)];
 };
 
-module.exports.build = ({
+module.exports.build = (allowedFields, {
   toReturn = [""],
   filterBy = [],
   orderBy = [],
@@ -59,8 +60,10 @@ module.exports.build = ({
     size: limit,
     from: typeof offset === "number" ? offset : 0
   };
+  // eslint-disable-next-line no-underscore-dangle
+  assert(allowedFields === null || result._source.every(f => allowedFields.includes(f)));
   if (filterBy.length !== 0) {
-    result.query = buildQueryRec(filterBy)[1];
+    result.query = buildQueryRec(filterBy, allowedFields)[1];
   }
   result.sort = orderBy
     .concat(isEqual(orderBy.slice(-1), [["id", "asc"]]) ? [] : [["id", "asc"]])
