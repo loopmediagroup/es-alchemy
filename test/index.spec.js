@@ -18,7 +18,7 @@ const queryMappings = Index.loadJsonInDir(path.join(__dirname, "query", "mapping
 describe('Testing index', () => {
   let index;
   beforeEach(() => {
-    index = Index();
+    index = Index({ endpoint: process.env.elasticsearchEndpoint });
     Object.entries(models).forEach(([name, specs]) => {
       index.model.register(name, specs);
     });
@@ -110,7 +110,7 @@ describe('Testing index', () => {
       expect(await index.rest.data.refresh("offer")).to.equal(true);
       expect(await index.rest.data.count("offer")).to.equal(0);
       expect(await index.rest.mapping.delete("offer")).to.equal(true);
-    });
+    }).timeout(10000);
 
     it('Testing delete not found', async () => {
       expect(await index.rest.mapping.delete("offer")).to.equal(true);

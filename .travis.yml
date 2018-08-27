@@ -1,4 +1,8 @@
 language: node_js
+services:
+  - elasticsearch
+before_script:
+  - sleep 10
 cache:
   directories:
     - ~/.npm
@@ -7,6 +11,7 @@ notifications:
 before_install:
   - npm install -g npm gally
   - ga promote $TRAVIS_BRANCH
+  - curl -O https://download.elastic.co/elasticsearch/release/org/elasticsearch/distribution/deb/elasticsearch/6.3.0/elasticsearch-6.3.0.deb && sudo dpkg -i --force-confnew elasticsearch-6.3.0.deb && sudo service elasticsearch restart
 install:
   - npm install
 node_js:
