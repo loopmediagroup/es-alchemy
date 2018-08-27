@@ -87,6 +87,7 @@ describe('Testing index', () => {
           next: null,
           prev: null,
           cur: 1,
+          max: 1,
           size: 20
         }
       });
@@ -102,6 +103,7 @@ describe('Testing index', () => {
         page: {
           next: { limit: 1, offset: 2 },
           prev: { limit: 1, offset: 0 },
+          max: 3,
           cur: 2,
           size: 1
         }
