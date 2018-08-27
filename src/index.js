@@ -39,7 +39,7 @@ module.exports = (options) => {
       remap: (idx, input) => data.remap(indices[idx].specs, input)
     },
     query: {
-      build: (opts = {}) => query.build(opts)
+      build: (idx = null, opts = {}) => query.build(idx === null ? null : indices[idx].fields, opts)
     },
     rest: rest(getMapping, options)
   };
