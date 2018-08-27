@@ -38,6 +38,7 @@ jobs:
       - checkout
       - run: npm i
       - run: npm t
+      - run: npm run coveralls
   test-node-v8.10:
     docker:
       - image: 'circleci/node:8.10'
@@ -54,11 +55,11 @@ jobs:
       - checkout
       - run: npm i
       - run: npm t
+      - run: npm run coveralls
   release:
     docker:
       - image: 'circleci/node:10'
     steps:
       - checkout
       - run: npm i
-      - run: npm run coveralls
       - run: npm run semantic-release
