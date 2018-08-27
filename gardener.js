@@ -5,6 +5,8 @@ const gardener = require('js-gardener');
 if (require.main === module) {
   gardener({
     author: "Loop Media Group",
-    license: "MIT"
+    license: "MIT",
+    docker: ["lambda"],
+    ci: ["circle"]
   }).catch(() => process.exit(1));
 }

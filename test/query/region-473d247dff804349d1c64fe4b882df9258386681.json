@@ -1,0 +1,45 @@
+{
+  "orderBy": null,
+  "index": {
+    "fields": [
+      "id",
+      "area"
+    ],
+    "model": "region",
+    "sources": [
+      ""
+    ]
+  },
+  "limit": 10000,
+  "result": {
+    "query": {
+      "match": {
+        "id": {
+          "query": "c935251d-8323-40f8-a5fe-67f380ff1d1a",
+          "operator": "and"
+        }
+      }
+    },
+    "from": 0,
+    "size": 10000,
+    "_source": [
+      ""
+    ],
+    "sort": [
+      {
+        "id": {
+          "order": "asc",
+          "mode": "max"
+        }
+      }
+    ]
+  },
+  "filterBy": [
+    "id",
+    "==",
+    "c935251d-8323-40f8-a5fe-67f380ff1d1a"
+  ],
+  "toReturn": null,
+  "offset": 0,
+  "scoreBy": null
+}
