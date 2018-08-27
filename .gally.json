@@ -39,8 +39,7 @@
         "strict": true,
         "contexts": [
           "ci/circleci: test-node-v10",
-          "ci/circleci: test-node-v8.10",
-          "coverage/coveralls"
+          "ci/circleci: test-node-v8.10"
         ]
       },
       "enforce_admins": true,
