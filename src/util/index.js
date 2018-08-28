@@ -3,12 +3,27 @@ const assert = require("assert");
 const get = require("lodash.get");
 
 const buildPropertiesRec = (specs, models) => {
-  assert(typeof specs.model === "string");
-  assert(specs.nested === undefined || (typeof specs.nested === "object" && !Array.isArray(specs.nested)));
-  assert(Array.isArray(specs.fields));
+  assert(
+    typeof specs.model === "string",
+    "Model name not string."
+  );
+  assert(
+    specs.nested === undefined || (typeof specs.nested === "object" && !Array.isArray(specs.nested)),
+    "Nested expected to be of type object."
+  );
+  assert(
+    Array.isArray(specs.fields),
+    "Fields expected to be array."
+  );
   const model = models[specs.model.endsWith("[]") ? specs.model.slice(0, -2) : specs.model];
-  assert(model !== undefined);
-  assert(specs.fields.every(f => model.compiled.fields[f] !== undefined));
+  assert(
+    model !== undefined,
+    "Model name not registered."
+  );
+  assert(
+    specs.fields.every(f => model.compiled.fields[f] !== undefined),
+    "Unknown field provided."
+  );
   const nested = Object.entries(specs.nested || {});
   return nested.reduce(
     (prev, [key, value]) => Object.assign(prev, {
