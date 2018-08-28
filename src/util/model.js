@@ -4,7 +4,10 @@ const fieldDefinitions = require("../resources/field-definitions");
 
 module.exports = ({
   compile: (specs) => {
-    assert(typeof specs.fields === "object" && !Array.isArray(specs.fields));
+    assert(
+      typeof specs.fields === "object" && !Array.isArray(specs.fields),
+      "Model definition expected to be of type object."
+    );
     return Object.assign({}, specs, {
       fields: Object
         .entries(specs.fields)

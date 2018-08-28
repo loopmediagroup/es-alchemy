@@ -1,11 +1,11 @@
 #!/bin/sh
 
-sudo docker run \
+docker run \
   --name es63 \
   -d docker.elastic.co/elasticsearch/elasticsearch:6.3.0
 
-sudo docker build -t lambda-environment-node -f docker/Dockerfile . &&
-sudo docker run \
+docker build -t lambda-environment-node -f docker/Dockerfile . &&
+docker run \
   --link es63:elasticsearch \
   -u=$UID:$(id -g $USER) \
   -v $(pwd):/user/project \
@@ -13,5 +13,5 @@ sudo docker run \
   -v ~/.npmrc:/user/.npmrc \
   -it lambda-environment-node
 
-sudo docker stop es63 -t 0
-sudo docker rm -f es63
+docker stop es63 -t 0
+docker rm -f es63
