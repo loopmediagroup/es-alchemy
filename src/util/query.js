@@ -7,7 +7,10 @@ const actionMap = require("../resources/action-map");
 const buildQueryRec = (filterBy, allowedFields) => {
   // handle actual filter clause
   if (Array.isArray(filterBy)) {
-    assert(allowedFields === null || allowedFields.includes(filterBy[0]));
+    assert(
+      allowedFields === null || allowedFields.includes(filterBy[0]),
+      "Unexpected field in filter."
+    );
     return [
       filterBy[0].substring(0, filterBy[0].lastIndexOf('.')),
       actionMap.filter[filterBy[1]](filterBy[0], ...filterBy.slice(2))
@@ -15,15 +18,27 @@ const buildQueryRec = (filterBy, allowedFields) => {
   }
 
   // handle "or" and "and" clauses
-  assert(typeof filterBy === "object" && !Array.isArray(filterBy));
-  assert(Object.keys(filterBy).length === 1);
+  assert(
+    typeof filterBy === "object" && !Array.isArray(filterBy),
+    "Filter clause expected to be of type object."
+  );
+  assert(
+    Object.keys(filterBy).length === 1,
+    "Filter clause expected to have one entry."
+  );
   const [clause, filters] = Object.entries(filterBy)[0];
-  assert(["or", "and"].includes(clause));
+  assert(
+    ["or", "and"].includes(clause),
+    "Filter clause to be `or` or `and`."
+  );
 
   // handle clause content recursively
   const groups = {};
   filters.forEach((filter) => {
-    assert(["string", "object"].includes(typeof filter));
+    assert(
+      ["string", "object"].includes(typeof filter),
+      "Filter clause entries expected to be string, array or object."
+    );
     const [prefix, logic] = buildQueryRec(typeof filter === 'string' ? filter.split(" ") : filter, allowedFields);
     if (groups[prefix] === undefined) {
       groups[prefix] = [];
@@ -60,8 +75,11 @@ module.exports.build = (allowedFields, {
     size: limit,
     from: typeof offset === "number" ? offset : 0
   };
-  // eslint-disable-next-line no-underscore-dangle
-  assert(allowedFields === null || result._source.every(f => allowedFields.includes(f)));
+  assert(
+    // eslint-disable-next-line no-underscore-dangle
+    allowedFields === null || isEqual(toReturn, [""]) || result._source.every(f => allowedFields.includes(f)),
+    `Invalid field(s) provided.`
+  );
   if (filterBy.length !== 0) {
     result.query = buildQueryRec(filterBy, allowedFields)[1];
   }

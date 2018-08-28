@@ -3,7 +3,10 @@ const assert = require("assert");
 
 const remapRec = (specs, input) => {
   const result = [];
-  assert(specs.sources === undefined || (Array.isArray(specs.sources) && specs.sources.length !== 0));
+  assert(
+    specs.sources === undefined || (Array.isArray(specs.sources) && specs.sources.length !== 0),
+    "Invalid sources definition."
+  );
   (specs.sources || [""])
     // resolve to all objects for path
     .map(sourcePath => (sourcePath === "" ? input : sourcePath.split(".").reduce(
@@ -30,7 +33,10 @@ const remapRec = (specs, input) => {
         .reduce((prev, [key, value]) => Object.assign(prev, { [key]: value }), entry);
       result.push(entry);
     }));
-  assert(specs.model.endsWith("[]") || result.length <= 1);
+  assert(
+    specs.model.endsWith("[]") || result.length <= 1,
+    "More than one result for relationship."
+  );
   return specs.model.endsWith("[]") ? result : result[0];
 };
 
