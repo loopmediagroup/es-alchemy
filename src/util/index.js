@@ -4,6 +4,14 @@ const get = require("lodash.get");
 
 const buildPropertiesRec = (specs, models) => {
   assert(
+    typeof specs === "object" && Array.isArray(specs) === false,
+    "Invalid specs definition."
+  );
+  assert(
+    Object.keys(specs).every(e => ["model", "fields", "sources", "nested", "flat"].includes(e)),
+    "Unknown specs entry provided."
+  );
+  assert(
     typeof specs.model === "string",
     "Model name not string."
   );
