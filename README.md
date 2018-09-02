@@ -109,7 +109,8 @@ Can append `[]` for non-root nodes to indicate `to-many` relationships.
 Type: `Array`<br>
 Required.
 
-Fields of the node model that are included in this index.
+Fields of the node model that are included in this index. 
+Needs to be a subset of the fields defined of the model.
 
 ##### sources
 
