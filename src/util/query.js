@@ -23,14 +23,13 @@ const buildQueryRec = (filterBy, allowedFields) => {
     "Filter clause expected to be of type object."
   );
   assert(
-    Object.keys(filterBy).length === 1,
-    "Filter clause expected to have one entry."
+    ['["or"]', '["and"]', '["and","target"]'].includes(JSON.stringify(Object.keys(filterBy).sort())),
+    "Invalid filter clause provided."
   );
-  const [clause, filters] = Object.entries(filterBy)[0];
-  assert(
-    ["or", "and"].includes(clause),
-    "Filter clause to be `or` or `and`."
-  );
+  const clause = filterBy.or ? "or" : "and";
+  const filters = filterBy[clause];
+  const target = filterBy.target || "separate";
+  assert(["separate", "union"].includes(target));
 
   // handle clause content recursively
   const groups = {};
@@ -51,9 +50,9 @@ const buildQueryRec = (filterBy, allowedFields) => {
   results.push(...(groups[""] || []));
   delete groups[""];
   Object.entries(groups).forEach(([prefix, logics]) => {
-    if (clause === "and") {
+    if (clause === "and" && target === "separate") {
       results.push(actionMap.filter.nest(prefix, logics));
-    } else { // or clause
+    } else {
       logics.forEach((logic) => {
         results.push(actionMap.filter.nest(prefix, [logic]));
       });

@@ -73,6 +73,38 @@ describe('Testing index', () => {
     });
   });
 
+  describe('Testing nested filtering', () => {
+    it('Testing allow separate relationships', async () => {
+      const offerId = uuidv4();
+      expect(await index.rest.mapping.recreate("offer")).to.equal(true);
+      expect(await index.rest.data.update("offer", {
+        upsert: [{
+          id: offerId,
+          locations: [{
+            id: uuidv4(),
+            address: { id: uuidv4(), street: "value1", city: "value1" }
+          }, {
+            id: uuidv4(),
+            address: { id: uuidv4(), street: "value2", city: "value2" }
+          }]
+        }]
+      })).to.equal(true);
+      expect(await index.rest.data.refresh("offer")).to.equal(true);
+      expect((await index.rest.data.query("offer", index.query.build("offer", {
+        filterBy: {
+          target: "union",
+          and: ["locations.address.street == value1", "locations.address.city == value2"]
+        }
+      }))).payload.length).to.equal(1);
+      expect((await index.rest.data.query("offer", index.query.build("offer", {
+        filterBy: {
+          target: "separate",
+          and: ["locations.address.street == value1", "locations.address.city == value2"]
+        }
+      }))).payload.length).to.equal(0);
+    });
+  }).timeout(5000);
+
   describe('Testing REST interaction', () => {
     it('Testing lifecycle', async () => {
       const uuids = [uuidv4(), uuidv4(), uuidv4()].sort();
