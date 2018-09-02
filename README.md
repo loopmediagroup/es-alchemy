@@ -7,7 +7,7 @@
 [![Semantic-Release](https://github.com/simlu/js-gardener/blob/master/assets/icons/semver.svg)](https://github.com/semantic-release/semantic-release)
 [![Gardener](https://github.com/simlu/js-gardener/blob/master/assets/badge.svg)](https://github.com/simlu/js-gardener)
 
-# EsAlchemy
+# ESAlchemy
 
 Simplification of Elasticsearch interactions
 
@@ -15,26 +15,6 @@ Simplification of Elasticsearch interactions
 
 ```bash
 npm i --save es-alchemy
-```
-
-## Tests
-
-All tests need to be run in docker. Start with:
-
-```bash
-. manage.sh
-```
-
-To test Elasticsearch works correctly, run
-
-```bash
-curl http://elasticsearch:9200/_cluster/health
-```
-
-Run all tests with
-
-```bash
-npm t
 ```
 
 ## Setup
@@ -294,3 +274,24 @@ Interacting with the rest api of Elasticsearch
 - `data.query(name: String, filter: Object, options: Object)` - query for data in Elasticsearch. Use raw flag to obtain raw result from Elasticsearch.
 - `data.refresh(name: String)` - refresh Elasticsearch index, useful e.g. when testing
 - `data.update(name: String, options: Object)` - insert, update or delete objects in Elasticsearch
+
+
+## Tests
+
+All tests need to be run in docker. Start with:
+
+```bash
+. manage.sh
+```
+
+To test Elasticsearch works correctly, run
+
+```bash
+curl http://elasticsearch:9200/_cluster/health
+```
+
+Run all tests with
+
+```bash
+npm t
+```
