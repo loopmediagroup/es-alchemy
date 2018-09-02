@@ -102,7 +102,7 @@ Required.
 
 Model that is used for the node.
 
-Can append `[]` for non-root nodes to indicate `to-many` relationships.
+Can append `[]` for non-root nodes to indicate `to-many` relationship.
 
 ##### fields
 
@@ -110,7 +110,7 @@ Type: `Array`<br>
 Required.
 
 Fields of the node model that are included in this index. 
-Needs to be a subset of the fields defined of the model.
+Needs to be a subset of the fields defined on the model.
 
 ##### sources
 
@@ -118,7 +118,7 @@ Type: `Array`<br>
 Default: `[""]`
 
 Defines the relative sources for data ingestion. 
-How exactly this works will be explained under data ingestion and remapping.
+How this works is explained under data ingestion and remapping.
 
 ##### nested
 
