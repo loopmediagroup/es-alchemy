@@ -19,13 +19,13 @@ npm i --save es-alchemy
 
 ## Tests
 
-All tests need to be run in docker container. Start with:
+All tests need to be run in docker. Start with:
 
 ```bash
 . manage.sh
 ```
 
-Test elasticsearch works correctly with
+To test Elasticsearch works correctly, run
 
 ```bash
 curl http://elasticsearch:9200/_cluster/health
@@ -55,7 +55,7 @@ Outline of how [ES-Alchemy](https://github.com/loopmediagroup/es-alchemy) can be
 
 Models define the fields and their types. They restrict how an index can be put together.
 
-It is recommended that you define a folder `models` that contains a json file for each model. An example can be
+Preferably a folder `models` contains a json file for each model. An example can be
 found in the [test folder](test/models).
 
 Fields that can be used and how they get mapped in Elasticsearch can 
@@ -63,9 +63,9 @@ be found [here](src/resources/field-definitions.json).
 
 #### Indices
 
-Indices define how data, models and elasticsearch mappings all tie together.
+Indices define how data, models and  mappings all tie together.
 
-It is recommended that you define a folder `indices` that contains a json file for each index. An example can be
+Preferably a folder `indices` contains a json file for each index. An example can be
 found in the [test folder](test/indices).
 
 Each index is defined as a nested structure of nodes. 
@@ -102,14 +102,14 @@ Type: `Object`<br>
 Default: `{}`
 
 Defines all children of the node as an Object. Keys indicate the 
-relationship names and the values define the corresponding nodes.
+relationship names and the values define the nodes.
 
 ##### flat
 
 Type: `boolean`<br>
 Default: `false`
 
-This flag will make sure `include_in_root` gets used on the mapping in Elasticsearch. Internally this measn all fields
+This flag will make sure `include_in_root` gets used on the mapping in Elasticsearch. Internally this means all fields
 get flattened into the root document of the mapping.
 
 This is useful to reduce storage size by de-duplicating or to allow easy `union` target style queries.
