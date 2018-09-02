@@ -117,9 +117,11 @@ describe('Testing index', () => {
     it('Testing lifecycle', async () => {
       const uuids = [uuidv4(), uuidv4(), uuidv4()].sort();
       await index.rest.mapping.delete("offer");
+      expect(await index.rest.mapping.list()).to.deep.equal([]);
       expect(await index.rest.mapping.create("offer")).to.equal(true);
       expect(await index.rest.mapping.create("offer")).to.equal(false);
       expect(await index.rest.mapping.recreate("offer")).to.equal(true);
+      expect(await index.rest.mapping.list()).to.deep.equal(["offer"]);
       expect((await index.rest.mapping.get("offer")).body.offer).to.deep.equal(index.index.getMapping("offer"));
       expect(await index.rest.data.query("offer", index.query.build())).to.deep.equal({
         payload: [],
@@ -175,6 +177,8 @@ describe('Testing index', () => {
       // setup mappings
       await Promise.all(Object.entries(queryMappings).map(([idx, meta]) => index.rest
         .call("DELETE", idx).then(() => index.rest.call('PUT', idx, { body: meta }))));
+      expect((await index.rest.mapping.list()).sort())
+        .to.deep.equal(['offer', 'region', 'venue'].sort());
       // run tests
       await Object.entries(queryMappings)
         .map(([idx, v]) => index.rest.data.query(

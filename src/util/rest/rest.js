@@ -3,6 +3,7 @@ const request = require("request-promise-native");
 const mappingCreate = require("./mapping/create");
 const mappingDelete = require("./mapping/delete");
 const mappingGet = require("./mapping/get");
+const mappingList = require("./mapping/list");
 const mappingRecreate = require("./mapping/recreate");
 const dataCount = require("./data/count");
 const dataQuery = require("./data/query");
@@ -42,6 +43,7 @@ module.exports = (getMapping, options) => {
       create: idx => mappingCreate(call, idx, getMapping(idx)),
       delete: idx => mappingDelete(call, idx),
       get: idx => mappingGet(call, idx),
+      list: () => mappingList(call),
       recreate: idx => mappingRecreate(call, idx, getMapping(idx))
     },
     data: {
