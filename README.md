@@ -102,7 +102,7 @@ Required.
 
 Model that is used for the node.
 
-To indicate that an array of models should be used for this node, append `[]` to the model name.
+Can append `[]` for non-root nodes to indicate `to-many` relationships.
 
 ##### fields
 
@@ -126,6 +126,8 @@ Default: `{}`
 
 Defines all children of the node. Keys indicate the 
 relationship names and the values define the nodes.
+
+To indicate that a `to-many` relationship is defined, append `[]` to the model name in the node.
 
 ##### flat
 
