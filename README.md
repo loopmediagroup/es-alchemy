@@ -138,7 +138,8 @@ Default: `false`
 This flag sets `include_in_root` to true on the generated Elasticsearch mapping.
 Internally in Elasticsearch this means all fields get flattened into the root document of the mapping.
 
-This is useful to reduce storage size by de-duplicating or to enforce `union` target style queries.
+This is useful to reduce storage size by de-duplicating and to enforce 
+`union` target style queries (see corresponding section for more on this).
 
 ### Loading Models and Indices
 
@@ -176,17 +177,19 @@ Promise.all(esa.index.list().map(idx => esa.rest.mapping.recreate(idx)))
 ### Remapping and Ingesting Data
 
 To insert data into Elasticsearch we need a *source object*. Data is then extracted from this source object
-and remapped into a *target object* that can be ingested.
+and remapped into a *target object* that can be ingested into Elasticsearch.
 
 To define how the source object gets remapped, the `sources` fields in the nodes of the index are used.
 
 Multiple sources for a node can be defined. This is really convenient when mappings e.g. keywords from multiple
 entities in the *source object* to a single keywords relationship on the index.
 
-When a index relationship maps to a single model, it is expected that no more than one model is retrieved.
+When an index relationship maps to a single model (`to-one`), it is expected that no more than one model is retrieved.
 
-Models and their fields are picked up from all paths defined in the `sources` Array. If a field is missing
-from a source, it is skipped. Unexpected fields are skipped.
+Models and their fields are picked up from all paths defined in the `sources` Array. An empty string indicates root level.
+If a field is missing from a source, it is skipped. Unexpected fields are skipped.
+
+Sources are defined relative to their parent sources.
 
 *Known limitations:*
   - Fields can not be renamed when remapping
@@ -200,9 +203,11 @@ esa.rest.data
   .update("indexName", { upsert: [esa.data.remap("indexName", sourceObject)] });
 ```  
 
+`// todo: this needs an example`
+
 ### Building Queries
 
-To query data in Elasticsearch we first need to build a query. This is done using the ES-Alchemy query syntax.
+To query data in Elasticsearch we first need to build a query. This is done using the ESAlchemy query syntax.
 
 List of all available commands for `filterBy`, `orderBy` and `scoreBy` can be found [here](src/resources/action-map.js).
 
