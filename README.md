@@ -95,6 +95,13 @@ found in the [test folder](test/indices).
 Each index is defined as a nested structure of nodes. 
 Nodes are defined recursively and each node has the following fields:
 
+##### version
+
+Type: `string`<br>
+Default: `null`
+
+Defines the version of this index. Should only be defined on root node.
+
 ##### model
 
 Type: `string`<br>
