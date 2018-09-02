@@ -11,6 +11,7 @@ const models = Index.loadJsonInDir(path.join(__dirname, "models"));
 const indices = Index.loadJsonInDir(path.join(__dirname, "indices"));
 const mappings = Index.loadJsonInDir(path.join(__dirname, "mappings"));
 const fields = Index.loadJsonInDir(path.join(__dirname, "fields"));
+const rels = Index.loadJsonInDir(path.join(__dirname, "rels"));
 const remaps = Index.loadJsonInDir(path.join(__dirname, "remaps"));
 const query = Index.loadJsonInDir(path.join(__dirname, "query"));
 const queryMappings = Index.loadJsonInDir(path.join(__dirname, "query", "mappings"));
@@ -38,6 +39,13 @@ describe('Testing index', () => {
     expect(index.index.list()).to.deep.equal(Object.keys(fields).sort());
     Object.entries(fields).forEach(([k, v]) => {
       expect(index.index.getFields(k)).to.deep.equal(v);
+    });
+  });
+
+  it('Testing rels', () => {
+    expect(index.index.list()).to.deep.equal(Object.keys(rels).sort());
+    Object.entries(rels).forEach(([k, v]) => {
+      expect(index.index.getRels(k)).to.deep.equal(v);
     });
   });
 

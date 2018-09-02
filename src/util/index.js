@@ -46,11 +46,22 @@ const buildPropertiesRec = (node, models) => {
 
 const extractFieldsRec = (node, prefix = []) => Object
   .entries(node.nested || {})
-  .map(([relName, childNode]) => extractFieldsRec(childNode, [...prefix, relName]))
+  .map(([relName, childNode]) => extractFieldsRec(childNode, prefix.concat(relName)))
   .reduce(
     (p, c) => p.concat(c),
-    node.fields.map(field => [...prefix, field].join("."))
+    node.fields.map(field => prefix.concat(field).join("."))
   );
+
+const extractRelsRec = (node, prefix = []) => Object
+  .entries(node.nested || {})
+  .reduce((prev, [relName, childNode]) => {
+    const childPrefix = prefix.concat(relName);
+    return Object.assign(
+      prev,
+      { [childPrefix.join(".")]: childNode.model },
+      extractRelsRec(childNode, childPrefix)
+    );
+  }, {});
 
 module.exports = ({
   generateMapping: (name, specs, models) => {
@@ -66,5 +77,6 @@ module.exports = ({
       }
     };
   },
-  extractFields: specs => extractFieldsRec(specs)
+  extractFields: specs => extractFieldsRec(specs),
+  extractRels: spec => extractRelsRec(spec)
 });

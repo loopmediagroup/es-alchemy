@@ -302,7 +302,8 @@ Available commands
 - `register(name: String, definitions: Object)` - register an index with ES-Alchemy
 - `list()` - list all indices registered with ES-Alchemy
 - `getMapping(name: String)` - get the mapping for Elasticsearch for this index
-- `getFields(name: String)` - get all fields (including nested fields) for this index
+- `getFields(name: String)` - get all fields (including nested) for this index
+- `getRels(name: String)` - get all rels for this index (returned as object mapping to node type)
 
 #### data
 
