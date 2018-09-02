@@ -324,7 +324,7 @@ Available commands
 
 Interacting with the rest api of Elasticsearch
 
-- `call(mothod: String, name: String, options: Object)` - make direct API call to Elasticsearch
+- `call(method: String, name: String, options: Object)` - make direct API call to Elasticsearch
 - `mapping.create(name: String)` - create mapping on Elasticsearch
 - `mapping.delete(name: String)` - delete mapping from Elasticsearch
 - `mapping.get(name: String)` - get mapping details from Elasticsearch
