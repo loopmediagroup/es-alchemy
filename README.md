@@ -19,7 +19,7 @@ npm i --save es-alchemy
 
 ## Setup
 
-Outline of how [ES-Alchemy](https://github.com/loopmediagroup/es-alchemy) can be used, step by step:
+Outline of how [ESAlchemy](https://github.com/loopmediagroup/es-alchemy) can be used, step by step:
 
 - Define data models
 - Define indices based on the data models
@@ -33,7 +33,22 @@ Outline of how [ES-Alchemy](https://github.com/loopmediagroup/es-alchemy) can be
 
 #### Models
 
-Models define the fields and their types. They restrict how an index can be put together.
+Models definitions contain the fields of a model and their types. They restrict how an index can be put together.
+
+Example: **address.json**
+```json
+{
+  "fields": {
+    "id": "uuid",
+    "street": "string",
+    "city": "string",
+    "country": "string",
+    "centre": "point",
+    "area": "shape",
+    "timezone": "string"
+  }
+}
+```
 
 Preferably a folder `models` contains a json file for each model. An example can be
 found in the [test folder](test/models).
