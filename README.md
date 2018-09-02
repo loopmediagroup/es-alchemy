@@ -49,67 +49,6 @@ Outline of how [ES-Alchemy](https://github.com/loopmediagroup/es-alchemy) can be
 - Build a query using the ES-Alchemy query syntax
 - Run query against Elasticsearch
 
-### Constructor
-
-#### protocol
-
-Type: `string`<br>
-Default: `http`
-
-The protocol for connecting to Elasticsearch. Can be `http` or `https`.
-
-#### endpoint
-
-Type: `string`<br>
-Default: `elasticsearch:9200`
-
-The endpoint for connecting to Elasticsearch. Common values include `localhost:9200`.
-
-#### aws
-
-Type: `object`<br>
-Default: `{}`
-
-Allow connection to AWS Elasticsearch instance by passing 
-in object containing `accessKeyId` and `secretAccessKey`.
-
-### Api
-
-Available commands
-
-#### model
-
-- `register(name: String, definition: Object)` - register a model with ES-Alchemy
-
-#### index
-
-- `register(name: String, definitions: Object)` - register an index with ES-Alchemy
-- `list()` - list all indices registered with ES-Alchemy
-- `getMapping(name: String)` - get the mapping for Elasticsearch for this index
-- `getFields(name: String)` - get all fields (including nested fields) for this index
-
-#### data
-
-- `remap(name: String, source: Object)` - remap source object to ingestible object, see details below
-
-#### query
-
-- `build(name: String?, options: Object)` - build a query, index is optional and can be passed as null, see below for options details
-
-#### rest
-
-Interacting with the rest api of Elasticsearch
-
-- `call(mothod: String, name: String, options: Object)` - make direct API call to Elasticsearch
-- `mapping.create(name: String)` - create mapping on Elasticsearch
-- `mapping.delete(name: String)` - delete mapping from Elasticsearch
-- `mapping.get(name: String)` - get mapping details from Elasticsearch
-- `mapping.recreate(name: String)` - recreate mapping on Elasticsearch
-- `data.count(name: String)` - get number of indexed elements from Elasticsearch
-- `data.query(name: String, filter: Object, options: Object)` - query for data in Elasticsearch. Use raw flag to obtain raw result from Elasticsearch.
-- `data.refresh(name: String)` - refresh Elasticsearch index, useful e.g. when testing
-- `data.update(name: String, options: Object)` - insert, update or delete objects in Elasticsearch
-
 ### Model and Index Definitions
 
 #### Models
@@ -292,3 +231,64 @@ Type: `Integer`<br>
 Default: `0`
 
 Results to skip at the beginning of the results.
+
+## Constructor
+
+#### protocol
+
+Type: `string`<br>
+Default: `http`
+
+The protocol for connecting to Elasticsearch. Can be `http` or `https`.
+
+#### endpoint
+
+Type: `string`<br>
+Default: `elasticsearch:9200`
+
+The endpoint for connecting to Elasticsearch. Common values include `localhost:9200`.
+
+#### aws
+
+Type: `object`<br>
+Default: `{}`
+
+Allow connection to AWS Elasticsearch instance by passing 
+in object containing `accessKeyId` and `secretAccessKey`.
+
+## Api
+
+Available commands
+
+#### model
+
+- `register(name: String, definition: Object)` - register a model with ES-Alchemy
+
+#### index
+
+- `register(name: String, definitions: Object)` - register an index with ES-Alchemy
+- `list()` - list all indices registered with ES-Alchemy
+- `getMapping(name: String)` - get the mapping for Elasticsearch for this index
+- `getFields(name: String)` - get all fields (including nested fields) for this index
+
+#### data
+
+- `remap(name: String, source: Object)` - remap source object to ingestible object, see details in corresponding section
+
+#### query
+
+- `build(name: String?, options: Object)` - build a query, index is optional and can be passed as null, see details in corresponding section
+
+#### rest
+
+Interacting with the rest api of Elasticsearch
+
+- `call(mothod: String, name: String, options: Object)` - make direct API call to Elasticsearch
+- `mapping.create(name: String)` - create mapping on Elasticsearch
+- `mapping.delete(name: String)` - delete mapping from Elasticsearch
+- `mapping.get(name: String)` - get mapping details from Elasticsearch
+- `mapping.recreate(name: String)` - recreate mapping on Elasticsearch
+- `data.count(name: String)` - get number of indexed elements from Elasticsearch
+- `data.query(name: String, filter: Object, options: Object)` - query for data in Elasticsearch. Use raw flag to obtain raw result from Elasticsearch.
+- `data.refresh(name: String)` - refresh Elasticsearch index, useful e.g. when testing
+- `data.update(name: String, options: Object)` - insert, update or delete objects in Elasticsearch
