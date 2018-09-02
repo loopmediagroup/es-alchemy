@@ -44,8 +44,9 @@ Outline of how [ES-Alchemy](https://github.com/loopmediagroup/es-alchemy) can be
 - Define data models
 - Define indices based on the data models
 - Generate mappings from indices and then create them in Elasticsearch
-- Obtain input data as defined in the source mappings of an index, remap it and insert it into the elasticsearch mapping
-- Build a query using the custom query syntax
+- Obtain input data as defined in the source mappings of index and remap it
+- Insert remapped data into Elasticsearch
+- Build a query using the ES-Alchemy query syntax
 - Run query against Elasticsearch
 
 ### Constructor
