@@ -1,6 +1,9 @@
 {
   "mappings": {
     "location": {
+      "_meta": {
+        "version": null
+      },
       "properties": {
         "id": {
           "type": "keyword"

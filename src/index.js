@@ -20,7 +20,8 @@ module.exports = (options) => {
     indices[name] = {
       specs,
       mapping: index.generateMapping(name, specs, models),
-      fields: index.extractFields(specs)
+      fields: index.extractFields(specs),
+      rels: index.extractRels(specs)
     };
   };
   const getMapping = idx => cloneDeep(indices[idx].mapping);
@@ -33,7 +34,8 @@ module.exports = (options) => {
       register: (idx, specs) => registerIndex(idx, specs),
       list: () => Object.keys(indices).sort(),
       getMapping: idx => getMapping(idx),
-      getFields: idx => cloneDeep(indices[idx].fields)
+      getFields: idx => cloneDeep(indices[idx].fields),
+      getRels: idx => cloneDeep(indices[idx].rels)
     },
     data: {
       remap: (idx, input) => data.remap(indices[idx].specs, input)
