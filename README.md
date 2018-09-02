@@ -100,7 +100,7 @@ Nodes are defined recursively and each node has the following fields:
 Type: `string`<br>
 Required.
 
-Defines the model that is used for the node.
+Model that is used for the node.
 
 To indicate that an array of models should be used for this node, append `[]` to the model name.
 
@@ -109,23 +109,22 @@ To indicate that an array of models should be used for this node, append `[]` to
 Type: `Array`<br>
 Required.
 
-Contains the fields of the corresponding model that should be used for this node. 
-Only fields defined in the model definition can be used.
+Fields of the node model that are included in this index.
 
 ##### sources
 
 Type: `Array`<br>
 Default: `[""]`
 
-Defines the relative sources for data ingestion. How exactly this works will be explained below
-when data ingestion and remapping is explained.
+Defines the relative sources for data ingestion. 
+How exactly this works will be explained under data ingestion and remapping.
 
 ##### nested
 
 Type: `Object`<br>
 Default: `{}`
 
-Defines all children of the node as an Object. Keys indicate the 
+Defines all children of the node. Keys indicate the 
 relationship names and the values define the nodes.
 
 ##### flat
@@ -133,10 +132,10 @@ relationship names and the values define the nodes.
 Type: `boolean`<br>
 Default: `false`
 
-This flag will make sure `include_in_root` gets used on the mapping in Elasticsearch. Internally this means all fields
-get flattened into the root document of the mapping.
+This flag sets `include_in_root` to true on the generated Elasticsearch mapping.
+Internally in Elasticsearch this means all fields get flattened into the root document of the mapping.
 
-This is useful to reduce storage size by de-duplicating or to allow easy `union` target style queries.
+This is useful to reduce storage size by de-duplicating or to enforce `union` target style queries.
 
 ### Loading Models and Indices
 
