@@ -8,7 +8,7 @@ const buildPropertiesRec = (node, models) => {
     "Invalid specs definition."
   );
   assert(
-    Object.keys(node).every(e => ["model", "fields", "sources", "nested", "flat"].includes(e)),
+    Object.keys(node).every(e => ["model", "fields", "sources", "nested", "flat", "version"].includes(e)),
     "Unknown specs entry provided."
   );
   assert(
@@ -46,11 +46,22 @@ const buildPropertiesRec = (node, models) => {
 
 const extractFieldsRec = (node, prefix = []) => Object
   .entries(node.nested || {})
-  .map(([relName, childNode]) => extractFieldsRec(childNode, [...prefix, relName]))
+  .map(([relName, childNode]) => extractFieldsRec(childNode, prefix.concat(relName)))
   .reduce(
     (p, c) => p.concat(c),
-    node.fields.map(field => [...prefix, field].join("."))
+    node.fields.map(field => prefix.concat(field).join("."))
   );
+
+const extractRelsRec = (node, prefix = []) => Object
+  .entries(node.nested || {})
+  .reduce((prev, [relName, childNode]) => {
+    const childPrefix = prefix.concat(relName);
+    return Object.assign(
+      prev,
+      { [childPrefix.join(".")]: childNode.model },
+      extractRelsRec(childNode, childPrefix)
+    );
+  }, {});
 
 module.exports = ({
   generateMapping: (name, specs, models) => {
@@ -61,10 +72,14 @@ module.exports = ({
     return {
       mappings: {
         [name]: {
-          properties: buildPropertiesRec(specs, models)
+          properties: buildPropertiesRec(specs, models),
+          _meta: {
+            version: specs.version || null
+          }
         }
       }
     };
   },
-  extractFields: specs => extractFieldsRec(specs)
+  extractFields: specs => extractFieldsRec(specs),
+  extractRels: spec => extractRelsRec(spec)
 });

@@ -95,6 +95,13 @@ found in the [test folder](test/indices).
 Each index is defined as a nested structure of nodes. 
 Nodes are defined recursively and each node has the following fields:
 
+##### version
+
+Type: `string`<br>
+Default: `null`
+
+Defines the version of this index. Should only be defined on root node.
+
 ##### model
 
 Type: `string`<br>
@@ -302,7 +309,8 @@ Available commands
 - `register(name: String, definitions: Object)` - register an index with ES-Alchemy
 - `list()` - list all indices registered with ES-Alchemy
 - `getMapping(name: String)` - get the mapping for Elasticsearch for this index
-- `getFields(name: String)` - get all fields (including nested fields) for this index
+- `getFields(name: String)` - get all fields (including nested) for this index
+- `getRels(name: String)` - get all rels for this index (returned as object mapping to node type)
 
 #### data
 

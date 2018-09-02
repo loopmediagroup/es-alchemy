@@ -1,5 +1,6 @@
 {
   "model": "offer",
+  "version": "1.0.0",
   "fields": [
     "id",
     "headline"

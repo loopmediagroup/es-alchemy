@@ -1,0 +1,5 @@
+{
+  "locations": "location[]",
+  "locations.address": "address",
+  "tags": "tag[]"
+}

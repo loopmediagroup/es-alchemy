@@ -11,6 +11,7 @@ const models = Index.loadJsonInDir(path.join(__dirname, "models"));
 const indices = Index.loadJsonInDir(path.join(__dirname, "indices"));
 const mappings = Index.loadJsonInDir(path.join(__dirname, "mappings"));
 const fields = Index.loadJsonInDir(path.join(__dirname, "fields"));
+const rels = Index.loadJsonInDir(path.join(__dirname, "rels"));
 const remaps = Index.loadJsonInDir(path.join(__dirname, "remaps"));
 const query = Index.loadJsonInDir(path.join(__dirname, "query"));
 const queryMappings = Index.loadJsonInDir(path.join(__dirname, "query", "mappings"));
@@ -38,6 +39,13 @@ describe('Testing index', () => {
     expect(index.index.list()).to.deep.equal(Object.keys(fields).sort());
     Object.entries(fields).forEach(([k, v]) => {
       expect(index.index.getFields(k)).to.deep.equal(v);
+    });
+  });
+
+  it('Testing rels', () => {
+    expect(index.index.list()).to.deep.equal(Object.keys(rels).sort());
+    Object.entries(rels).forEach(([k, v]) => {
+      expect(index.index.getRels(k)).to.deep.equal(v);
     });
   });
 
@@ -109,9 +117,11 @@ describe('Testing index', () => {
     it('Testing lifecycle', async () => {
       const uuids = [uuidv4(), uuidv4(), uuidv4()].sort();
       await index.rest.mapping.delete("offer");
+      expect(await index.rest.mapping.list()).to.deep.equal([]);
       expect(await index.rest.mapping.create("offer")).to.equal(true);
       expect(await index.rest.mapping.create("offer")).to.equal(false);
       expect(await index.rest.mapping.recreate("offer")).to.equal(true);
+      expect(await index.rest.mapping.list()).to.deep.equal(["offer"]);
       expect((await index.rest.mapping.get("offer")).body.offer).to.deep.equal(index.index.getMapping("offer"));
       expect(await index.rest.data.query("offer", index.query.build())).to.deep.equal({
         payload: [],
@@ -167,6 +177,8 @@ describe('Testing index', () => {
       // setup mappings
       await Promise.all(Object.entries(queryMappings).map(([idx, meta]) => index.rest
         .call("DELETE", idx).then(() => index.rest.call('PUT', idx, { body: meta }))));
+      expect((await index.rest.mapping.list()).sort())
+        .to.deep.equal(['offer', 'region', 'venue'].sort());
       // run tests
       await Object.entries(queryMappings)
         .map(([idx, v]) => index.rest.data.query(
