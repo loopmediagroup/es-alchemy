@@ -70,7 +70,7 @@ The endpoint for connecting to Elasticsearch. Common values include `localhost:9
 Type: `object`<br>
 Default: `{}`
 
-Allow connection to AWS manages Elasticsearch instance by passing 
+Allow connection to AWS Elasticsearch instance by passing 
 in object containing `accessKeyId` and `secretAccessKey`.
 
 ### Api
@@ -86,7 +86,7 @@ Available commands
 - `register(name: String, definitions: Object)` - register an index with ES-Alchemy
 - `list()` - list all indices registered with ES-Alchemy
 - `getMapping(name: String)` - get the mapping for Elasticsearch for this index
-- `getFileds(name: String)` - get all fields (including nested fields) for this index
+- `getFields(name: String)` - get all fields (including nested fields) for this index
 
 #### data
 
@@ -215,7 +215,7 @@ and remapped into a *target object* that can be ingested.
 To define how the source object gets remapped, the `sources` fields in the nodes of the index are used.
 
 Multiple sources for a node can be defined. This is really convenient when mappings e.g. keywords from multiple
-entities in the *source object* to a single keyword relationship on the index.
+entities in the *source object* to a single keywords relationship on the index.
 
 When a index relationship maps to a single model, it is expected that no more than one model is retrieved.
 
@@ -237,7 +237,7 @@ esa.rest.data
 
 To query data in Elasticsearch we first need to build a query. This is done using the ES-Alchemy query syntax.
 
-For a list of all available commands for `filterBy`, `orderBy` and `scoreBy` see [here](src/resources/action-map.js).
+List of all available commands for `filterBy`, `orderBy` and `scoreBy` can be found [here](src/resources/action-map.js).
 
 When building a query the following options are available.
 
@@ -257,11 +257,13 @@ Allow restriction of results.
 
 Pass in object containing an `or` or `and` key, mapping to a list of filter options.
 
-A filter option is either a similarly structured object, a string for shorthand notation or an array.
+A filter option is either a similarly structured object, a filter array or a string (shorthand notation).
 
 When `and` is used, a `target` key can also be present with the values `separate` or `union`. This option only takes 
 effect when multiple clauses search the same relationship. When `separate` is used, all conditions need to be 
 met on the same object. When union is used, they can be met on different objects in the relationship.
+
+`// todo: this section needs improvement`
 
 #### orderBy
 
