@@ -28,6 +28,12 @@ describe('Testing index', () => {
     });
   });
 
+  it('Testing models', () => {
+    Object.entries(indices).forEach(([k, v]) => {
+      expect(index.index.getModel(k)).to.equal(v.model);
+    });
+  });
+
   it('Testing mappings', () => {
     expect(index.index.list()).to.deep.equal(Object.keys(mappings).sort());
     Object.entries(mappings).forEach(([k, v]) => {

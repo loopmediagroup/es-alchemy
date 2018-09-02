@@ -35,7 +35,8 @@ module.exports = (options) => {
       list: () => Object.keys(indices).sort(),
       getMapping: idx => getMapping(idx),
       getFields: idx => cloneDeep(indices[idx].fields),
-      getRels: idx => cloneDeep(indices[idx].rels)
+      getRels: idx => cloneDeep(indices[idx].rels),
+      getModel: idx => indices[idx].specs.model
     },
     data: {
       remap: (idx, input) => data.remap(indices[idx].specs, input)
