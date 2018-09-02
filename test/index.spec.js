@@ -170,7 +170,7 @@ describe('Testing index', () => {
     });
 
     it('Testing call without options', async () => {
-      expect((await index.rest.call("GET", "offer")).statusCode).to.equal(404);
+      expect((await index.rest.call("GET", uuidv4())).statusCode).to.equal(404);
     });
 
     it('Query with Batch Examples', async () => {
