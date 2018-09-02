@@ -1,6 +1,9 @@
 {
   "mappings": {
     "offer": {
+      "_meta": {
+        "version": "1.0.0"
+      },
       "properties": {
         "id": {
           "type": "keyword"

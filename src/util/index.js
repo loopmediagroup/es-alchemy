@@ -8,7 +8,7 @@ const buildPropertiesRec = (node, models) => {
     "Invalid specs definition."
   );
   assert(
-    Object.keys(node).every(e => ["model", "fields", "sources", "nested", "flat"].includes(e)),
+    Object.keys(node).every(e => ["model", "fields", "sources", "nested", "flat", "version"].includes(e)),
     "Unknown specs entry provided."
   );
   assert(
@@ -72,7 +72,10 @@ module.exports = ({
     return {
       mappings: {
         [name]: {
-          properties: buildPropertiesRec(specs, models)
+          properties: buildPropertiesRec(specs, models),
+          _meta: {
+            version: specs.version || null
+          }
         }
       }
     };
