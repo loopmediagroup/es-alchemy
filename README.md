@@ -128,7 +128,7 @@ const esa = ESA({ endpoint: "localhost:9200" });
 Object.entries(ESA.loadJsonInDir("path/to/models"))
   .forEach(([name, specs]) => esa.model.register(name, specs));
 Object.entries(ESA.loadJsonInDir("path/to/indices"))
-  .forEach(([name, specs]) => index.index.register(name, specs));
+  .forEach(([name, specs]) => esa.index.register(name, specs));
 ```
 
 ### Generating Mappings
@@ -139,6 +139,7 @@ Mappings can be obtained from indices by calling:
 
 To (re)create a mapping in Elasticsearch run:
 
+<!-- eslint-disable no-undef -->
 ```js
 Promise.all(esa.index.list().map(idx => esa.rest.mapping.recreate(idx)))
   .then(() => {
@@ -166,6 +167,7 @@ from a source, it is skipped. Unexpected fields are skipped.
 
 To remap and ingest data run
 
+<!-- eslint-disable no-undef -->
 ```js
 sourceObject = {/* ... */};
 esa.rest.data
