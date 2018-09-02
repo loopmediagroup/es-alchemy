@@ -60,6 +60,35 @@ be found [here](src/resources/field-definitions.json).
 
 Indices define how data, models and  mappings all tie together.
 
+Example: **location.json**
+```json
+{
+  "model": "location",
+  "fields": [
+    "id",
+    "name"
+  ],
+  "nested": {
+    "address": {
+      "model": "address",
+      "fields": [
+        "id",
+        "street",
+        "city",
+        "country",
+        "centre",
+        "area",
+        "timezone"
+      ],
+      "sources": [
+        "address"
+      ]
+    }
+  }
+}
+
+```
+
 Preferably a folder `indices` contains a json file for each index. An example can be
 found in the [test folder](test/indices).
 
