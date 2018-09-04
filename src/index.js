@@ -18,13 +18,12 @@ module.exports = (options) => {
   const indices = {};
   const registerIndex = (name, specs) => {
     indices[name] = {
-      specs,
+      specs: Object.assign({ name }, specs),
       mapping: index.generateMapping(name, specs, models),
       fields: index.extractFields(specs),
       rels: index.extractRels(specs)
     };
   };
-  const getMapping = idx => cloneDeep(indices[idx].mapping);
 
   return {
     model: {
@@ -33,10 +32,11 @@ module.exports = (options) => {
     index: {
       register: (idx, specs) => registerIndex(idx, specs),
       list: () => Object.keys(indices).sort(),
-      getMapping: idx => getMapping(idx),
+      getMapping: idx => cloneDeep(indices[idx].mapping),
       getFields: idx => cloneDeep(indices[idx].fields),
       getRels: idx => cloneDeep(indices[idx].rels),
-      getModel: idx => indices[idx].specs.model
+      getModel: idx => indices[idx].specs.model,
+      getSpecs: idx => cloneDeep(indices[idx].specs)
     },
     data: {
       remap: (idx, input) => data.remap(indices[idx].specs, input)
@@ -44,7 +44,7 @@ module.exports = (options) => {
     query: {
       build: (idx = null, opts = {}) => query.build(idx === null ? null : indices[idx].fields, opts)
     },
-    rest: rest(getMapping, options)
+    rest: rest(idx => indices[idx].mapping, options)
   };
 };
 
