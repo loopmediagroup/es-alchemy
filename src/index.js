@@ -24,7 +24,6 @@ module.exports = (options) => {
       rels: index.extractRels(specs)
     };
   };
-  const getMapping = idx => cloneDeep(indices[idx].mapping);
 
   return {
     model: {
@@ -33,7 +32,7 @@ module.exports = (options) => {
     index: {
       register: (idx, specs) => registerIndex(idx, specs),
       list: () => Object.keys(indices).sort(),
-      getMapping: idx => getMapping(idx),
+      getMapping: idx => cloneDeep(indices[idx].mapping),
       getFields: idx => cloneDeep(indices[idx].fields),
       getRels: idx => cloneDeep(indices[idx].rels),
       getModel: idx => indices[idx].specs.model
@@ -44,7 +43,7 @@ module.exports = (options) => {
     query: {
       build: (idx = null, opts = {}) => query.build(idx === null ? null : indices[idx].fields, opts)
     },
-    rest: rest(getMapping, options)
+    rest: rest(idx => indices[idx].mapping, options)
   };
 };
 
