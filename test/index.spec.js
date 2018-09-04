@@ -34,6 +34,12 @@ describe('Testing index', () => {
     });
   });
 
+  it('Testing specs', () => {
+    Object.entries(indices).forEach(([k, v]) => {
+      expect(index.index.getSpecs(k)).to.deep.equal(Object.assign({ name: k }, v));
+    });
+  });
+
   it('Testing mappings', () => {
     expect(index.index.list()).to.deep.equal(Object.keys(mappings).sort());
     Object.entries(mappings).forEach(([k, v]) => {

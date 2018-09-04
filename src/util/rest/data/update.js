@@ -13,7 +13,7 @@ module.exports = (call, idx, { remove = [], upsert = [] }) => {
   }
   return call("POST", idx, {
     endpoint: "_bulk",
-    body: `${payload.join("\n")}\n`,
+    body: payload.concat("").join("\n"),
     headers: { 'content-type': 'application/x-ndjson' },
     json: false
   }).then(r => r.statusCode === 200 && !JSON.parse(r.body).errors);
