@@ -122,8 +122,8 @@ describe('Testing index', () => {
           and: ["locations.address.street == value1", "locations.address.city == value2"]
         }
       }))).payload.length).to.equal(0);
-    });
-  }).timeout(5000);
+    }).timeout(10000);
+  });
 
   describe('Testing REST interaction', () => {
     it('Testing lifecycle', async () => {
