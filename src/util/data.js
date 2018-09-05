@@ -1,7 +1,8 @@
 // Convert raw data into index ready data
 const assert = require("assert");
+const fieldRemap = require("../resources/field-remap");
 
-const remapRec = (specs, input) => {
+const remapRec = (specs, input, models) => {
   const result = [];
   assert(
     specs.sources === undefined || (Array.isArray(specs.sources) && specs.sources.length !== 0),
@@ -23,12 +24,13 @@ const remapRec = (specs, input) => {
     // extract recursively
     .forEach(origins => origins.forEach((origin) => {
       const entry = {};
+      const fieldTypes = models[specs.model.endsWith("[]") ? specs.model.slice(0, -2) : specs.model].specs.fields;
       specs.fields // handle top level
         .map(field => [field, origin[field]])
         .filter(kv => kv[1] !== undefined)
-        .reduce((prev, [key, value]) => Object.assign(prev, { [key]: value }), entry);
+        .reduce((prev, [key, value]) => Object.assign(prev, { [key]: fieldRemap[fieldTypes[key]](value) }), entry);
       Object.entries(specs.nested || {}) // handle nested
-        .map(([key, value]) => [key, remapRec(value, origin)])
+        .map(([key, value]) => [key, remapRec(value, origin, models)])
         .filter(kv => kv[1] !== undefined)
         .reduce((prev, [key, value]) => Object.assign(prev, { [key]: value }), entry);
       result.push(entry);
@@ -40,4 +42,4 @@ const remapRec = (specs, input) => {
   return specs.model.endsWith("[]") ? result : result[0];
 };
 
-module.exports.remap = (specs, input) => remapRec(specs, input);
+module.exports.remap = (specs, input, models) => remapRec(specs, input, models);

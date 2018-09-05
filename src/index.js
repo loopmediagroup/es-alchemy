@@ -39,7 +39,7 @@ module.exports = (options) => {
       getSpecs: idx => cloneDeep(indices[idx].specs)
     },
     data: {
-      remap: (idx, input) => data.remap(indices[idx].specs, input)
+      remap: (idx, input) => data.remap(indices[idx].specs, input, models)
     },
     query: {
       build: (idx = null, opts = {}) => query.build(idx === null ? null : indices[idx].fields, opts)
