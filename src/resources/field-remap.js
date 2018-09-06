@@ -11,7 +11,7 @@ module.exports = {
   } : null),
   shape: v => (v ? {
     type: "Polygon",
-    coordinates: v
+    coordinates: [v]
   } : null),
   datetime: identity,
   string: identity,
