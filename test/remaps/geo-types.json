@@ -51,10 +51,7 @@
       "street": "Street Name",
       "city": "City Name",
       "country": "Country Name",
-      "centre": {
-        "lon": -119.492190689,
-        "lat": 49.89188365
-      },
+      "centre": [-119.492190689, 49.89188365],
       "area": {
         "type": "Polygon",
         "coordinates": [

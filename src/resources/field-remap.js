@@ -5,10 +5,7 @@ module.exports = {
   boolean: identity,
   integer: identity,
   uuid: identity,
-  point: v => (v ? {
-    lon: v[0],
-    lat: v[1]
-  } : null),
+  point: v => (v ? [v[0], v[1]] : null),
   shape: v => (v ? {
     type: "Polygon",
     coordinates: [v]
