@@ -88,6 +88,18 @@ module.exports = {
             }
           }))
       }
+    }),
+    boundedBy: (l, r) => ({
+      bool: {
+        filter: {
+          geo_bounding_box: {
+            "pin.location": {
+              top_left: [r[0], r[1]],
+              bottom_right: [r[2], r[3]]
+            }
+          }
+        }
+      }
     })
   },
   order: {
