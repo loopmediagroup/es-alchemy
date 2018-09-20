@@ -1,14 +1,10 @@
 {
-  "orderBy": [
-    [
-      "id",
-      "asc"
-    ]
-  ],
+  "orderBy": null,
   "index": {
     "fields": [
       "id",
-      "area"
+      "area",
+      "centre"
     ],
     "model": "region",
     "sources": [
@@ -26,12 +22,49 @@
       }
     ],
     "from": 0,
+    "query": {
+      "bool": {
+        "filter": [
+          {
+            "bool": {
+              "filter": {
+                "geo_bounding_box": {
+                  "pin.location": {
+                    "bottom_right": [
+                      -119.1,
+                      49.7
+                    ],
+                    "top_left": [
+                      -119.2,
+                      49.8
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
     "size": 100,
     "_source": [
       ""
     ]
   },
-  "filterBy": null,
+  "filterBy": {
+    "and": [
+      [
+        "centre",
+        "boundedBy",
+        [
+          -119.2,
+          49.8,
+          -119.1,
+          49.7
+        ]
+      ]
+    ]
+  },
   "toReturn": null,
   "offset": 0,
   "scoreBy": null

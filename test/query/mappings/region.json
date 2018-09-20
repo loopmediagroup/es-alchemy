@@ -7,6 +7,9 @@
         },
         "area": {
           "type": "geo_shape"
+        },
+        "centre": {
+          "type": "geo_point"
         }
       }
     }
