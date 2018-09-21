@@ -16,6 +16,9 @@
             "id": {
               "type": "keyword"
             },
+            "keywords": {
+              "type": "text"
+            },
             "street": {
               "type": "text"
             },
