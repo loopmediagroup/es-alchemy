@@ -6,6 +6,7 @@
     "country": "string",
     "centre": "point",
     "area": "shape",
-    "timezone": "string"
+    "timezone": "string",
+    "keywords": "string[]"
   }
 }
