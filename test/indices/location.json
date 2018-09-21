@@ -14,7 +14,8 @@
         "country",
         "centre",
         "area",
-        "timezone"
+        "timezone",
+        "keywords"
       ],
       "sources": [
         "address"
