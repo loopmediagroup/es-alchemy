@@ -1,7 +1,6 @@
-module.exports = fields => fields.reduce((p, field) => {
-  p.push(...field.split(".").slice(0, -1).reduce((prev, next) => {
-    prev.push((prev[prev.length - 1] || []).concat([next]));
-    return prev;
-  }, []).map(e => e.join(".")));
-  return p;
-}, []);
+module.exports = fields => Array.from(fields
+  .reduce((prev, cur) => cur
+    .split("")
+    .map((e, idx) => (e === "." ? idx : -1))
+    .filter(pos => pos !== -1)
+    .reduce((p, c) => p.add(cur.slice(0, c)), prev), new Set()));
