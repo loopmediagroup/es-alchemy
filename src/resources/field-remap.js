@@ -12,5 +12,6 @@ module.exports = {
   } : null),
   datetime: identity,
   string: identity,
-  enum: identity
+  enum: identity,
+  object: identity
 };

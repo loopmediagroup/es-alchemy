@@ -1,6 +1,7 @@
 [
   "id",
   "headline",
+  "meta",
   "locations.id",
   "locations.name",
   "locations.address.id",

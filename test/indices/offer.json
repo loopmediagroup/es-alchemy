@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "fields": [
     "id",
-    "headline"
+    "headline",
+    "meta"
   ],
   "sources": [
     ""

@@ -27,5 +27,8 @@
   },
   "enum": {
     "type": "keyword"
+  },
+  "object": {
+    "type": "object"
   }
 }
