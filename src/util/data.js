@@ -28,7 +28,9 @@ const remapRec = (specs, input, models) => {
       specs.fields // handle top level
         .map(field => [field, origin[field]])
         .filter(kv => kv[1] !== undefined)
-        .reduce((prev, [key, value]) => Object.assign(prev, { [key]: fieldRemap[fieldTypes[key]](value) }), entry);
+        .reduce((prev, [key, value]) => Object.assign(prev, {
+          [key]: fieldRemap[fieldTypes[key].endsWith("[]") ? fieldTypes[key].slice(0, -2) : fieldTypes[key]](value)
+        }), entry);
       Object.entries(specs.nested || {}) // handle nested
         .map(([key, value]) => [key, remapRec(value, origin, models)])
         .filter(kv => kv[1] !== undefined)

@@ -41,7 +41,8 @@
           49.8919178
         ]
       ],
-      "timezone": "America/Vancouver"
+      "timezone": "America/Vancouver",
+      "keywords": ["kw1", "kw2", "kw3"]
     }
   },
   "result": {
@@ -87,7 +88,8 @@
           ]
         ]
       },
-      "timezone": "America/Vancouver"
+      "timezone": "America/Vancouver",
+      "keywords": ["kw1", "kw2", "kw3"]
     }
   }
 }

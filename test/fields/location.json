@@ -7,5 +7,6 @@
   "address.country",
   "address.centre",
   "address.area",
-  "address.timezone"
+  "address.timezone",
+  "address.keywords"
 ]
