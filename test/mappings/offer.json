@@ -48,6 +48,9 @@
           },
           "type": "nested"
         },
+        "meta": {
+          "type": "object"
+        },
         "tags": {
           "properties": {
             "id": {

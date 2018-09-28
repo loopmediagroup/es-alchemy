@@ -1,6 +1,7 @@
 {
   "fields": {
     "id": "uuid",
-    "headline": "string"
+    "headline": "string",
+    "meta": "object"
   }
 }
