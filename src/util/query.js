@@ -3,7 +3,6 @@ const get = require("lodash.get");
 const isEqual = require("lodash.isequal");
 const objectPaths = require("obj-paths");
 const actionMap = require("../resources/action-map");
-const getParents = require("../util/get-parents");
 
 const buildQueryRec = (filterBy, allowedFields) => {
   // handle actual filter clause
@@ -82,9 +81,6 @@ module.exports.build = (allowedFields, {
     allowedFields === null || isEqual(toReturn, [""]) || result._source.every(f => allowedFields.includes(f)),
     `Invalid field(s) provided.`
   );
-  // workaround for https://github.com/elastic/elasticsearch/issues/23796
-  // eslint-disable-next-line no-underscore-dangle
-  result._source.push(...getParents(result._source));
   if (filterBy.length !== 0) {
     result.query = buildQueryRec(filterBy, allowedFields)[1];
   }
