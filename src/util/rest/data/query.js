@@ -1,10 +1,29 @@
 const assert = require("assert");
 const get = require("lodash.get");
+const set = require("lodash.set");
+const cloneDeep = require("lodash.clonedeep");
+const objectScan = require('object-scan');
+const getParents = require("../../../util/get-parents");
 
-module.exports = (call, idx, filter, { raw = false }) => call('GET', idx, { body: filter, endpoint: "_search" })
+module.exports = (call, idx, filter, { raw = false }) => call('GET', idx, {
+  body: (() => {
+    // PART 1: workaround for https://github.com/elastic/elasticsearch/issues/23796
+    const filterNew = cloneDeep(filter);
+    // eslint-disable-next-line no-underscore-dangle
+    filterNew._source.push(...getParents(filterNew._source));
+    return filterNew;
+  })(),
+  endpoint: "_search"
+})
   .then((esResult) => {
     assert(esResult.statusCode === 200, JSON.stringify(esResult.body));
     assert(get(esResult.body, '_shards.failed') === 0, JSON.stringify(esResult.body));
+    // PART 2: workaround for https://github.com/elastic/elasticsearch/issues/23796
+    // eslint-disable-next-line no-underscore-dangle
+    const scanner = objectScan(filter._source, { useArraySelector: false, joined: false });
+    set(esResult, "body.hits.hits", esResult.body.hits.hits
+      // eslint-disable-next-line no-underscore-dangle
+      .map(r => set(r, "_source", scanner(r._source).reduce((p, k) => set(p, k, get(r._source, k)), {}))));
     return raw === true
       ? esResult.body
       : {
