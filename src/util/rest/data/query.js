@@ -1,8 +1,7 @@
 const assert = require("assert");
 const get = require("lodash.get");
-const set = require("lodash.set");
 const cloneDeep = require("lodash.clonedeep");
-const objectScan = require('object-scan');
+const objectRewrite = require('object-rewrite');
 const objectPaths = require('obj-paths');
 
 module.exports = (call, idx, filter, { raw = false }) => call('GET', idx, {
@@ -20,10 +19,9 @@ module.exports = (call, idx, filter, { raw = false }) => call('GET', idx, {
     assert(get(esResult.body, '_shards.failed') === 0, JSON.stringify(esResult.body));
     // PART 2: workaround for https://github.com/elastic/elasticsearch/issues/23796
     // eslint-disable-next-line no-underscore-dangle
-    const scanner = objectScan(filter._source, { useArraySelector: false, joined: false });
-    set(esResult, "body.hits.hits", esResult.body.hits.hits
-      // eslint-disable-next-line no-underscore-dangle
-      .map(r => set(r, "_source", scanner(r._source).reduce((p, k) => set(p, k, get(r._source, k)), {}))));
+    const rewriter = objectRewrite({ retain: filter._source });
+    // eslint-disable-next-line no-underscore-dangle
+    esResult.body.hits.hits.forEach(r => rewriter(r._source));
     return raw === true
       ? esResult.body
       : {
