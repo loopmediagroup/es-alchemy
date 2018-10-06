@@ -44,7 +44,7 @@
     "deep-equal-in-any-order": "1.0.10",
     "js-gardener": "1.31.7",
     "nyc": "13.0.1",
-    "semantic-release": "15.9.16",
+    "semantic-release": "15.9.17",
     "uuid": "3.3.2",
     "request": "2.88.0",
     "request-promise-native": "1.0.5"
@@ -97,8 +97,8 @@
     "lodash.get": "4.4.2",
     "lodash.isequal": "4.5.0",
     "lodash.set": "4.3.2",
-    "obj-paths": "1.1.0",
-    "object-scan": "1.5.0"
+    "obj-paths": "1.2.0",
+    "object-scan": "1.10.6"
   },
   "peerDependencies": {
     "request": "^2.88.0",

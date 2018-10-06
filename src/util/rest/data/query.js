@@ -3,14 +3,14 @@ const get = require("lodash.get");
 const set = require("lodash.set");
 const cloneDeep = require("lodash.clonedeep");
 const objectScan = require('object-scan');
-const getParents = require("../../../util/get-parents");
+const objectPaths = require('obj-paths');
 
 module.exports = (call, idx, filter, { raw = false }) => call('GET', idx, {
   body: (() => {
     // PART 1: workaround for https://github.com/elastic/elasticsearch/issues/23796
     const filterNew = cloneDeep(filter);
     // eslint-disable-next-line no-underscore-dangle
-    filterNew._source.push(...getParents(filterNew._source));
+    filterNew._source.push(...objectPaths.getParents(filterNew._source));
     return filterNew;
   })(),
   endpoint: "_search"
