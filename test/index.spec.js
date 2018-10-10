@@ -134,7 +134,8 @@ describe('Testing index', () => {
       expect(await index.rest.mapping.create("offer")).to.equal(false);
       expect(await index.rest.mapping.recreate("offer")).to.equal(true);
       expect(await index.rest.mapping.list()).to.deep.equal(["offer"]);
-      expect((await index.rest.mapping.get("offer")).body.offer).to.deep.equal(index.index.getMapping("offer"));
+      expect(Object.values((await index.rest.mapping.get("offer")).body)[0])
+        .to.deep.equal(index.index.getMapping("offer"));
       expect(await index.rest.data.query("offer", index.query.build())).to.deep.equal({
         payload: [],
         page: {
@@ -186,9 +187,10 @@ describe('Testing index', () => {
     });
 
     it('Query with Batch Examples', async () => {
-      // setup mappings
+      // setup custom mappings
       await Promise.all(Object.entries(queryMappings).map(([idx, meta]) => index.rest
-        .call("DELETE", idx).then(() => index.rest.call('PUT', idx, { body: meta }))));
+        .call("DELETE", `${idx}@*`).then(() => index.rest
+          .call('PUT', `${idx}@version-hash`, { body: meta }))));
       expect((await index.rest.mapping.list()).sort())
         .to.deep.equal(['offer', 'region', 'venue'].sort());
       // run tests

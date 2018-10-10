@@ -1,4 +1,4 @@
-module.exports = (call, idx, { remove = [], upsert = [] }) => {
+module.exports = (call, idx, mapping, { remove = [], upsert = [] }) => {
   const payload = [];
   upsert.forEach((doc) => {
     payload.push(JSON.stringify({ update: { _type: idx, _id: doc.id } }));
@@ -11,7 +11,8 @@ module.exports = (call, idx, { remove = [], upsert = [] }) => {
   if (payload.length === 0) {
     return true;
   }
-  return call("POST", idx, {
+  // eslint-disable-next-line no-underscore-dangle
+  return call("POST", `${idx}@${mapping.mappings[idx]._meta.hash}`, {
     endpoint: "_bulk",
     body: payload.concat("").join("\n"),
     headers: { 'content-type': 'application/x-ndjson' },

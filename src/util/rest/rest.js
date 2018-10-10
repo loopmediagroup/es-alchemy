@@ -42,7 +42,7 @@ module.exports = (getMapping, options) => {
     mapping: {
       create: idx => mappingCreate(call, idx, getMapping(idx)),
       delete: idx => mappingDelete(call, idx),
-      get: idx => mappingGet(call, idx),
+      get: idx => mappingGet(call, idx, getMapping(idx)),
       list: () => mappingList(call),
       recreate: idx => mappingRecreate(call, idx, getMapping(idx))
     },
@@ -50,7 +50,7 @@ module.exports = (getMapping, options) => {
       count: idx => dataCount(call, idx),
       query: (idx, filter, opts = {}) => dataQuery(call, idx, filter, opts),
       refresh: idx => dataRefresh(call, idx),
-      update: (idx, opts) => dataUpdate(call, idx, opts)
+      update: (idx, opts) => dataUpdate(call, idx, getMapping(idx), opts)
     }
   };
 };

@@ -4,7 +4,7 @@ const cloneDeep = require("lodash.clonedeep");
 const objectRewrite = require('object-rewrite');
 const objectPaths = require('obj-paths');
 
-module.exports = (call, idx, filter, { raw = false }) => call('GET', idx, {
+module.exports = (call, idx, filter, { raw = false }) => call('GET', `${idx}@*`, {
   body: (() => {
     // PART 1: workaround for https://github.com/elastic/elasticsearch/issues/23796
     const filterNew = cloneDeep(filter);

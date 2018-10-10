@@ -1,3 +1,4 @@
+const assert = require("assert");
 const cloneDeep = require("lodash.clonedeep");
 const model = require("./util/model");
 const index = require("./util/index");
@@ -17,6 +18,7 @@ module.exports = (options) => {
 
   const indices = {};
   const registerIndex = (name, specs) => {
+    assert(!name.includes("@"), "Index name must not include `@`.");
     indices[name] = {
       specs: Object.assign({ name }, specs),
       mapping: index.generateMapping(name, specs, models),
