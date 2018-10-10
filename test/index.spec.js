@@ -1,5 +1,5 @@
 const path = require("path");
-const uuidv4 = require('uuid/v4');
+const uuid4 = require('uuid/v4');
 const expect = require("chai").expect;
 const chai = require("chai");
 const deepEqualInAnyOrder = require('deep-equal-in-any-order');
@@ -95,17 +95,17 @@ describe('Testing index', () => {
 
   describe('Testing nested filtering', () => {
     it('Testing allow separate relationships', async () => {
-      const offerId = uuidv4();
+      const offerId = uuid4();
       expect(await index.rest.mapping.recreate("offer")).to.equal(true);
       expect(await index.rest.data.update("offer", {
         upsert: [{
           id: offerId,
           locations: [{
-            id: uuidv4(),
-            address: { id: uuidv4(), street: "value1", city: "value1" }
+            id: uuid4(),
+            address: { id: uuid4(), street: "value1", city: "value1" }
           }, {
-            id: uuidv4(),
-            address: { id: uuidv4(), street: "value2", city: "value2" }
+            id: uuid4(),
+            address: { id: uuid4(), street: "value2", city: "value2" }
           }]
         }]
       })).to.equal(true);
@@ -125,9 +125,35 @@ describe('Testing index', () => {
     }).timeout(10000);
   });
 
+  it("Testing Multi Version Query", async () => {
+    const indexName = "version-index-test";
+    const meta = { mappings: { idx: { properties: { uuid: { type: "keyword" } } } } };
+
+    // initialization
+    await index.rest.call("DELETE", `${indexName}@*`);
+    const create1 = await index.rest.call('PUT', `${indexName}@1`, { body: meta });
+    expect(create1.statusCode).to.equal(200);
+    const create2 = await index.rest.call('PUT', `${indexName}@2`, { body: meta });
+    expect(create2.statusCode).to.equal(200);
+
+    // add data
+    const id1 = uuid4();
+    await index.rest.call('PUT', `${indexName}@2/idx/${id1}`, { body: { uuid: id1 } });
+    await index.rest.call('PUT', `${indexName}@1/idx/${id1}`, { body: { uuid: id1 } });
+    await index.rest.call("POST", `${indexName}@*`, { endpoint: "_refresh" });
+
+    // run query
+    const result = await index.rest.call('GET', `${indexName}@*`, { endpoint: "_search" });
+    expect(result.body.hits.total).to.equal(2);
+
+    // cleanup
+    const delResult = await index.rest.call("DELETE", `${indexName}@*`);
+    expect(delResult.statusCode).to.equal(200);
+  });
+
   describe('Testing REST interaction', () => {
     it('Testing lifecycle', async () => {
-      const uuids = [uuidv4(), uuidv4(), uuidv4()].sort();
+      const uuids = [uuid4(), uuid4(), uuid4()].sort();
       await index.rest.mapping.delete("offer");
       expect(await index.rest.mapping.list()).to.deep.equal([]);
       expect(await index.rest.mapping.create("offer")).to.equal(true);
@@ -183,7 +209,7 @@ describe('Testing index', () => {
     });
 
     it('Testing call without options', async () => {
-      expect((await index.rest.call("GET", uuidv4())).statusCode).to.equal(404);
+      expect((await index.rest.call("GET", uuid4())).statusCode).to.equal(404);
     });
 
     it('Query with Batch Examples', async () => {
