@@ -296,11 +296,14 @@ Default: `{}`
 Allow connection to AWS Elasticsearch instance by passing 
 in object containing `accessKeyId` and `secretAccessKey`.
 
-## Mapping Versions
+## Index Versions
 
-Mappings are versioned using a computed hash deduced from their schema. So an index named `foo` uses
+Indices are versioned using a computed hash deduced from their schema. So an index named `foo` uses
 multiple mappings as `foo@HASH` under the hood. When updating or deleting a document the document
 is removed from all old version and updated in the current version as required.
+
+When the version of an index changes the new index mapping needs to be created. Calling `mapping.create` on
+every initialization should be ok to do.
 
 ## Api
 
