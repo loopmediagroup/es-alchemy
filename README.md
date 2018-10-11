@@ -296,6 +296,12 @@ Default: `{}`
 Allow connection to AWS Elasticsearch instance by passing 
 in object containing `accessKeyId` and `secretAccessKey`.
 
+## Mapping Versions
+
+Mappings are versioned using a computed hash deduced from their schema. So an index named `foo` uses
+multiple mappings as `foo@HASH` under the hood. When updating or deleting a document the document
+is removed from all old version and updated in the current version as required.
+
 ## Api
 
 Available commands
@@ -326,14 +332,15 @@ Available commands
 Interacting with the rest api of Elasticsearch
 
 - `call(method: String, name: String, options: Object)` - make direct API call to Elasticsearch
-- `mapping.create(name: String)` - create mapping on Elasticsearch
-- `mapping.delete(name: String)` - delete mapping from Elasticsearch
-- `mapping.get(name: String)` - get mapping details from Elasticsearch
-- `mapping.recreate(name: String)` - recreate mapping on Elasticsearch
-- `data.count(name: String)` - get number of indexed elements from Elasticsearch
-- `data.query(name: String, filter: Object, options: Object)` - query for data in Elasticsearch. Use raw flag to obtain raw result from Elasticsearch.
-- `data.refresh(name: String)` - refresh Elasticsearch index, useful e.g. when testing
-- `data.update(name: String, options: Object)` - insert, update or delete objects in Elasticsearch
+- `mapping.create(name: String)` - create mapping on Elasticsearch (call when version changes)
+- `mapping.delete(name: String)` - delete mapping from Elasticsearch (deletes _all_ versions)
+- `mapping.get(name: String)` - get mapping details from Elasticsearch (current version)
+- `mapping.history(name: String)` - get _old_ mapping versions and their respective document counts from Elasticsearch
+- `mapping.recreate(name: String)` - recreate mapping on Elasticsearch (deletes _all_ versions and recreates current version)
+- `data.count(name: String)` - get number of indexed elements from Elasticsearch (from _all_ versions)
+- `data.query(name: String, filter: Object, options: Object)` - query for data in Elasticsearch against all versions. Use raw flag to obtain raw result from Elasticsearch.
+- `data.refresh(name: String)` - refresh Elasticsearch index, useful e.g. when testing (all versions)
+- `data.update(name: String, options: Object)` - insert, update or delete objects in Elasticsearch (current version, removed touched documents from old versions and deletes old versions when empty)
 
 
 ## Tests

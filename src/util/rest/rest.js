@@ -4,6 +4,7 @@ const mappingCreate = require("./mapping/create");
 const mappingDelete = require("./mapping/delete");
 const mappingGet = require("./mapping/get");
 const mappingList = require("./mapping/list");
+const mappingHistory = require("./mapping/history");
 const mappingRecreate = require("./mapping/recreate");
 const dataCount = require("./data/count");
 const dataQuery = require("./data/query");
@@ -44,6 +45,7 @@ module.exports = (getMapping, options) => {
       delete: idx => mappingDelete(call, idx),
       get: idx => mappingGet(call, idx, getMapping(idx)),
       list: () => mappingList(call),
+      history: idx => mappingHistory(call, idx, getMapping(idx)),
       recreate: idx => mappingRecreate(call, idx, getMapping(idx))
     },
     data: {

@@ -152,6 +152,53 @@ describe('Testing index', () => {
   });
 
   describe('Testing REST interaction', () => {
+    const validate = async (count, history) => {
+      expect(await index.rest.data.refresh("offer")).to.equal(true);
+      expect(await index.rest.data.count("offer")).to.equal(count);
+      expect(await index.rest.mapping.history("offer")).to.deep.equal(history);
+    };
+    const checkDocs = async (uuids) => {
+      expect(await index.rest.data.query("offer", index.query.build("offer", {
+        toReturn: ["id"],
+        filterBy: { and: [["id", "in", uuids]] },
+        limit: 1,
+        offset: 1
+      }))).to.deep.equal({
+        payload: [{ id: uuids[1] }],
+        page: {
+          next: { limit: 1, offset: 2 },
+          prev: { limit: 1, offset: 0 },
+          max: 3,
+          cur: 2,
+          size: 1
+        }
+      });
+    };
+
+    it("Testing versioning", async () => {
+      const uuids = [uuid4(), uuid4(), uuid4()].sort();
+      await index.rest.mapping.delete("offer");
+      // create new index
+      expect(await index.rest.mapping.create("offer")).to.equal(true);
+      await validate(0, {});
+      // insert data
+      expect(await index.rest.data.update("offer", { upsert: uuids.map(id => ({ id })) })).to.equal(true);
+      await validate(3, {});
+      // create new version of index
+      index.index.register("offer", Object.assign({}, indices.offer, { fields: ["id"] }));
+      expect(await index.rest.mapping.create("offer")).to.equal(true);
+      await validate(3, { "offer@409492a32436d2cec4a3d01046308ae7e53893f1": 3 });
+      await checkDocs(uuids);
+      // update data
+      expect(await index.rest.data.update("offer", { upsert: uuids.map(id => ({ id })) })).to.equal(true);
+      await validate(3, { "offer@409492a32436d2cec4a3d01046308ae7e53893f1": 0 });
+      await checkDocs(uuids);
+      // update data again
+      expect(await index.rest.data.update("offer", { upsert: uuids.map(id => ({ id })) })).to.equal(true);
+      await validate(3, {});
+      await checkDocs(uuids);
+    });
+
     it('Testing lifecycle', async () => {
       const uuids = [uuid4(), uuid4(), uuid4()].sort();
       await index.rest.mapping.delete("offer");
