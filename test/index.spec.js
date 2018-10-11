@@ -152,10 +152,10 @@ describe('Testing index', () => {
   });
 
   describe('Testing REST interaction', () => {
-    const validate = async (count, history) => {
+    const validate = async (count, historic) => {
       expect(await index.rest.data.refresh("offer")).to.equal(true);
       expect(await index.rest.data.count("offer")).to.equal(count);
-      expect(await index.rest.mapping.history("offer")).to.deep.equal(history);
+      expect(await index.rest.mapping.historic("offer")).to.deep.equal(historic);
     };
     const checkDocs = async (uuids) => {
       expect(await index.rest.data.query("offer", index.query.build("offer", {

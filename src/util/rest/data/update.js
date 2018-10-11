@@ -1,7 +1,7 @@
-const history = require("./../mapping/history");
+const historic = require("./../mapping/historic");
 
 module.exports = async (call, idx, mapping, { remove = [], upsert = [] }) => {
-  const oldVersionsEntries = Object.entries(await history(call, idx, mapping));
+  const oldVersionsEntries = Object.entries(await historic(call, idx, mapping));
   const oldVersionsEmpty = oldVersionsEntries.filter(([_, v]) => v === 0).map(([k, _]) => k);
   const oldVersionsNonEmpty = oldVersionsEntries.filter(([_, v]) => v !== 0).map(([k, _]) => k);
 
