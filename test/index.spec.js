@@ -202,6 +202,8 @@ describe('Testing index', () => {
     });
 
     it('Testing lifecycle', async () => {
+      // eslint-disable-next-line no-underscore-dangle
+      const mappingHash = index.index.getMapping("offer").mappings.offer._meta.hash;
       const uuids = [uuid4(), uuid4(), uuid4()].sort();
       await index.rest.mapping.delete("offer");
       expect(await index.rest.mapping.list()).to.deep.equal([]);
@@ -209,7 +211,7 @@ describe('Testing index', () => {
       expect(await index.rest.mapping.create("offer")).to.equal(false);
       expect(await index.rest.mapping.recreate("offer")).to.equal(true);
       expect(await index.rest.mapping.list()).to.deep.equal(["offer"]);
-      expect(Object.values((await index.rest.mapping.get("offer")).body)[0])
+      expect((await index.rest.mapping.get("offer")).body[`offer@${mappingHash}`])
         .to.deep.equal(index.index.getMapping("offer"));
       expect(await index.rest.data.query("offer", index.query.build())).to.deep.equal({
         payload: [],
