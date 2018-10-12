@@ -176,6 +176,8 @@ describe('Testing index', () => {
     };
 
     it("Testing versioning", async () => {
+      // eslint-disable-next-line no-underscore-dangle
+      const mappingHash = index.index.getMapping("offer").mappings.offer._meta.hash;
       const uuids = [uuid4(), uuid4(), uuid4()].sort();
       await index.rest.mapping.delete("offer");
       // create new index
@@ -187,11 +189,11 @@ describe('Testing index', () => {
       // create new version of index
       index.index.register("offer", Object.assign({}, indices.offer, { fields: ["id"] }));
       expect(await index.rest.mapping.create("offer")).to.equal(true);
-      await validate(3, { "offer@409492a32436d2cec4a3d01046308ae7e53893f1": 3 });
+      await validate(3, { [`offer@${mappingHash}`]: 3 });
       await checkDocs(uuids);
       // update data
       expect(await index.rest.data.update("offer", { upsert: uuids.map(id => ({ id })) })).to.equal(true);
-      await validate(3, { "offer@409492a32436d2cec4a3d01046308ae7e53893f1": 0 });
+      await validate(3, { [`offer@${mappingHash}`]: 0 });
       await checkDocs(uuids);
       // update data again
       expect(await index.rest.data.update("offer", { upsert: uuids.map(id => ({ id })) })).to.equal(true);
