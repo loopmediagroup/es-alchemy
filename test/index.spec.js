@@ -137,9 +137,9 @@ describe('Testing index', () => {
     expect(create2.statusCode).to.equal(200);
 
     // add data
-    const id1 = uuid4();
-    await index.rest.call('PUT', `${indexName}@2/idx/${id1}`, { body: { uuid: id1 } });
-    await index.rest.call('PUT', `${indexName}@1/idx/${id1}`, { body: { uuid: id1 } });
+    const uuid = uuid4();
+    await index.rest.call('PUT', `${indexName}@2/idx/${uuid}`, { body: { uuid } });
+    await index.rest.call('PUT', `${indexName}@1/idx/${uuid}`, { body: { uuid } });
     await index.rest.call("POST", `${indexName}@*`, { endpoint: "_refresh" });
 
     // run query
