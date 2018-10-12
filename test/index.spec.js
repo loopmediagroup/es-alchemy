@@ -1,5 +1,5 @@
 const path = require("path");
-const uuidv4 = require('uuid/v4');
+const uuid4 = require('uuid/v4');
 const expect = require("chai").expect;
 const chai = require("chai");
 const deepEqualInAnyOrder = require('deep-equal-in-any-order');
@@ -95,17 +95,17 @@ describe('Testing index', () => {
 
   describe('Testing nested filtering', () => {
     it('Testing allow separate relationships', async () => {
-      const offerId = uuidv4();
+      const offerId = uuid4();
       expect(await index.rest.mapping.recreate("offer")).to.equal(true);
       expect(await index.rest.data.update("offer", {
         upsert: [{
           id: offerId,
           locations: [{
-            id: uuidv4(),
-            address: { id: uuidv4(), street: "value1", city: "value1" }
+            id: uuid4(),
+            address: { id: uuid4(), street: "value1", city: "value1" }
           }, {
-            id: uuidv4(),
-            address: { id: uuidv4(), street: "value2", city: "value2" }
+            id: uuid4(),
+            address: { id: uuid4(), street: "value2", city: "value2" }
           }]
         }]
       })).to.equal(true);
@@ -125,16 +125,90 @@ describe('Testing index', () => {
     }).timeout(10000);
   });
 
+  it("Testing Multi Version Query", async () => {
+    const indexName = "version-index-test";
+    const meta = { mappings: { idx: { properties: { uuid: { type: "keyword" } } } } };
+
+    // initialization
+    await index.rest.call("DELETE", `${indexName}@*`);
+    const create1 = await index.rest.call('PUT', `${indexName}@1`, { body: meta });
+    expect(create1.statusCode).to.equal(200);
+    const create2 = await index.rest.call('PUT', `${indexName}@2`, { body: meta });
+    expect(create2.statusCode).to.equal(200);
+
+    // add data
+    const id1 = uuid4();
+    await index.rest.call('PUT', `${indexName}@2/idx/${id1}`, { body: { uuid: id1 } });
+    await index.rest.call('PUT', `${indexName}@1/idx/${id1}`, { body: { uuid: id1 } });
+    await index.rest.call("POST", `${indexName}@*`, { endpoint: "_refresh" });
+
+    // run query
+    const result = await index.rest.call('GET', `${indexName}@*`, { endpoint: "_search" });
+    expect(result.body.hits.total).to.equal(2);
+
+    // cleanup
+    const delResult = await index.rest.call("DELETE", `${indexName}@*`);
+    expect(delResult.statusCode).to.equal(200);
+  });
+
   describe('Testing REST interaction', () => {
+    const validate = async (count, historic) => {
+      expect(await index.rest.data.refresh("offer")).to.equal(true);
+      expect(await index.rest.data.count("offer")).to.equal(count);
+      expect(await index.rest.mapping.historic("offer")).to.deep.equal(historic);
+    };
+    const checkDocs = async (uuids) => {
+      expect(await index.rest.data.query("offer", index.query.build("offer", {
+        toReturn: ["id"],
+        filterBy: { and: [["id", "in", uuids]] },
+        limit: 1,
+        offset: 1
+      }))).to.deep.equal({
+        payload: [{ id: uuids[1] }],
+        page: {
+          next: { limit: 1, offset: 2 },
+          prev: { limit: 1, offset: 0 },
+          max: 3,
+          cur: 2,
+          size: 1
+        }
+      });
+    };
+
+    it("Testing versioning", async () => {
+      const uuids = [uuid4(), uuid4(), uuid4()].sort();
+      await index.rest.mapping.delete("offer");
+      // create new index
+      expect(await index.rest.mapping.create("offer")).to.equal(true);
+      await validate(0, {});
+      // insert data
+      expect(await index.rest.data.update("offer", { upsert: uuids.map(id => ({ id })) })).to.equal(true);
+      await validate(3, {});
+      // create new version of index
+      index.index.register("offer", Object.assign({}, indices.offer, { fields: ["id"] }));
+      expect(await index.rest.mapping.create("offer")).to.equal(true);
+      await validate(3, { "offer@409492a32436d2cec4a3d01046308ae7e53893f1": 3 });
+      await checkDocs(uuids);
+      // update data
+      expect(await index.rest.data.update("offer", { upsert: uuids.map(id => ({ id })) })).to.equal(true);
+      await validate(3, { "offer@409492a32436d2cec4a3d01046308ae7e53893f1": 0 });
+      await checkDocs(uuids);
+      // update data again
+      expect(await index.rest.data.update("offer", { upsert: uuids.map(id => ({ id })) })).to.equal(true);
+      await validate(3, {});
+      await checkDocs(uuids);
+    });
+
     it('Testing lifecycle', async () => {
-      const uuids = [uuidv4(), uuidv4(), uuidv4()].sort();
+      const uuids = [uuid4(), uuid4(), uuid4()].sort();
       await index.rest.mapping.delete("offer");
       expect(await index.rest.mapping.list()).to.deep.equal([]);
       expect(await index.rest.mapping.create("offer")).to.equal(true);
       expect(await index.rest.mapping.create("offer")).to.equal(false);
       expect(await index.rest.mapping.recreate("offer")).to.equal(true);
       expect(await index.rest.mapping.list()).to.deep.equal(["offer"]);
-      expect((await index.rest.mapping.get("offer")).body.offer).to.deep.equal(index.index.getMapping("offer"));
+      expect(Object.values((await index.rest.mapping.get("offer")).body)[0])
+        .to.deep.equal(index.index.getMapping("offer"));
       expect(await index.rest.data.query("offer", index.query.build())).to.deep.equal({
         payload: [],
         page: {
@@ -182,13 +256,14 @@ describe('Testing index', () => {
     });
 
     it('Testing call without options', async () => {
-      expect((await index.rest.call("GET", uuidv4())).statusCode).to.equal(404);
+      expect((await index.rest.call("GET", uuid4())).statusCode).to.equal(404);
     });
 
     it('Query with Batch Examples', async () => {
-      // setup mappings
+      // setup custom mappings
       await Promise.all(Object.entries(queryMappings).map(([idx, meta]) => index.rest
-        .call("DELETE", idx).then(() => index.rest.call('PUT', idx, { body: meta }))));
+        .call("DELETE", `${idx}@*`).then(() => index.rest
+          .call('PUT', `${idx}@version-hash`, { body: meta }))));
       expect((await index.rest.mapping.list()).sort())
         .to.deep.equal(['offer', 'region', 'venue'].sort());
       // run tests

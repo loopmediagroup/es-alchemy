@@ -1,6 +1,7 @@
 // Translate index from esalchemy syntax to ES syntax
 const assert = require("assert");
 const get = require("lodash.get");
+const objectHash = require("object-hash");
 
 const buildPropertiesRec = (node, models) => {
   assert(
@@ -8,7 +9,7 @@ const buildPropertiesRec = (node, models) => {
     "Invalid specs definition."
   );
   assert(
-    Object.keys(node).every(e => ["model", "fields", "sources", "nested", "flat", "version"].includes(e)),
+    Object.keys(node).every(e => ["model", "fields", "sources", "nested", "flat"].includes(e)),
     "Unknown specs entry provided."
   );
   assert(
@@ -69,12 +70,13 @@ module.exports = ({
       !get(specs, "model", "").endsWith("[]"),
       "Root node can not be Array."
     );
+    const properties = buildPropertiesRec(specs, models);
     return {
       mappings: {
         [name]: {
-          properties: buildPropertiesRec(specs, models),
+          properties,
           _meta: {
-            version: specs.version || null
+            hash: objectHash(properties)
           }
         }
       }
