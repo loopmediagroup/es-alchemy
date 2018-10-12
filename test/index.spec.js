@@ -137,9 +137,9 @@ describe('Testing index', () => {
     expect(create2.statusCode).to.equal(200);
 
     // add data
-    const id1 = uuid4();
-    await index.rest.call('PUT', `${indexName}@2/idx/${id1}`, { body: { uuid: id1 } });
-    await index.rest.call('PUT', `${indexName}@1/idx/${id1}`, { body: { uuid: id1 } });
+    const uuid = uuid4();
+    await index.rest.call('PUT', `${indexName}@2/idx/${uuid}`, { body: { uuid } });
+    await index.rest.call('PUT', `${indexName}@1/idx/${uuid}`, { body: { uuid } });
     await index.rest.call("POST", `${indexName}@*`, { endpoint: "_refresh" });
 
     // run query
@@ -176,6 +176,8 @@ describe('Testing index', () => {
     };
 
     it("Testing versioning", async () => {
+      // eslint-disable-next-line no-underscore-dangle
+      const mappingHash = index.index.getMapping("offer").mappings.offer._meta.hash;
       const uuids = [uuid4(), uuid4(), uuid4()].sort();
       await index.rest.mapping.delete("offer");
       // create new index
@@ -187,11 +189,11 @@ describe('Testing index', () => {
       // create new version of index
       index.index.register("offer", Object.assign({}, indices.offer, { fields: ["id"] }));
       expect(await index.rest.mapping.create("offer")).to.equal(true);
-      await validate(3, { "offer@409492a32436d2cec4a3d01046308ae7e53893f1": 3 });
+      await validate(3, { [`offer@${mappingHash}`]: 3 });
       await checkDocs(uuids);
       // update data
       expect(await index.rest.data.update("offer", { upsert: uuids.map(id => ({ id })) })).to.equal(true);
-      await validate(3, { "offer@409492a32436d2cec4a3d01046308ae7e53893f1": 0 });
+      await validate(3, { [`offer@${mappingHash}`]: 0 });
       await checkDocs(uuids);
       // update data again
       expect(await index.rest.data.update("offer", { upsert: uuids.map(id => ({ id })) })).to.equal(true);
@@ -200,6 +202,8 @@ describe('Testing index', () => {
     });
 
     it('Testing lifecycle', async () => {
+      // eslint-disable-next-line no-underscore-dangle
+      const mappingHash = index.index.getMapping("offer").mappings.offer._meta.hash;
       const uuids = [uuid4(), uuid4(), uuid4()].sort();
       await index.rest.mapping.delete("offer");
       expect(await index.rest.mapping.list()).to.deep.equal([]);
@@ -207,7 +211,7 @@ describe('Testing index', () => {
       expect(await index.rest.mapping.create("offer")).to.equal(false);
       expect(await index.rest.mapping.recreate("offer")).to.equal(true);
       expect(await index.rest.mapping.list()).to.deep.equal(["offer"]);
-      expect(Object.values((await index.rest.mapping.get("offer")).body)[0])
+      expect((await index.rest.mapping.get("offer")).body[`offer@${mappingHash}`])
         .to.deep.equal(index.index.getMapping("offer"));
       expect(await index.rest.data.query("offer", index.query.build())).to.deep.equal({
         payload: [],
