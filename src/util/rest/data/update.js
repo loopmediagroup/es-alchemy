@@ -2,8 +2,8 @@ const historic = require("./../mapping/historic");
 
 module.exports = async (call, idx, mapping, { remove = [], upsert = [] }) => {
   const oldVersionsEntries = Object.entries(await historic(call, idx, mapping));
-  const oldVersionsEmpty = oldVersionsEntries.filter(([_, v]) => v === 0).map(([k, _]) => k);
-  const oldVersionsNonEmpty = oldVersionsEntries.filter(([_, v]) => v !== 0).map(([k, _]) => k);
+  const oldVersionsEmpty = oldVersionsEntries.filter(([_, docCount]) => docCount === 0).map(([name, _]) => name);
+  const oldVersionsNonEmpty = oldVersionsEntries.filter(([_, docCount]) => docCount !== 0).map(([name, _]) => name);
 
   // delete old, empty versions
   await Promise.all(oldVersionsEmpty.map(i => call('DELETE', i)));
