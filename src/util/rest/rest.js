@@ -9,10 +9,11 @@ const mappingRecreate = require("./mapping/recreate");
 const dataCount = require("./data/count");
 const dataQuery = require("./data/query");
 const dataRefresh = require("./data/refresh");
+const dataHistoric = require("./data/historic");
 const dataUpdate = require("./data/update");
 
 
-module.exports = (getMapping, options) => {
+module.exports = (listIndices, getMapping, options) => {
   const call = (method, idx, {
     endpoint = "",
     body = {},
@@ -52,6 +53,8 @@ module.exports = (getMapping, options) => {
       count: idx => dataCount(call, idx),
       query: (idx, filter, opts = {}) => dataQuery(call, idx, filter, opts),
       refresh: idx => dataRefresh(call, idx),
+      historic: (limit = 100) => dataHistoric(call, limit, () => listIndices()
+        .reduce((p, idx) => Object.assign(p, { [idx]: getMapping(idx) }), {})),
       update: (idx, opts) => dataUpdate(call, idx, getMapping(idx), opts)
     }
   };
