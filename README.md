@@ -300,7 +300,7 @@ in object containing `accessKeyId` and `secretAccessKey`.
 
 Indices are versioned using a computed hash deduced from their schema. So an index named `foo` uses
 multiple mappings as `foo@HASH` under the hood. When updating or deleting a document the document
-is removed from all old version and updated in the current version as required.
+is removed from all old version and updated in the current version as required. Empty, old version are removed.
 
 When the version of an index changes the new index mapping needs to be created. Calling `mapping.create` on
 every initialization should be ok to do.
