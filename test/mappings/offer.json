@@ -2,7 +2,7 @@
   "mappings": {
     "offer": {
       "_meta": {
-        "version": "1.0.0"
+        "hash": "409492a32436d2cec4a3d01046308ae7e53893f1"
       },
       "properties": {
         "id": {
