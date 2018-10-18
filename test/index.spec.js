@@ -96,7 +96,7 @@ describe('Testing index', () => {
   describe('Testing filtering', () => {
     it('Testing object returned', async () => {
       const offerId = uuid4();
-      expect(await index.rest.mapping.recreate("offer")).to.equal(true);
+      expect(await index.rest.mapping.create("offer")).to.equal(true);
       expect(await index.rest.data.update("offer", {
         upsert: [{
           id: offerId,
