@@ -4,7 +4,7 @@ const cloneDeep = require("lodash.clonedeep");
 const objectRewrite = require('object-rewrite');
 const objectPaths = require('obj-paths');
 
-module.exports = (call, idx, filter, { raw = false }) => call('GET', `${idx}@*`, {
+module.exports = (call, idx, mapping, filter, { raw = false }) => call('GET', `${idx}@*`, {
   body: (() => {
     // PART 1: workaround for https://github.com/elastic/elasticsearch/issues/23796
     const filterNew = cloneDeep(filter);
@@ -18,8 +18,14 @@ module.exports = (call, idx, filter, { raw = false }) => call('GET', `${idx}@*`,
     assert(esResult.statusCode === 200, JSON.stringify(esResult.body));
     assert(get(esResult.body, '_shards.failed') === 0, JSON.stringify(esResult.body));
     // PART 2: workaround for https://github.com/elastic/elasticsearch/issues/23796
-    // eslint-disable-next-line no-underscore-dangle
-    const rewriter = objectRewrite({ retain: filter._source });
+    const rewriter = objectRewrite({
+      // eslint-disable-next-line no-underscore-dangle
+      retain: filter._source.concat(filter._source.reduce((p, c) => p.concat(get(
+        mapping,
+        // retain object types content fully
+        `mappings.${[idx, ...c.split(".")].join(".properties.")}.type`
+      ) === "object" ? `${c}.**` : []), []))
+    });
     // eslint-disable-next-line no-underscore-dangle
     esResult.body.hits.hits.forEach(r => rewriter(r._source));
     return raw === true
