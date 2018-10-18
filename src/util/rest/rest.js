@@ -51,7 +51,7 @@ module.exports = (listIndices, getMapping, options) => {
     },
     data: {
       count: idx => dataCount(call, idx),
-      query: (idx, filter, opts = {}) => dataQuery(call, idx, filter, opts),
+      query: (idx, filter, opts = {}) => dataQuery(call, idx, getMapping(idx), filter, opts),
       refresh: idx => dataRefresh(call, idx),
       historic: (limit = 100) => dataHistoric(call, limit, () => listIndices()
         .reduce((p, idx) => Object.assign(p, { [idx]: getMapping(idx) }), {})),

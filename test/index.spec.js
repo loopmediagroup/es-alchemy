@@ -93,6 +93,48 @@ describe('Testing index', () => {
     });
   });
 
+  describe('Testing Query Filter', () => {
+    it('Testing property type "object" fully returned', async () => {
+      const offerId = uuid4();
+      expect(await index.rest.mapping.create("offer")).to.equal(true);
+      expect(await index.rest.data.update("offer", {
+        upsert: [{
+          id: offerId,
+          meta: {
+            k1: 'v1',
+            k2: ['v2'],
+            k3: []
+          }
+        }]
+      })).to.equal(true);
+      expect(await index.rest.data.refresh("offer")).to.equal(true);
+      expect(await index.rest.data.query("offer", index.query.build("offer", {
+        toReturn: ["id", "meta"],
+        filterBy: { and: [["id", "==", offerId]] },
+        limit: 1,
+        offset: 0
+      }))).to.deep.equal({
+        payload: [{
+          id: offerId,
+          meta: {
+            k1: 'v1',
+            k2: ['v2'],
+            k3: []
+          }
+        }],
+        page: {
+          next: { limit: 1, offset: 1 },
+          prev: null,
+          max: 1,
+          cur: 1,
+          size: 1
+        }
+      });
+      // cleanup
+      expect(await index.rest.mapping.delete("offer")).to.equal(true);
+    });
+  });
+
   describe('Testing nested filtering', () => {
     it('Testing allow separate relationships', async () => {
       const offerId = uuid4();
