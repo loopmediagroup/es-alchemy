@@ -24,7 +24,7 @@ module.exports = (listIndices, getMapping, options) => {
     uri: [
       `${get(options, "protocol", "http")}:/`,
       get(options, "endpoint", "elasticsearch:9200"),
-      idx,
+      idx.replace("@", "%40"),
       endpoint
     ].filter(e => e !== "").join("/"),
     body,
