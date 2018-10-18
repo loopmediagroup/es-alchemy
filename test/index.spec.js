@@ -93,8 +93,8 @@ describe('Testing index', () => {
     });
   });
 
-  describe('Testing filtering', () => {
-    it('Testing object returned', async () => {
+  describe('Testing Query Filter', () => {
+    it('Testing property type "object" fully returned', async () => {
       const offerId = uuid4();
       expect(await index.rest.mapping.create("offer")).to.equal(true);
       expect(await index.rest.data.update("offer", {
