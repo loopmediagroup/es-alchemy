@@ -26,7 +26,7 @@ module.exports = (listIndices, getMapping, options) => {
       get(options, "endpoint", "elasticsearch:9200"),
       idx,
       endpoint
-    ].join("/"),
+    ].filter(e => e !== "").join("/"),
     body,
     headers,
     aws: {
