@@ -22,7 +22,7 @@ module.exports = (call, idx, mapping, filter, { raw = false }) => call('GET', `$
       // eslint-disable-next-line no-underscore-dangle
       retain: filter._source.concat(filter._source.reduce((p, c) => p.concat(get(
         mapping,
-        // retain object types content fully
+        // retain properties of type "object"
         `mappings.${[idx, ...c.split(".")].join(".properties.")}.type`
       ) === "object" ? `${c}.**` : []), []))
     });
