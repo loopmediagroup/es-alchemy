@@ -42,7 +42,7 @@
     "chai": "4.2.0",
     "coveralls": "3.0.2",
     "deep-equal-in-any-order": "1.0.10",
-    "js-gardener": "1.31.7",
+    "js-gardener": "1.31.8",
     "nyc": "13.1.0",
     "semantic-release": "15.10.3",
     "uuid": "3.3.2",
@@ -78,7 +78,8 @@
       "coverage/*",
       "flow-typed/*",
       "lib/*"
-    ]
+    ],
+    "tempDir": "./coverage/.nyc_output"
   },
   "licenses": [
     {
@@ -98,7 +99,7 @@
     "lodash.isequal": "4.5.0",
     "obj-paths": "1.2.1",
     "object-hash": "1.3.0",
-    "object-rewrite": "1.1.4"
+    "object-rewrite": "2.0.0"
   },
   "peerDependencies": {
     "request": "^2.88.0",
