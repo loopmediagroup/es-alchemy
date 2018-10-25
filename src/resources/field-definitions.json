@@ -12,6 +12,9 @@
   "uuid": {
     "type": "keyword"
   },
+  "keyword": {
+    "type": "keyword"
+  },
   "point": {
     "type": "geo_point"
   },
