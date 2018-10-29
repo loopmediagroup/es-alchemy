@@ -44,7 +44,7 @@
     "deep-equal-in-any-order": "1.0.10",
     "js-gardener": "1.31.8",
     "nyc": "13.1.0",
-    "semantic-release": "15.10.5",
+    "semantic-release": "15.10.6",
     "uuid": "3.3.2",
     "request": "2.88.0",
     "request-promise-native": "1.0.5"
