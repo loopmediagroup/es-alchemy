@@ -2,6 +2,18 @@ const crypto = require("crypto");
 
 module.exports = {
   filter: {
+    false: () => ({
+      bool: {
+        filter: {
+          match: {
+            id: {
+              query: crypto.randomBytes(16).toString('hex'),
+              operator: "and"
+            }
+          }
+        }
+      }
+    }),
     and: f => ({
       bool: {
         filter: f
