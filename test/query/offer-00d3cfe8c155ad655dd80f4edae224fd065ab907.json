@@ -160,6 +160,15 @@
       "bool": {
         "filter": [
           {
+            "bool": {
+              "must_not": {
+                "exists": {
+                  "field": "id"
+                }
+              }
+            }
+          },
+          {
             "match": {
               "enabled": {
                 "query": true,
@@ -271,6 +280,10 @@
   },
   "filterBy": {
     "and": [
+      [
+        "id",
+        "notexists"
+      ],
       [
         "availabilities.enabled",
         "==",
