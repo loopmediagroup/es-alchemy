@@ -14,8 +14,7 @@ describe('Testing fields meta', () => {
     // force consistent 'randomBytes'
     const original = crypto.randomBytes;
     const seed = "3f48beca-1650-43f1-a0c9-b221cbff3692";
-    crypto.randomBytes = (size, cb) => crypto.createHash('sha256').update(seed).digest()
-      .slice(0, size);
+    crypto.randomBytes = (size, cb) => crypto.createHash('sha256').update(seed).digest().slice(0, size);
     expect(actionMap.filter.false()).to.deep.equal({
       match: {
         id: {
