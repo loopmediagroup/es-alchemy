@@ -17,14 +17,10 @@ describe('Testing fields meta', () => {
     crypto.randomBytes = (size, cb) => crypto.createHash('sha256').update(seed).digest()
       .slice(0, size);
     expect(actionMap.filter.false()).to.deep.equal({
-      bool: {
-        filter: {
-          match: {
-            id: {
-              operator: "and",
-              query: "f7797244aafb22fbadfde2655a8ff786"
-            }
-          }
+      match: {
+        id: {
+          operator: "and",
+          query: "f7797244aafb22fbadfde2655a8ff786"
         }
       }
     });
