@@ -23,10 +23,10 @@ const buildQueryRec = (filterBy, allowedFields) => {
     "Filter clause expected to be of type object."
   );
   assert(
-    ['["or"]', '["and"]', '["and","target"]', '["false"]'].includes(JSON.stringify(Object.keys(filterBy).sort())),
+    ['["or"]', '["and"]', '["and","target"]'].includes(JSON.stringify(Object.keys(filterBy).sort())),
     "Invalid filter clause provided."
   );
-  const clause = Object.keys(filterBy).find(k => ['or', 'and', 'false'].includes(k));
+  const clause = filterBy.or ? "or" : "and";
   const filters = filterBy[clause];
   const target = filterBy.target || "separate";
   assert(["separate", "union"].includes(target));
