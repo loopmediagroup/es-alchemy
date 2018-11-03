@@ -78,6 +78,15 @@ module.exports = {
         }
       }
     }),
+    notexists: l => ({
+      bool: {
+        must_not: {
+          exists: {
+            field: l
+          }
+        }
+      }
+    }),
     search: (l, r) => ({
       bool: {
         filter: r.toLowerCase().split(/[^0-9a-z]+/)
