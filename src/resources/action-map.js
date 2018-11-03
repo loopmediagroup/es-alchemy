@@ -1,7 +1,7 @@
 const crypto = require("crypto");
 
 module.exports = {
-  filter: {
+  bool: {
     and: f => ({
       bool: {
         filter: f
@@ -12,7 +12,9 @@ module.exports = {
         should: f,
         minimum_should_match: 1
       }
-    }),
+    })
+  },
+  filter: {
     nest: (p, l) => ({
       nested: {
         path: p,

@@ -58,7 +58,7 @@ const buildQueryRec = (filterBy, allowedFields) => {
       });
     }
   });
-  return ["", actionMap.filter[clause](results)];
+  return ["", actionMap.bool[clause](results)];
 };
 
 module.exports.build = (allowedFields, {
