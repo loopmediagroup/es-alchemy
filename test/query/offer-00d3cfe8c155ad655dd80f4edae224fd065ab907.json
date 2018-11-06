@@ -202,6 +202,28 @@
             }
           },
           {
+            "bool": {
+              "must_not": {
+                "nested": {
+                  "path": "availabilities",
+                  "query": {
+                    "bool": {
+                      "filter": [
+                        {
+                          "range": {
+                            "availabilities.starts": {
+                              "lte": "now"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          {
             "nested": {
               "path": "regions",
               "query": {
@@ -307,7 +329,10 @@
           "448902a5-0aa6-4422-92dd-c214e8aa466b",
           "f8f00360-9f0d-4397-a78b-551041fb5cf6"
         ]
-      ]
+      ],
+      {
+        "not": "availabilities.starts <= now"
+      }
     ]
   },
   "toReturn": "id",
