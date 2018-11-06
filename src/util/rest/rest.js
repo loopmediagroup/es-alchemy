@@ -1,37 +1,37 @@
-const get = require("lodash.get");
-const request = require("request-promise-native");
-const mappingCreate = require("./mapping/create");
-const mappingDelete = require("./mapping/delete");
-const mappingGet = require("./mapping/get");
-const mappingList = require("./mapping/list");
-const mappingHistoric = require("./mapping/historic");
-const mappingRecreate = require("./mapping/recreate");
-const dataCount = require("./data/count");
-const dataQuery = require("./data/query");
-const dataRefresh = require("./data/refresh");
-const dataHistoric = require("./data/historic");
-const dataUpdate = require("./data/update");
+const get = require('lodash.get');
+const request = require('request-promise-native');
+const mappingCreate = require('./mapping/create');
+const mappingDelete = require('./mapping/delete');
+const mappingGet = require('./mapping/get');
+const mappingList = require('./mapping/list');
+const mappingHistoric = require('./mapping/historic');
+const mappingRecreate = require('./mapping/recreate');
+const dataCount = require('./data/count');
+const dataQuery = require('./data/query');
+const dataRefresh = require('./data/refresh');
+const dataHistoric = require('./data/historic');
+const dataUpdate = require('./data/update');
 
 
 module.exports = (listIndices, getMapping, options) => {
   const call = (method, idx, {
-    endpoint = "",
+    endpoint = '',
     body = {},
     headers = {},
     json = true
   } = {}) => request({
     method,
     uri: [
-      `${get(options, "protocol", "http")}:/`,
-      get(options, "endpoint", "elasticsearch:9200"),
-      idx.replace(/@/g, "%40").replace(/,/g, "%2C"),
+      `${get(options, 'protocol', 'http')}:/`,
+      get(options, 'endpoint', 'elasticsearch:9200'),
+      idx.replace(/@/g, '%40').replace(/,/g, '%2C'),
       endpoint
-    ].filter(e => e !== "").join("/"),
+    ].filter(e => e !== '').join('/'),
     body,
     headers,
     aws: {
-      key: get(options, "aws.accessKeyId"),
-      secret: get(options, "aws.secretAccessKey"),
+      key: get(options, 'aws.accessKeyId'),
+      secret: get(options, 'aws.secretAccessKey'),
       sign_version: '4'
     },
     simple: false,

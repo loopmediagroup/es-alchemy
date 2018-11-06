@@ -1,12 +1,12 @@
-const assert = require("assert");
-const get = require("lodash.get");
-const cloneDeep = require("lodash.clonedeep");
-const model = require("./util/model");
-const index = require("./util/index");
-const data = require("./util/data");
-const query = require("./util/query");
-const rest = require("./util/rest/rest");
-const loadJsonInDir = require("./util/load-json-in-dir");
+const assert = require('assert');
+const get = require('lodash.get');
+const cloneDeep = require('lodash.clonedeep');
+const model = require('./util/model');
+const index = require('./util/index');
+const data = require('./util/data');
+const query = require('./util/query');
+const rest = require('./util/rest/rest');
+const loadJsonInDir = require('./util/load-json-in-dir');
 
 module.exports = (options) => {
   const models = {};
@@ -19,7 +19,7 @@ module.exports = (options) => {
 
   const indices = {};
   const registerIndex = (name, specs) => {
-    assert(!name.includes("@"), "Index name must not include `@`.");
+    assert(!name.includes('@'), 'Index name must not include `@`.');
     indices[name] = {
       specs: Object.assign({ name }, specs),
       mapping: index.generateMapping(name, specs, models),
@@ -47,7 +47,7 @@ module.exports = (options) => {
     query: {
       build: (idx = null, opts = {}) => query.build(idx === null ? null : indices[idx].fields, opts)
     },
-    rest: rest(() => Object.keys(indices).sort(), idx => get(indices[idx], "mapping", null), options)
+    rest: rest(() => Object.keys(indices).sort(), idx => get(indices[idx], 'mapping', null), options)
   };
 };
 

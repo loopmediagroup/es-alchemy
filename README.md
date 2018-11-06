@@ -155,13 +155,13 @@ Note that an index can only be registered once all models used in the index have
 
 <!-- eslint-disable import/no-unresolved -->
 ```js
-const ESA = require("es-alchemy");
+const ESA = require('es-alchemy');
 
-const esa = ESA({ endpoint: "localhost:9200" });
+const esa = ESA({ endpoint: 'localhost:9200' });
 
-Object.entries(ESA.loadJsonInDir("path/to/models"))
+Object.entries(ESA.loadJsonInDir('path/to/models'))
   .forEach(([name, specs]) => esa.model.register(name, specs));
-Object.entries(ESA.loadJsonInDir("path/to/indices"))
+Object.entries(ESA.loadJsonInDir('path/to/indices'))
   .forEach(([name, specs]) => esa.index.register(name, specs));
 ```
 
@@ -207,7 +207,7 @@ To remap and ingest data run
 ```js
 sourceObject = {/* ... */};
 esa.rest.data
-  .update("indexName", { upsert: [esa.data.remap("indexName", sourceObject)] });
+  .update('indexName', { upsert: [esa.data.remap('indexName', sourceObject)] });
 ```  
 
 `// todo: this needs an example`

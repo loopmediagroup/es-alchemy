@@ -1,6 +1,6 @@
-const assert = require("assert");
-const get = require("lodash.get");
-const cloneDeep = require("lodash.clonedeep");
+const assert = require('assert');
+const get = require('lodash.get');
+const cloneDeep = require('lodash.clonedeep');
 const objectRewrite = require('object-rewrite');
 const objectPaths = require('obj-paths');
 
@@ -12,7 +12,7 @@ module.exports = (call, idx, mapping, filter, { raw = false }) => call('GET', `$
     filterNew._source.push(...objectPaths.getParents(filterNew._source));
     return filterNew;
   })(),
-  endpoint: "_search"
+  endpoint: '_search'
 })
   .then((esResult) => {
     assert(esResult.statusCode === 200, JSON.stringify(esResult.body));
@@ -23,8 +23,8 @@ module.exports = (call, idx, mapping, filter, { raw = false }) => call('GET', `$
       retain: filter._source.concat(filter._source.reduce((p, c) => p.concat(get(
         mapping,
         // retain properties of type "object"
-        `mappings.${[idx, ...c.split(".")].join(".properties.")}.type`
-      ) === "object" ? `${c}.**` : []), []))
+        `mappings.${[idx, ...c.split('.')].join('.properties.')}.type`
+      ) === 'object' ? `${c}.**` : []), []))
     });
     // eslint-disable-next-line no-underscore-dangle
     esResult.body.hits.hits.forEach(r => rewriter(r._source));
