@@ -1,4 +1,4 @@
-const historic = require("./../mapping/historic");
+const historic = require('./../mapping/historic');
 
 module.exports = async (call, idx, mapping, { remove = [], upsert = [] }) => {
   const oldVersionsEntries = Object.entries(await historic(call, idx, mapping));
@@ -30,9 +30,9 @@ module.exports = async (call, idx, mapping, { remove = [], upsert = [] }) => {
   if (payload.length === 0) {
     return true;
   }
-  return call("POST", "", {
-    endpoint: "_bulk",
-    body: payload.concat("").join("\n"),
+  return call('POST', '', {
+    endpoint: '_bulk',
+    body: payload.concat('').join('\n'),
     headers: { 'content-type': 'application/x-ndjson' },
     json: false
   }).then(r => r.statusCode === 200 && !JSON.parse(r.body).errors);

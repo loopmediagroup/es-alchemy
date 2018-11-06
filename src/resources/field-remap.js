@@ -8,7 +8,7 @@ module.exports = {
   keyword: identity,
   point: v => (v ? [v[0], v[1]] : null),
   shape: v => (v ? {
-    type: "Polygon",
+    type: 'Polygon',
     coordinates: [v]
   } : null),
   datetime: identity,
