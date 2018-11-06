@@ -22,12 +22,13 @@ const buildQueryRec = (filterBy, allowedFields) => {
     typeof filterBy === "object" && !Array.isArray(filterBy),
     "Filter clause expected to be of type object."
   );
+  const filterKeys = Object.keys(filterBy);
   assert(
-    ['["or"]', '["and"]', '["and","target"]'].includes(JSON.stringify(Object.keys(filterBy).sort())),
+    ['["or"]', '["and"]', '["and","target"]', '["not"]'].includes(JSON.stringify(filterKeys.sort())),
     "Invalid filter clause provided."
   );
-  const clause = filterBy.or ? "or" : "and";
-  const filters = filterBy[clause];
+  const clause = filterKeys.filter(e => e !== "target")[0];
+  const filters = clause === "not" ? [filterBy[clause]] : filterBy[clause];
   const target = filterBy.target || "separate";
   assert(["separate", "union"].includes(target));
 
@@ -58,7 +59,7 @@ const buildQueryRec = (filterBy, allowedFields) => {
       });
     }
   });
-  return ["", actionMap.filter[clause](results)];
+  return ["", actionMap.bool[clause](clause === "not" ? results[0] : results)];
 };
 
 module.exports.build = (allowedFields, {
