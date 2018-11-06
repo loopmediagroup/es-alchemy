@@ -3,9 +3,9 @@ module.exports = (call, limit, listIndices) => {
     .entries(listIndices())
     // eslint-disable-next-line no-underscore-dangle
     .reduce((prev, [name, mapping]) => prev.concat(`-${name}@${mapping.mappings[name]._meta.hash}`), ['*'])
-    .join(",");
-  return call("POST", indices, {
-    endpoint: "_search?ignore_unavailable=true",
+    .join(',');
+  return call('POST', indices, {
+    endpoint: '_search?ignore_unavailable=true',
     body: {
       query: {
         function_score: { functions: [{ random_score: {} }] }

@@ -1,4 +1,4 @@
-const crypto = require("crypto");
+const crypto = require('crypto');
 
 module.exports = {
   bool: {
@@ -30,22 +30,22 @@ module.exports = {
         }
       }
     }),
-    "==": (l, r) => ({
+    '==': (l, r) => ({
       match: {
         [l]: {
           query: r,
-          operator: "and"
+          operator: 'and'
         }
       }
     }),
-    "<=": (l, r) => ({
+    '<=': (l, r) => ({
       range: {
         [l]: {
           lte: r
         }
       }
     }),
-    ">=": (l, r) => ({
+    '>=': (l, r) => ({
       range: {
         [l]: {
           gte: r
@@ -55,9 +55,9 @@ module.exports = {
     contains: (l, loc) => ({
       geo_shape: {
         [l]: {
-          relation: "contains",
+          relation: 'contains',
           shape: {
-            type: "point",
+            type: 'point',
             coordinates: loc
           }
         }
@@ -109,7 +109,7 @@ module.exports = {
       bool: {
         filter: {
           geo_bounding_box: {
-            "pin.location": {
+            'pin.location': {
               top_left: [r[0], r[1]],
               bottom_right: [r[2], r[3]]
             }
@@ -122,38 +122,38 @@ module.exports = {
     distance: (l, loc) => ({
       _geo_distance: Object.assign({
         [l]: loc,
-        order: "asc",
-        unit: "m",
-        mode: "min",
-        distance_type: "arc"
+        order: 'asc',
+        unit: 'm',
+        mode: 'min',
+        distance_type: 'arc'
       }, l.indexOf('.') === -1 ? {} : { nested_path: l.substring(0, l.lastIndexOf('.')) })
     }),
     random: (_, seed) => ({
       _script: {
         script: {
-          lang: "painless",
+          lang: 'painless',
           inline: (
             // Reference: http://burtleburtle.net/bob/hash/integer.html
             "int a = [doc['id'].value, params.seed].hashCode();"
-            + "a -= (a<<6);a ^= (a>>17);a -= (a<<9);a ^= (a<<4);"
-            + "a -= (a<<3);a ^= (a<<10);a ^= (a>>15);return a;"
+            + 'a -= (a<<6);a ^= (a>>17);a -= (a<<9);a ^= (a<<4);'
+            + 'a -= (a<<3);a ^= (a<<10);a ^= (a>>15);return a;'
           ),
           params: {
-            seed: crypto.createHash('md5').update(String(seed)).digest("hex")
+            seed: crypto.createHash('md5').update(String(seed)).digest('hex')
           }
         },
-        type: "number",
-        order: "asc"
+        type: 'number',
+        order: 'asc'
       }
     }),
     random_boost: (_, seed, filter_, frequency) => ({
       _script: {
         script: {
-          lang: "painless",
+          lang: 'painless',
           inline: (
             // Reference: http://burtleburtle.net/bob/hash/integer.html
             `
-if (${Object.entries(filter_).map(([k, v]) => `doc['${k}'].value == '${v}'`).join(" && ")}) {
+if (${Object.entries(filter_).map(([k, v]) => `doc['${k}'].value == '${v}'`).join(' && ')}) {
 int a = [doc['id'].value, params.seed].hashCode();
 a -= (a<<6);a ^= (a>>17);a -= (a<<9);a ^= (a<<4);
 a -= (a<<3);a ^= (a<<10);a ^= (a>>15);
@@ -161,23 +161,23 @@ return a % ${frequency} == 0 ? 0 : 1;} else {return 1;}
 `
           ),
           params: {
-            seed: crypto.createHash('md5').update(String(seed)).digest("hex")
+            seed: crypto.createHash('md5').update(String(seed)).digest('hex')
           }
         },
-        type: "number",
-        order: "asc"
+        type: 'number',
+        order: 'asc'
       }
     }),
     asc: l => ({
       [l]: Object.assign({
-        order: "asc",
-        mode: "max"
+        order: 'asc',
+        mode: 'max'
       }, l.indexOf('.') === -1 ? {} : { nested_path: l.substring(0, l.lastIndexOf('.')) })
     }),
     desc: l => ({
       [l]: Object.assign({
-        order: "desc",
-        mode: "max"
+        order: 'desc',
+        mode: 'max'
       }, l.indexOf('.') === -1 ? {} : { nested_path: l.substring(0, l.lastIndexOf('.')) })
     })
   },
@@ -185,7 +185,7 @@ return a % ${frequency} == 0 ? 0 : 1;} else {return 1;}
     random: (seed, scaleField) => ({
       script_score: {
         script: {
-          lang: "painless",
+          lang: 'painless',
           inline: `
 int a = [doc['id'].value, params.seed].hashCode();
 a -= (a<<6);a ^= (a>>17);a -= (a<<9);a ^= (a<<4);
@@ -204,8 +204,8 @@ return scale * value
     bool: f => ({
       script_score: {
         script: {
-          lang: "painless",
-          inline: "return doc[params.field].values.contains(true) ? 1 : 0;",
+          lang: 'painless',
+          inline: 'return doc[params.field].values.contains(true) ? 1 : 0;',
           params: {
             field: f
           }
@@ -215,9 +215,9 @@ return scale * value
     distance: (l, loc, offsetInM, scaleInM = null) => ({
       script_score: {
         script: {
-          lang: "painless",
+          lang: 'painless',
           inline: `
-double scale = ${typeof scaleInM === "number" ? scaleInM : "Collections.max(doc[params.scale_field].getValues())"};
+double scale = ${typeof scaleInM === 'number' ? scaleInM : 'Collections.max(doc[params.scale_field].getValues())'};
 double lambda = Math.log(params.decay) / scale;
 double score = Double.MAX_VALUE;
 double lat2 = params.lat;
