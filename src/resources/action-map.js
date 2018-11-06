@@ -12,6 +12,11 @@ module.exports = {
         should: f,
         minimum_should_match: 1
       }
+    }),
+    not: f => ({
+      bool: {
+        must_not: f
+      }
     })
   },
   filter: {
