@@ -105,6 +105,17 @@ module.exports = {
           }))
       }
     }),
+    containedBy: (l, r) => ({
+      bool: {
+        filter: {
+          geo_polygon: {
+            [l]: {
+              points: r
+            }
+          }
+        }
+      }
+    }),
     boundedBy: (l, r) => ({
       bool: {
         filter: {
