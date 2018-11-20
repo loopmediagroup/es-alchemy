@@ -16,8 +16,7 @@
     "type": "keyword"
   },
   "point": {
-    "type": "geo_shape",
-    "points_only": true
+    "type": "geo_point"
   },
   "shape": {
     "type": "geo_shape"
