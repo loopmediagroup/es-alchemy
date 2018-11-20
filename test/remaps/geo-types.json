@@ -42,7 +42,11 @@
         ]
       ],
       "timezone": "America/Vancouver",
-      "keywords": ["kw1", "kw2", "kw3"]
+      "keywords": [
+        "kw1",
+        "kw2",
+        "kw3"
+      ]
     }
   },
   "result": {
@@ -52,7 +56,13 @@
       "street": "Street Name",
       "city": "City Name",
       "country": "Country Name",
-      "centre": [-119.492190689, 49.89188365],
+      "centre": {
+        "coordinates": [
+          -119.492190689,
+          49.89188365
+        ],
+        "type": "Point"
+      },
       "area": {
         "type": "Polygon",
         "coordinates": [
@@ -89,7 +99,11 @@
         ]
       },
       "timezone": "America/Vancouver",
-      "keywords": ["kw1", "kw2", "kw3"]
+      "keywords": [
+        "kw1",
+        "kw2",
+        "kw3"
+      ]
     }
   }
 }
