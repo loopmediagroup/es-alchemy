@@ -46,30 +46,54 @@
           {
             "bool": {
               "filter": {
-                "geo_polygon": {
+                "geo_shape": {
+                  "area": {
+                    "relation": "intersects",
+                    "shape": {
+                      "type": "polygon",
+                      "coordinates": [
+                        [
+                          [
+                            -119.4,
+                            49.9
+                          ],
+                          [
+                            -119.4,
+                            50
+                          ],
+                          [
+                            -119.5,
+                            50
+                          ],
+                          [
+                            -119.5,
+                            49.9
+                          ],
+                          [
+                            -119.4,
+                            49.9
+                          ]
+                        ]
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "bool": {
+              "filter": {
+                "geo_shape": {
                   "centre": {
-                    "points": [
-                      [
-                        -119.4,
-                        49.9
-                      ],
-                      [
-                        -119.4,
-                        50
-                      ],
-                      [
-                        -119.5,
-                        50
-                      ],
-                      [
-                        -119.5,
-                        49.9
-                      ],
-                      [
+                    "relation": "intersects",
+                    "shape": {
+                      "type": "point",
+                      "coordinates": [
                         -119.4,
                         49.9
                       ]
-                    ]
+                    }
                   }
                 }
               }
@@ -96,8 +120,8 @@
         ]
       ],
       [
-        "centre",
-        "containedBy",
+        "area",
+        "intersects",
         [
           [
             -119.4,
@@ -119,6 +143,14 @@
             -119.4,
             49.9
           ]
+        ]
+      ],
+      [
+        "centre",
+        "intersects",
+        [
+          -119.4,
+          49.9
         ]
       ]
     ]

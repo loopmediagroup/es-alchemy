@@ -105,17 +105,23 @@ module.exports = {
           }))
       }
     }),
-    containedBy: (l, r) => ({
-      bool: {
-        filter: {
-          geo_polygon: {
-            [l]: {
-              points: r
+    intersects: (l, r) => {
+      const shape = typeof r[0] === 'number'
+        ? { type: 'point', coordinates: r }
+        : { type: 'polygon', coordinates: [r] };
+      return {
+        bool: {
+          filter: {
+            geo_shape: {
+              [l]: {
+                shape,
+                relation: 'intersects'
+              }
             }
           }
         }
-      }
-    }),
+      };
+    },
     boundedBy: (l, r) => ({
       bool: {
         filter: {
