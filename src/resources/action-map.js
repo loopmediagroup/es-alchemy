@@ -105,6 +105,20 @@ module.exports = {
           }))
       }
     }),
+    intersects: (l, r) => ({
+      bool: {
+        filter: {
+          geo_shape: {
+            [l]: {
+              shape: r.length === 2 && r.every(p => typeof p === 'number')
+                ? { type: 'point', coordinates: r }
+                : { type: 'polygon', coordinates: [r] },
+              relation: 'intersects'
+            }
+          }
+        }
+      }
+    }),
     boundedBy: (l, r) => ({
       bool: {
         filter: {

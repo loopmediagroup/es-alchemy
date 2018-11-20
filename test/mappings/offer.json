@@ -2,7 +2,7 @@
   "mappings": {
     "offer": {
       "_meta": {
-        "hash": "409492a32436d2cec4a3d01046308ae7e53893f1"
+        "hash": "1444fd738dca6cae82a31daf6c2996207b1f25be"
       },
       "properties": {
         "id": {
@@ -34,7 +34,8 @@
                   "type": "text"
                 },
                 "centre": {
-                  "type": "geo_point"
+                  "type": "geo_shape",
+                  "points_only": true
                 },
                 "area": {
                   "type": "geo_shape"

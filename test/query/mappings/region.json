@@ -9,7 +9,8 @@
           "type": "geo_shape"
         },
         "centre": {
-          "type": "geo_point"
+          "type": "geo_shape",
+          "points_only": true
         }
       }
     }
