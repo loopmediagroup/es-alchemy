@@ -6,7 +6,10 @@ module.exports = {
   integer: identity,
   uuid: identity,
   keyword: identity,
-  point: v => (v ? [v[0], v[1]] : null),
+  point: v => (v ? {
+    type: 'Point',
+    coordinates: v
+  } : null),
   shape: v => (v ? {
     type: 'Polygon',
     coordinates: [v]
