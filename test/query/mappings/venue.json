@@ -66,8 +66,7 @@
           "include_in_root": false
         },
         "location": {
-          "type": "geo_shape",
-          "points_only": true
+          "type": "geo_point"
         },
         "availabilities": {
           "type": "nested",
@@ -136,8 +135,7 @@
               "type": "keyword"
             },
             "location": {
-              "type": "geo_shape",
-              "points_only": true
+              "type": "geo_point"
             }
           },
           "include_in_root": false

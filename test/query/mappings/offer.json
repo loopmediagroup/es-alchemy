@@ -24,8 +24,7 @@
               "type": "text"
             },
             "location": {
-              "type": "geo_shape",
-              "points_only": true
+              "type": "geo_point"
             }
           },
           "include_in_root": true
@@ -107,8 +106,7 @@
               "type": "keyword"
             },
             "location": {
-              "type": "geo_shape",
-              "points_only": true
+              "type": "geo_point"
             }
           },
           "include_in_root": false
