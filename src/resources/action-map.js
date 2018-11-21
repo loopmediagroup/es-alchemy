@@ -63,6 +63,17 @@ module.exports = {
         }
       }
     }),
+    containedBy: (l, r) => ({
+      bool: {
+        filter: {
+          geo_polygon: {
+            [l]: {
+              points: r
+            }
+          }
+        }
+      }
+    }),
     distance: (l, loc, dist) => ({
       geo_distance: {
         distance: dist,
