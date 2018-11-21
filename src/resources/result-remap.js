@@ -1,20 +1,13 @@
-const fieldDefinitions = require('./field-definitions');
-
 const identity = v => v;
 
-module.exports.definitions = Object.entries(fieldDefinitions)
-  .reduce((p, c) => Object.assign(p, { [c[1].type]: c[0] }), {});
-
-module.exports.remap = {
+module.exports = {
   date: identity,
   boolean: identity,
-  integer: identity,
-  uuid: identity,
+  long: identity,
   keyword: identity,
-  point: identity,
-  shape: v => (v !== null ? v.coordinates[0] : null),
-  datetime: identity,
-  string: identity,
+  geo_point: identity,
+  geo_shape: v => (v !== null ? v.coordinates[0] : null),
+  text: identity,
   enum: identity,
   object: identity
 };
