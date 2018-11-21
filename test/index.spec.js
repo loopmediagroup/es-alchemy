@@ -141,22 +141,14 @@ describe('Testing index', () => {
       expect(await index.rest.data.update('offer', {
         upsert: [{
           id: offerId,
-          locations: [{
-            id: uuid4(),
-            address: {
-              id: uuid4(),
-              area: {
-                type: 'Polygon',
-                coordinates: [coordinates]
-              }
+          locations: [
+            {
+              address: { area: { type: 'Polygon', coordinates: [coordinates] } }
+            },
+            {
+              address: { area: null }
             }
-          }, {
-            id: uuid4(),
-            address: {
-              id: uuid4(),
-              area: null
-            }
-          }]
+          ]
         }]
       }), 'Insert').to.equal(true);
       expect(await index.rest.data.refresh('offer')).to.equal(true);
@@ -170,14 +162,10 @@ describe('Testing index', () => {
           id: offerId,
           locations: [
             {
-              address: {
-                area: coordinates
-              }
+              address: { area: coordinates }
             },
             {
-              address: {
-                area: null
-              }
+              address: { area: null }
             }
           ]
         }],
