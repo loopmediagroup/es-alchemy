@@ -142,12 +142,8 @@ describe('Testing index', () => {
         upsert: [{
           id: offerId,
           locations: [
-            {
-              address: { area: { type: 'Polygon', coordinates: [coordinates] } }
-            },
-            {
-              address: { area: null }
-            }
+            { address: { area: { type: 'Polygon', coordinates: [coordinates] } } },
+            { address: { area: null } }
           ]
         }]
       }), 'Insert').to.equal(true);
@@ -161,12 +157,8 @@ describe('Testing index', () => {
         payload: [{
           id: offerId,
           locations: [
-            {
-              address: { area: coordinates }
-            },
-            {
-              address: { area: null }
-            }
+            { address: { area: coordinates } },
+            { address: { area: null } }
           ]
         }],
         page: {

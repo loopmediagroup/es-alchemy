@@ -32,7 +32,9 @@ module.exports = (call, idx, mapping, filter, { raw = false }) => call('GET', `$
       overwrite: filter._source
         .map(f => [f, get(mapping, `mappings.${[idx, ...f.split('.')].join('.properties.')}.type`)])
         .filter(f => f[1] !== undefined)
-        .reduce((p, c) => Object.assign(p, { [c[0]]: (key, value, parents) => resultRemap[[c[1]]](value) }), {})
+        .reduce((p, [field, fieldMapping]) => Object.assign(p, {
+          [field]: (key, value, parents) => resultRemap[fieldMapping](value)
+        }), {})
     });
     esResult.body.hits.hits.forEach((r) => {
       // eslint-disable-next-line no-underscore-dangle
