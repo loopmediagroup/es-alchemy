@@ -135,14 +135,12 @@ describe('Testing index', () => {
           }
         }],
         page: {
-          next: { limit: 1, offset: 1 },
+          next: { limit: 1, offset: 1, cursor: 'eyJzaXplIjoxLCJmcm9tIjoxfQ==' },
           previous: null,
-          cursor: {
-            next: 'eyJzaXplIjoxLCJmcm9tIjoxfQ==',
-            previous: null
+          index: {
+            max: 1,
+            current: 1
           },
-          max: 1,
-          current: 1,
           size: 1
         }
       });
@@ -178,14 +176,12 @@ describe('Testing index', () => {
           ]
         }],
         page: {
-          next: { limit: 1, offset: 1 },
+          next: { limit: 1, offset: 1, cursor: 'eyJzaXplIjoxLCJmcm9tIjoxfQ==' },
           previous: null,
-          cursor: {
-            next: 'eyJzaXplIjoxLCJmcm9tIjoxfQ==',
-            previous: null
+          index: {
+            max: 1,
+            current: 1
           },
-          max: 1,
-          current: 1,
           size: 1
         }
       });
@@ -214,14 +210,12 @@ describe('Testing index', () => {
           locations: []
         }],
         page: {
-          next: { limit: 1, offset: 1 },
+          next: { limit: 1, offset: 1, cursor: 'eyJzaXplIjoxLCJmcm9tIjoxfQ==' },
           previous: null,
-          cursor: {
-            next: 'eyJzaXplIjoxLCJmcm9tIjoxfQ==',
-            previous: null
+          index: {
+            max: 1,
+            current: 1
           },
-          max: 1,
-          current: 1,
           size: 1
         }
       });
@@ -303,14 +297,12 @@ describe('Testing index', () => {
       }))).to.deep.equal({
         payload: [{ id: uuids[1] }],
         page: {
-          next: { limit: 1, offset: 2 },
-          previous: { limit: 1, offset: 0 },
-          cursor: {
-            next: 'eyJzaXplIjoxLCJmcm9tIjoyfQ==',
-            previous: 'eyJzaXplIjoxLCJmcm9tIjowfQ=='
+          next: { limit: 1, offset: 2, cursor: 'eyJzaXplIjoxLCJmcm9tIjoyfQ==' },
+          previous: { limit: 1, offset: 0, cursor: 'eyJzaXplIjoxLCJmcm9tIjowfQ==' },
+          index: {
+            max: 3,
+            current: 2
           },
-          max: 3,
-          current: 2,
           size: 1
         }
       });
@@ -366,12 +358,10 @@ describe('Testing index', () => {
         page: {
           next: null,
           previous: null,
-          cursor: {
-            next: null,
-            previous: null
+          index: {
+            current: 1,
+            max: 1
           },
-          current: 1,
-          max: 1,
           size: 20
         }
       });
@@ -386,14 +376,12 @@ describe('Testing index', () => {
       }))).to.deep.equal({
         payload: [{ id: uuids[1] }],
         page: {
-          next: { limit: 1, offset: 2 },
-          previous: { limit: 1, offset: 0 },
-          cursor: {
-            next: 'eyJzaXplIjoxLCJmcm9tIjoyfQ==',
-            previous: 'eyJzaXplIjoxLCJmcm9tIjowfQ=='
+          next: { limit: 1, offset: 2, cursor: 'eyJzaXplIjoxLCJmcm9tIjoyfQ==' },
+          previous: { limit: 1, offset: 0, cursor: 'eyJzaXplIjoxLCJmcm9tIjowfQ==' },
+          index: {
+            max: 3,
+            current: 2
           },
-          max: 3,
-          current: 2,
           size: 1
         }
       });

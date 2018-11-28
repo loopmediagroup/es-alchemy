@@ -7,21 +7,21 @@ module.exports.toCursor = toCursor;
 module.exports.buildPageObject = (countReturned, countTotal, limit, offset) => {
   const next = countReturned === limit ? {
     limit,
-    offset: offset + limit
+    offset: offset + limit,
+    cursor: toCursor({ limit, offset: offset + limit })
   } : null;
   const previous = offset > 0 ? {
     limit,
-    offset: Math.max(0, offset - limit)
+    offset: Math.max(0, offset - limit),
+    cursor: toCursor({ limit, offset: Math.max(0, offset - limit) })
   } : null;
   return {
     next,
     previous,
-    cursor: {
-      next: next !== null ? toCursor(next) : null,
-      previous: previous !== null ? toCursor(previous) : null
+    index: {
+      current: 1 + Math.ceil(offset * 1.0 / limit),
+      max: Math.max(1, 1 + Math.floor((countTotal - 0.1) / limit))
     },
-    current: 1 + Math.ceil(offset * 1.0 / limit),
-    max: Math.max(1, 1 + Math.floor((countTotal - 0.1) / limit)),
     size: limit
   };
 };
