@@ -1,4 +1,3 @@
-
 module.exports.fromCursor = cursor => JSON.parse(Buffer.from(cursor, 'base64').toString('utf8'));
 
 const toCursor = ({ limit = 20, offset = 0 } = {}) => Buffer
