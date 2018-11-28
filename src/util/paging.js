@@ -23,11 +23,11 @@ module.exports.buildPageObject = (resultLength, resultTotal, size, from) => {
   return {
     next,
     previous,
-    current: 1 + Math.ceil(from * 1.0 / size),
     cursor: {
       next: pageToCursor(next),
       previous: pageToCursor(previous)
     },
+    current: 1 + Math.ceil(from * 1.0 / size),
     max: Math.max(1, 1 + Math.floor((resultTotal - 0.1) / size)),
     size
   };
