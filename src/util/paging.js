@@ -1,7 +1,13 @@
-module.exports.fromCursor = cursor => JSON.parse(Buffer.from(cursor, 'base64').toString('utf8'));
+const objectEncode = obj => Buffer.from(JSON.stringify(obj)).toString('base64');
 
-const toCursor = ({ limit = 20, offset = 0 } = {}) => Buffer
-  .from(JSON.stringify({ size: limit, from: offset })).toString('base64');
+const objectDecode = data => JSON.parse(Buffer.from(data, 'base64').toString('utf8'));
+
+module.exports.fromCursor = (cursor) => {
+  const { limit, offset } = objectDecode(cursor);
+  return { limit, offset };
+};
+
+const toCursor = ({ limit = 20, offset = 0 } = {}) => objectEncode({ limit, offset });
 module.exports.toCursor = toCursor;
 
 module.exports.buildPageObject = (countReturned, countTotal, limit, offset) => {

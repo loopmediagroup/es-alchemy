@@ -76,9 +76,10 @@ module.exports.build = (allowedFields, {
     (limit === undefined && offset === undefined) || cursor === undefined,
     'Use cursor or offset + limit, not both.'
   );
-  const { size, from } = cursor !== undefined ? fromCursor(cursor) : {
-    size: typeof limit === 'number' ? limit : 20,
-    from: typeof offset === 'number' ? offset : 0
+  const cursorPayload = cursor !== undefined ? fromCursor(cursor) : null;
+  const { size, from } = {
+    size: typeof limit === 'number' ? limit : get(cursorPayload, 'limit', 20),
+    from: typeof offset === 'number' ? offset : get(cursorPayload, 'offset', 0)
   };
   const result = {
     _source: typeof toReturn === 'string' ? objectPaths.split(toReturn) : toReturn,

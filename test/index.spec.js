@@ -135,7 +135,7 @@ describe('Testing index', () => {
           }
         }],
         page: {
-          next: { limit: 1, offset: 1, cursor: 'eyJzaXplIjoxLCJmcm9tIjoxfQ==' },
+          next: { limit: 1, offset: 1, cursor: 'eyJsaW1pdCI6MSwib2Zmc2V0IjoxfQ==' },
           previous: null,
           index: {
             max: 1,
@@ -176,7 +176,7 @@ describe('Testing index', () => {
           ]
         }],
         page: {
-          next: { limit: 1, offset: 1, cursor: 'eyJzaXplIjoxLCJmcm9tIjoxfQ==' },
+          next: { limit: 1, offset: 1, cursor: 'eyJsaW1pdCI6MSwib2Zmc2V0IjoxfQ==' },
           previous: null,
           index: {
             max: 1,
@@ -210,7 +210,7 @@ describe('Testing index', () => {
           locations: []
         }],
         page: {
-          next: { limit: 1, offset: 1, cursor: 'eyJzaXplIjoxLCJmcm9tIjoxfQ==' },
+          next: { limit: 1, offset: 1, cursor: 'eyJsaW1pdCI6MSwib2Zmc2V0IjoxfQ==' },
           previous: null,
           index: {
             max: 1,
@@ -297,8 +297,8 @@ describe('Testing index', () => {
       }))).to.deep.equal({
         payload: [{ id: uuids[1] }],
         page: {
-          next: { limit: 1, offset: 2, cursor: 'eyJzaXplIjoxLCJmcm9tIjoyfQ==' },
-          previous: { limit: 1, offset: 0, cursor: 'eyJzaXplIjoxLCJmcm9tIjowfQ==' },
+          next: { limit: 1, offset: 2, cursor: 'eyJsaW1pdCI6MSwib2Zmc2V0IjoyfQ==' },
+          previous: { limit: 1, offset: 0, cursor: 'eyJsaW1pdCI6MSwib2Zmc2V0IjowfQ==' },
           index: {
             max: 3,
             current: 2
@@ -376,8 +376,8 @@ describe('Testing index', () => {
       }))).to.deep.equal({
         payload: [{ id: uuids[1] }],
         page: {
-          next: { limit: 1, offset: 2, cursor: 'eyJzaXplIjoxLCJmcm9tIjoyfQ==' },
-          previous: { limit: 1, offset: 0, cursor: 'eyJzaXplIjoxLCJmcm9tIjowfQ==' },
+          next: { limit: 1, offset: 2, cursor: 'eyJsaW1pdCI6MSwib2Zmc2V0IjoyfQ==' },
+          previous: { limit: 1, offset: 0, cursor: 'eyJsaW1pdCI6MSwib2Zmc2V0IjowfQ==' },
           index: {
             max: 3,
             current: 2
