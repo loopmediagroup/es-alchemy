@@ -4,7 +4,7 @@ const expect = require('chai').expect;
 const chai = require('chai');
 const deepEqualInAnyOrder = require('deep-equal-in-any-order');
 const Index = require('../src/index');
-const { pageToCursor } = require('../src/util/paging');
+const { toCursor } = require('../src/util/paging');
 
 chai.use(deepEqualInAnyOrder);
 
@@ -95,7 +95,7 @@ describe('Testing index', () => {
 
     it('Testing query.build with cursor.', () => {
       expect(index.query.build(undefined, {
-        cursor: pageToCursor({ limit: 10, offset: 10 })
+        cursor: toCursor({ limit: 10, offset: 10 })
       })).to.deep.equal({
         _source: [''],
         size: 10,

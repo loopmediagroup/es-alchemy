@@ -3,7 +3,7 @@ module.exports.fromCursor = cursor => JSON.parse(Buffer.from(cursor, 'base64').t
 
 const toCursor = ({ limit, offset }) => Buffer
   .from(JSON.stringify({ size: limit, from: offset })).toString('base64');
-module.exports.pageToCursor = toCursor;
+module.exports.toCursor = toCursor;
 
 module.exports.buildPageObject = (countReturned, countTotal, limit, offset) => {
   const next = countReturned === limit ? {
