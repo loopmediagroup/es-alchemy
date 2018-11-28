@@ -1,29 +1,28 @@
 
 module.exports.fromCursor = cursor => JSON.parse(Buffer.from(cursor, 'base64').toString('utf8'));
 
-const pageToCursor = obj => (obj !== null
-  ? Buffer.from(JSON.stringify({ size: obj.limit, from: obj.offset })).toString('base64')
-  : null);
-module.exports.pageToCursor = pageToCursor;
+const toCursor = ({ limit, offset }) => Buffer
+  .from(JSON.stringify({ size: limit, from: offset })).toString('base64');
+module.exports.pageToCursor = toCursor;
 
-module.exports.buildPageObject = (resultLength, resultTotal, size, from) => {
-  const next = resultLength === size ? {
-    limit: size,
-    offset: from + size
+module.exports.buildPageObject = (countReturned, countTotal, limit, offset) => {
+  const next = countReturned === limit ? {
+    limit,
+    offset: offset + limit
   } : null;
-  const previous = from > 0 ? {
-    limit: size,
-    offset: Math.max(0, from - size)
+  const previous = offset > 0 ? {
+    limit,
+    offset: Math.max(0, offset - limit)
   } : null;
   return {
     next,
     previous,
     cursor: {
-      next: pageToCursor(next),
-      previous: pageToCursor(previous)
+      next: next !== null ? toCursor(next) : null,
+      previous: previous !== null ? toCursor(previous) : null
     },
-    current: 1 + Math.ceil(from * 1.0 / size),
-    max: Math.max(1, 1 + Math.floor((resultTotal - 0.1) / size)),
-    size
+    current: 1 + Math.ceil(offset * 1.0 / limit),
+    max: Math.max(1, 1 + Math.floor((countTotal - 0.1) / limit)),
+    size: limit
   };
 };
