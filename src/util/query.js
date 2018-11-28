@@ -72,6 +72,10 @@ module.exports.build = (allowedFields, {
   offset,
   cursor
 }) => {
+  assert(
+    (limit === undefined && offset === undefined) || cursor === undefined,
+    'Use cursor or offset + limit, not both.'
+  );
   const {
     size = typeof limit === 'number' ? limit : 20,
     from = typeof offset === 'number' ? offset : 0
