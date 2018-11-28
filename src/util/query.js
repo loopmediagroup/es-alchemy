@@ -3,6 +3,7 @@ const get = require('lodash.get');
 const isEqual = require('lodash.isequal');
 const objectPaths = require('obj-paths');
 const actionMap = require('../resources/action-map');
+const { fromCursor } = require('../util/paging');
 
 const buildQueryRec = (filterBy, allowedFields) => {
   // handle actual filter clause
@@ -67,13 +68,18 @@ module.exports.build = (allowedFields, {
   filterBy = [],
   orderBy = [],
   scoreBy = [],
-  limit = 20,
-  offset = 0
+  limit,
+  offset,
+  cursor
 }) => {
+  const {
+    size = typeof limit === 'number' ? limit : 20,
+    from = typeof offset === 'number' ? offset : 0
+  } = fromCursor(cursor);
   const result = {
     _source: typeof toReturn === 'string' ? objectPaths.split(toReturn) : toReturn,
-    size: limit,
-    from: typeof offset === 'number' ? offset : 0
+    size,
+    from
   };
   // eslint-disable-next-line no-underscore-dangle
   assert(Array.isArray(result._source), 'Invalid toReturn provided.');
