@@ -4,6 +4,7 @@ const expect = require('chai').expect;
 const chai = require('chai');
 const deepEqualInAnyOrder = require('deep-equal-in-any-order');
 const Index = require('../src/index');
+const { toCursor } = require('../src/util/paging');
 
 chai.use(deepEqualInAnyOrder);
 
@@ -91,6 +92,17 @@ describe('Testing index', () => {
         sort: [{ id: { mode: 'max', order: 'asc' } }]
       });
     });
+
+    it('Testing query.build with cursor.', () => {
+      expect(index.query.build(undefined, {
+        cursor: toCursor({ limit: 10, offset: 10 })
+      })).to.deep.equal({
+        _source: [''],
+        size: 10,
+        from: 10,
+        sort: [{ id: { mode: 'max', order: 'asc' } }]
+      });
+    });
   });
 
   describe('Testing Query Filter', () => {
@@ -123,10 +135,12 @@ describe('Testing index', () => {
           }
         }],
         page: {
-          next: { limit: 1, offset: 1 },
+          next: { limit: 1, offset: 1, cursor: 'eyJsaW1pdCI6MSwib2Zmc2V0IjoxfQ==' },
           previous: null,
-          max: 1,
-          current: 1,
+          index: {
+            max: 1,
+            current: 1
+          },
           size: 1
         }
       });
@@ -162,10 +176,12 @@ describe('Testing index', () => {
           ]
         }],
         page: {
-          next: { limit: 1, offset: 1 },
+          next: { limit: 1, offset: 1, cursor: 'eyJsaW1pdCI6MSwib2Zmc2V0IjoxfQ==' },
           previous: null,
-          max: 1,
-          current: 1,
+          index: {
+            max: 1,
+            current: 1
+          },
           size: 1
         }
       });
@@ -194,10 +210,12 @@ describe('Testing index', () => {
           locations: []
         }],
         page: {
-          next: { limit: 1, offset: 1 },
+          next: { limit: 1, offset: 1, cursor: 'eyJsaW1pdCI6MSwib2Zmc2V0IjoxfQ==' },
           previous: null,
-          max: 1,
-          current: 1,
+          index: {
+            max: 1,
+            current: 1
+          },
           size: 1
         }
       });
@@ -279,10 +297,12 @@ describe('Testing index', () => {
       }))).to.deep.equal({
         payload: [{ id: uuids[1] }],
         page: {
-          next: { limit: 1, offset: 2 },
-          previous: { limit: 1, offset: 0 },
-          max: 3,
-          current: 2,
+          next: { limit: 1, offset: 2, cursor: 'eyJsaW1pdCI6MSwib2Zmc2V0IjoyfQ==' },
+          previous: { limit: 1, offset: 0, cursor: 'eyJsaW1pdCI6MSwib2Zmc2V0IjowfQ==' },
+          index: {
+            max: 3,
+            current: 2
+          },
           size: 1
         }
       });
@@ -338,8 +358,10 @@ describe('Testing index', () => {
         page: {
           next: null,
           previous: null,
-          current: 1,
-          max: 1,
+          index: {
+            current: 1,
+            max: 1
+          },
           size: 20
         }
       });
@@ -354,10 +376,12 @@ describe('Testing index', () => {
       }))).to.deep.equal({
         payload: [{ id: uuids[1] }],
         page: {
-          next: { limit: 1, offset: 2 },
-          previous: { limit: 1, offset: 0 },
-          max: 3,
-          current: 2,
+          next: { limit: 1, offset: 2, cursor: 'eyJsaW1pdCI6MSwib2Zmc2V0IjoyfQ==' },
+          previous: { limit: 1, offset: 0, cursor: 'eyJsaW1pdCI6MSwib2Zmc2V0IjowfQ==' },
+          index: {
+            max: 3,
+            current: 2
+          },
           size: 1
         }
       });
