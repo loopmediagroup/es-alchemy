@@ -1,6 +1,6 @@
 const objectEncode = obj => Buffer.from(JSON.stringify(obj)).toString('base64');
 
-const objectDecode = data => JSON.parse(Buffer.from(data, 'base64').toString('utf8'));
+const objectDecode = base64 => JSON.parse(Buffer.from(base64, 'base64').toString('utf8'));
 
 module.exports.fromCursor = (cursor) => {
   const { limit, offset } = objectDecode(cursor);
@@ -13,14 +13,18 @@ module.exports.toCursor = toCursor;
 module.exports.buildPageObject = (countReturned, countTotal, limit, offset) => {
   const next = countReturned === limit ? {
     limit,
-    offset: offset + limit,
-    cursor: toCursor({ limit, offset: offset + limit })
+    offset: offset + limit
   } : null;
+  if (next !== null) {
+    next.cursor = toCursor(next);
+  }
   const previous = offset > 0 ? {
     limit,
-    offset: Math.max(0, offset - limit),
-    cursor: toCursor({ limit, offset: Math.max(0, offset - limit) })
+    offset: Math.max(0, offset - limit)
   } : null;
+  if (previous !== null) {
+    previous.cursor = toCursor(previous);
+  }
   return {
     next,
     previous,
