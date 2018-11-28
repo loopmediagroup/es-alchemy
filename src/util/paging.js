@@ -1,8 +1,7 @@
 
 module.exports.fromCursor = cursor => JSON.parse(Buffer.from(cursor, 'base64').toString('utf8'));
 
-const toCursor = ({ limit, offset }) => Buffer
-  .from(JSON.stringify({ size: limit, from: offset })).toString('base64');
+const toCursor = ({ limit, offset }) => Buffer.from(JSON.stringify({ size: limit, from: offset })).toString('base64');
 module.exports.toCursor = toCursor;
 
 module.exports.buildPageObject = (countReturned, countTotal, limit, offset) => {
