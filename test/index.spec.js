@@ -124,9 +124,9 @@ describe('Testing index', () => {
         }],
         page: {
           next: { limit: 1, offset: 1 },
-          prev: null,
+          previous: null,
           max: 1,
-          cur: 1,
+          current: 1,
           size: 1
         }
       });
@@ -163,9 +163,9 @@ describe('Testing index', () => {
         }],
         page: {
           next: { limit: 1, offset: 1 },
-          prev: null,
+          previous: null,
           max: 1,
-          cur: 1,
+          current: 1,
           size: 1
         }
       });
@@ -195,9 +195,9 @@ describe('Testing index', () => {
         }],
         page: {
           next: { limit: 1, offset: 1 },
-          prev: null,
+          previous: null,
           max: 1,
-          cur: 1,
+          current: 1,
           size: 1
         }
       });
@@ -280,9 +280,9 @@ describe('Testing index', () => {
         payload: [{ id: uuids[1] }],
         page: {
           next: { limit: 1, offset: 2 },
-          prev: { limit: 1, offset: 0 },
+          previous: { limit: 1, offset: 0 },
           max: 3,
-          cur: 2,
+          current: 2,
           size: 1
         }
       });
@@ -337,8 +337,8 @@ describe('Testing index', () => {
         payload: [],
         page: {
           next: null,
-          prev: null,
-          cur: 1,
+          previous: null,
+          current: 1,
           max: 1,
           size: 20
         }
@@ -355,9 +355,9 @@ describe('Testing index', () => {
         payload: [{ id: uuids[1] }],
         page: {
           next: { limit: 1, offset: 2 },
-          prev: { limit: 1, offset: 0 },
+          previous: { limit: 1, offset: 0 },
           max: 3,
-          cur: 2,
+          current: 2,
           size: 1
         }
       });
