@@ -1,10 +1,5 @@
 
-module.exports.fromCursor = (cursor) => {
-  if (cursor === undefined) {
-    return {};
-  }
-  return JSON.parse(Buffer.from(cursor, 'base64').toString('utf8'));
-};
+module.exports.fromCursor = cursor => JSON.parse(Buffer.from(cursor, 'base64').toString('utf8'));
 
 const pageToCursor = obj => (obj !== null
   ? Buffer.from(JSON.stringify({ size: obj.limit, from: obj.offset })).toString('base64')
