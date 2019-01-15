@@ -253,6 +253,8 @@ describe('Testing index', () => {
           and: ['locations.address.street == value1', 'locations.address.city == value2']
         }
       }))).payload.length).to.equal(0);
+      // cleanup
+      expect(await index.rest.mapping.delete('offer')).to.equal(true);
     }).timeout(10000);
   });
 
@@ -308,7 +310,7 @@ describe('Testing index', () => {
       });
     };
 
-    it('Testing versioning', async () => {
+    it('Testing Versioning (populated)', async () => {
       // eslint-disable-next-line no-underscore-dangle
       const mappingHash = index.index.getMapping('offer').mappings.offer._meta.hash;
       const uuids = [uuid4(), uuid4(), uuid4()].sort();
@@ -339,6 +341,20 @@ describe('Testing index', () => {
       await validate(3, {});
       await checkDocs(uuids);
       expect(await index.rest.data.historic()).to.deep.equal({});
+      // cleanup
+      expect(await index.rest.mapping.delete('offer')).to.equal(true);
+    });
+
+    it('Testing Versioning (empty)', async () => {
+      // create new index
+      expect(await index.rest.mapping.create('offer')).to.equal(true);
+      expect(await index.rest.mapping.historic('offer')).to.deep.equal({});
+      // create new version of index
+      index.index.register('offer', Object.assign({}, indices.offer, { fields: ['id'] }));
+      expect(await index.rest.mapping.create('offer')).to.equal(true);
+      expect(await index.rest.mapping.historic('offer')).to.deep.equal({});
+      // cleanup
+      expect(await index.rest.mapping.delete('offer')).to.equal(true);
     });
 
     it('Testing lifecycle', async () => {
@@ -388,6 +404,7 @@ describe('Testing index', () => {
       expect(await index.rest.data.update('offer', { remove: uuids })).to.equal(true);
       expect(await index.rest.data.refresh('offer')).to.equal(true);
       expect(await index.rest.data.count('offer')).to.equal(0);
+      // cleanup
       expect(await index.rest.mapping.delete('offer')).to.equal(true);
     }).timeout(10000);
 
