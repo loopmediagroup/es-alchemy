@@ -39,7 +39,7 @@
     "coveralls": "3.0.2",
     "deep-equal-in-any-order": "1.0.10",
     "js-gardener": "1.34.2",
-    "nyc": "13.1.0",
+    "nyc": "13.2.0",
     "semantic-release": "15.13.3",
     "uuid": "3.3.2",
     "request": "2.88.0",
@@ -48,7 +48,7 @@
     "@babel/core": "7.2.2",
     "@babel/cli": "7.2.3",
     "@babel/plugin-transform-flow-comments": "7.2.0",
-    "@babel/plugin-proposal-object-rest-spread": "7.3.1",
+    "@babel/plugin-proposal-object-rest-spread": "7.3.2",
     "@babel/preset-flow": "7.0.0"
   },
   "nyc": {
