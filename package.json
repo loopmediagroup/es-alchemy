@@ -38,7 +38,7 @@
     "chai": "4.2.0",
     "coveralls": "3.0.2",
     "deep-equal-in-any-order": "1.0.10",
-    "js-gardener": "1.37.2",
+    "js-gardener": "1.37.3",
     "nyc": "13.3.0",
     "semantic-release": "15.13.3",
     "uuid": "3.3.2",
