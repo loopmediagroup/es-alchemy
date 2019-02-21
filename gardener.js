@@ -7,6 +7,7 @@ if (require.main === module) {
     author: 'Loop Media Group',
     license: 'MIT',
     docker: ['lambda'],
-    ci: ['circle']
+    ci: ['circle'],
+    dependabot: true
   }).catch(() => process.exit(1));
 }
