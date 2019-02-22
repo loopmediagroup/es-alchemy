@@ -37,7 +37,7 @@
     "babel-eslint": "10.0.1",
     "chai": "4.2.0",
     "coveralls": "3.0.2",
-    "deep-equal-in-any-order": "1.0.10",
+    "deep-equal-in-any-order": "1.0.13",
     "js-gardener": "1.37.3",
     "nyc": "13.3.0",
     "semantic-release": "15.13.3",
