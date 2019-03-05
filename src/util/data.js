@@ -1,6 +1,7 @@
 // Convert raw data into index ready data
 const assert = require('assert');
 const fieldRemap = require('../resources/field-remap');
+const { buildPageObject } = require('../util/paging');
 
 const remapRec = (specs, input, models) => {
   const result = [];
@@ -45,3 +46,8 @@ const remapRec = (specs, input, models) => {
 };
 
 module.exports.remap = (specs, input, models) => remapRec(specs, input, models);
+module.exports.page = (esResultBody, filter) => ({
+  // eslint-disable-next-line no-underscore-dangle
+  payload: esResultBody.hits.hits.map(r => r._source),
+  page: buildPageObject(esResultBody.hits.hits.length, esResultBody.hits.total, filter.size, filter.from)
+});
