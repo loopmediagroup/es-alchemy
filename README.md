@@ -28,6 +28,7 @@ Outline of how [ESAlchemy](https://github.com/loopmediagroup/es-alchemy) can be 
 - Insert remapped data into Elasticsearch
 - Build a query using the ES-Alchemy query syntax
 - Run query against Elasticsearch
+- Map result to simplified representation with paging information
 
 ### Model and Index Definitions
 
@@ -325,6 +326,7 @@ Available commands
 #### data
 
 - `remap(name: String, source: Object)` - remap source object to ingestible object, see details in corresponding section
+- `page(esResult: Object, filter: Object)` - convert `esResult` object into simplified page representation using `filter` to compute paging information
 
 #### query
 
@@ -341,7 +343,7 @@ Interacting with the rest api of Elasticsearch
 - `mapping.historic(name: String)` - get _old_ mapping versions and their respective document counts from Elasticsearch
 - `mapping.recreate(name: String)` - recreate mapping on Elasticsearch (deletes _all_ versions and recreates current version)
 - `data.count(name: String)` - get number of indexed elements from Elasticsearch (from _all_ versions)
-- `data.query(name: String, filter: Object, options: Object)` - query for data in Elasticsearch against all versions. Use raw flag to obtain raw result from Elasticsearch.
+- `data.query(name: String, filter: Object, options: Object)` - query for data in Elasticsearch against all versions. Returns raw result body from elasticsearch.
 - `data.refresh(name: String)` - refresh Elasticsearch index, useful e.g. when testing (all versions)
 - `data.historic(limit: Integer = 100)` - fetch historic data entries as `{ [ID]: [INDEX] }`. Order of results is random.
 - `data.update(name: String, options: Object)` - insert, update or delete objects in Elasticsearch (current version, removed touched documents from old versions and deletes old versions when empty)

@@ -120,12 +120,14 @@ describe('Testing index', () => {
         }]
       })).to.equal(true);
       expect(await index.rest.data.refresh('offer')).to.equal(true);
-      expect(await index.rest.data.query('offer', index.query.build('offer', {
+      const filter = index.query.build('offer', {
         toReturn: ['id', 'meta'],
         filterBy: { and: [['id', '==', offerId]] },
         limit: 1,
         offset: 0
-      }))).to.deep.equal({
+      });
+      const queryResult = await index.rest.data.query('offer', filter);
+      expect(index.data.page(queryResult, filter)).to.deep.equal({
         payload: [{
           id: offerId,
           meta: {
@@ -162,12 +164,14 @@ describe('Testing index', () => {
         }]
       }), 'Insert').to.equal(true);
       expect(await index.rest.data.refresh('offer')).to.equal(true);
-      expect(await index.rest.data.query('offer', index.query.build('offer', {
+      const filter = index.query.build('offer', {
         toReturn: ['id', 'locations.address.area'],
         filterBy: { and: [['id', '==', offerId]] },
         limit: 1,
         offset: 0
-      }))).to.deep.equal({
+      });
+      const queryResult = await index.rest.data.query('offer', filter);
+      expect(index.data.page(queryResult, filter)).to.deep.equal({
         payload: [{
           id: offerId,
           locations: [
@@ -199,12 +203,14 @@ describe('Testing index', () => {
         }]
       })).to.equal(true);
       expect(await index.rest.data.refresh('offer')).to.equal(true);
-      expect(await index.rest.data.query('offer', index.query.build('offer', {
+      const filter = index.query.build('offer', {
         toReturn: ['id', 'locations.name'],
         filterBy: { and: [['id', '==', offerId]] },
         limit: 1,
         offset: 0
-      }))).to.deep.equal({
+      });
+      const queryResult = await index.rest.data.query('offer', filter);
+      expect(index.data.page(queryResult, filter)).to.deep.equal({
         payload: [{
           id: offerId,
           locations: []
@@ -241,18 +247,22 @@ describe('Testing index', () => {
         }]
       })).to.equal(true);
       expect(await index.rest.data.refresh('offer')).to.equal(true);
-      expect((await index.rest.data.query('offer', index.query.build('offer', {
+      const filter1 = index.query.build('offer', {
         filterBy: {
           target: 'union',
           and: ['locations.address.street == value1', 'locations.address.city == value2']
         }
-      }))).payload.length).to.equal(1);
-      expect((await index.rest.data.query('offer', index.query.build('offer', {
+      });
+      const queryResult1 = await index.rest.data.query('offer', filter1);
+      expect((index.data.page(queryResult1, filter1)).payload.length).to.equal(1);
+      const filter2 = index.query.build('offer', {
         filterBy: {
           target: 'separate',
           and: ['locations.address.street == value1', 'locations.address.city == value2']
         }
-      }))).payload.length).to.equal(0);
+      });
+      const queryResult2 = await index.rest.data.query('offer', filter2);
+      expect((index.data.page(queryResult2, filter2)).payload.length).to.equal(0);
       // cleanup
       expect(await index.rest.mapping.delete('offer')).to.equal(true);
     }).timeout(10000);
@@ -291,12 +301,14 @@ describe('Testing index', () => {
       expect(await index.rest.mapping.historic('offer')).to.deep.equal(historic);
     };
     const checkDocs = async (uuids) => {
-      expect(await index.rest.data.query('offer', index.query.build('offer', {
+      const filter = index.query.build('offer', {
         toReturn: ['id'],
         filterBy: { and: [['id', 'in', uuids]] },
         limit: 1,
         offset: 1
-      }))).to.deep.equal({
+      });
+      const queryResult = await index.rest.data.query('offer', filter);
+      expect(index.data.page(queryResult, filter)).to.deep.equal({
         payload: [{ id: uuids[1] }],
         page: {
           next: { limit: 1, offset: 2, cursor: 'eyJsaW1pdCI6MSwib2Zmc2V0IjoyfQ==' },
@@ -369,7 +381,9 @@ describe('Testing index', () => {
       expect(await index.rest.mapping.list()).to.deep.equal(['offer']);
       expect((await index.rest.mapping.get('offer')).body[`offer@${mappingHash}`])
         .to.deep.equal(index.index.getMapping('offer'));
-      expect(await index.rest.data.query('offer', index.query.build())).to.deep.equal({
+      const filter1 = index.query.build();
+      const queryResult1 = await index.rest.data.query('offer', filter1);
+      expect(index.data.page(queryResult1, filter1)).to.deep.equal({
         payload: [],
         page: {
           next: null,
@@ -384,12 +398,14 @@ describe('Testing index', () => {
       expect(await index.rest.data.update('offer', { upsert: uuids.map(id => ({ id })) })).to.equal(true);
       expect(await index.rest.data.refresh('offer')).to.equal(true);
       expect(await index.rest.data.count('offer')).to.equal(3);
-      expect(await index.rest.data.query('offer', index.query.build('offer', {
+      const filter2 = index.query.build('offer', {
         toReturn: ['id'],
         filterBy: { and: [['id', 'in', uuids]] },
         limit: 1,
         offset: 1
-      }))).to.deep.equal({
+      });
+      const queryResult2 = await index.rest.data.query('offer', filter2);
+      expect(index.data.page(queryResult2, filter2)).to.deep.equal({
         payload: [{ id: uuids[1] }],
         page: {
           next: { limit: 1, offset: 2, cursor: 'eyJsaW1pdCI6MSwib2Zmc2V0IjoyfQ==' },

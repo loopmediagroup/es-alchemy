@@ -4,7 +4,6 @@ const cloneDeep = require('lodash.clonedeep');
 const objectRewrite = require('object-rewrite');
 const objectPaths = require('obj-paths');
 const resultRemap = require('../../../resources/result-remap');
-const { buildPageObject } = require('../../paging');
 
 module.exports = (call, idx, mapping, filter, { raw = false }) => call('GET', `${idx}@*`, {
   body: (() => {
@@ -43,11 +42,5 @@ module.exports = (call, idx, mapping, filter, { raw = false }) => call('GET', `$
       // eslint-disable-next-line no-underscore-dangle
       rewriterOverwrite(r._source);
     });
-    return raw === true
-      ? esResult.body
-      : {
-        // eslint-disable-next-line no-underscore-dangle
-        payload: esResult.body.hits.hits.map(r => r._source),
-        page: buildPageObject(esResult.body.hits.hits.length, esResult.body.hits.total, filter.size, filter.from)
-      };
+    return esResult.body;
   });
