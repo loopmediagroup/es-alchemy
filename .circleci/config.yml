@@ -70,8 +70,9 @@ jobs:
           - ES_JAVA_OPTS=-Xms750m -Xmx750m
     steps:
       - run:
-          command: |
-            until $(curl --output /dev/null --silent --head --fail http://localhost:9200); do
+          command: >
+            until $(curl --output /dev/null --silent --head --fail
+            http://localhost:9200); do
                 sleep 5
             done
       - checkout
@@ -99,8 +100,9 @@ jobs:
           - ES_JAVA_OPTS=-Xms750m -Xmx750m
     steps:
       - run:
-          command: |
-            until $(curl --output /dev/null --silent --head --fail http://localhost:9200); do
+          command: >
+            until $(curl --output /dev/null --silent --head --fail
+            http://localhost:9200); do
                 sleep 5
             done
       - checkout
