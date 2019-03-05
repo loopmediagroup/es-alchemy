@@ -4832,17 +4832,12 @@ object-keys@^1.0.11, object-keys@^1.0.12:
   resolved "https://registry.yarnpkg.com/object-keys/-/object-keys-1.1.0.tgz#11bd22348dd2e096a045ab06f6c85bcc340fa032"
   integrity sha512-6OO5X1+2tYkNyNEx6TsCxEqFfRWaqx6EtMiSbGrw8Ob8v9Ne+Hl8rBAgLBZn5wjEz3s/s6U1WXFUFOcxxAwUpg==
 
-object-rewrite@2.1.11:
-  version "2.1.11"
-  resolved "https://registry.yarnpkg.com/object-rewrite/-/object-rewrite-2.1.11.tgz#7f7095530f48b32097ac50638d2acf4e993b483c"
-  integrity sha512-mrKc2OWO8M7rpsHpSASsKGScI7hBoIoXfhbB2Rvr3WnnAPg2a3kg+iIy6vxm46bU3KUnOp7I+BONGG6WyvXQrg==
+object-rewrite@2.1.12:
+  version "2.1.12"
+  resolved "https://registry.yarnpkg.com/object-rewrite/-/object-rewrite-2.1.12.tgz#44cabf93196ee2bfb8dfc7df4583cdb00af78d6f"
+  integrity sha512-X23Ko0OYx9n/cDBrfDIkaSQc6qsKPttCQ6cush3TZcAtnAhuEjhW/O3w6denexmV4/OVZvYCbXVSJbk30pgKXg==
   dependencies:
-    object-scan "5.0.1"
-
-object-scan@5.0.1:
-  version "5.0.1"
-  resolved "https://registry.yarnpkg.com/object-scan/-/object-scan-5.0.1.tgz#89b28c6747e05dda6124b9443e0dba96d712006c"
-  integrity sha512-wSL3I7WU8aJv++sQxjjS+fz9XUQ7eK/CIOsgNmY1sTwrd+rI1M0RyGHpTlSB6OTEm2dKITzoGCKdeXVz2IAWAg==
+    object-scan "5.0.2"
 
 object-scan@5.0.2:
   version "5.0.2"
