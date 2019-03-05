@@ -5,7 +5,7 @@ const objectRewrite = require('object-rewrite');
 const objectPaths = require('obj-paths');
 const resultRemap = require('../../../resources/result-remap');
 
-module.exports = (call, idx, mapping, filter, { raw = false }) => call('GET', `${idx}@*`, {
+module.exports = (call, idx, mapping, filter) => call('GET', `${idx}@*`, {
   body: (() => {
     // PART 1: workaround for https://github.com/elastic/elasticsearch/issues/23796
     const filterNew = cloneDeep(filter);

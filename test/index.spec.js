@@ -458,8 +458,7 @@ describe('Testing index', () => {
             scoreBy: v.scoreBy || [],
             limit: v.limit,
             offset: v.offset
-          }),
-          { raw: true }
+          })
         ).then((r) => {
           expect(r).to.deep.contain({
             _shards: {
