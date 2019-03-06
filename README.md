@@ -306,7 +306,7 @@ If provided, a hook that is run after every request.
 
 The response hook accepts `({ request, response })`.
 
-`request` is the query input, exposing `{ headers, method, endpoint, index, body }`.
+`request` is the query input, exposing `{ headers, method, endpoint, index, body }`.<br>
 `response` is the raw response returned from [request](https://github.com/request/request).
 
 Example:
