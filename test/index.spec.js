@@ -19,14 +19,46 @@ const queryMappings = Index.loadJsonInDir(path.join(__dirname, 'query', 'mapping
 
 describe('Testing index', () => {
   let index;
-  beforeEach(() => {
-    index = Index({ endpoint: process.env.elasticsearchEndpoint });
+
+  const registerEntitiesForIndex = () => {
     Object.entries(models).forEach(([name, specs]) => {
       index.model.register(name, specs);
     });
     Object.entries(indices).forEach(([name, specs]) => {
       index.index.register(name, specs);
     });
+  };
+
+  beforeEach(() => {
+    index = Index({ endpoint: process.env.elasticsearchEndpoint });
+    registerEntitiesForIndex(index);
+  });
+
+  it('Testing responseHook.', async () => {
+    // setup
+    index = Index({
+      endpoint: process.env.elasticsearchEndpoint,
+      responseHook: ({ request, response }) => {
+        expect(Object.keys(request)).to.deep.equal(['headers', 'method', 'endpoint', 'index', 'body']);
+        expect(Object.keys(response)).to.include.members(['statusCode', 'body', 'headers', 'timings']);
+        expect(response.statusCode).to.equal(200);
+      }
+    });
+    registerEntitiesForIndex();
+
+    const offerId = uuid4();
+    expect(await index.rest.mapping.create('offer')).to.equal(true);
+    expect(await index.rest.data.update('offer', { upsert: [{ id: offerId }] })).to.equal(true);
+    expect(await index.rest.data.refresh('offer')).to.equal(true);
+    const filter = index.query.build('offer', {
+      toReturn: ['id'],
+      filterBy: { and: [['id', '==', offerId]] },
+      limit: 1,
+      offset: 0
+    });
+    await index.rest.data.query('offer', filter, { resolveWithFullResponse: true });
+    // cleanup
+    expect(await index.rest.mapping.delete('offer')).to.equal(true);
   });
 
   it('Testing models', () => {
