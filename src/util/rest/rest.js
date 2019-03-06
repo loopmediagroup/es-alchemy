@@ -36,8 +36,24 @@ module.exports = (listIndices, getMapping, options) => {
     },
     simple: false,
     resolveWithFullResponse: true,
-    json
-  });
+    json,
+    time: true
+  })
+    .then(async (response) => {
+      if (options.responseHook !== undefined) {
+        await options.responseHook({
+          request: {
+            headers,
+            method,
+            endpoint,
+            index: idx,
+            body
+          },
+          response
+        });
+      }
+      return response;
+    });
 
   return {
     call: (method, idx, opts = {}) => call(method, idx, opts),
@@ -51,7 +67,7 @@ module.exports = (listIndices, getMapping, options) => {
     },
     data: {
       count: idx => dataCount(call, idx),
-      query: (idx, filter, opts = {}) => dataQuery(call, idx, getMapping(idx), filter, opts),
+      query: (idx, filter) => dataQuery(call, idx, getMapping(idx), filter),
       refresh: idx => dataRefresh(call, idx),
       historic: (limit = 100) => dataHistoric(call, limit, () => listIndices()
         .reduce((p, idx) => Object.assign(p, { [idx]: getMapping(idx) }), {})),

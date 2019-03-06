@@ -297,6 +297,33 @@ Default: `{}`
 Allow connection to AWS Elasticsearch instance by passing 
 in object containing `accessKeyId` and `secretAccessKey`.
 
+#### responseHook
+
+Type: `function`<br>
+Default: `undefined`
+
+If provided, a hook that is run after every request.
+
+The response hook accepts `({ request, response })`.
+
+`request` is the query input, exposing `{ headers, method, endpoint, index, body }`.
+`response` is the raw response returned from [request](https://github.com/request/request).
+
+Example:
+
+<!-- eslint-disable import/no-unresolved -->
+```js
+const ESA = require('es-alchemy');
+
+ESA({
+  responseHook: ({ request, response }) => {
+    if (response.elapsedTime > 500) {
+      logger.warning(`Query time ${request.index}\n${JSON.stringify(request.body)}`);
+    }
+  }
+});
+```
+
 ## Index Versions
 
 Indices are versioned using a computed hash deduced from their schema. So an index named `foo` uses
