@@ -12,6 +12,9 @@
   "uuid": {
     "type": "keyword"
   },
+  "id": {
+    "type": "keyword"
+  },
   "keyword": {
     "type": "keyword"
   },
