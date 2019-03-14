@@ -5,6 +5,7 @@ module.exports = {
   boolean: identity,
   integer: identity,
   uuid: identity,
+  id: identity,
   keyword: identity,
   point: v => (v ? [v[0], v[1]] : null),
   shape: v => (v ? {
