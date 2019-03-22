@@ -135,6 +135,18 @@ describe('Testing index', () => {
         sort: [{ id: { mode: 'max', order: 'asc' } }]
       });
     });
+
+    it('Testing query.build with cursor limit override.', () => {
+      expect(index.query.build(undefined, {
+        cursor: toCursor({ limit: 10, offset: 10 }),
+        limit: 15
+      })).to.deep.equal({
+        _source: [''],
+        size: 15,
+        from: 10,
+        sort: [{ id: { mode: 'max', order: 'asc' } }]
+      });
+    });
   });
 
   describe('Testing Query Filter', () => {

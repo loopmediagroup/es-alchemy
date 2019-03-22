@@ -44,6 +44,7 @@
     "chai": "4.2.0",
     "coveralls": "3.0.3",
     "deep-equal-in-any-order": "1.0.13",
+    "eslint": "5.15.3",
     "js-gardener": "1.38.2",
     "nyc": "13.3.0",
     "request": "2.88.0",
