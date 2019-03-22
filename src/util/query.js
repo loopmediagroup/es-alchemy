@@ -72,10 +72,7 @@ module.exports.build = (allowedFields, {
   offset,
   cursor
 }) => {
-  assert(
-    (limit === undefined && offset === undefined) || cursor === undefined,
-    'Use cursor or offset + limit, not both.'
-  );
+  assert(cursor === undefined || offset === undefined, 'Cannot override offset with cursor.');
   const cursorPayload = cursor !== undefined ? fromCursor(cursor) : null;
   const { size, from } = {
     size: typeof limit === 'number' ? limit : get(cursorPayload, 'limit', 20),
