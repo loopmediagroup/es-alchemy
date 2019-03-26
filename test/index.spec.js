@@ -312,7 +312,7 @@ describe('Testing index', () => {
     }).timeout(10000);
   });
 
-  describe('Testing sorting', () => {
+  describe('Testing sorting by score', () => {
     it('Testing existence in array sorting', async () => {
       const offer1 = {
         id: uuid4(),
@@ -325,7 +325,7 @@ describe('Testing index', () => {
       expect(await index.rest.mapping.recreate('offer')).to.equal(true);
       expect(await index.rest.data.update('offer', { upsert: [offer1, offer2] })).to.equal(true);
       expect(await index.rest.data.refresh('offer')).to.equal(true);
-      [
+      await Promise.all([
         {
           scoreBy: [['==', 'flags', 'three']],
           result: [offer2, offer1]
@@ -338,14 +338,15 @@ describe('Testing index', () => {
           scoreBy: [['==', 'flags', 'two', 3], ['==', 'flags', 'three', 1]],
           result: [offer1, offer2]
         }
-      ].forEach(async ({ scoreBy, result }) => {
+      ].map(async ({ scoreBy, result }) => {
         const filter = await index.query.build('offer', {
           toReturn: ['id', 'flags'],
           scoreBy
         });
         const queryResult = await index.rest.data.query('offer', filter);
         expect(index.data.page(queryResult, filter).payload, `${scoreBy}`).to.deep.equal(result);
-      });
+      }));
+      expect(await index.rest.mapping.delete('offer')).to.equal(true);
     }).timeout(10000);
   });
 
