@@ -2,6 +2,7 @@
   "fields": {
     "id": "uuid",
     "headline": "string",
-    "meta": "object"
+    "meta": "object",
+    "flags": "keyword[]"
   }
 }

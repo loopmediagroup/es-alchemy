@@ -312,6 +312,43 @@ describe('Testing index', () => {
     }).timeout(10000);
   });
 
+  describe('Testing sorting', () => {
+    it('Testing existence in array sorting', async () => {
+      const offer1 = {
+        id: uuid4(),
+        flags: ['one', 'two']
+      };
+      const offer2 = {
+        id: uuid4(),
+        flags: ['one', 'three']
+      };
+      expect(await index.rest.mapping.recreate('offer')).to.equal(true);
+      expect(await index.rest.data.update('offer', { upsert: [offer1, offer2] })).to.equal(true);
+      expect(await index.rest.data.refresh('offer')).to.equal(true);
+      [
+        {
+          scoreBy: [['==', 'flags', 'three']],
+          result: [offer2, offer1]
+        },
+        {
+          scoreBy: [['==', 'flags', 'one'], ['==', 'flags', 'two']],
+          result: [offer1, offer2]
+        },
+        {
+          scoreBy: [['==', 'flags', 'two', 3], ['==', 'flags', 'three', 1]],
+          result: [offer1, offer2]
+        }
+      ].forEach(async ({ scoreBy, result }) => {
+        const filter = await index.query.build('offer', {
+          toReturn: ['id', 'flags'],
+          scoreBy
+        });
+        const queryResult = await index.rest.data.query('offer', filter);
+        expect(index.data.page(queryResult, filter).payload, `${scoreBy}`).to.deep.equal(result);
+      });
+    }).timeout(10000);
+  });
+
   it('Testing Multi Version Query', async () => {
     const indexName = 'version-index-test';
     const meta = { mappings: { idx: { properties: { uuid: { type: 'keyword' } } } } };

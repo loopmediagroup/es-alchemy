@@ -237,6 +237,19 @@ return scale * value
         }
       }
     }),
+    '==': (l, r, scaleField) => ({
+      script_score: {
+        script: {
+          lang: 'painless',
+          inline: 'return (doc[params.l].values.contains(params.r) ? 1 : 0) * params.scale_field;',
+          params: {
+            l,
+            r,
+            scale_field: typeof scaleField === 'number' ? scaleField : 1
+          }
+        }
+      }
+    }),
     distance: (l, loc, offsetInM, scaleInM = null) => ({
       script_score: {
         script: {
