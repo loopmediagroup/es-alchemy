@@ -241,7 +241,8 @@ A filter option is either a similarly structured object, a filter array or a str
 
 When `and` is used, a `target` key can also be present with the values `separate` or `union`. This option only takes 
 effect when multiple clauses search the same relationship. When `separate` is used, all conditions need to be 
-met on the same object. When union is used, they can be met on different objects in the relationship.
+met on the same object. When union is used, they can be met on different objects in the relationship. The `target`
+defaults to `separate`, which is what you want in most cases.
 
 `// todo: this section needs improvement`
 
