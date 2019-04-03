@@ -251,8 +251,7 @@
     "sort": [
       {
         "id": {
-          "order": "asc",
-          "mode": "max"
+          "order": "asc"
         }
       }
     ]

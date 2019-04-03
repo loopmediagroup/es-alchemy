@@ -194,18 +194,19 @@ return a % ${frequency} == 0 ? 0 : 1;} else {return 1;}
         order: 'asc'
       }
     }),
-    asc: l => ({
-      [l]: Object.assign({
-        order: 'asc',
-        mode: 'max'
-      }, l.indexOf('.') === -1 ? {} : { nested_path: l.substring(0, l.lastIndexOf('.')) })
+    asc: (l, mode = null) => ({
+      [l]: Object.assign(
+        { order: 'asc' },
+        mode !== null ? { mode } : {},
+        l.indexOf('.') === -1 ? {} : { nested_path: l.substring(0, l.lastIndexOf('.')) }
+      )
     }),
-    desc: (l, mode = 'max') => ({
-      [l]: Object.assign({
-        order: 'desc'
-      },
-      mode !== null ? { mode } : {},
-      l.indexOf('.') === -1 ? {} : { nested_path: l.substring(0, l.lastIndexOf('.')) })
+    desc: (l, mode = null) => ({
+      [l]: Object.assign(
+        { order: 'desc' },
+        mode !== null ? { mode } : {},
+        l.indexOf('.') === -1 ? {} : { nested_path: l.substring(0, l.lastIndexOf('.')) }
+      )
     })
   },
   score: {
@@ -239,17 +240,17 @@ return scale * value
         }
       }
     }),
-    '==': (l, r, scaleField = 1) => {
-      assert(typeof scaleField === 'number');
+    '==': (l, r, scaleValue = 1) => {
+      assert(typeof scaleValue === 'number');
       return {
         script_score: {
           script: {
             lang: 'painless',
-            inline: 'return (doc[params.l].values.contains(params.r) ? 1 : 0) * params.scale_field;',
+            inline: 'return (doc[params.l].values.contains(params.r) ? 1 : 0) * params.scale_value;',
             params: {
               l,
               r,
-              scale_field: scaleField
+              scale_value: scaleValue
             }
           }
         }

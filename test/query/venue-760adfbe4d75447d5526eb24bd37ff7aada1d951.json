@@ -148,21 +148,18 @@
       {
         "offers.is_limited": {
           "order": "desc",
-          "mode": "max",
           "nested_path": "offers"
         }
       },
       {
         "offers.flagged": {
           "order": "desc",
-          "mode": "max",
           "nested_path": "offers"
         }
       },
       {
         "offers.placement_priority": {
           "order": "desc",
-          "mode": "max",
           "nested_path": "offers"
         }
       },
@@ -180,8 +177,7 @@
       },
       {
         "id": {
-          "order": "asc",
-          "mode": "max"
+          "order": "asc"
         }
       },
       {
