@@ -1,4 +1,5 @@
 const crypto = require('crypto');
+const assert = require('assert');
 
 module.exports = {
   bool: {
@@ -193,17 +194,19 @@ return a % ${frequency} == 0 ? 0 : 1;} else {return 1;}
         order: 'asc'
       }
     }),
-    asc: l => ({
-      [l]: Object.assign({
-        order: 'asc',
-        mode: 'max'
-      }, l.indexOf('.') === -1 ? {} : { nested_path: l.substring(0, l.lastIndexOf('.')) })
+    asc: (l, mode = null) => ({
+      [l]: Object.assign(
+        { order: 'asc' },
+        mode !== null ? { mode } : {},
+        l.indexOf('.') === -1 ? {} : { nested_path: l.substring(0, l.lastIndexOf('.')) }
+      )
     }),
-    desc: l => ({
-      [l]: Object.assign({
-        order: 'desc',
-        mode: 'max'
-      }, l.indexOf('.') === -1 ? {} : { nested_path: l.substring(0, l.lastIndexOf('.')) })
+    desc: (l, mode = null) => ({
+      [l]: Object.assign(
+        { order: 'desc' },
+        mode !== null ? { mode } : {},
+        l.indexOf('.') === -1 ? {} : { nested_path: l.substring(0, l.lastIndexOf('.')) }
+      )
     })
   },
   score: {
@@ -237,6 +240,22 @@ return scale * value
         }
       }
     }),
+    '==': (l, r, scaleValue = 1) => {
+      assert(typeof scaleValue === 'number');
+      return {
+        script_score: {
+          script: {
+            lang: 'painless',
+            inline: 'return (doc[params.l].values.contains(params.r) ? 1 : 0) * params.scale_value;',
+            params: {
+              l,
+              r,
+              scale_value: scaleValue
+            }
+          }
+        }
+      };
+    },
     distance: (l, loc, offsetInM, scaleInM = null) => ({
       script_score: {
         script: {

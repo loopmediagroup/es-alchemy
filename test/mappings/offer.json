@@ -2,7 +2,7 @@
   "mappings": {
     "offer": {
       "_meta": {
-        "hash": "409492a32436d2cec4a3d01046308ae7e53893f1"
+        "hash": "0157eb95dc5e77083b1e45ec44fd464150d2b778"
       },
       "properties": {
         "id": {
@@ -10,6 +10,12 @@
         },
         "headline": {
           "type": "text"
+        },
+        "meta": {
+          "type": "object"
+        },
+        "flags": {
+          "type": "keyword"
         },
         "locations": {
           "properties": {
@@ -47,9 +53,6 @@
             }
           },
           "type": "nested"
-        },
-        "meta": {
-          "type": "object"
         },
         "tags": {
           "properties": {

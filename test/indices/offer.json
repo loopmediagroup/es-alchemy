@@ -3,7 +3,8 @@
   "fields": [
     "id",
     "headline",
-    "meta"
+    "meta",
+    "flags"
   ],
   "sources": [
     ""
