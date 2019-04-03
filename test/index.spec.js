@@ -313,7 +313,7 @@ describe('Testing index', () => {
   });
 
   describe('Testing orderBy', () => {
-    it('Testing mode for asc desc', async () => {
+    it('Testing "mode" for asc, desc', async () => {
       expect(await index.rest.mapping.recreate('offer')).to.equal(true);
       await Promise.all([
         {
