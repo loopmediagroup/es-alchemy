@@ -2,6 +2,7 @@
   "id",
   "headline",
   "meta",
+  "flags",
   "locations.id",
   "locations.name",
   "locations.address.id",

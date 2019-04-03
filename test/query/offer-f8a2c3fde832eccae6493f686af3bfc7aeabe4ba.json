@@ -145,26 +145,22 @@
     "sort": [
       {
         "is_limited": {
-          "order": "desc",
-          "mode": "max"
+          "order": "desc"
         }
       },
       {
         "flagged": {
-          "order": "desc",
-          "mode": "max"
+          "order": "desc"
         }
       },
       {
         "placement_priority": {
-          "order": "desc",
-          "mode": "max"
+          "order": "desc"
         }
       },
       {
         "id": {
-          "order": "asc",
-          "mode": "max"
+          "order": "asc"
         }
       },
       {

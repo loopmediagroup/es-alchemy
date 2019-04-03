@@ -121,7 +121,7 @@ describe('Testing index', () => {
         _source: [''],
         size: 20,
         from: 0,
-        sort: [{ id: { mode: 'max', order: 'asc' } }]
+        sort: [{ id: { order: 'asc' } }]
       });
     });
 
@@ -132,7 +132,7 @@ describe('Testing index', () => {
         _source: [''],
         size: 10,
         from: 10,
-        sort: [{ id: { mode: 'max', order: 'asc' } }]
+        sort: [{ id: { order: 'asc' } }]
       });
     });
 
@@ -144,7 +144,7 @@ describe('Testing index', () => {
         _source: [''],
         size: 15,
         from: 10,
-        sort: [{ id: { mode: 'max', order: 'asc' } }]
+        sort: [{ id: { order: 'asc' } }]
       });
     });
   });
@@ -308,6 +308,70 @@ describe('Testing index', () => {
       const queryResult2 = await index.rest.data.query('offer', filter2);
       expect((index.data.page(queryResult2, filter2)).payload.length).to.equal(0);
       // cleanup
+      expect(await index.rest.mapping.delete('offer')).to.equal(true);
+    }).timeout(10000);
+  });
+
+  describe('Testing orderBy', () => {
+    it('Testing "mode" for asc, desc', async () => {
+      expect(await index.rest.mapping.recreate('offer')).to.equal(true);
+      await Promise.all([
+        {
+          orderBy: [['id', 'desc', 'max']],
+          result: { sort: [{ id: { mode: 'max', order: 'desc' } }] }
+        },
+        {
+          orderBy: [['id', 'desc', 'min']],
+          result: { sort: [{ id: { mode: 'min', order: 'desc' } }] }
+        },
+        {
+          orderBy: [['id', 'asc', 'max']],
+          result: { sort: [{ id: { mode: 'max', order: 'asc' } }] }
+        },
+        {
+          orderBy: [['id', 'asc', 'min']],
+          result: { sort: [{ id: { mode: 'min', order: 'asc' } }] }
+        }
+      ].map(async ({ orderBy, result }) => {
+        expect(await index.query.build('offer', { toReturn: ['id'], orderBy })).to.deep.contain(result);
+      }));
+    });
+  });
+
+  describe('Testing sorting by score', () => {
+    it('Testing existence in array sorting', async () => {
+      const offer1 = {
+        id: uuid4(),
+        flags: ['one', 'two']
+      };
+      const offer2 = {
+        id: uuid4(),
+        flags: ['one', 'three']
+      };
+      expect(await index.rest.mapping.recreate('offer')).to.equal(true);
+      expect(await index.rest.data.update('offer', { upsert: [offer1, offer2] })).to.equal(true);
+      expect(await index.rest.data.refresh('offer')).to.equal(true);
+      await Promise.all([
+        {
+          scoreBy: [['==', 'flags', 'three']],
+          result: [offer2, offer1]
+        },
+        {
+          scoreBy: [['==', 'flags', 'one'], ['==', 'flags', 'two']],
+          result: [offer1, offer2]
+        },
+        {
+          scoreBy: [['==', 'flags', 'two', 3], ['==', 'flags', 'three', 1]],
+          result: [offer1, offer2]
+        }
+      ].map(async ({ scoreBy, result }) => {
+        const filter = await index.query.build('offer', {
+          toReturn: ['id', 'flags'],
+          scoreBy
+        });
+        const queryResult = await index.rest.data.query('offer', filter);
+        expect(index.data.page(queryResult, filter).payload, `${scoreBy}`).to.deep.equal(result);
+      }));
       expect(await index.rest.mapping.delete('offer')).to.equal(true);
     }).timeout(10000);
   });

@@ -93,9 +93,6 @@ module.exports.build = (allowedFields, {
   if (filterBy.length !== 0) {
     result.query = buildQueryRec(filterBy, allowedFields)[1];
   }
-  result.sort = orderBy
-    .concat(isEqual(orderBy.slice(-1), [['id', 'asc']]) ? [] : [['id', 'asc']])
-    .map(e => actionMap.order[e[1]](e[0], ...e.slice(2)));
   if (scoreBy.length !== 0) {
     result.query = {
       function_score: {
@@ -105,7 +102,14 @@ module.exports.build = (allowedFields, {
         boost_mode: 'replace'
       }
     };
-    result.sort.push({ _score: { order: 'desc' } });
   }
+  result.sort = [
+    ...orderBy,
+    ...(scoreBy.length !== 0 ? [['_score', 'desc', null]] : []),
+    ...(get(orderBy.slice(-1), '[0][0]') === 'id' && ['asc', 'desc'].includes(get(orderBy.slice(-1), '[0][1]'))
+      ? []
+      : [['id', 'asc']])
+  ]
+    .map(e => actionMap.order[e[1]](e[0], ...e.slice(2)));
   return result;
 };

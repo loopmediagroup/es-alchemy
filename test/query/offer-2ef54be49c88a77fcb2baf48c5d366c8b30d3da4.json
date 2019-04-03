@@ -138,14 +138,12 @@
       {
         "venues.id": {
           "order": "asc",
-          "mode": "max",
           "nested_path": "venues"
         }
       },
       {
         "id": {
-          "order": "asc",
-          "mode": "max"
+          "order": "asc"
         }
       }
     ],
