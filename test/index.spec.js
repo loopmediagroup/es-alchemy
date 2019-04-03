@@ -312,31 +312,33 @@ describe('Testing index', () => {
     }).timeout(10000);
   });
 
-  describe('Testing sorting', () => {
-    it('Testing sorting asc options', async () => {
+  describe('Testing orderBy', () => {
+    it('Testing mode for asc desc', async () => {
       expect(await index.rest.mapping.recreate('offer')).to.equal(true);
       await Promise.all([
         {
           orderBy: [['id', 'desc', 'max']],
-          result: { sort: [{ id: { mode: 'max', order: 'desc' } }, { id: { order: 'asc' } }] }
+          result: { sort: [{ id: { mode: 'max', order: 'desc' } }] }
         },
         {
           orderBy: [['id', 'desc', 'min']],
-          result: { sort: [{ id: { mode: 'min', order: 'desc' } }, { id: { order: 'asc' } }] }
+          result: { sort: [{ id: { mode: 'min', order: 'desc' } }] }
         },
         {
           orderBy: [['id', 'asc', 'max']],
-          result: { sort: [{ id: { mode: 'max', order: 'asc' } }, { id: { order: 'asc' } }] }
+          result: { sort: [{ id: { mode: 'max', order: 'asc' } }] }
         },
         {
           orderBy: [['id', 'asc', 'min']],
-          result: { sort: [{ id: { mode: 'min', order: 'asc' } }, { id: { order: 'asc' } }] }
+          result: { sort: [{ id: { mode: 'min', order: 'asc' } }] }
         }
       ].map(async ({ orderBy, result }) => {
         expect(await index.query.build('offer', { toReturn: ['id'], orderBy })).to.deep.contain(result);
       }));
     });
+  });
 
+  describe('Testing sorting by score', () => {
     it('Testing existence in array sorting', async () => {
       const offer1 = {
         id: uuid4(),

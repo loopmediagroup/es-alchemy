@@ -103,9 +103,13 @@ module.exports.build = (allowedFields, {
       }
     };
   }
-  result.sort = orderBy
-    .concat(scoreBy.length !== 0 ? [['_score', 'desc', null]] : [])
-    .concat(isEqual(orderBy.slice(-1), [['id', 'asc']]) ? [] : [['id', 'asc']])
+  result.sort = [
+    ...orderBy,
+    ...(scoreBy.length !== 0 ? [['_score', 'desc', null]] : []),
+    ...(get(orderBy.slice(-1), '[0][0]') === 'id' && ['asc', 'desc'].includes(get(orderBy.slice(-1), '[0][1]'))
+      ? []
+      : [['id', 'asc']])
+  ]
     .map(e => actionMap.order[e[1]](e[0], ...e.slice(2)));
   return result;
 };
