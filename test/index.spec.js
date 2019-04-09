@@ -438,30 +438,28 @@ describe('Testing index', () => {
       // create new index
       expect(await index.rest.mapping.create('offer')).to.equal(true);
       await validate(0, {});
-      expect(await index.rest.data.historic()).to.deep.equal({});
+      expect(await index.rest.data.historic('offer')).to.deep.equal([]);
       // insert data
       expect(await index.rest.data.update('offer', { upsert: uuids.map(id => ({ id })) })).to.equal(true);
       await validate(3, {});
-      expect(await index.rest.data.historic()).to.deep.equal({});
+      expect(await index.rest.data.historic('offer')).to.deep.equal([]);
       // create new version of index
       index.index.register('offer', Object.assign({}, indices.offer, { fields: ['id'] }));
       expect(await index.rest.mapping.create('offer')).to.equal(true);
       await validate(3, { [`offer@${mappingHash}`]: 3 });
       await checkDocs(uuids);
-      expect(await index.rest.data.historic())
-        .to.deep.equal(uuids.reduce((p, c) => Object.assign(p, { [c]: 'offer' }), {}));
-      expect(Object.keys(await index.rest.data.historic({ limit: 1 })).length).to.deep.equal(1);
-      expect(Object.keys(await index.rest.data.historic({ index: 'offer', limit: 1 })).length).to.deep.equal(1);
+      expect((await index.rest.data.historic('offer')).sort()).to.deep.equal(uuids);
+      expect((await index.rest.data.historic('offer', 1)).length).to.deep.equal(1);
       // update data
       expect(await index.rest.data.update('offer', { upsert: uuids.map(id => ({ id })) })).to.equal(true);
       await validate(3, { [`offer@${mappingHash}`]: 0 });
       await checkDocs(uuids);
-      expect(await index.rest.data.historic()).to.deep.equal({});
+      expect(await index.rest.data.historic('offer')).to.deep.equal([]);
       // update data again
       expect(await index.rest.data.update('offer', { upsert: uuids.map(id => ({ id })) })).to.equal(true);
       await validate(3, {});
       await checkDocs(uuids);
-      expect(await index.rest.data.historic()).to.deep.equal({});
+      expect(await index.rest.data.historic('offer')).to.deep.equal([]);
       // cleanup
       expect(await index.rest.mapping.delete('offer')).to.equal(true);
     });
