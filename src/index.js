@@ -48,7 +48,7 @@ module.exports = (options) => {
     query: {
       build: (idx = null, opts = {}) => query.build(idx === null ? null : indices[idx].fields, opts)
     },
-    rest: rest(() => Object.keys(indices).sort(), idx => get(indices[idx], 'mapping', null), options)
+    rest: rest(idx => get(indices[idx], 'mapping', null), options)
   };
 };
 
