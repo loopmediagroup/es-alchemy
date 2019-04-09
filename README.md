@@ -373,7 +373,7 @@ Interacting with the rest api of Elasticsearch
 - `data.count(name: String)` - get number of indexed elements from Elasticsearch (from _all_ versions)
 - `data.query(name: String, filter: Object, options: Object)` - query for data in Elasticsearch against all versions. Returns raw result body from elasticsearch.
 - `data.refresh(name: String)` - refresh Elasticsearch index, useful e.g. when testing (all versions)
-- `data.historic(limit: Integer = 100)` - fetch historic data entries as `{ [ID]: [INDEX] }`. Order of results is random.
+- `data.historic({ index: String = null, limit: Integer = 100 } = {})` - fetch historic data entries as `{ [ID]: [INDEX] }`. Order of results is random. When no index provided all indices are queried.
 - `data.update(name: String, options: Object)` - insert, update or delete objects in Elasticsearch (current version, removed touched documents from old versions and deletes old versions when empty)
 
 
