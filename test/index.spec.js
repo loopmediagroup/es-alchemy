@@ -450,7 +450,8 @@ describe('Testing index', () => {
       await checkDocs(uuids);
       expect(await index.rest.data.historic())
         .to.deep.equal(uuids.reduce((p, c) => Object.assign(p, { [c]: 'offer' }), {}));
-      expect(Object.keys(await index.rest.data.historic(1)).length).to.deep.equal(1);
+      expect(Object.keys(await index.rest.data.historic({ limit: 1 })).length).to.deep.equal(1);
+      expect(Object.keys(await index.rest.data.historic({ index: 'offer', limit: 1 })).length).to.deep.equal(1);
       // update data
       expect(await index.rest.data.update('offer', { upsert: uuids.map(id => ({ id })) })).to.equal(true);
       await validate(3, { [`offer@${mappingHash}`]: 0 });
