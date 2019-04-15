@@ -1,9 +1,7 @@
 {
-  "presets": [
-    "@babel/preset-flow"
-  ],
+  "presets": [],
   "plugins": [
-    "@babel/plugin-transform-flow-comments",
     "@babel/plugin-proposal-object-rest-spread"
-  ]
+  ],
+  "sourceMaps": "inline"
 }
