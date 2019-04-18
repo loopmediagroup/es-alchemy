@@ -53,6 +53,14 @@ module.exports = {
         }
       }
     }),
+    between: (l, { gte, lt }) => ({
+      range: {
+        [l]: {
+          gte,
+          lt
+        }
+      }
+    }),
     contains: (l, loc) => ({
       geo_shape: {
         [l]: {
