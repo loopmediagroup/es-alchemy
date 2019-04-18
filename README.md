@@ -1,3 +1,5 @@
+# ESAlchemy
+
 [![Build Status](https://circleci.com/gh/loopmediagroup/es-alchemy.png?style=shield)](https://circleci.com/gh/loopmediagroup/es-alchemy)
 [![Test Coverage](https://img.shields.io/coveralls/loopmediagroup/es-alchemy/master.svg)](https://coveralls.io/github/loopmediagroup/es-alchemy?branch=master)
 [![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=loopmediagroup/es-alchemy)](https://dependabot.com)
@@ -6,8 +8,6 @@
 [![Downloads](https://img.shields.io/npm/dt/es-alchemy.svg)](https://www.npmjs.com/package/es-alchemy)
 [![Semantic-Release](https://github.com/blackflux/js-gardener/blob/master/assets/icons/semver.svg)](https://github.com/semantic-release/semantic-release)
 [![Gardener](https://github.com/blackflux/js-gardener/blob/master/assets/badge.svg)](https://github.com/blackflux/js-gardener)
-
-# ESAlchemy
 
 Simplification of Elasticsearch interactions
 
@@ -373,7 +373,7 @@ Interacting with the rest api of Elasticsearch
 - `data.count(name: String)` - get number of indexed elements from Elasticsearch (from _all_ versions)
 - `data.query(name: String, filter: Object, options: Object)` - query for data in Elasticsearch against all versions. Returns raw result body from elasticsearch.
 - `data.refresh(name: String)` - refresh Elasticsearch index, useful e.g. when testing (all versions)
-- `data.historic(limit: Integer = 100)` - fetch historic data entries as `{ [ID]: [INDEX] }`. Order of results is random.
+- `data.historic(index: String, limit: Integer = 100)` - fetch historic data entries as list of ids.
 - `data.update(name: String, options: Object)` - insert, update or delete objects in Elasticsearch (current version, removed touched documents from old versions and deletes old versions when empty)
 
 

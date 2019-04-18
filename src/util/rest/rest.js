@@ -13,7 +13,7 @@ const dataHistoric = require('./data/historic');
 const dataUpdate = require('./data/update');
 
 
-module.exports = (listIndices, getMapping, options) => {
+module.exports = (getMapping, options) => {
   const call = (method, idx, {
     endpoint = '',
     body = {},
@@ -69,8 +69,7 @@ module.exports = (listIndices, getMapping, options) => {
       count: idx => dataCount(call, idx),
       query: (idx, filter) => dataQuery(call, idx, getMapping(idx), filter),
       refresh: idx => dataRefresh(call, idx),
-      historic: (limit = 100) => dataHistoric(call, limit, () => listIndices()
-        .reduce((p, idx) => Object.assign(p, { [idx]: getMapping(idx) }), {})),
+      historic: (idx, limit = 100) => dataHistoric(call, idx, getMapping(idx), limit),
       update: (idx, opts) => dataUpdate(call, idx, getMapping(idx), opts)
     }
   };

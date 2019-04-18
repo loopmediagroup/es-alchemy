@@ -1,0 +1,15 @@
+{
+  "@blackflux/robo-config-plugin": {
+    "tasks": [
+      "assorted/@npm-opensource-es"
+    ],
+    "variables": {
+      "repoKey": "loopmediagroup/es-alchemy",
+      "packageName": "es-alchemy",
+      "projectName": "es-alchemy",
+      "owner": "simlu",
+      "ownerName": "Loop Media Group",
+      "mergeBot": "GITL-BuildBot"
+    }
+  }
+}
