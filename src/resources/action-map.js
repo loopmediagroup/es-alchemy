@@ -53,11 +53,11 @@ module.exports = {
         }
       }
     }),
-    between: (l, { gte, lt }) => ({
+    between: (l, gte, lte) => ({
       range: {
         [l]: {
           gte,
-          lt
+          lte
         }
       }
     }),
