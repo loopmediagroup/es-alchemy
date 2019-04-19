@@ -4808,10 +4808,10 @@ object-keys@^1.0.11, object-keys@^1.0.12:
   resolved "https://registry.yarnpkg.com/object-keys/-/object-keys-1.1.1.tgz#1c47f272df277f3b1daf061677d9c82e2322c60e"
   integrity sha512-NuAESUOUMrlIXOfHKzD6bpPu3tYt3xvjNdRIQ+FeT0lNb4K8WR70CaDxhuNguS2XG+GjkyMwOzsN5ZktImfhLA==
 
-object-rewrite@2.1.16:
-  version "2.1.16"
-  resolved "https://registry.yarnpkg.com/object-rewrite/-/object-rewrite-2.1.16.tgz#e625f337d33aa1822a7f57002353e0e01a1b871f"
-  integrity sha512-PkRyrlybZApR1Nc0hdyKAqVldf14BxCnsxjmKCfX+2mLu71FV0zLyYoSQL2BjpiaI9qFKutOkzGh8G4g69jdHA==
+object-rewrite@2.1.17:
+  version "2.1.17"
+  resolved "https://registry.yarnpkg.com/object-rewrite/-/object-rewrite-2.1.17.tgz#0d17252f07009cecbdd52c0cf4e56bd1eb144225"
+  integrity sha512-Nqj7Zu9wr/LUo7FfYah9sGypBa3ouXWb++E1ScrfEy6YWpvbgXVXajw+Rb4kepFmFPHaaM2MLkfdOxEErQ0RGw==
   dependencies:
     object-scan "5.0.7"
 
