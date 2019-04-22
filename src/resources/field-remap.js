@@ -15,5 +15,5 @@ module.exports = {
   datetime: identity,
   string: identity,
   enum: identity,
-  object: identity
+  object: v => [v]
 };
