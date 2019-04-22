@@ -9,5 +9,5 @@ module.exports = {
   geo_shape: v => (v !== null ? v.coordinates[0] : null),
   text: identity,
   enum: identity,
-  object: identity
+  object: v => v[0]
 };
