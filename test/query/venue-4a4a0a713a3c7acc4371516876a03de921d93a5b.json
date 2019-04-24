@@ -140,19 +140,19 @@
       {
         "offers.is_limited": {
           "order": "desc",
-          "nested_path": "offers"
+          "nested": { "path": "offers", "filter": null }
         }
       },
       {
         "offers.flagged": {
           "order": "desc",
-          "nested_path": "offers"
+          "nested": { "path": "offers", "filter": null }
         }
       },
       {
         "offers.placement_priority": {
           "order": "desc",
-          "nested_path": "offers"
+          "nested": { "path": "offers", "filter": null }
         }
       },
       {

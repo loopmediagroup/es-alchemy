@@ -2,7 +2,10 @@ const assert = require('assert');
 const get = require('lodash.get');
 const isEqual = require('lodash.isequal');
 const objectPaths = require('obj-paths');
-const actionMap = require('../resources/action-map');
+const actionMapBool = require('../resources/action-map/bool');
+const actionMapFilter = require('../resources/action-map/filter');
+const actionMapOrder = require('../resources/action-map/order');
+const actionMapScore = require('../resources/action-map/score');
 const { fromCursor } = require('../util/paging');
 
 const buildQueryRec = (filterBy, allowedFields) => {
@@ -14,7 +17,7 @@ const buildQueryRec = (filterBy, allowedFields) => {
     );
     return [
       filterBy[0].substring(0, filterBy[0].lastIndexOf('.')),
-      actionMap.filter[filterBy[1]](filterBy[0], ...filterBy.slice(2))
+      actionMapFilter[filterBy[1]](filterBy[0], ...filterBy.slice(2))
     ];
   }
 
@@ -53,14 +56,14 @@ const buildQueryRec = (filterBy, allowedFields) => {
   delete groups[''];
   Object.entries(groups).forEach(([prefix, logics]) => {
     if (clause === 'and' && target === 'separate') {
-      results.push(actionMap.filter.nest(prefix, logics));
+      results.push(actionMapFilter.nest(prefix, logics));
     } else {
       logics.forEach((logic) => {
-        results.push(actionMap.filter.nest(prefix, [logic]));
+        results.push(actionMapFilter.nest(prefix, [logic]));
       });
     }
   });
-  return ['', actionMap.bool[clause](clause === 'not' ? results[0] : results)];
+  return ['', actionMapBool[clause](clause === 'not' ? results[0] : results)];
 };
 
 module.exports.build = (allowedFields, {
@@ -97,7 +100,7 @@ module.exports.build = (allowedFields, {
     result.query = {
       function_score: {
         query: get(result, 'query', { match_all: {} }),
-        functions: scoreBy.map(e => actionMap.score[e[0]](...e.slice(1))),
+        functions: scoreBy.map(e => actionMapScore[e[0]](...e.slice(1))),
         score_mode: 'sum',
         boost_mode: 'replace'
       }
@@ -110,6 +113,6 @@ module.exports.build = (allowedFields, {
       ? []
       : [['id', 'asc']])
   ]
-    .map(e => actionMap.order[e[1]](e[0], ...e.slice(2)));
+    .map(e => actionMapOrder[e[1]](e[0], ...e.slice(2)));
   return result;
 };

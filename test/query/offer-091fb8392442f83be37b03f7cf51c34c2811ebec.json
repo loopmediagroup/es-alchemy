@@ -149,7 +149,7 @@
           "unit": "m",
           "mode": "min",
           "distance_type": "arc",
-          "nested_path": "venues"
+          "nested": { "path": "venues" }
         }
       },
       {
