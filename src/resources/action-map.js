@@ -103,6 +103,11 @@ module.exports = {
         }
       }
     }),
+    exists: l => ({
+      exists: {
+        field: l
+      }
+    }),
     notexists: l => ({
       bool: {
         must_not: {

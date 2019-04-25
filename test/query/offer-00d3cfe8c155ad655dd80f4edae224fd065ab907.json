@@ -168,6 +168,11 @@
             }
           },
           {
+            "exists": {
+              "field": "name"
+            }
+          },
+          {
             "match": {
               "enabled": {
                 "query": true,
@@ -304,6 +309,10 @@
       [
         "id",
         "notexists"
+      ],
+      [
+        "name",
+        "exists"
       ],
       [
         "availabilities.enabled",
