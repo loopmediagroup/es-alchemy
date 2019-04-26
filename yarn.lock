@@ -4805,15 +4805,15 @@ object-keys@^1.0.11, object-keys@^1.0.12:
   resolved "https://registry.yarnpkg.com/object-keys/-/object-keys-1.1.1.tgz#1c47f272df277f3b1daf061677d9c82e2322c60e"
   integrity sha512-NuAESUOUMrlIXOfHKzD6bpPu3tYt3xvjNdRIQ+FeT0lNb4K8WR70CaDxhuNguS2XG+GjkyMwOzsN5ZktImfhLA==
 
-object-scan@7.0.1:
-  version "7.0.1"
-  resolved "https://registry.yarnpkg.com/object-scan/-/object-scan-7.0.1.tgz#13549951db44076b80c743ba7ad309250c24229c"
-  integrity sha512-AICaN/gBEcXRLKbEEp0Tyf0WN2elFhcBoHIe+KUp/NXle3nWOsIUeHgvxM7Cl53CNVZXfxDGu5XD6y3bEwXZdg==
-
 object-scan@7.0.2:
   version "7.0.2"
   resolved "https://registry.yarnpkg.com/object-scan/-/object-scan-7.0.2.tgz#eceeaaf92652933db8d25c0ad1d3e4132f3504f4"
   integrity sha512-l3tk6X3bIwwrR3Dr24udRs1EjkmSYoFtOc6fAqX6YXhRL/GAgoFPNVvATuF+O7HVY4fKRjrDMVV774aqc1JwmA==
+
+object-scan@9.0.0:
+  version "9.0.0"
+  resolved "https://registry.yarnpkg.com/object-scan/-/object-scan-9.0.0.tgz#b74b817b1686d37451ca7665600ffbda34847aaa"
+  integrity sha512-8WI6mZdG39xn7tKvTp55tnxAcApstrhlW940xDUPMyqFkAgnQ8w78TP8k7uMqyG9dED6VhEsQw9K/qerAOr5qw==
 
 object-treeify@1.1.8:
   version "1.1.8"
