@@ -13,7 +13,7 @@ const dataHistoric = require('./data/historic');
 const dataUpdate = require('./data/update');
 
 
-module.exports = (getMapping, options) => {
+module.exports = (getSpecs, getMapping, options) => {
   const call = (method, idx, {
     endpoint = '',
     body = {},
@@ -67,7 +67,7 @@ module.exports = (getMapping, options) => {
     },
     data: {
       count: idx => dataCount(call, idx),
-      query: (idx, filter) => dataQuery(call, idx, getMapping(idx), filter),
+      query: (idx, filter) => dataQuery(call, idx, getSpecs(idx), getMapping(idx), filter),
       refresh: idx => dataRefresh(call, idx),
       historic: (idx, limit = 100) => dataHistoric(call, idx, getMapping(idx), limit),
       update: (idx, opts) => dataUpdate(call, idx, getMapping(idx), opts)
