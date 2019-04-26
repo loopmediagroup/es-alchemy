@@ -45,6 +45,8 @@ module.exports = (call, idx, specs, mapping, filter) => call('GET', `${idx}@*`, 
           return Object.assign(p, { [key]: (p[key] || []).concat(value) });
         }, {});
       return input => objectScan(Object.keys(arrays), {
+        joined: false,
+        useArraySelector: false,
         filterFn: (key, value, { matchedBy }) => {
           matchedBy.forEach((m) => {
             arrays[m].forEach((e) => {
