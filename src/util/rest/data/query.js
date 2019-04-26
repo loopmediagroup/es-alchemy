@@ -13,6 +13,8 @@ module.exports = (call, idx, rels, mapping, filter) => call('GET', `${idx}@*`, {
     const filterNew = cloneDeep(filter);
     // eslint-disable-next-line no-underscore-dangle
     filterNew._source.push(...objectPaths.getParents(filterNew._source).map(p => `${p}.id`));
+    // eslint-disable-next-line no-underscore-dangle
+    filterNew._source = [...new Set(filterNew._source)];
     return filterNew;
   })(),
   endpoint: '_search'
