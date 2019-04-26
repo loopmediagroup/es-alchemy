@@ -2,7 +2,7 @@
   "mappings": {
     "offer": {
       "_meta": {
-        "hash": "0157eb95dc5e77083b1e45ec44fd464150d2b778"
+        "hash": "a8c68b5e8b4bc03f9c2b2658b752fd10afb954e4"
       },
       "properties": {
         "id": {
@@ -46,6 +46,17 @@
                   "type": "geo_shape"
                 },
                 "timezone": {
+                  "type": "text"
+                }
+              },
+              "type": "nested"
+            },
+            "tags": {
+              "properties": {
+                "id": {
+                  "type": "keyword"
+                },
+                "name": {
                   "type": "text"
                 }
               },

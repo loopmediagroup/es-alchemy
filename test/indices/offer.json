@@ -34,6 +34,16 @@
           "sources": [
             "address"
           ]
+        },
+        "tags": {
+          "model": "tag[]",
+          "fields": [
+            "id",
+            "name"
+          ],
+          "sources": [
+            "tags"
+          ]
         }
       }
     },
