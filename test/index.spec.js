@@ -656,4 +656,46 @@ describe('Testing index', () => {
       expect(await index.rest.mapping.delete('offer')).to.equal(true);
     });
   });
+
+  it('Testing twice nested empty relationship returned as empty list.', async () => {
+    const offerId = uuid4();
+    const locationId = uuid4();
+    expect(await index.rest.mapping.recreate('offer')).to.equal(true);
+    expect(await index.rest.data.update('offer', {
+      upsert: [{
+        id: offerId,
+        locations: [
+          {
+            id: locationId,
+            tags: []
+          }
+        ]
+      }]
+    })).to.equal(true);
+    expect(await index.rest.data.refresh('offer')).to.equal(true);
+    const filter = index.query.build('offer', {
+      toReturn: ['id', 'locations.tags.name'],
+      filterBy: { and: [['id', '==', offerId]] },
+      limit: 1,
+      offset: 0
+    });
+    const queryResult = await index.rest.data.query('offer', filter);
+    expect(index.data.page(queryResult, filter)).to.deep.equal({
+      payload: [{
+        id: offerId,
+        locations: [{ tags: [] }]
+      }],
+      page: {
+        next: { limit: 1, offset: 1, cursor: 'eyJsaW1pdCI6MSwib2Zmc2V0IjoxfQ==' },
+        previous: null,
+        index: {
+          max: 1,
+          current: 1
+        },
+        size: 1
+      }
+    });
+    // cleanup
+    expect(await index.rest.mapping.delete('offer')).to.equal(true);
+  });
 });
