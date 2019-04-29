@@ -9,7 +9,8 @@ ENV HOME /user
 
 RUN touch ~/.bashrc && \
   curl -o- -L https://yarnpkg.com/install.sh | bash && \
-  source ~/.bashrc
+  source ~/.bashrc && \
+  yarn global add serverless@1.41.1
 
 RUN touch ~/.bash_aliases && \
   echo '# yarn-upgrade' >> ~/.bashrc && \
