@@ -367,7 +367,7 @@ Interacting with the rest api of Elasticsearch
 - `call(method: String, name: String, options: Object)` - make direct API call to Elasticsearch
 - `mapping.create(name: String)` - create mapping on Elasticsearch (call when version changes)
 - `mapping.delete(name: String)` - delete mapping from Elasticsearch (deletes _all_ versions)
-- `mapping.exists(name: String)` - returns `true` if mapping exists
+- `mapping.exists(name: String)` - returns `true` if latest mapping exists
 - `mapping.get(name: String)` - get mapping details from Elasticsearch (current version)
 - `mapping.historic(name: String)` - get _old_ mapping versions and their respective document counts from Elasticsearch
 - `mapping.list()` - Lists all mappings currently in Elasticsearch
