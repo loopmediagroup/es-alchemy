@@ -20,7 +20,7 @@ module.exports = async (call, idx, mapping, { remove = [], upsert = [] }) => {
       .forEach(i => payload.push(JSON.stringify({ delete: { _index: i, _type: idx, _id: docId } }))));
 
   upsert.forEach((doc) => {
-    // `update` action significantly decreases load on elasticsearch indexing already created docs
+    // `update` performs no action when exact document already indexed (reduced load)
     payload.push(JSON.stringify({ update: { _index: index, _type: idx, _id: doc.id } }));
     payload.push(JSON.stringify({ doc, doc_as_upsert: true }));
   });
