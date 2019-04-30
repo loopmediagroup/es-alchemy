@@ -581,6 +581,14 @@ describe('Testing index', () => {
       // cleanup mappings
       await Promise.all(Object.keys(queryMappings).map(idx => index.rest.mapping.delete(idx)));
     }).timeout(10000);
+
+    it('Testing mapping indexExists', async () => {
+      expect(await index.rest.mapping.indexExists('offer')).to.equal(false);
+      expect(await index.rest.mapping.create('offer')).to.equal(true);
+      expect(await index.rest.mapping.indexExists('offer')).to.equal(true);
+      // clean up
+      expect(await index.rest.mapping.delete('offer')).to.equal(true);
+    });
   });
 
   describe('Testing data formats', () => {
