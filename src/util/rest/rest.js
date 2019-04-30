@@ -61,9 +61,9 @@ module.exports = (getRels, getMapping, options) => {
     mapping: {
       create: idx => mappingCreate(call, idx, getMapping(idx)),
       delete: idx => mappingDelete(call, idx),
+      exists: idx => mappingExists(call, idx, getMapping(idx)),
       get: idx => mappingGet(call, idx, getMapping(idx)),
       historic: idx => mappingHistoric(call, idx, getMapping(idx)),
-      exists: idx => mappingExists(call, idx, getMapping(idx)),
       list: () => mappingList(call),
       recreate: idx => mappingRecreate(call, idx, getMapping(idx))
     },
