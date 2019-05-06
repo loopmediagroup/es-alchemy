@@ -1,7 +1,7 @@
 const assert = require('assert');
 const get = require('lodash.get');
 const isEqual = require('lodash.isequal');
-const objectPaths = require('obj-paths');
+const objectFields = require('object-fields');
 const actionMap = require('../resources/action-map');
 const { fromCursor } = require('../util/paging');
 
@@ -79,7 +79,7 @@ module.exports.build = (allowedFields, {
     from: typeof offset === 'number' ? offset : get(cursorPayload, 'offset', 0)
   };
   const result = {
-    _source: typeof toReturn === 'string' ? objectPaths.split(toReturn) : toReturn,
+    _source: typeof toReturn === 'string' ? objectFields.split(toReturn) : toReturn,
     size,
     from
   };
