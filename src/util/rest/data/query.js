@@ -1,9 +1,8 @@
 const assert = require('assert');
 const get = require('lodash.get');
 const cloneDeep = require('lodash.clonedeep');
-const objectRewrite = require('object-rewrite');
 const objectScan = require('object-scan');
-const objectPaths = require('obj-paths');
+const objectFields = require('object-fields');
 const resultRemap = require('../../../resources/result-remap');
 
 module.exports = (call, idx, rels, mapping, filter) => call('GET', `${idx}@*`, {
@@ -12,7 +11,7 @@ module.exports = (call, idx, rels, mapping, filter) => call('GET', `${idx}@*`, {
     // inject id requests for all entries
     const filterNew = cloneDeep(filter);
     // eslint-disable-next-line no-underscore-dangle
-    filterNew._source.push(...objectPaths.getParents(filterNew._source).map(p => `${p}.id`));
+    filterNew._source.push(...objectFields.getParents(filterNew._source).map(p => `${p}.id`));
     // eslint-disable-next-line no-underscore-dangle
     filterNew._source = [...new Set(filterNew._source)].sort();
     return filterNew;
@@ -48,7 +47,7 @@ module.exports = (call, idx, rels, mapping, filter) => call('GET', `${idx}@*`, {
     // inject empty arrays where no results
     const injectArrays = (() => {
       // eslint-disable-next-line no-underscore-dangle
-      const arrays = objectPaths.getParents(filter._source)
+      const arrays = objectFields.getParents(filter._source)
         .filter(e => rels[e].endsWith('[]'))
         .map(e => e.split('.'))
         .reduce((p, c) => {
@@ -71,19 +70,15 @@ module.exports = (call, idx, rels, mapping, filter) => call('GET', `${idx}@*`, {
         }
       })(input);
     })();
-    // PART 3: workaround for https://github.com/elastic/elasticsearch/issues/23796
-    // filter injected ids out for final result
-    const rewriterRetain = objectRewrite({
-      // eslint-disable-next-line no-underscore-dangle
-      retain: filter._source.map(e => (e === '' ? '**' : `${e}.**`))
-    });
     esResult.body.hits.hits.forEach((r) => {
       // eslint-disable-next-line no-underscore-dangle
       rewriterRemap(r._source);
       // eslint-disable-next-line no-underscore-dangle
       injectArrays(r._source);
+      // PART 3: workaround for https://github.com/elastic/elasticsearch/issues/23796
+      // filter injected ids out for final result
       // eslint-disable-next-line no-underscore-dangle
-      rewriterRetain(r._source);
+      objectFields.retain(r._source, filter._source);
     });
     return esResult.body;
   });
