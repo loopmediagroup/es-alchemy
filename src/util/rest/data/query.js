@@ -33,11 +33,14 @@ module.exports = (call, idx, rels, mapping, filter) => call('GET', `${idx}@*`, {
         joined: false,
         useArraySelector: false,
         breakFn: (key, value, { isMatch, matchedBy, parents }) => {
-          const parent = key.length === 1 ? input : parents[0];
-          matchedBy.forEach((m) => {
-            parent[key[key.length - 1]] = resultRemaps[m](parent[key[key.length - 1]]);
-          });
-          return isMatch;
+          if (isMatch) {
+            const parent = key.length === 1 ? input : parents[0];
+            matchedBy.forEach((m) => {
+              parent[key[key.length - 1]] = resultRemaps[m](parent[key[key.length - 1]]);
+            });
+            return true;
+          }
+          return false;
         }
       })(input);
     })();
