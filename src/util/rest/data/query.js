@@ -32,14 +32,12 @@ module.exports = (call, idx, rels, mapping, filter) => call('GET', `${idx}@*`, {
       return input => objectScan(Object.keys(resultRemaps), {
         joined: false,
         useArraySelector: false,
-        filterFn: (key, value, { matchedBy }) => {
-          const lastStringIndex = key.reduce((p, c, i) => (typeof c === 'string' ? i : p), 0);
-          const targetKey = key.slice(0, lastStringIndex + 1);
-          const parent = targetKey.length === 1 ? input : get(input, targetKey.slice(0, -1));
+        breakFn: (key, value, { isMatch, matchedBy, parents }) => {
+          const parent = key.length === 1 ? input : parents[0];
           matchedBy.forEach((m) => {
-            parent[targetKey[targetKey.length - 1]] = resultRemaps[m](parent[targetKey[targetKey.length - 1]]);
+            parent[key[key.length - 1]] = resultRemaps[m](parent[key[key.length - 1]]);
           });
-          return true;
+          return isMatch;
         }
       })(input);
     })();
