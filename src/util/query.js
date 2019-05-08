@@ -34,7 +34,7 @@ module.exports.build = (allowedFields, {
     'Invalid field(s) provided.'
   );
   if (filterBy.length !== 0) {
-    result.query = buildQuery(filterBy, allowedFields)[1];
+    result.query = buildQuery(filterBy, allowedFields);
   }
   if (scoreBy.length !== 0) {
     result.query = {
@@ -53,6 +53,6 @@ module.exports.build = (allowedFields, {
       ? []
       : [['id', 'asc']])
   ]
-    .map(e => actionMap.order[e[1]](e[0], ...e.slice(2)));
+    .map(e => actionMap.order[e[1]]([e[0], ...e.slice(2)], { allowedFields }));
   return result;
 };
