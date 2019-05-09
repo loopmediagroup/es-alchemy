@@ -1,16 +1,18 @@
 const assert = require('assert');
-const actionMap = require('../resources/action-map');
+const actionMapFilter = require('../resources/action-map/filter');
+const actionMapBool = require('../resources/action-map/bool');
 
-const buildRec = (filterBy, allowedFields) => {
+const buildRec = (filterBy, allowedFields, root) => {
   // handle actual filter clause
   if (Array.isArray(filterBy)) {
+    const key = root === null ? filterBy[0] : `${root}.${filterBy[0]}`;
     assert(
-      allowedFields === null || allowedFields.includes(filterBy[0]),
+      allowedFields === null || allowedFields.includes(key),
       'Unexpected field in filter.'
     );
     return [
       filterBy[0].substring(0, filterBy[0].lastIndexOf('.')),
-      actionMap.filter[filterBy[1]](filterBy[0], ...filterBy.slice(2))
+      actionMapFilter[filterBy[1]](key, ...filterBy.slice(2))
     ];
   }
 
@@ -36,7 +38,7 @@ const buildRec = (filterBy, allowedFields) => {
       ['string', 'object'].includes(typeof filter),
       'Filter clause entries expected to be string, array or object.'
     );
-    const [prefix, logic] = buildRec(typeof filter === 'string' ? filter.split(' ') : filter, allowedFields);
+    const [prefix, logic] = buildRec(typeof filter === 'string' ? filter.split(' ') : filter, allowedFields, root);
     if (groups[prefix] === undefined) {
       groups[prefix] = [];
     }
@@ -48,15 +50,16 @@ const buildRec = (filterBy, allowedFields) => {
   results.push(...(groups[''] || []));
   delete groups[''];
   Object.entries(groups).forEach(([prefix, logics]) => {
+    const pref = root === null ? prefix : `${root}.${prefix}`;
     if (clause === 'and' && target === 'separate') {
-      results.push(actionMap.filter.nest(prefix, logics));
+      results.push(actionMapFilter.nest(pref, logics));
     } else {
       logics.forEach((logic) => {
-        results.push(actionMap.filter.nest(prefix, [logic]));
+        results.push(actionMapFilter.nest(pref, [logic]));
       });
     }
   });
-  return ['', actionMap.bool[clause](clause === 'not' ? results[0] : results)];
+  return ['', actionMapBool[clause](clause === 'not' ? results[0] : results)];
 };
 
-module.exports.buildQuery = buildRec;
+module.exports.buildQuery = (filterBy, allowedFields, root = null) => buildRec(filterBy, allowedFields, root)[1];

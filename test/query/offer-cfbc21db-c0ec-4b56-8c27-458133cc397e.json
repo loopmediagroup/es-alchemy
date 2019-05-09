@@ -1,0 +1,120 @@
+{
+  "orderBy": [
+    [
+      "schedule.start",
+      "asc",
+      "max",
+      {
+        "and": [
+          [
+            "start",
+            ">=",
+            "2019-06-06"
+          ]
+        ]
+      }
+    ],
+    [
+      "schedule.end",
+      "desc",
+      "max",
+      {
+        "or": [
+          [
+            "end",
+            "<=",
+            "2019-06-06"
+          ],
+          [
+            "sub.end",
+            "<=",
+            "2019-06-06"
+          ]
+        ]
+      }
+    ]
+  ],
+  "index": {},
+  "limit": 100,
+  "result": {
+    "_source": [
+      ""
+    ],
+    "size": 100,
+    "from": 0,
+    "sort": [
+      {
+        "schedule.start": {
+          "order": "asc",
+          "mode": "max",
+          "nested": {
+            "path": "schedule",
+            "filter": {
+              "bool": {
+                "filter": [
+                  {
+                    "range": {
+                      "schedule.start": {
+                        "gte": "2019-06-06"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      {
+        "schedule.end": {
+          "order": "desc",
+          "mode": "max",
+          "nested": {
+            "path": "schedule",
+            "filter": {
+              "bool": {
+                "should": [
+                  {
+                    "range": {
+                      "schedule.end": {
+                        "lte": "2019-06-06"
+                      }
+                    }
+                  },
+                  {
+                    "nested": {
+                      "path": "schedule.sub",
+                      "query": {
+                        "bool": {
+                          "filter": [
+                            {
+                              "range": {
+                                "schedule.sub.end": {
+                                  "lte": "2019-06-06"
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ],
+                "minimum_should_match": 1
+              }
+            }
+          }
+        }
+      },
+      {
+        "id": {
+          "order": "asc"
+        }
+      }
+    ]
+  },
+  "filterBy": null,
+  "toReturn": null,
+  "offset": 0,
+  "scoreBy": null
+}

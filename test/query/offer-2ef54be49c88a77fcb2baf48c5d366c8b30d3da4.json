@@ -138,7 +138,9 @@
       {
         "venues.id": {
           "order": "asc",
-          "nested_path": "venues"
+          "nested": {
+            "path": "venues"
+          }
         }
       },
       {
