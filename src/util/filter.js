@@ -5,15 +5,13 @@ const actionMapBool = require('../resources/action-map/bool');
 const buildRec = (filterBy, allowedFields, root) => {
   // handle actual filter clause
   if (Array.isArray(filterBy)) {
-    const key = root === null ? filterBy[0] : `${root}.${filterBy[0]}`;
     assert(
-      allowedFields === null || allowedFields.includes(key),
-      'Unexpected field in filter.'
+      allowedFields === null || allowedFields.includes(filterBy[0]),
+      `Unexpected field in filter: ${filterBy[0]}`
     );
-    return [
-      filterBy[0].substring(0, filterBy[0].lastIndexOf('.')),
-      actionMapFilter[filterBy[1]](key, ...filterBy.slice(2))
-    ];
+    const prefix = filterBy[0].substring(0, filterBy[0].lastIndexOf('.'));
+    assert(root === null || prefix.startsWith(root), 'Can only reference relative paths in sort filters.');
+    return [prefix === root ? '' : prefix, actionMapFilter[filterBy[1]](filterBy[0], ...filterBy.slice(2))];
   }
 
   // handle "or" and "and" clauses
@@ -50,12 +48,11 @@ const buildRec = (filterBy, allowedFields, root) => {
   results.push(...(groups[''] || []));
   delete groups[''];
   Object.entries(groups).forEach(([prefix, logics]) => {
-    const pref = root === null ? prefix : `${root}.${prefix}`;
     if (clause === 'and' && target === 'separate') {
-      results.push(actionMapFilter.nest(pref, logics));
+      results.push(actionMapFilter.nest(prefix, logics));
     } else {
       logics.forEach((logic) => {
-        results.push(actionMapFilter.nest(pref, [logic]));
+        results.push(actionMapFilter.nest(prefix, [logic]));
       });
     }
   });
