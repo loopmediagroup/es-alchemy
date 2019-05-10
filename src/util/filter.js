@@ -8,7 +8,7 @@ const buildRec = (filterBy, allowedFields, root) => {
     const key = root === null ? filterBy[0] : `${root}.${filterBy[0]}`;
     assert(
       allowedFields === null || allowedFields.includes(key),
-      'Unexpected field in filter.'
+      `Unexpected field in filter: ${key}`
     );
     return [
       filterBy[0].substring(0, filterBy[0].lastIndexOf('.')),
