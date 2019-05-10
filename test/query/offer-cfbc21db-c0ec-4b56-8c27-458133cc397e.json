@@ -7,7 +7,7 @@
       {
         "and": [
           [
-            "start",
+            "schedule.start",
             ">=",
             "2019-06-06"
           ]
@@ -21,12 +21,12 @@
       {
         "or": [
           [
-            "end",
+            "schedule.end",
             "<=",
             "2019-06-06"
           ],
           [
-            "sub.end",
+            "schedule.sub.end",
             "<=",
             "2019-06-06"
           ]

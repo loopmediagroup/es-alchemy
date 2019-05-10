@@ -348,8 +348,8 @@ describe('Testing index', () => {
       expect(await index.rest.data.refresh('offer')).to.equal(true);
       const filter = index.query.build('offer', {
         orderBy: [
-          ['locations.name', 'asc', 'max', { and: [['address.street', '==', 'A']] }],
-          ['locations.name', 'asc', 'max', { and: [['address.street', '==', 'B']] }]
+          ['locations.name', 'asc', 'max', { and: [['locations.address.street', '==', 'A']] }],
+          ['locations.name', 'asc', 'max', { and: [['locations.address.street', '==', 'B']] }]
         ],
         toReturn: ['headline']
       });
