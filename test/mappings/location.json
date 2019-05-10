@@ -2,14 +2,14 @@
   "mappings": {
     "location": {
       "_meta": {
-        "hash": "43f821ea2a5c2e039bf1ff059a86293fe7e33277"
+        "hash": "882cd16b3f3ed7ce31e6e89f16acc8ee5b96a5c1"
       },
       "properties": {
         "id": {
           "type": "keyword"
         },
         "name": {
-          "type": "text"
+          "type": "keyword"
         },
         "address": {
           "properties": {

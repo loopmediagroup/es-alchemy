@@ -310,6 +310,87 @@ describe('Testing index', () => {
       // cleanup
       expect(await index.rest.mapping.delete('offer')).to.equal(true);
     }).timeout(10000);
+
+    it('Testing nested filtered in sort', async () => {
+      const offerIds = [uuid4(), uuid4(), uuid4(), uuid4()];
+      expect(await index.rest.mapping.recreate('offer')).to.equal(true);
+      expect(await index.rest.data.update('offer', {
+        upsert: [{
+          id: offerIds[0],
+          headline: 'First',
+          locations: [
+            { id: uuid4(), name: '1', address: { id: uuid4(), street: 'A' } },
+            { id: uuid4(), name: '1', address: { id: uuid4(), street: 'B' } }
+          ]
+        }, {
+          id: offerIds[2],
+          headline: 'Second',
+          locations: [
+            { id: uuid4(), name: '1', address: { id: uuid4(), street: 'A' } },
+            { id: uuid4(), name: '2', address: { id: uuid4(), street: 'B' } }
+          ]
+        }, {
+          id: offerIds[1],
+          headline: 'Third',
+          locations: [
+            { id: uuid4(), name: '2', address: { id: uuid4(), street: 'A' } },
+            { id: uuid4(), name: '1', address: { id: uuid4(), street: 'B' } }
+          ]
+        }, {
+          id: offerIds[3],
+          headline: 'Fourth',
+          locations: [
+            { id: uuid4(), name: '2', address: { id: uuid4(), street: 'A' } },
+            { id: uuid4(), name: '2', address: { id: uuid4(), street: 'B' } }
+          ]
+        }].sort(() => Math.random() - 0.5)
+      })).to.equal(true);
+      expect(await index.rest.data.refresh('offer')).to.equal(true);
+      const filter = index.query.build('offer', {
+        orderBy: [
+          ['locations.name', 'asc', 'max', { and: [['locations.address.street', '==', 'A']] }],
+          ['locations.name', 'asc', 'max', { and: [['locations.address.street', '==', 'B']] }]
+        ],
+        toReturn: ['headline']
+      });
+      const queryResult = await index.rest.data.query('offer', filter);
+      expect(queryResult.hits.hits).to.deep.equal([
+        {
+          _index: 'offer@229a59500f278ce9d4cd24ce6afc4e191845a937',
+          _type: 'offer',
+          _id: offerIds[0],
+          _score: null,
+          _source: { headline: 'First' },
+          sort: ['1', '1', offerIds[0]]
+        },
+        {
+          _index: 'offer@229a59500f278ce9d4cd24ce6afc4e191845a937',
+          _type: 'offer',
+          _id: offerIds[2],
+          _score: null,
+          _source: { headline: 'Second' },
+          sort: ['1', '2', offerIds[2]]
+        },
+        {
+          _index: 'offer@229a59500f278ce9d4cd24ce6afc4e191845a937',
+          _type: 'offer',
+          _id: offerIds[1],
+          _score: null,
+          _source: { headline: 'Third' },
+          sort: ['2', '1', offerIds[1]]
+        },
+        {
+          _index: 'offer@229a59500f278ce9d4cd24ce6afc4e191845a937',
+          _type: 'offer',
+          _id: offerIds[3],
+          _score: null,
+          _source: { headline: 'Fourth' },
+          sort: ['2', '2', offerIds[3]]
+        }
+      ]);
+      // cleanup
+      expect(await index.rest.mapping.delete('offer')).to.equal(true);
+    }).timeout(10000);
   });
 
   describe('Testing orderBy', () => {

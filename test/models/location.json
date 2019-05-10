@@ -1,6 +1,6 @@
 {
   "fields": {
     "id": "uuid",
-    "name": "string"
+    "name": "keyword"
   }
 }
