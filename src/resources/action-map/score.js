@@ -11,7 +11,7 @@ double remap(def value, def map) {
 }
 `;
 const scoreMapper = (map) => {
-  assert(Array.isArray(map));
+  assert(Array.isArray(map) && map.length !== 0);
   return map.reduce((p, [k, v]) => p.concat(k, v), []);
 };
 
