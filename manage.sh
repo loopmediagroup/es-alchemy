@@ -2,7 +2,7 @@
 
 docker run \
   --name es63 \
-  -d docker.elastic.co/elasticsearch/elasticsearch:6.3.0
+  -d docker.elastic.co/elasticsearch/elasticsearch:6.5.0
 
 docker build -t lambda-environment-node -f docker/Dockerfile . &&
 docker run \
