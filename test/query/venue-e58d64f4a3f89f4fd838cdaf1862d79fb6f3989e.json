@@ -162,13 +162,13 @@
         }
       },
       {
-        "id": {
-          "order": "asc"
+        "_score": {
+          "order": "desc"
         }
       },
       {
-        "_score": {
-          "order": "desc"
+        "id": {
+          "order": "asc"
         }
       }
     ],
@@ -293,6 +293,138 @@
                     },
                     {
                       "nested": {
+                        "path": "offers",
+                        "query": {
+                          "bool": {
+                            "filter": [
+                              {
+                                "bool": {
+                                  "filter": [
+                                    {
+                                      "wildcard": {
+                                        "offers.name": {
+                                          "value": "well*"
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "wildcard": {
+                                        "offers.name": {
+                                          "value": "although*"
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "wildcard": {
+                                        "offers.name": {
+                                          "value": "west*"
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "wildcard": {
+                                        "offers.name": {
+                                          "value": "side*"
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "wildcard": {
+                                        "offers.name": {
+                                          "value": "least*"
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "wildcard": {
+                                        "offers.name": {
+                                          "value": "source*"
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "wildcard": {
+                                        "offers.name": {
+                                          "value": "successf*"
+                                        }
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "nested": {
+                        "path": "offers",
+                        "query": {
+                          "bool": {
+                            "filter": [
+                              {
+                                "bool": {
+                                  "filter": [
+                                    {
+                                      "wildcard": {
+                                        "offers.desc": {
+                                          "value": "well*"
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "wildcard": {
+                                        "offers.desc": {
+                                          "value": "although*"
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "wildcard": {
+                                        "offers.desc": {
+                                          "value": "west*"
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "wildcard": {
+                                        "offers.desc": {
+                                          "value": "side*"
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "wildcard": {
+                                        "offers.desc": {
+                                          "value": "least*"
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "wildcard": {
+                                        "offers.desc": {
+                                          "value": "source*"
+                                        }
+                                      }
+                                    },
+                                    {
+                                      "wildcard": {
+                                        "offers.desc": {
+                                          "value": "successf*"
+                                        }
+                                      }
+                                    }
+                                  ]
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "nested": {
                         "path": "keywords",
                         "query": {
                           "bool": {
@@ -345,138 +477,6 @@
                                     {
                                       "wildcard": {
                                         "keywords.names": {
-                                          "value": "successf*"
-                                        }
-                                      }
-                                    }
-                                  ]
-                                }
-                              }
-                            ]
-                          }
-                        }
-                      }
-                    },
-                    {
-                      "nested": {
-                        "path": "offers",
-                        "query": {
-                          "bool": {
-                            "filter": [
-                              {
-                                "bool": {
-                                  "filter": [
-                                    {
-                                      "wildcard": {
-                                        "offers.name": {
-                                          "value": "well*"
-                                        }
-                                      }
-                                    },
-                                    {
-                                      "wildcard": {
-                                        "offers.name": {
-                                          "value": "although*"
-                                        }
-                                      }
-                                    },
-                                    {
-                                      "wildcard": {
-                                        "offers.name": {
-                                          "value": "west*"
-                                        }
-                                      }
-                                    },
-                                    {
-                                      "wildcard": {
-                                        "offers.name": {
-                                          "value": "side*"
-                                        }
-                                      }
-                                    },
-                                    {
-                                      "wildcard": {
-                                        "offers.name": {
-                                          "value": "least*"
-                                        }
-                                      }
-                                    },
-                                    {
-                                      "wildcard": {
-                                        "offers.name": {
-                                          "value": "source*"
-                                        }
-                                      }
-                                    },
-                                    {
-                                      "wildcard": {
-                                        "offers.name": {
-                                          "value": "successf*"
-                                        }
-                                      }
-                                    }
-                                  ]
-                                }
-                              }
-                            ]
-                          }
-                        }
-                      }
-                    },
-                    {
-                      "nested": {
-                        "path": "offers",
-                        "query": {
-                          "bool": {
-                            "filter": [
-                              {
-                                "bool": {
-                                  "filter": [
-                                    {
-                                      "wildcard": {
-                                        "offers.desc": {
-                                          "value": "well*"
-                                        }
-                                      }
-                                    },
-                                    {
-                                      "wildcard": {
-                                        "offers.desc": {
-                                          "value": "although*"
-                                        }
-                                      }
-                                    },
-                                    {
-                                      "wildcard": {
-                                        "offers.desc": {
-                                          "value": "west*"
-                                        }
-                                      }
-                                    },
-                                    {
-                                      "wildcard": {
-                                        "offers.desc": {
-                                          "value": "side*"
-                                        }
-                                      }
-                                    },
-                                    {
-                                      "wildcard": {
-                                        "offers.desc": {
-                                          "value": "least*"
-                                        }
-                                      }
-                                    },
-                                    {
-                                      "wildcard": {
-                                        "offers.desc": {
-                                          "value": "source*"
-                                        }
-                                      }
-                                    },
-                                    {
-                                      "wildcard": {
-                                        "offers.desc": {
                                           "value": "successf*"
                                         }
                                       }
@@ -560,44 +560,6 @@
               },
               {
                 "nested": {
-                  "path": "offers",
-                  "query": {
-                    "bool": {
-                      "filter": [
-                        {
-                          "match": {
-                            "offers.returned_for_type_b": {
-                              "query": true,
-                              "operator": "and"
-                            }
-                          }
-                        }
-                      ]
-                    }
-                  }
-                }
-              },
-              {
-                "nested": {
-                  "path": "regions",
-                  "query": {
-                    "bool": {
-                      "filter": [
-                        {
-                          "match": {
-                            "regions.id": {
-                              "query": "d9353748-4d20-422b-b526-e5cbf4dd33c5",
-                              "operator": "and"
-                            }
-                          }
-                        }
-                      ]
-                    }
-                  }
-                }
-              },
-              {
-                "nested": {
                   "path": "availabilities",
                   "query": {
                     "bool": {
@@ -635,6 +597,44 @@
                     }
                   }
                 }
+              },
+              {
+                "nested": {
+                  "path": "regions",
+                  "query": {
+                    "bool": {
+                      "filter": [
+                        {
+                          "match": {
+                            "regions.id": {
+                              "query": "d9353748-4d20-422b-b526-e5cbf4dd33c5",
+                              "operator": "and"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              },
+              {
+                "nested": {
+                  "path": "offers",
+                  "query": {
+                    "bool": {
+                      "filter": [
+                        {
+                          "match": {
+                            "offers.returned_for_type_b": {
+                              "query": true,
+                              "operator": "and"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
               }
             ]
           }
@@ -644,9 +644,14 @@
             "script_score": {
               "script": {
                 "lang": "painless",
-                "inline": "return doc[params.field].values.contains(true) ? 1 : 0;",
+                "inline": "\n\ndouble remap(def value, def map) {\n  for (int i = map.length - 2; i >= 0; i -= 2) {\n    if (map[i] <= value) {\n      return map[i + 1];\n    }\n  }\n  return map[1];\n}\n\nint result = doc[params.target].values.contains(params.value) ? 1 : 0;\nreturn remap(result, params.map);\n",
                 "params": {
-                  "field": "offers.is_limited"
+                  "target": "offers.is_limited",
+                  "value": true,
+                  "map": [
+                    1,
+                    0
+                  ]
                 }
               }
             }
@@ -655,10 +660,14 @@
             "script_score": {
               "script": {
                 "lang": "painless",
-                "inline": "\nint a = [doc['id'].value, params.seed].hashCode();\na -= (a<<6);a ^= (a>>17);a -= (a<<9);a ^= (a<<4);\na -= (a<<3);a ^= (a<<10);a ^= (a>>15);\ndouble scale = Collections.max(doc[params.scale_field].getValues()) / 100.0;\ndouble value = (Math.abs(a) / (double)Integer.MAX_VALUE) - 0.5;\nreturn scale * value\n",
+                "inline": "\n\ndouble remap(def value, def map) {\n  for (int i = map.length - 2; i >= 0; i -= 2) {\n    if (map[i] <= value) {\n      return map[i + 1];\n    }\n  }\n  return map[1];\n}\n\nint a = [doc[params.target].value, params.seed].hashCode();\na -= (a<<6);a ^= (a>>17);a -= (a<<9);a ^= (a<<4);\na -= (a<<3);a ^= (a<<10);a ^= (a>>15);\ndouble result = (Math.abs(a) / (double)Integer.MAX_VALUE) - 0.5;\nreturn remap(result, params.map);\n",
                 "params": {
-                  "scale_field": "primary_types.score_random_scale",
-                  "seed": "2018-08-1798-1d9353748-4d20-422b-b526-e5cbf4dd33c5"
+                  "seed": "38977180-f361-4e1d-9070-68dc93eceb75",
+                  "target": "primary_types.score_random_scale",
+                  "map": [
+                    0,
+                    1
+                  ]
                 }
               }
             }
@@ -738,13 +747,26 @@
   "offset": null,
   "scoreBy": [
     [
-      "bool",
-      "offers.is_limited"
+      "==",
+      "offers.is_limited",
+      true,
+      [
+        [
+          1,
+          0
+        ]
+      ]
     ],
     [
       "random",
-      "2018-08-1798-1d9353748-4d20-422b-b526-e5cbf4dd33c5",
-      "primary_types.score_random_scale"
+      "primary_types.score_random_scale",
+      "38977180-f361-4e1d-9070-68dc93eceb75",
+      [
+        [
+          0,
+          1
+        ]
+      ]
     ]
   ]
 }

@@ -156,43 +156,6 @@
           },
           {
             "nested": {
-              "path": "types",
-              "query": {
-                "bool": {
-                  "filter": [
-                    {
-                      "terms": {
-                        "types.id": [
-                          "20db46db-8cb9-53e5-8630-972c7aa79802"
-                        ]
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          {
-            "nested": {
-              "path": "regions",
-              "query": {
-                "bool": {
-                  "filter": [
-                    {
-                      "match": {
-                        "regions.id": {
-                          "query": "b85518a9-386c-4822-a409-5f518a2493c0",
-                          "operator": "and"
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          {
-            "nested": {
               "path": "availabilities",
               "query": {
                 "bool": {
@@ -224,6 +187,43 @@
                         "availabilities.created": {
                           "lte": "now-0m"
                         }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "nested": {
+              "path": "regions",
+              "query": {
+                "bool": {
+                  "filter": [
+                    {
+                      "match": {
+                        "regions.id": {
+                          "query": "b85518a9-386c-4822-a409-5f518a2493c0",
+                          "operator": "and"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "nested": {
+              "path": "types",
+              "query": {
+                "bool": {
+                  "filter": [
+                    {
+                      "terms": {
+                        "types.id": [
+                          "20db46db-8cb9-53e5-8630-972c7aa79802"
+                        ]
                       }
                     }
                   ]

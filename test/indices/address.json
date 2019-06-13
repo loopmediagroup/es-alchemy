@@ -1,0 +1,8 @@
+{
+  "model": "address",
+  "fields": [
+    "id",
+    "centre",
+    "created"
+  ]
+}
