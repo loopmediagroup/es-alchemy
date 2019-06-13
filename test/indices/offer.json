@@ -61,7 +61,7 @@
       ],
       "flat": true
     },
-    "address": {
+    "flatAddress": {
       "model": "address[]",
       "fields": [
         "id",

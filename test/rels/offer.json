@@ -3,5 +3,5 @@
   "locations.address": "address",
   "locations.tags": "tag[]",
   "tags": "tag[]",
-  "address": "address[]"
+  "flatAddress": "address[]"
 }

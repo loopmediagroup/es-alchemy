@@ -2,7 +2,7 @@
   "mappings": {
     "offer": {
       "_meta": {
-        "hash": "3b4aafd4fc49bc2f20693d95154a5275df9dfd72"
+        "hash": "18cce1f85000e66a59e17420b708f5687fc48a89"
       },
       "properties": {
         "id": {
@@ -85,7 +85,7 @@
           "type": "nested",
           "include_in_root": true
         },
-        "address": {
+        "flatAddress": {
           "properties": {
             "centre": {
               "type": "geo_point"

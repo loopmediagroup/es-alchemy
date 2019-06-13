@@ -279,7 +279,7 @@
             "script_score": {
               "script": {
                 "lang": "painless",
-                "inline": "\n\ndouble remap(def value, def map) {\n  for (int i = map.length - 2; i >= 0; i -= 2) {\n    if (map[i] <= value) {\n      return map[i + 1];\n    }\n  }\n  return value;\n}\n\ndouble result = 0;\ndouble lat2 = params.lat;\ndouble lon2 = params.lon;\ndouble TO_METERS = 6371008.7714D;\ndouble TO_RADIANS = Math.PI / 180D;\nfor (int i = 0; i < doc[params.target].values.length; i++) {\n  // todo: https://github.com/elastic/elasticsearch/issues/25796\n  double lat1 = doc[params.target][i].lat;\n  double lon1 = doc[params.target][i].lon;\n  double x1 = lat1 * TO_RADIANS;\n  double x2 = lat2 * TO_RADIANS;\n  double h1 = 1 - Math.cos(x1 - x2);\n  double h2 = 1 - Math.cos((lon1 - lon2) * TO_RADIANS);\n  double h = h1 + Math.cos(x1) * Math.cos(x2) * h2;\n  double dist = TO_METERS * 2 * Math.asin(Math.min(1, Math.sqrt(h * 0.5)));\n  result = Math.max(result, remap(dist, params.map));\n}\nreturn result;\n",
+                "inline": "\n\ndouble remap(def value, def map) {\n  for (int i = map.length - 2; i >= 0; i -= 2) {\n    if (map[i] <= value) {\n      return map[i + 1];\n    }\n  }\n  return map[1];\n}\n\ndouble result = 0;\ndouble lat2 = params.lat;\ndouble lon2 = params.lon;\ndouble TO_METERS = 6371008.7714D;\ndouble TO_RADIANS = Math.PI / 180D;\nfor (int i = 0; i < doc[params.target].values.length; i++) {\n  // todo: https://github.com/elastic/elasticsearch/issues/25796\n  double lat1 = doc[params.target][i].lat;\n  double lon1 = doc[params.target][i].lon;\n  double x1 = lat1 * TO_RADIANS;\n  double x2 = lat2 * TO_RADIANS;\n  double h1 = 1 - Math.cos(x1 - x2);\n  double h2 = 1 - Math.cos((lon1 - lon2) * TO_RADIANS);\n  double h = h1 + Math.cos(x1) * Math.cos(x2) * h2;\n  double dist = TO_METERS * 2 * Math.asin(Math.min(1, Math.sqrt(h * 0.5)));\n  result = Math.max(result, remap(dist, params.map));\n}\nreturn result;\n",
                 "params": {
                   "lon": 0.5,
                   "lat": 0.5,
@@ -298,7 +298,7 @@
             "script_score": {
               "script": {
                 "lang": "painless",
-                "inline": "\n\ndouble remap(def value, def map) {\n  for (int i = map.length - 2; i >= 0; i -= 2) {\n    if (map[i] <= value) {\n      return map[i + 1];\n    }\n  }\n  return value;\n}\n\ndouble result = 0;\ndouble lat2 = params.lat;\ndouble lon2 = params.lon;\ndouble TO_METERS = 6371008.7714D;\ndouble TO_RADIANS = Math.PI / 180D;\nfor (int i = 0; i < doc[params.target].values.length; i++) {\n  // todo: https://github.com/elastic/elasticsearch/issues/25796\n  double lat1 = doc[params.target][i].lat;\n  double lon1 = doc[params.target][i].lon;\n  double x1 = lat1 * TO_RADIANS;\n  double x2 = lat2 * TO_RADIANS;\n  double h1 = 1 - Math.cos(x1 - x2);\n  double h2 = 1 - Math.cos((lon1 - lon2) * TO_RADIANS);\n  double h = h1 + Math.cos(x1) * Math.cos(x2) * h2;\n  double dist = TO_METERS * 2 * Math.asin(Math.min(1, Math.sqrt(h * 0.5)));\n  result = Math.max(result, remap(dist, params.map));\n}\nreturn result;\n",
+                "inline": "\n\ndouble remap(def value, def map) {\n  for (int i = map.length - 2; i >= 0; i -= 2) {\n    if (map[i] <= value) {\n      return map[i + 1];\n    }\n  }\n  return map[1];\n}\n\ndouble result = 0;\ndouble lat2 = params.lat;\ndouble lon2 = params.lon;\ndouble TO_METERS = 6371008.7714D;\ndouble TO_RADIANS = Math.PI / 180D;\nfor (int i = 0; i < doc[params.target].values.length; i++) {\n  // todo: https://github.com/elastic/elasticsearch/issues/25796\n  double lat1 = doc[params.target][i].lat;\n  double lon1 = doc[params.target][i].lon;\n  double x1 = lat1 * TO_RADIANS;\n  double x2 = lat2 * TO_RADIANS;\n  double h1 = 1 - Math.cos(x1 - x2);\n  double h2 = 1 - Math.cos((lon1 - lon2) * TO_RADIANS);\n  double h = h1 + Math.cos(x1) * Math.cos(x2) * h2;\n  double dist = TO_METERS * 2 * Math.asin(Math.min(1, Math.sqrt(h * 0.5)));\n  result = Math.max(result, remap(dist, params.map));\n}\nreturn result;\n",
                 "params": {
                   "lon": 0.5,
                   "lat": 0.5,
@@ -317,11 +317,14 @@
             "script_score": {
               "script": {
                 "lang": "painless",
-                "inline": "\n\ndouble remap(def value, def map) {\n  for (int i = map.length - 2; i >= 0; i -= 2) {\n    if (map[i] <= value) {\n      return map[i + 1];\n    }\n  }\n  return value;\n}\n\nint result = doc[params.target].values.contains(params.value) ? 1 : 0;\nreturn remap(result, params.map);\n",
+                "inline": "\n\ndouble remap(def value, def map) {\n  for (int i = map.length - 2; i >= 0; i -= 2) {\n    if (map[i] <= value) {\n      return map[i + 1];\n    }\n  }\n  return map[1];\n}\n\nint result = doc[params.target].values.contains(params.value) ? 1 : 0;\nreturn remap(result, params.map);\n",
                 "params": {
                   "target": "offers.is_limited",
                   "value": true,
-                  "map": []
+                  "map": [
+                    1,
+                    0
+                  ]
                 }
               }
             }
@@ -330,11 +333,14 @@
             "script_score": {
               "script": {
                 "lang": "painless",
-                "inline": "\n\ndouble remap(def value, def map) {\n  for (int i = map.length - 2; i >= 0; i -= 2) {\n    if (map[i] <= value) {\n      return map[i + 1];\n    }\n  }\n  return value;\n}\n\nint a = [doc[params.target].value, params.seed].hashCode();\na -= (a<<6);a ^= (a>>17);a -= (a<<9);a ^= (a<<4);\na -= (a<<3);a ^= (a<<10);a ^= (a>>15);\ndouble result = (Math.abs(a) / (double)Integer.MAX_VALUE) - 0.5;\nreturn remap(result, params.map);\n",
+                "inline": "\n\ndouble remap(def value, def map) {\n  for (int i = map.length - 2; i >= 0; i -= 2) {\n    if (map[i] <= value) {\n      return map[i + 1];\n    }\n  }\n  return map[1];\n}\n\nint a = [doc[params.target].value, params.seed].hashCode();\na -= (a<<6);a ^= (a>>17);a -= (a<<9);a ^= (a<<4);\na -= (a<<3);a ^= (a<<10);a ^= (a>>15);\ndouble result = (Math.abs(a) / (double)Integer.MAX_VALUE) - 0.5;\nreturn remap(result, params.map);\n",
                 "params": {
-                  "seed": "primary_types.score_random_scale",
-                  "target": "2018-08-1798-116456cd3-7a4e-4c18-acd7-28978c2539e0",
-                  "map": []
+                  "seed": "0eb8c270-5e39-4d0b-b203-ee07ea8cbeab",
+                  "target": "primary_types.score_random_scale",
+                  "map": [
+                    0,
+                    1
+                  ]
                 }
               }
             }
@@ -431,12 +437,24 @@
     [
       "==",
       "offers.is_limited",
-      true
+      true,
+      [
+        [
+          1,
+          0
+        ]
+      ]
     ],
     [
       "random",
-      "2018-08-1798-116456cd3-7a4e-4c18-acd7-28978c2539e0",
-      "primary_types.score_random_scale"
+      "primary_types.score_random_scale",
+      "0eb8c270-5e39-4d0b-b203-ee07ea8cbeab",
+      [
+        [
+          0,
+          1
+        ]
+      ]
     ]
   ]
 }

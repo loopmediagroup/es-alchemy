@@ -145,11 +145,14 @@
             "script_score": {
               "script": {
                 "lang": "painless",
-                "inline": "\n\ndouble remap(def value, def map) {\n  for (int i = map.length - 2; i >= 0; i -= 2) {\n    if (map[i] <= value) {\n      return map[i + 1];\n    }\n  }\n  return value;\n}\n\nint a = [doc[params.target].value, params.seed].hashCode();\na -= (a<<6);a ^= (a>>17);a -= (a<<9);a ^= (a<<4);\na -= (a<<3);a ^= (a<<10);a ^= (a>>15);\ndouble result = (Math.abs(a) / (double)Integer.MAX_VALUE) - 0.5;\nreturn remap(result, params.map);\n",
+                "inline": "\n\ndouble remap(def value, def map) {\n  for (int i = map.length - 2; i >= 0; i -= 2) {\n    if (map[i] <= value) {\n      return map[i + 1];\n    }\n  }\n  return map[1];\n}\n\nint a = [doc[params.target].value, params.seed].hashCode();\na -= (a<<6);a ^= (a>>17);a -= (a<<9);a ^= (a<<4);\na -= (a<<3);a ^= (a<<10);a ^= (a>>15);\ndouble result = (Math.abs(a) / (double)Integer.MAX_VALUE) - 0.5;\nreturn remap(result, params.map);\n",
                 "params": {
-                  "seed": "primary_types.score_random_scale",
-                  "target": "088f131edd734d0d905d41b021a24d12",
-                  "map": []
+                  "seed": "783e70a5-c716-4025-b5a4-68854c14e9d7",
+                  "target": "primary_types.score_random_scale",
+                  "map": [
+                    0,
+                    1
+                  ]
                 }
               }
             }
@@ -173,8 +176,14 @@
   "scoreBy": [
     [
       "random",
-      "088f131edd734d0d905d41b021a24d12",
-      "primary_types.score_random_scale"
+      "primary_types.score_random_scale",
+      "783e70a5-c716-4025-b5a4-68854c14e9d7",
+      [
+        [
+          0,
+          1
+        ]
+      ]
     ]
   ]
 }

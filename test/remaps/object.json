@@ -10,7 +10,7 @@
   "result": {
     "id": "43a839ee-c2df-4b44-a25d-f34b3041db77",
     "headline": "value",
-    "address": [],
+    "flatAddress": [],
     "locations": [],
     "meta": [{
       "enabled": true

@@ -7,10 +7,10 @@ double remap(def value, def map) {
       return map[i + 1];
     }
   }
-  return value;
+  return map[1];
 }
 `;
-const scoreMapper = (map = []) => {
+const scoreMapper = (map) => {
   assert(Array.isArray(map));
   return map.reduce((p, [k, v]) => p.concat(k, v), []);
 };
@@ -93,7 +93,7 @@ return result;
         lang: 'painless',
         inline: `
 ${remap}
-double result = -Double.MAX_VALUE;
+double result = 0;
 long timestamp = Instant.parse(params.timestamp).getEpochSecond();
 for (int i = 0; i < doc[params.target].values.length; i++) {
   long age = timestamp - doc[params.target][i].getMillis() / 1000;

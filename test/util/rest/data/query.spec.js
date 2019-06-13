@@ -139,7 +139,7 @@ describe('Testing Rest Query', () => {
         toReturn: ['headline']
       }, { raw: true })).hits.hits).to.deep.equal([
         {
-          _index: 'offer@3b4aafd4fc49bc2f20693d95154a5275df9dfd72',
+          _index: 'offer@18cce1f85000e66a59e17420b708f5687fc48a89',
           _type: 'offer',
           _id: offer1.id,
           _score: null,
@@ -147,7 +147,7 @@ describe('Testing Rest Query', () => {
           sort: ['1', '1', offer1.id]
         },
         {
-          _index: 'offer@3b4aafd4fc49bc2f20693d95154a5275df9dfd72',
+          _index: 'offer@18cce1f85000e66a59e17420b708f5687fc48a89',
           _type: 'offer',
           _id: offer2.id,
           _score: null,
@@ -155,7 +155,7 @@ describe('Testing Rest Query', () => {
           sort: ['1', '2', offer2.id]
         },
         {
-          _index: 'offer@3b4aafd4fc49bc2f20693d95154a5275df9dfd72',
+          _index: 'offer@18cce1f85000e66a59e17420b708f5687fc48a89',
           _type: 'offer',
           _id: offer3.id,
           _score: null,
@@ -163,7 +163,7 @@ describe('Testing Rest Query', () => {
           sort: ['2', '1', offer3.id]
         },
         {
-          _index: 'offer@3b4aafd4fc49bc2f20693d95154a5275df9dfd72',
+          _index: 'offer@18cce1f85000e66a59e17420b708f5687fc48a89',
           _type: 'offer',
           _id: offer4.id,
           _score: null,
@@ -220,15 +220,15 @@ describe('Testing Rest Query', () => {
         await upsert('offer', [offer1, offer2]);
         await Promise.all([
           {
-            scoreBy: [['==', 'flags', 'three']],
+            scoreBy: [['==', 'flags', 'three', [[0, 0], [1, 1]]]],
             result: [offer2, offer1]
           },
           {
-            scoreBy: [['==', 'flags', 'one'], ['==', 'flags', 'two']],
+            scoreBy: [['==', 'flags', 'one', [[0, 0], [1, 1]]], ['==', 'flags', 'two', [[0, 0], [1, 1]]]],
             result: [offer1, offer2]
           },
           {
-            scoreBy: [['==', 'flags', 'two', [[1, 3]]], ['==', 'flags', 'three', [[1, 1]]]],
+            scoreBy: [['==', 'flags', 'two', [[0, 0], [1, 3]]], ['==', 'flags', 'three', [[0, 0], [1, 1]]]],
             result: [offer1, offer2]
           }
         ].map(async ({ scoreBy, result }) => {
@@ -254,17 +254,20 @@ describe('Testing Rest Query', () => {
         await upsert('offer', [offer1, offer2]);
         await Promise.all([
           {
-            scoreBy: [['==', 'locations.address.keywords', 'three']],
+            scoreBy: [['==', 'locations.address.keywords', 'three', [[0, 0], [1, 1]]]],
             result: [offer2, offer1]
           },
           {
-            scoreBy: [['==', 'locations.address.keywords', 'one'], ['==', 'locations.address.keywords', 'two']],
+            scoreBy: [
+              ['==', 'locations.address.keywords', 'one', [[0, 0], [1, 1]]],
+              ['==', 'locations.address.keywords', 'two', [[0, 0], [1, 1]]]
+            ],
             result: [offer1, offer2]
           },
           {
             scoreBy: [
-              ['==', 'locations.address.keywords', 'two', [[1, 3]]],
-              ['==', 'locations.address.keywords', 'three', [[1, 1]]]
+              ['==', 'locations.address.keywords', 'two', [[0, 0], [1, 3]]],
+              ['==', 'locations.address.keywords', 'three', [[0, 0], [1, 1]]]
             ],
             result: [offer1, offer2]
           }
@@ -356,7 +359,7 @@ describe('Testing Rest Query', () => {
         await upsert('address', [address1, address2]);
         await Promise.all([
           {
-            scoreBy: [['age', 'created', '2019-02-01T00:00:00.000Z']],
+            scoreBy: [['age', 'created', '2019-02-01T00:00:00.000Z', [[0, 0], [1, 1]]]],
             result: [address1, address2]
           },
           {
@@ -387,7 +390,7 @@ describe('Testing Rest Query', () => {
         await upsert('offer', [offer1, offer2]);
         await Promise.all([
           {
-            scoreBy: [['age', 'locations.address.created', '2019-02-01T00:00:00.000Z']],
+            scoreBy: [['age', 'locations.address.created', '2019-02-01T00:00:00.000Z', [[0, 0], [1, 1]]]],
             result: [offer1, offer2]
           },
           {

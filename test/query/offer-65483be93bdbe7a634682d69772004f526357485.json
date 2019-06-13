@@ -289,11 +289,14 @@
             "script_score": {
               "script": {
                 "lang": "painless",
-                "inline": "\n\ndouble remap(def value, def map) {\n  for (int i = map.length - 2; i >= 0; i -= 2) {\n    if (map[i] <= value) {\n      return map[i + 1];\n    }\n  }\n  return value;\n}\n\nint result = doc[params.target].values.contains(params.value) ? 1 : 0;\nreturn remap(result, params.map);\n",
+                "inline": "\n\ndouble remap(def value, def map) {\n  for (int i = map.length - 2; i >= 0; i -= 2) {\n    if (map[i] <= value) {\n      return map[i + 1];\n    }\n  }\n  return map[1];\n}\n\nint result = doc[params.target].values.contains(params.value) ? 1 : 0;\nreturn remap(result, params.map);\n",
                 "params": {
                   "target": "is_limited",
                   "value": true,
-                  "map": []
+                  "map": [
+                    1,
+                    0
+                  ]
                 }
               }
             }
@@ -302,11 +305,14 @@
             "script_score": {
               "script": {
                 "lang": "painless",
-                "inline": "\n\ndouble remap(def value, def map) {\n  for (int i = map.length - 2; i >= 0; i -= 2) {\n    if (map[i] <= value) {\n      return map[i + 1];\n    }\n  }\n  return value;\n}\n\nint a = [doc[params.target].value, params.seed].hashCode();\na -= (a<<6);a ^= (a>>17);a -= (a<<9);a ^= (a<<4);\na -= (a<<3);a ^= (a<<10);a ^= (a>>15);\ndouble result = (Math.abs(a) / (double)Integer.MAX_VALUE) - 0.5;\nreturn remap(result, params.map);\n",
+                "inline": "\n\ndouble remap(def value, def map) {\n  for (int i = map.length - 2; i >= 0; i -= 2) {\n    if (map[i] <= value) {\n      return map[i + 1];\n    }\n  }\n  return map[1];\n}\n\nint a = [doc[params.target].value, params.seed].hashCode();\na -= (a<<6);a ^= (a>>17);a -= (a<<9);a ^= (a<<4);\na -= (a<<3);a ^= (a<<10);a ^= (a>>15);\ndouble result = (Math.abs(a) / (double)Integer.MAX_VALUE) - 0.5;\nreturn remap(result, params.map);\n",
                 "params": {
-                  "seed": "primary_types.score_random_scale",
-                  "target": "2018-08-17136007f637a-3ee6-52fd-89e8-0960595b4fe00c2cc1c0-8642-4ba3-8958-9736e34256a6",
-                  "map": []
+                  "seed": "0792fc81-8589-483c-94fb-80fe2c9400ee",
+                  "target": "primary_types.score_random_scale",
+                  "map": [
+                    0,
+                    1
+                  ]
                 }
               }
             }
@@ -368,12 +374,24 @@
     [
       "==",
       "is_limited",
-      true
+      true,
+      [
+        [
+          1,
+          0
+        ]
+      ]
     ],
     [
       "random",
-      "2018-08-17136007f637a-3ee6-52fd-89e8-0960595b4fe00c2cc1c0-8642-4ba3-8958-9736e34256a6",
-      "primary_types.score_random_scale"
+      "primary_types.score_random_scale",
+      "0792fc81-8589-483c-94fb-80fe2c9400ee",
+      [
+        [
+          0,
+          1
+        ]
+      ]
     ]
   ]
 }
