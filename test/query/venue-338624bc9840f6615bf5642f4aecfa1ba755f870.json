@@ -125,13 +125,13 @@
   "result": {
     "sort": [
       {
-        "id": {
-          "order": "asc"
+        "_score": {
+          "order": "desc"
         }
       },
       {
-        "_score": {
-          "order": "desc"
+        "id": {
+          "order": "asc"
         }
       }
     ],
@@ -145,10 +145,11 @@
             "script_score": {
               "script": {
                 "lang": "painless",
-                "inline": "\nint a = [doc['id'].value, params.seed].hashCode();\na -= (a<<6);a ^= (a>>17);a -= (a<<9);a ^= (a<<4);\na -= (a<<3);a ^= (a<<10);a ^= (a>>15);\ndouble scale = Collections.max(doc[params.scale_field].getValues()) / 100.0;\ndouble value = (Math.abs(a) / (double)Integer.MAX_VALUE) - 0.5;\nreturn scale * value\n",
+                "inline": "\n\ndouble remap(def value, def map) {\n  for (int i = map.length - 2; i >= 0; i -= 2) {\n    if (map[i] <= value) {\n      return map[i + 1];\n    }\n  }\n  return value;\n}\n\nint a = [doc[params.target].value, params.seed].hashCode();\na -= (a<<6);a ^= (a>>17);a -= (a<<9);a ^= (a<<4);\na -= (a<<3);a ^= (a<<10);a ^= (a>>15);\ndouble result = (Math.abs(a) / (double)Integer.MAX_VALUE) - 0.5;\nreturn remap(result, params.map);\n",
                 "params": {
-                  "scale_field": "primary_types.score_random_scale",
-                  "seed": "088f131edd734d0d905d41b021a24d12"
+                  "seed": "primary_types.score_random_scale",
+                  "target": "088f131edd734d0d905d41b021a24d12",
+                  "map": []
                 }
               }
             }

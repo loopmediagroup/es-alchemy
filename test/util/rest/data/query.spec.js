@@ -10,23 +10,25 @@ describe('Testing Rest Query', () => {
   beforeEach(async () => {
     index = Index({ endpoint: process.env.elasticsearchEndpoint });
     registerEntitiesForIndex(index);
-    assert(await index.rest.mapping.create('offer') === true);
+    assert(await index.rest.mapping.create('offer') === true, 'Offer index exists');
+    assert(await index.rest.mapping.create('address') === true, 'Address index exists');
   });
 
   afterEach(async () => {
-    assert(await index.rest.mapping.delete('offer') === true);
+    assert(await index.rest.mapping.delete('address') === true, 'Address index delete failed');
+    assert(await index.rest.mapping.delete('offer') === true, 'Offer index delete failed');
   });
 
-  const upsertOffers = async (offers) => {
-    expect(await index.rest.data.update('offer', {
-      upsert: offers.map(o => index.data.remap('offer', o))
-    })).to.equal(true);
-    expect(await index.rest.data.refresh('offer')).to.equal(true);
+  const upsert = async (model, models) => {
+    expect(await index.rest.data.update(model, {
+      upsert: models.map(o => index.data.remap(model, o))
+    }), `${model} update failed`).to.equal(true);
+    expect(await index.rest.data.refresh(model), `${model} refresh failed`).to.equal(true);
   };
 
-  const queryOffers = async (filterParams, { raw = false } = {}) => {
-    const filter = index.query.build('offer', filterParams);
-    const queryResult = await index.rest.data.query('offer', filter);
+  const query = async (model, filterParams, { raw = false } = {}) => {
+    const filter = index.query.build(model, filterParams);
+    const queryResult = await index.rest.data.query(model, filter);
     return raw === true ? queryResult : index.data.page(queryResult, filter).payload;
   };
 
@@ -36,8 +38,8 @@ describe('Testing Rest Query', () => {
         id: uuid4(),
         meta: { k1: 'v1', k2: ['v2'], k3: [] }
       };
-      await upsertOffers([offer]);
-      expect(await queryOffers({
+      await upsert('offer', [offer]);
+      expect(await query('offer', {
         toReturn: ['id', 'meta'],
         filterBy: { and: [['id', '==', offer.id]] }
       })).to.deep.equal([offer]);
@@ -51,8 +53,8 @@ describe('Testing Rest Query', () => {
           { address: { area: null } }
         ]
       };
-      await upsertOffers([offer]);
-      expect(await queryOffers({
+      await upsert('offer', [offer]);
+      expect(await query('offer', {
         toReturn: ['id', 'locations.address.area'],
         filterBy: { and: [['id', '==', offer.id]] }
       })).to.deep.equal([offer]);
@@ -60,8 +62,8 @@ describe('Testing Rest Query', () => {
 
     it('Testing empty relationship returned as empty list.', async () => {
       const offer = { id: uuid4(), locations: [] };
-      await upsertOffers([offer]);
-      expect(await queryOffers({
+      await upsert('offer', [offer]);
+      expect(await query('offer', {
         toReturn: ['id', 'locations.name'],
         filterBy: { and: [['id', '==', offer.id]] }
       })).to.deep.equal([offer]);
@@ -71,7 +73,7 @@ describe('Testing Rest Query', () => {
   describe('Testing nested filtering', () => {
     it('Testing allow separate relationships', async () => {
       const offerId = uuid4();
-      await upsertOffers([{
+      await upsert('offer', [{
         id: offerId,
         locations: [{
           id: uuid4(),
@@ -81,13 +83,13 @@ describe('Testing Rest Query', () => {
           address: { id: uuid4(), street: 'value2', city: 'value2' }
         }]
       }]);
-      expect((await queryOffers({
+      expect((await query('offer', {
         filterBy: {
           target: 'union',
           and: ['locations.address.street == value1', 'locations.address.city == value2']
         }
       })).length).to.equal(1);
-      expect((await queryOffers({
+      expect((await query('offer', {
         filterBy: {
           target: 'separate',
           and: ['locations.address.street == value1', 'locations.address.city == value2']
@@ -128,8 +130,8 @@ describe('Testing Rest Query', () => {
           { id: uuid4(), name: '2', address: { id: uuid4(), street: 'B' } }
         ]
       };
-      await upsertOffers([offer1, offer2, offer3, offer4].sort(() => Math.random() - 0.5));
-      expect((await queryOffers({
+      await upsert('offer', [offer1, offer2, offer3, offer4].sort(() => Math.random() - 0.5));
+      expect((await query('offer', {
         orderBy: [
           ['locations.name', 'asc', 'max', { and: [['locations.address.street', '==', 'A']] }],
           ['locations.name', 'asc', 'max', { and: [['locations.address.street', '==', 'B']] }]
@@ -137,7 +139,7 @@ describe('Testing Rest Query', () => {
         toReturn: ['headline']
       }, { raw: true })).hits.hits).to.deep.equal([
         {
-          _index: 'offer@229a59500f278ce9d4cd24ce6afc4e191845a937',
+          _index: 'offer@3b4aafd4fc49bc2f20693d95154a5275df9dfd72',
           _type: 'offer',
           _id: offer1.id,
           _score: null,
@@ -145,7 +147,7 @@ describe('Testing Rest Query', () => {
           sort: ['1', '1', offer1.id]
         },
         {
-          _index: 'offer@229a59500f278ce9d4cd24ce6afc4e191845a937',
+          _index: 'offer@3b4aafd4fc49bc2f20693d95154a5275df9dfd72',
           _type: 'offer',
           _id: offer2.id,
           _score: null,
@@ -153,7 +155,7 @@ describe('Testing Rest Query', () => {
           sort: ['1', '2', offer2.id]
         },
         {
-          _index: 'offer@229a59500f278ce9d4cd24ce6afc4e191845a937',
+          _index: 'offer@3b4aafd4fc49bc2f20693d95154a5275df9dfd72',
           _type: 'offer',
           _id: offer3.id,
           _score: null,
@@ -161,7 +163,7 @@ describe('Testing Rest Query', () => {
           sort: ['2', '1', offer3.id]
         },
         {
-          _index: 'offer@229a59500f278ce9d4cd24ce6afc4e191845a937',
+          _index: 'offer@3b4aafd4fc49bc2f20693d95154a5275df9dfd72',
           _type: 'offer',
           _id: offer4.id,
           _score: null,
@@ -177,8 +179,8 @@ describe('Testing Rest Query', () => {
       id: uuid4(),
       locations: [{ id: uuid4(), tags: [] }]
     };
-    await upsertOffers([offer]);
-    expect(await queryOffers({
+    await upsert('offer', [offer]);
+    expect(await query('offer', {
       toReturn: ['id', 'locations.id', 'locations.tags.name'],
       filterBy: { and: [['id', '==', offer.id]] }
     })).to.deep.equal([offer]);
@@ -211,27 +213,195 @@ describe('Testing Rest Query', () => {
   });
 
   describe('Testing sorting by score', () => {
-    it('Testing existence in array sorting', async () => {
-      const offer1 = { id: uuid4(), flags: ['one', 'two'] };
-      const offer2 = { id: uuid4(), flags: ['one', 'three'] };
-      await upsertOffers([offer1, offer2]);
-      await Promise.all([
-        {
-          scoreBy: [['==', 'flags', 'three']],
-          result: [offer2, offer1]
-        },
-        {
-          scoreBy: [['==', 'flags', 'one'], ['==', 'flags', 'two']],
-          result: [offer1, offer2]
-        },
-        {
-          scoreBy: [['==', 'flags', 'two', 3], ['==', 'flags', 'three', 1]],
-          result: [offer1, offer2]
-        }
-      ].map(async ({ scoreBy, result }) => {
-        expect(await queryOffers({ toReturn: ['id', 'flags'], scoreBy })).to.deep.equal(result);
-      }));
-    }).timeout(10000);
+    describe('Testing scoring by existence in array', () => {
+      it('Testing existence in array top level', async () => {
+        const offer1 = { id: uuid4(), flags: ['one', 'two'] };
+        const offer2 = { id: uuid4(), flags: ['one', 'three'] };
+        await upsert('offer', [offer1, offer2]);
+        await Promise.all([
+          {
+            scoreBy: [['==', 'flags', 'three']],
+            result: [offer2, offer1]
+          },
+          {
+            scoreBy: [['==', 'flags', 'one'], ['==', 'flags', 'two']],
+            result: [offer1, offer2]
+          },
+          {
+            scoreBy: [['==', 'flags', 'two', [[1, 3]]], ['==', 'flags', 'three', [[1, 1]]]],
+            result: [offer1, offer2]
+          }
+        ].map(async ({ scoreBy, result }) => {
+          expect(await query('offer', { toReturn: ['id', 'flags'], scoreBy }), `${scoreBy}`).to.deep.equal(result);
+        }));
+      }).timeout(10000);
+
+      it('Testing existence in array nested', async () => {
+        const offer1 = {
+          id: uuid4(),
+          locations: [{
+            id: uuid4(),
+            address: { keywords: ['one', 'two'] }
+          }]
+        };
+        const offer2 = {
+          id: uuid4(),
+          locations: [{
+            id: uuid4(),
+            address: { keywords: ['one', 'three'] }
+          }]
+        };
+        await upsert('offer', [offer1, offer2]);
+        await Promise.all([
+          {
+            scoreBy: [['==', 'locations.address.keywords', 'three']],
+            result: [offer2, offer1]
+          },
+          {
+            scoreBy: [['==', 'locations.address.keywords', 'one'], ['==', 'locations.address.keywords', 'two']],
+            result: [offer1, offer2]
+          },
+          {
+            scoreBy: [
+              ['==', 'locations.address.keywords', 'two', [[1, 3]]],
+              ['==', 'locations.address.keywords', 'three', [[1, 1]]]
+            ],
+            result: [offer1, offer2]
+          }
+        ].map(async ({ scoreBy, result }) => {
+          expect(await query('offer', {
+            toReturn: ['id', 'locations.id', 'locations.address.keywords'],
+            scoreBy
+          }), `${scoreBy}`).to.deep.equal(result);
+        }));
+      }).timeout(10000);
+    });
+
+    describe('Testing scoring by distance', () => {
+      it('Testing distance top level', async () => {
+        const address1 = {
+          id: uuid4(),
+          centre: [0, 0]
+        };
+        const address2 = {
+          id: uuid4(),
+          centre: [1, 1]
+        };
+        await upsert('address', [address1, address2]);
+        await Promise.all([
+          {
+            scoreBy: [['distance', 'centre', [0, 0], [[0, 1], [1, 0]]]],
+            result: [address1, address2]
+          },
+          {
+            scoreBy: [['distance', 'centre', [1, 1], [[0, 1], [1, 0]]]],
+            result: [address2, address1]
+          }
+        ].map(async ({ scoreBy, result }) => {
+          expect(await query('address', {
+            toReturn: ['id', 'centre'],
+            scoreBy
+          }), `${scoreBy}`).to.deep.equal(result);
+        }));
+      });
+
+      it('Testing distance nested', async () => {
+        const offer1 = {
+          id: uuid4(),
+          locations: [{
+            id: uuid4(),
+            address: {
+              centre: [0, 0]
+            }
+          }]
+        };
+        const offer2 = {
+          id: uuid4(),
+          locations: [{
+            id: uuid4(),
+            address: {
+              centre: [1, 1]
+            }
+          }]
+        };
+        await upsert('offer', [offer1, offer2]);
+        await Promise.all([
+          {
+            scoreBy: [['distance', 'locations.address.centre', [0, 0], [[0, 1], [1, 0]]]],
+            result: [offer1, offer2]
+          },
+          {
+            scoreBy: [['distance', 'locations.address.centre', [1, 1], [[0, 1], [1, 0]]]],
+            result: [offer2, offer1]
+          }
+        ].map(async ({ scoreBy, result }) => {
+          expect(await query('offer', {
+            toReturn: ['id', 'locations.id', 'locations.address.centre'],
+            scoreBy
+          }), `${scoreBy}`).to.deep.equal(result);
+        }));
+      });
+    });
+
+    describe('Testing scoring by age', () => {
+      it('Testing age top level', async () => {
+        const address1 = {
+          id: uuid4(),
+          created: '2019-01-01T00:00:00.000Z'
+        };
+        const address2 = {
+          id: uuid4(),
+          created: '2019-02-01T00:00:00.000Z'
+        };
+        await upsert('address', [address1, address2]);
+        await Promise.all([
+          {
+            scoreBy: [['age', 'created', '2019-02-01T00:00:00.000Z']],
+            result: [address1, address2]
+          },
+          {
+            scoreBy: [['age', 'created', '2019-02-01T00:00:00.000Z', [[0, 1], [1, 0]]]],
+            result: [address2, address1]
+          }
+        ].map(async ({ scoreBy, result }) => {
+          expect(await query('address', {
+            toReturn: ['id', 'created'],
+            scoreBy
+          }), `${scoreBy}`).to.deep.equal(result);
+        }));
+      });
+
+      it('Testing age nested', async () => {
+        const offer1 = {
+          id: uuid4(),
+          locations: [
+            { address: { created: '2019-01-01T00:00:00.000Z' } }
+          ]
+        };
+        const offer2 = {
+          id: uuid4(),
+          locations: [
+            { address: { created: '2019-02-01T00:00:00.000Z' } }
+          ]
+        };
+        await upsert('offer', [offer1, offer2]);
+        await Promise.all([
+          {
+            scoreBy: [['age', 'locations.address.created', '2019-02-01T00:00:00.000Z']],
+            result: [offer1, offer2]
+          },
+          {
+            scoreBy: [['age', 'locations.address.created', '2019-02-01T00:00:00.000Z', [[0, 1], [1, 0]]]],
+            result: [offer2, offer1]
+          }
+        ].map(async ({ scoreBy, result }) => {
+          expect(await query('offer', {
+            toReturn: ['id', 'locations.address.created'],
+            scoreBy
+          }), `${scoreBy}`).to.deep.equal(result);
+        }));
+      });
+    });
   });
 
   it('Testing Multi Version Query', async () => {

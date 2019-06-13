@@ -29,11 +29,14 @@
             "country",
             "centre",
             "area",
-            "timezone"
+            "timezone",
+            "keywords",
+            "created"
           ],
           "sources": [
             "address"
-          ]
+          ],
+          "flat": true
         },
         "tags": {
           "model": "tag[]",
@@ -55,6 +58,19 @@
       ],
       "sources": [
         "locations.tags"
+      ],
+      "flat": true
+    },
+    "address": {
+      "model": "address[]",
+      "fields": [
+        "id",
+        "centre",
+        "keywords",
+        "created"
+      ],
+      "sources": [
+        "locations.address"
       ],
       "flat": true
     }

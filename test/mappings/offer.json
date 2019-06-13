@@ -2,7 +2,7 @@
   "mappings": {
     "offer": {
       "_meta": {
-        "hash": "229a59500f278ce9d4cd24ce6afc4e191845a937"
+        "hash": "3b4aafd4fc49bc2f20693d95154a5275df9dfd72"
       },
       "properties": {
         "id": {
@@ -26,6 +26,7 @@
               "type": "keyword"
             },
             "address": {
+              "include_in_root": true,
               "properties": {
                 "id": {
                   "type": "keyword"
@@ -47,6 +48,13 @@
                 },
                 "timezone": {
                   "type": "text"
+                },
+                "keywords": {
+                  "type": "keyword"
+                },
+                "created": {
+                  "format": "yyyy-MM-dd'T'HH:mm:ss.SSSSSSZZ||yyyy-MM-dd'T'HH:mm:ssZZ",
+                  "type": "date"
                 }
               },
               "type": "nested"
@@ -72,6 +80,25 @@
             },
             "name": {
               "type": "text"
+            }
+          },
+          "type": "nested",
+          "include_in_root": true
+        },
+        "address": {
+          "properties": {
+            "centre": {
+              "type": "geo_point"
+            },
+            "id": {
+              "type": "keyword"
+            },
+            "keywords": {
+              "type": "keyword"
+            },
+            "created": {
+              "format": "yyyy-MM-dd'T'HH:mm:ss.SSSSSSZZ||yyyy-MM-dd'T'HH:mm:ssZZ",
+              "type": "date"
             }
           },
           "type": "nested",

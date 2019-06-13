@@ -35,6 +35,14 @@
   },
   "result": {
     "id": "43a839ee-c2df-4b44-a25d-f34b3041db77",
+    "address": [
+      {
+        "id": "e12ec2a8-0805-454a-8093-d0563f1c93de"
+      },
+      {
+        "id": "492b30d5-5d7d-452b-a062-9f4277ced733"
+      }
+    ],
     "locations": [
       {
         "id": "90c64aa8-b1b0-4242-ac91-c0205b5d7f3b",
