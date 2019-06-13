@@ -48,7 +48,7 @@
     "nyc": "14.1.1",
     "request": "2.88.0",
     "request-promise-native": "1.0.7",
-    "semantic-release": "15.13.12",
+    "semantic-release": "15.13.16",
     "uuid": "3.3.2"
   },
   "nyc": {
