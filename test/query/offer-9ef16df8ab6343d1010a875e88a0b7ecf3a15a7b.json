@@ -159,13 +159,13 @@
         }
       },
       {
-        "id": {
-          "order": "asc"
+        "_score": {
+          "order": "desc"
         }
       },
       {
-        "_score": {
-          "order": "desc"
+        "id": {
+          "order": "asc"
         }
       }
     ],
@@ -201,25 +201,6 @@
                   "returned_for_type_a": {
                     "query": true,
                     "operator": "and"
-                  }
-                }
-              },
-              {
-                "nested": {
-                  "path": "regions",
-                  "query": {
-                    "bool": {
-                      "filter": [
-                        {
-                          "match": {
-                            "regions.id": {
-                              "query": "bc3d468b-01b6-4439-82a9-eba44ccfc153",
-                              "operator": "and"
-                            }
-                          }
-                        }
-                      ]
-                    }
                   }
                 }
               },
@@ -262,6 +243,25 @@
                     }
                   }
                 }
+              },
+              {
+                "nested": {
+                  "path": "regions",
+                  "query": {
+                    "bool": {
+                      "filter": [
+                        {
+                          "match": {
+                            "regions.id": {
+                              "query": "bc3d468b-01b6-4439-82a9-eba44ccfc153",
+                              "operator": "and"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
               }
             ]
           }
@@ -271,9 +271,14 @@
             "script_score": {
               "script": {
                 "lang": "painless",
-                "inline": "return doc[params.field].values.contains(true) ? 1 : 0;",
+                "inline": "\n\ndouble remap(def value, def map) {\n  for (int i = map.length - 2; i >= 0; i -= 2) {\n    if (map[i] <= value) {\n      return map[i + 1];\n    }\n  }\n  return map[1];\n}\n\nint result = doc[params.target].values.contains(params.value) ? 1 : 0;\nreturn remap(result, params.map);\n",
                 "params": {
-                  "field": "is_limited"
+                  "target": "is_limited",
+                  "value": true,
+                  "map": [
+                    1,
+                    0
+                  ]
                 }
               }
             }
@@ -282,10 +287,14 @@
             "script_score": {
               "script": {
                 "lang": "painless",
-                "inline": "\nint a = [doc['id'].value, params.seed].hashCode();\na -= (a<<6);a ^= (a>>17);a -= (a<<9);a ^= (a<<4);\na -= (a<<3);a ^= (a<<10);a ^= (a>>15);\ndouble scale = Collections.max(doc[params.scale_field].getValues()) / 100.0;\ndouble value = (Math.abs(a) / (double)Integer.MAX_VALUE) - 0.5;\nreturn scale * value\n",
+                "inline": "\n\ndouble remap(def value, def map) {\n  for (int i = map.length - 2; i >= 0; i -= 2) {\n    if (map[i] <= value) {\n      return map[i + 1];\n    }\n  }\n  return map[1];\n}\n\nint a = [doc[params.target].value, params.seed].hashCode();\na -= (a<<6);a ^= (a>>17);a -= (a<<9);a ^= (a<<4);\na -= (a<<3);a ^= (a<<10);a ^= (a>>15);\ndouble result = (Math.abs(a) / (double)Integer.MAX_VALUE) - 0.5;\nreturn remap(result, params.map);\n",
                 "params": {
-                  "scale_field": "primary_types.score_random_scale",
-                  "seed": "2018-08-17136-1bc3d468b-01b6-4439-82a9-eba44ccfc153"
+                  "seed": "4931a8a0-8344-47a1-b9ca-18f68094e875",
+                  "target": "primary_types.score_random_scale",
+                  "map": [
+                    0,
+                    1
+                  ]
                 }
               }
             }
@@ -338,13 +347,26 @@
   "offset": null,
   "scoreBy": [
     [
-      "bool",
-      "is_limited"
+      "==",
+      "is_limited",
+      true,
+      [
+        [
+          1,
+          0
+        ]
+      ]
     ],
     [
       "random",
-      "2018-08-17136-1bc3d468b-01b6-4439-82a9-eba44ccfc153",
-      "primary_types.score_random_scale"
+      "primary_types.score_random_scale",
+      "4931a8a0-8344-47a1-b9ca-18f68094e875",
+      [
+        [
+          0,
+          1
+        ]
+      ]
     ]
   ]
 }
