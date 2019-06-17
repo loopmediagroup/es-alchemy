@@ -41,15 +41,18 @@ module.exports.build = (allowedFields, {
     set(result, 'query.bool.should', []);
     result.query.bool.should.push(
       { function_score: { script_score: { script: { source: '0' } } } },
-      ...scoreBy.map(s => (s[1].includes('.')
-        ? ({
-          nested: {
-            path: s[1].substring(0, s[1].lastIndexOf('.')),
-            query: { function_score: actionMap.score[s[0]](s.slice(1), { allowedFields }) },
-            score_mode: 'max'
-          }
-        })
-        : ({ function_score: actionMap.score[s[0]](s.slice(1), { allowedFields }) })))
+      ...scoreBy.map((s) => {
+        const functionScore = actionMap.score[s[0]](s.slice(1), { allowedFields });
+        return (s[1].includes('.')
+          ? ({
+            nested: {
+              path: s[1].substring(0, s[1].lastIndexOf('.')),
+              query: { function_score: functionScore },
+              score_mode: 'max'
+            }
+          })
+          : ({ function_score: functionScore }));
+      })
     );
   }
   result.sort = [

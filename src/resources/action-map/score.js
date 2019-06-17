@@ -101,7 +101,7 @@ return result;
     boost_mode: 'replace',
     query: buildNestedQuery(filter, ctx, target)
   }),
-  age: ([target, timestamp, map, filter = null], ctx) => Object.assign({
+  age: ([target, timestamp, map, filter = null], ctx) => ({
     script_score: {
       script: {
         lang: 'painless',
