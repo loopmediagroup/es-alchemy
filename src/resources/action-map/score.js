@@ -16,12 +16,12 @@ const scoreMapper = (map) => {
   return map.reduce((p, [k, v]) => p.concat(k, v), []);
 };
 
-const buildNestedQuery = (filter, ctx, target) => (filter === null ? {} : {
-  query: buildQuery(filter, ctx.allowedFields, target.substring(0, target.lastIndexOf('.')))
-});
+const buildNestedQuery = (filter, ctx, target) => (filter === null
+  ? { match_all: {} }
+  : buildQuery(filter, ctx.allowedFields, target.substring(0, target.lastIndexOf('.'))));
 
 module.exports = {
-  random: ([target, seed, map, filter = null], ctx) => Object.assign({
+  random: ([target, seed, map, filter = null], ctx) => ({
     script_score: {
       script: {
         lang: 'painless',
@@ -41,9 +41,10 @@ return remap(result, params.map);
       }
     },
     score_mode: 'max',
-    boost_mode: 'replace'
-  }, buildNestedQuery(filter, ctx, target)),
-  '==': ([target, value, map, filter = null], ctx) => Object.assign({
+    boost_mode: 'replace',
+    query: buildNestedQuery(filter, ctx, target)
+  }),
+  '==': ([target, value, map, filter = null], ctx) => ({
     script_score: {
       script: {
         lang: 'painless',
@@ -60,9 +61,10 @@ return remap(result, params.map);
       }
     },
     score_mode: 'max',
-    boost_mode: 'replace'
-  }, buildNestedQuery(filter, ctx, target)),
-  distance: ([target, location, map, filter = null], ctx) => Object.assign({
+    boost_mode: 'replace',
+    query: buildNestedQuery(filter, ctx, target)
+  }),
+  distance: ([target, location, map, filter = null], ctx) => ({
     script_score: {
       script: {
         lang: 'painless',
@@ -96,8 +98,9 @@ return result;
       }
     },
     score_mode: 'max',
-    boost_mode: 'replace'
-  }, buildNestedQuery(filter, ctx, target)),
+    boost_mode: 'replace',
+    query: buildNestedQuery(filter, ctx, target)
+  }),
   age: ([target, timestamp, map, filter = null], ctx) => Object.assign({
     script_score: {
       script: {
@@ -120,6 +123,7 @@ return result;
       }
     },
     score_mode: 'max',
-    boost_mode: 'replace'
-  }, buildNestedQuery(filter, ctx, target))
+    boost_mode: 'replace',
+    query: buildNestedQuery(filter, ctx, target)
+  })
 };

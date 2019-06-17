@@ -289,7 +289,10 @@
                 }
               },
               "score_mode": "max",
-              "boost_mode": "replace"
+              "boost_mode": "replace",
+              "query": {
+                "match_all": {}
+              }
             }
           },
           {
@@ -312,7 +315,10 @@
                     }
                   },
                   "score_mode": "max",
-                  "boost_mode": "replace"
+                  "boost_mode": "replace",
+                  "query": {
+                    "match_all": {}
+                  }
                 }
               },
               "score_mode": "max"
