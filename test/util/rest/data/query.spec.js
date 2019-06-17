@@ -405,6 +405,163 @@ describe('Testing Rest Query', () => {
         }));
       });
     });
+
+    it('Testing filtered nested scoring', async () => {
+      const offer1 = {
+        id: uuid4(),
+        locations: [
+          { address: { created: '2019-01-02T00:00:00.000Z', centre: [0, 0] } },
+          { address: { created: '2019-01-03T00:00:00.000Z', centre: [1, 1] } }
+        ]
+      };
+      const offer2 = {
+        id: uuid4(),
+        locations: [
+          { address: { created: '2019-01-02T00:00:00.000Z', centre: [1, 1] } },
+          { address: { created: '2019-01-03T00:00:00.000Z', centre: [0, 0] } }
+        ]
+      };
+      const offer3 = {
+        id: uuid4(),
+        locations: [
+          { address: { created: '2019-01-01T00:00:00.000Z', centre: [1, 1] } },
+          { address: { created: '2019-01-01T00:00:00.000Z', centre: [1, 1] } }
+        ]
+      };
+      await upsert('offer', [offer1, offer2, offer3]);
+      await Promise.all([
+        {
+          scoreBy: [
+            ['age', 'locations.address.created', '2019-01-03T00:00:00.000Z', [[0, 2], [86399, 1], [100000, 0]], {
+              and: [
+                ['locations.address.centre', 'distance', [0, 0], '1km']
+              ]
+            }]],
+          result: [offer2, offer1, offer3]
+        }
+      ].map(async ({ scoreBy, result }) => {
+        expect(await query('offer', {
+          toReturn: ['id', 'locations.address.created', 'locations.address.centre'],
+          scoreBy
+        }), `${scoreBy}`).to.deep.equal(result);
+      }));
+    });
+
+    it('Testing filter with scoreBy', async () => {
+      const offer1 = {
+        id: uuid4(),
+        locations: [
+          { address: { created: '2019-01-02T00:00:00.000Z', centre: [0, 0] } },
+          { address: { created: '2019-01-03T00:00:00.000Z', centre: [1, 1] } }
+        ]
+      };
+      const offer2 = {
+        id: uuid4(),
+        locations: [
+          { address: { created: '2019-01-02T00:00:00.000Z', centre: [1, 1] } },
+          { address: { created: '2019-01-03T00:00:00.000Z', centre: [0, 0] } }
+        ]
+      };
+      const offer3 = {
+        id: uuid4(),
+        locations: [
+          { address: { created: '2019-01-01T00:00:00.000Z', centre: [1, 1] } },
+          { address: { created: '2019-01-01T00:00:00.000Z', centre: [1, 1] } }
+        ]
+      };
+      await upsert('offer', [offer1, offer2, offer3]);
+      await Promise.all([
+        {
+          scoreBy: [
+            ['age', 'locations.address.created', '2019-01-03T00:00:00.000Z', [[0, 2], [86399, 1], [100000, 0]], {
+              and: [
+                ['locations.address.centre', 'distance', [0, 0], '1km']
+              ]
+            }]],
+          result: [offer2, offer1]
+        }
+      ].map(async ({ scoreBy, result }) => {
+        expect(await query('offer', {
+          filterBy: {
+            and: [
+              ['locations.address.centre', 'distance', [0, 0], '1km']
+            ]
+          },
+          toReturn: ['id', 'locations.address.created', 'locations.address.centre'],
+          scoreBy
+        }), `${scoreBy}`).to.deep.equal(result);
+      }));
+    });
+
+    it('Testing multiple scoring simple', async () => {
+      const location1 = { id: uuid4(), address: { centre: [0, 0] } };
+      const location2 = { id: uuid4(), address: { centre: [0.001, 0.001] } };
+      const location3 = { id: uuid4(), address: { centre: [0.002, 0.002] } };
+      const offer1 = { id: uuid4(), locations: [location1, location2], flags: [] };
+      const offer2 = { id: uuid4(), locations: [location1, location2], flags: ['exclusive'] };
+      const offer3 = { id: uuid4(), locations: [location1, location2], flags: ['featured'] };
+      const offer4 = { id: uuid4(), locations: [location2, location3], flags: [] };
+      const offer5 = { id: uuid4(), locations: [location2, location3], flags: ['exclusive'] };
+      const offer6 = { id: uuid4(), locations: [location2, location3], flags: ['featured'] };
+      const offer7 = { id: uuid4(), locations: [location3], flags: [] };
+      const offer8 = { id: uuid4(), locations: [location3], flags: ['exclusive'] };
+      const offer9 = { id: uuid4(), locations: [location3], flags: ['featured'] };
+      await upsert('offer', [offer1, offer2, offer3, offer4, offer5, offer6, offer7, offer8, offer9]);
+      const result = await query('offer', {
+        toReturn: ['id', 'flags', 'locations.id', 'locations.address.centre'],
+        scoreBy: [
+          ['distance', 'locations.address.centre', [0, 0], [[0, 11], [157, 5], [314, 3]]],
+          ['==', 'flags', 'exclusive', [[0, 0], [1, 5]]],
+          ['==', 'flags', 'featured', [[0, 0], [1, 12]]]
+        ]
+      });
+      expect(result).to.deep.equal([
+        offer3, // location1 + featured  = 23
+        offer6, // location2 + featured  = 17
+        offer2, // location1 + exclusive = 16
+        offer9, // location3 + featured  = 15
+        offer1, // location1             = 11
+        offer5, // location2 + exclusive = 10
+        offer8, // location3 + exclusive = 8
+        offer4, // location2             = 5
+        offer7 //  location3             = 3
+      ]);
+    });
+
+    it('Testing multiple scoring with filter', async () => {
+      const location1 = { id: uuid4(), address: { centre: [0, 0] } };
+      const location2 = { id: uuid4(), address: { centre: [0.001, 0.001] } };
+      const location3 = { id: uuid4(), address: { centre: [0.002, 0.002] } };
+      const offer1 = { id: uuid4(), locations: [location1, location2], flags: [] };
+      const offer2 = { id: uuid4(), locations: [location1, location2], flags: ['exclusive'] };
+      const offer3 = { id: uuid4(), locations: [location1, location2], flags: ['featured'] };
+      const offer4 = { id: uuid4(), locations: [location2, location3], flags: ['exclusive'] };
+      const offer5 = { id: uuid4(), locations: [location2, location3], flags: ['featured'] };
+      await upsert('offer', [offer1, offer2, offer3, offer4, offer5]);
+      const result = await query('offer', {
+        toReturn: ['id', 'flags', 'locations.id', 'locations.address.centre'],
+        scoreBy: [
+          ['distance', 'locations.address.centre', [0, 0], [[0, 11], [157, 5]]],
+          ['==', 'flags', 'exclusive', [[0, 0], [1, 5]], {
+            and: [
+              ['locations.address.centre', 'distance', [0, 0], '160m']
+            ]
+          }],
+          ['==', 'flags', 'featured', [[0, 0], [1, 12]], {
+            and: [
+              ['locations.address.centre', 'distance', [0, 0], '5m']
+            ]
+          }]
+        ]
+      });
+      expect(result).to.deep.equal([
+        offer3, // location1 + featured           = 23
+        offer2, // location1 + exclusive          = 16
+        offer1, // location1                      = 11
+        offer4, // location2 + exclusive          = 10
+        offer5 //  location2 (flag score ignored) = 5
+      ]);
+    });
   });
 
   it('Testing Multi Version Query', async () => {

@@ -173,508 +173,531 @@
       }
     ],
     "query": {
-      "function_score": {
-        "query": {
-          "bool": {
-            "filter": [
-              {
-                "bool": {
-                  "minimum_should_match": 1,
-                  "should": [
-                    {
-                      "bool": {
-                        "filter": [
-                          {
-                            "wildcard": {
-                              "name": {
-                                "value": "well*"
-                              }
-                            }
-                          },
-                          {
-                            "wildcard": {
-                              "name": {
-                                "value": "although*"
-                              }
-                            }
-                          },
-                          {
-                            "wildcard": {
-                              "name": {
-                                "value": "west*"
-                              }
-                            }
-                          },
-                          {
-                            "wildcard": {
-                              "name": {
-                                "value": "side*"
-                              }
-                            }
-                          },
-                          {
-                            "wildcard": {
-                              "name": {
-                                "value": "least*"
-                              }
-                            }
-                          },
-                          {
-                            "wildcard": {
-                              "name": {
-                                "value": "source*"
-                              }
-                            }
-                          },
-                          {
-                            "wildcard": {
-                              "name": {
-                                "value": "successf*"
-                              }
-                            }
-                          }
-                        ]
-                      }
-                    },
-                    {
-                      "bool": {
-                        "filter": [
-                          {
-                            "wildcard": {
-                              "desc": {
-                                "value": "well*"
-                              }
-                            }
-                          },
-                          {
-                            "wildcard": {
-                              "desc": {
-                                "value": "although*"
-                              }
-                            }
-                          },
-                          {
-                            "wildcard": {
-                              "desc": {
-                                "value": "west*"
-                              }
-                            }
-                          },
-                          {
-                            "wildcard": {
-                              "desc": {
-                                "value": "side*"
-                              }
-                            }
-                          },
-                          {
-                            "wildcard": {
-                              "desc": {
-                                "value": "least*"
-                              }
-                            }
-                          },
-                          {
-                            "wildcard": {
-                              "desc": {
-                                "value": "source*"
-                              }
-                            }
-                          },
-                          {
-                            "wildcard": {
-                              "desc": {
-                                "value": "successf*"
-                              }
-                            }
-                          }
-                        ]
-                      }
-                    },
-                    {
-                      "nested": {
-                        "path": "offers",
-                        "query": {
-                          "bool": {
-                            "filter": [
-                              {
-                                "bool": {
-                                  "filter": [
-                                    {
-                                      "wildcard": {
-                                        "offers.name": {
-                                          "value": "well*"
-                                        }
-                                      }
-                                    },
-                                    {
-                                      "wildcard": {
-                                        "offers.name": {
-                                          "value": "although*"
-                                        }
-                                      }
-                                    },
-                                    {
-                                      "wildcard": {
-                                        "offers.name": {
-                                          "value": "west*"
-                                        }
-                                      }
-                                    },
-                                    {
-                                      "wildcard": {
-                                        "offers.name": {
-                                          "value": "side*"
-                                        }
-                                      }
-                                    },
-                                    {
-                                      "wildcard": {
-                                        "offers.name": {
-                                          "value": "least*"
-                                        }
-                                      }
-                                    },
-                                    {
-                                      "wildcard": {
-                                        "offers.name": {
-                                          "value": "source*"
-                                        }
-                                      }
-                                    },
-                                    {
-                                      "wildcard": {
-                                        "offers.name": {
-                                          "value": "successf*"
-                                        }
-                                      }
-                                    }
-                                  ]
-                                }
-                              }
-                            ]
-                          }
-                        }
-                      }
-                    },
-                    {
-                      "nested": {
-                        "path": "offers",
-                        "query": {
-                          "bool": {
-                            "filter": [
-                              {
-                                "bool": {
-                                  "filter": [
-                                    {
-                                      "wildcard": {
-                                        "offers.desc": {
-                                          "value": "well*"
-                                        }
-                                      }
-                                    },
-                                    {
-                                      "wildcard": {
-                                        "offers.desc": {
-                                          "value": "although*"
-                                        }
-                                      }
-                                    },
-                                    {
-                                      "wildcard": {
-                                        "offers.desc": {
-                                          "value": "west*"
-                                        }
-                                      }
-                                    },
-                                    {
-                                      "wildcard": {
-                                        "offers.desc": {
-                                          "value": "side*"
-                                        }
-                                      }
-                                    },
-                                    {
-                                      "wildcard": {
-                                        "offers.desc": {
-                                          "value": "least*"
-                                        }
-                                      }
-                                    },
-                                    {
-                                      "wildcard": {
-                                        "offers.desc": {
-                                          "value": "source*"
-                                        }
-                                      }
-                                    },
-                                    {
-                                      "wildcard": {
-                                        "offers.desc": {
-                                          "value": "successf*"
-                                        }
-                                      }
-                                    }
-                                  ]
-                                }
-                              }
-                            ]
-                          }
-                        }
-                      }
-                    },
-                    {
-                      "nested": {
-                        "path": "keywords",
-                        "query": {
-                          "bool": {
-                            "filter": [
-                              {
-                                "bool": {
-                                  "filter": [
-                                    {
-                                      "wildcard": {
-                                        "keywords.names": {
-                                          "value": "well*"
-                                        }
-                                      }
-                                    },
-                                    {
-                                      "wildcard": {
-                                        "keywords.names": {
-                                          "value": "although*"
-                                        }
-                                      }
-                                    },
-                                    {
-                                      "wildcard": {
-                                        "keywords.names": {
-                                          "value": "west*"
-                                        }
-                                      }
-                                    },
-                                    {
-                                      "wildcard": {
-                                        "keywords.names": {
-                                          "value": "side*"
-                                        }
-                                      }
-                                    },
-                                    {
-                                      "wildcard": {
-                                        "keywords.names": {
-                                          "value": "least*"
-                                        }
-                                      }
-                                    },
-                                    {
-                                      "wildcard": {
-                                        "keywords.names": {
-                                          "value": "source*"
-                                        }
-                                      }
-                                    },
-                                    {
-                                      "wildcard": {
-                                        "keywords.names": {
-                                          "value": "successf*"
-                                        }
-                                      }
-                                    }
-                                  ]
-                                }
-                              }
-                            ]
-                          }
-                        }
-                      }
-                    },
-                    {
-                      "nested": {
-                        "path": "categories",
-                        "query": {
-                          "bool": {
-                            "filter": [
-                              {
-                                "bool": {
-                                  "filter": [
-                                    {
-                                      "wildcard": {
-                                        "categories.name": {
-                                          "value": "well*"
-                                        }
-                                      }
-                                    },
-                                    {
-                                      "wildcard": {
-                                        "categories.name": {
-                                          "value": "although*"
-                                        }
-                                      }
-                                    },
-                                    {
-                                      "wildcard": {
-                                        "categories.name": {
-                                          "value": "west*"
-                                        }
-                                      }
-                                    },
-                                    {
-                                      "wildcard": {
-                                        "categories.name": {
-                                          "value": "side*"
-                                        }
-                                      }
-                                    },
-                                    {
-                                      "wildcard": {
-                                        "categories.name": {
-                                          "value": "least*"
-                                        }
-                                      }
-                                    },
-                                    {
-                                      "wildcard": {
-                                        "categories.name": {
-                                          "value": "source*"
-                                        }
-                                      }
-                                    },
-                                    {
-                                      "wildcard": {
-                                        "categories.name": {
-                                          "value": "successf*"
-                                        }
-                                      }
-                                    }
-                                  ]
-                                }
-                              }
-                            ]
-                          }
-                        }
-                      }
-                    }
-                  ]
-                }
-              },
-              {
-                "nested": {
-                  "path": "availabilities",
-                  "query": {
-                    "bool": {
-                      "filter": [
-                        {
-                          "match": {
-                            "availabilities.enabled": {
-                              "query": true,
-                              "operator": "and"
-                            }
-                          }
-                        },
-                        {
-                          "range": {
-                            "availabilities.starts": {
-                              "lte": "now"
-                            }
-                          }
-                        },
-                        {
-                          "range": {
-                            "availabilities.ends": {
-                              "gte": "now"
-                            }
-                          }
-                        },
-                        {
-                          "range": {
-                            "availabilities.created": {
-                              "lte": "now-0m"
-                            }
-                          }
-                        }
-                      ]
-                    }
-                  }
-                }
-              },
-              {
-                "nested": {
-                  "path": "regions",
-                  "query": {
-                    "bool": {
-                      "filter": [
-                        {
-                          "match": {
-                            "regions.id": {
-                              "query": "d9353748-4d20-422b-b526-e5cbf4dd33c5",
-                              "operator": "and"
-                            }
-                          }
-                        }
-                      ]
-                    }
-                  }
-                }
-              },
-              {
-                "nested": {
-                  "path": "offers",
-                  "query": {
-                    "bool": {
-                      "filter": [
-                        {
-                          "match": {
-                            "offers.returned_for_type_b": {
-                              "query": true,
-                              "operator": "and"
-                            }
-                          }
-                        }
-                      ]
-                    }
-                  }
-                }
-              }
-            ]
-          }
-        },
-        "functions": [
+      "bool": {
+        "filter": [
           {
-            "script_score": {
-              "script": {
-                "lang": "painless",
-                "inline": "\n\ndouble remap(def value, def map) {\n  for (int i = map.length - 2; i >= 0; i -= 2) {\n    if (map[i] <= value) {\n      return map[i + 1];\n    }\n  }\n  return map[1];\n}\n\nint result = doc[params.target].values.contains(params.value) ? 1 : 0;\nreturn remap(result, params.map);\n",
-                "params": {
-                  "target": "offers.is_limited",
-                  "value": true,
-                  "map": [
-                    1,
-                    0
+            "bool": {
+              "should": [
+                {
+                  "bool": {
+                    "filter": [
+                      {
+                        "wildcard": {
+                          "name": {
+                            "value": "well*"
+                          }
+                        }
+                      },
+                      {
+                        "wildcard": {
+                          "name": {
+                            "value": "although*"
+                          }
+                        }
+                      },
+                      {
+                        "wildcard": {
+                          "name": {
+                            "value": "west*"
+                          }
+                        }
+                      },
+                      {
+                        "wildcard": {
+                          "name": {
+                            "value": "side*"
+                          }
+                        }
+                      },
+                      {
+                        "wildcard": {
+                          "name": {
+                            "value": "least*"
+                          }
+                        }
+                      },
+                      {
+                        "wildcard": {
+                          "name": {
+                            "value": "source*"
+                          }
+                        }
+                      },
+                      {
+                        "wildcard": {
+                          "name": {
+                            "value": "successf*"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                },
+                {
+                  "bool": {
+                    "filter": [
+                      {
+                        "wildcard": {
+                          "desc": {
+                            "value": "well*"
+                          }
+                        }
+                      },
+                      {
+                        "wildcard": {
+                          "desc": {
+                            "value": "although*"
+                          }
+                        }
+                      },
+                      {
+                        "wildcard": {
+                          "desc": {
+                            "value": "west*"
+                          }
+                        }
+                      },
+                      {
+                        "wildcard": {
+                          "desc": {
+                            "value": "side*"
+                          }
+                        }
+                      },
+                      {
+                        "wildcard": {
+                          "desc": {
+                            "value": "least*"
+                          }
+                        }
+                      },
+                      {
+                        "wildcard": {
+                          "desc": {
+                            "value": "source*"
+                          }
+                        }
+                      },
+                      {
+                        "wildcard": {
+                          "desc": {
+                            "value": "successf*"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                },
+                {
+                  "nested": {
+                    "path": "offers",
+                    "query": {
+                      "bool": {
+                        "filter": [
+                          {
+                            "bool": {
+                              "filter": [
+                                {
+                                  "wildcard": {
+                                    "offers.name": {
+                                      "value": "well*"
+                                    }
+                                  }
+                                },
+                                {
+                                  "wildcard": {
+                                    "offers.name": {
+                                      "value": "although*"
+                                    }
+                                  }
+                                },
+                                {
+                                  "wildcard": {
+                                    "offers.name": {
+                                      "value": "west*"
+                                    }
+                                  }
+                                },
+                                {
+                                  "wildcard": {
+                                    "offers.name": {
+                                      "value": "side*"
+                                    }
+                                  }
+                                },
+                                {
+                                  "wildcard": {
+                                    "offers.name": {
+                                      "value": "least*"
+                                    }
+                                  }
+                                },
+                                {
+                                  "wildcard": {
+                                    "offers.name": {
+                                      "value": "source*"
+                                    }
+                                  }
+                                },
+                                {
+                                  "wildcard": {
+                                    "offers.name": {
+                                      "value": "successf*"
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "nested": {
+                    "path": "offers",
+                    "query": {
+                      "bool": {
+                        "filter": [
+                          {
+                            "bool": {
+                              "filter": [
+                                {
+                                  "wildcard": {
+                                    "offers.desc": {
+                                      "value": "well*"
+                                    }
+                                  }
+                                },
+                                {
+                                  "wildcard": {
+                                    "offers.desc": {
+                                      "value": "although*"
+                                    }
+                                  }
+                                },
+                                {
+                                  "wildcard": {
+                                    "offers.desc": {
+                                      "value": "west*"
+                                    }
+                                  }
+                                },
+                                {
+                                  "wildcard": {
+                                    "offers.desc": {
+                                      "value": "side*"
+                                    }
+                                  }
+                                },
+                                {
+                                  "wildcard": {
+                                    "offers.desc": {
+                                      "value": "least*"
+                                    }
+                                  }
+                                },
+                                {
+                                  "wildcard": {
+                                    "offers.desc": {
+                                      "value": "source*"
+                                    }
+                                  }
+                                },
+                                {
+                                  "wildcard": {
+                                    "offers.desc": {
+                                      "value": "successf*"
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "nested": {
+                    "path": "keywords",
+                    "query": {
+                      "bool": {
+                        "filter": [
+                          {
+                            "bool": {
+                              "filter": [
+                                {
+                                  "wildcard": {
+                                    "keywords.names": {
+                                      "value": "well*"
+                                    }
+                                  }
+                                },
+                                {
+                                  "wildcard": {
+                                    "keywords.names": {
+                                      "value": "although*"
+                                    }
+                                  }
+                                },
+                                {
+                                  "wildcard": {
+                                    "keywords.names": {
+                                      "value": "west*"
+                                    }
+                                  }
+                                },
+                                {
+                                  "wildcard": {
+                                    "keywords.names": {
+                                      "value": "side*"
+                                    }
+                                  }
+                                },
+                                {
+                                  "wildcard": {
+                                    "keywords.names": {
+                                      "value": "least*"
+                                    }
+                                  }
+                                },
+                                {
+                                  "wildcard": {
+                                    "keywords.names": {
+                                      "value": "source*"
+                                    }
+                                  }
+                                },
+                                {
+                                  "wildcard": {
+                                    "keywords.names": {
+                                      "value": "successf*"
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "nested": {
+                    "path": "categories",
+                    "query": {
+                      "bool": {
+                        "filter": [
+                          {
+                            "bool": {
+                              "filter": [
+                                {
+                                  "wildcard": {
+                                    "categories.name": {
+                                      "value": "well*"
+                                    }
+                                  }
+                                },
+                                {
+                                  "wildcard": {
+                                    "categories.name": {
+                                      "value": "although*"
+                                    }
+                                  }
+                                },
+                                {
+                                  "wildcard": {
+                                    "categories.name": {
+                                      "value": "west*"
+                                    }
+                                  }
+                                },
+                                {
+                                  "wildcard": {
+                                    "categories.name": {
+                                      "value": "side*"
+                                    }
+                                  }
+                                },
+                                {
+                                  "wildcard": {
+                                    "categories.name": {
+                                      "value": "least*"
+                                    }
+                                  }
+                                },
+                                {
+                                  "wildcard": {
+                                    "categories.name": {
+                                      "value": "source*"
+                                    }
+                                  }
+                                },
+                                {
+                                  "wildcard": {
+                                    "categories.name": {
+                                      "value": "successf*"
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              ],
+              "minimum_should_match": 1
+            }
+          },
+          {
+            "nested": {
+              "path": "availabilities",
+              "query": {
+                "bool": {
+                  "filter": [
+                    {
+                      "match": {
+                        "availabilities.enabled": {
+                          "query": true,
+                          "operator": "and"
+                        }
+                      }
+                    },
+                    {
+                      "range": {
+                        "availabilities.starts": {
+                          "lte": "now"
+                        }
+                      }
+                    },
+                    {
+                      "range": {
+                        "availabilities.ends": {
+                          "gte": "now"
+                        }
+                      }
+                    },
+                    {
+                      "range": {
+                        "availabilities.created": {
+                          "lte": "now-0m"
+                        }
+                      }
+                    }
                   ]
                 }
               }
             }
           },
           {
-            "script_score": {
-              "script": {
-                "lang": "painless",
-                "inline": "\n\ndouble remap(def value, def map) {\n  for (int i = map.length - 2; i >= 0; i -= 2) {\n    if (map[i] <= value) {\n      return map[i + 1];\n    }\n  }\n  return map[1];\n}\n\nint a = [doc[params.target].value, params.seed].hashCode();\na -= (a<<6);a ^= (a>>17);a -= (a<<9);a ^= (a<<4);\na -= (a<<3);a ^= (a<<10);a ^= (a>>15);\ndouble result = (Math.abs(a) / (double)Integer.MAX_VALUE) - 0.5;\nreturn remap(result, params.map);\n",
-                "params": {
-                  "seed": "38977180-f361-4e1d-9070-68dc93eceb75",
-                  "target": "primary_types.score_random_scale",
-                  "map": [
-                    0,
-                    1
+            "nested": {
+              "path": "regions",
+              "query": {
+                "bool": {
+                  "filter": [
+                    {
+                      "match": {
+                        "regions.id": {
+                          "query": "d9353748-4d20-422b-b526-e5cbf4dd33c5",
+                          "operator": "and"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "nested": {
+              "path": "offers",
+              "query": {
+                "bool": {
+                  "filter": [
+                    {
+                      "match": {
+                        "offers.returned_for_type_b": {
+                          "query": true,
+                          "operator": "and"
+                        }
+                      }
+                    }
                   ]
                 }
               }
             }
           }
         ],
-        "score_mode": "sum",
-        "boost_mode": "replace"
+        "should": [
+          {
+            "function_score": {
+              "script_score": {
+                "script": {
+                  "source": "0"
+                }
+              }
+            }
+          },
+          {
+            "nested": {
+              "path": "offers",
+              "query": {
+                "function_score": {
+                  "script_score": {
+                    "script": {
+                      "lang": "painless",
+                      "inline": "\n\ndouble remap(def value, def map) {\n  for (int i = map.length - 2; i >= 0; i -= 2) {\n    if (map[i] <= value) {\n      return map[i + 1];\n    }\n  }\n  return map[1];\n}\n\nint result = doc[params.target].values.contains(params.value) ? 1 : 0;\nreturn remap(result, params.map);\n",
+                      "params": {
+                        "target": "offers.is_limited",
+                        "map": [
+                          1,
+                          0
+                        ],
+                        "value": true
+                      }
+                    }
+                  },
+                  "score_mode": "max",
+                  "boost_mode": "replace"
+                }
+              },
+              "score_mode": "max"
+            }
+          },
+          {
+            "nested": {
+              "path": "primary_types",
+              "query": {
+                "function_score": {
+                  "script_score": {
+                    "script": {
+                      "lang": "painless",
+                      "inline": "\n\ndouble remap(def value, def map) {\n  for (int i = map.length - 2; i >= 0; i -= 2) {\n    if (map[i] <= value) {\n      return map[i + 1];\n    }\n  }\n  return map[1];\n}\n\nint a = [doc[params.target].value, params.seed].hashCode();\na -= (a<<6);a ^= (a>>17);a -= (a<<9);a ^= (a<<4);\na -= (a<<3);a ^= (a<<10);a ^= (a>>15);\ndouble result = (Math.abs(a) / (double)Integer.MAX_VALUE) - 0.5;\nreturn remap(result, params.map);\n",
+                      "params": {
+                        "target": "primary_types.score_random_scale",
+                        "seed": "38977180-f361-4e1d-9070-68dc93eceb75",
+                        "map": [
+                          0,
+                          1
+                        ]
+                      }
+                    }
+                  },
+                  "score_mode": "max",
+                  "boost_mode": "replace"
+                }
+              },
+              "score_mode": "max"
+            }
+          }
+        ]
       }
     },
     "from": 0,
