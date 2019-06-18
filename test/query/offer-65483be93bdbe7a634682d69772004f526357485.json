@@ -287,6 +287,9 @@
                 "script": {
                   "source": "0"
                 }
+              },
+              "query": {
+                "match_all": {}
               }
             }
           },
