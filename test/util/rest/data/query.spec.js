@@ -550,6 +550,10 @@ describe('Testing Rest Query', () => {
         id: uuid4(),
         centre: [0.01, 0.01]
       };
+      const address4 = {
+        id: uuid4(),
+        centre: [0.1, 0.1]
+      };
       it('Testing mapping function as step function', async () => {
         await upsert('address', [address1, address2, address3]);
         expect((await query('address', {
@@ -563,14 +567,15 @@ describe('Testing Rest Query', () => {
       });
 
       it('Testing mapping function as linear function', async () => {
-        await upsert('address', [address1, address2, address3]);
+        await upsert('address', [address1, address2, address3, address4]);
         expect((await query('address', {
           toReturn: ['id', 'centre'],
           scoreBy: [['distance', 'centre', [0, 0], [[0, 5], [1000, 1], [2000, 0]]]]
         }, { raw: true })).hits.hits.map(a => a.sort)).to.deep.equal([
           [5, address1.id],
           [4.3710103, address2.id],
-          [0.42746934, address3.id]
+          [0.42746934, address3.id],
+          [0, address4.id]
         ]);
       });
     });
