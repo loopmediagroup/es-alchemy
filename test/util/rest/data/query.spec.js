@@ -573,7 +573,7 @@ describe('Testing Rest Query', () => {
           scoreBy: [['distance', 'centre', [0, 0], [[5, 5], [1000, 1], [2000, 0]]]]
         }, { raw: true })).hits.hits.map(a => a.sort)).to.deep.equal([
           [5, address1.id],
-          [4.3710103, address2.id],
+          [4.38795, address2.id],
           [0.42746934, address3.id],
           [0, address4.id]
         ]);
