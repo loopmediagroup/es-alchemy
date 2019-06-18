@@ -38,22 +38,15 @@ module.exports.build = (allowedFields, {
     result.query = buildQuery(filterBy, allowedFields);
   }
   if (scoreBy.length !== 0) {
-    set(result, 'query.bool.should', []);
-    result.query.bool.should.push(
+    set(result, 'query.bool.should', [
       { function_score: { script_score: { script: { source: '0' } } } },
-      ...scoreBy.map((s) => {
-        const functionScore = actionMap.score[s[0]](s.slice(1), { allowedFields });
-        return (s[1].includes('.')
-          ? ({
-            nested: {
-              path: s[1].substring(0, s[1].lastIndexOf('.')),
-              query: { function_score: functionScore },
-              score_mode: 'max'
-            }
-          })
-          : ({ function_score: functionScore }));
-      })
-    );
+      ...scoreBy
+        .map(s => [
+          s[1].substring(0, s[1].lastIndexOf('.')),
+          { function_score: actionMap.score[s[0]](s.slice(1), { allowedFields }) }
+        ])
+        .map(([path, query]) => (path !== '' ? ({ nested: { path, query, score_mode: 'max' } }) : query))
+    ]);
   }
   result.sort = [
     ...orderBy,

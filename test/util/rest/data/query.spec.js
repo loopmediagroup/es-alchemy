@@ -434,17 +434,22 @@ describe('Testing Rest Query', () => {
       });
 
       it('Testing scoreBy with filter', async () => {
-        expect(await query('offer', {
+        expect((await query('offer', {
           toReturn: ['id', 'locations.address.created', 'locations.address.centre'],
           scoreBy: [
             ['age', 'locations.address.created', '2019-01-03T00:00:00.000Z', [[0, 2], [86399, 1], [100000, 0]], {
               and: [['locations.address.centre', 'distance', [0, 0], '1km']]
-            }]]
-        })).to.deep.equal([offer2, offer1, offer3]);
+            }]
+          ]
+        }, { raw: true })).hits.hits.map(o => o.sort)).to.deep.equal([
+          [2, offer2.id],
+          [1, offer1.id],
+          [0, offer3.id]
+        ]);
       });
 
       it('Testing filterBy with scoreBy', async () => {
-        expect(await query('offer', {
+        expect((await query('offer', {
           filterBy: {
             and: [['locations.address.centre', 'distance', [0, 0], '1km']]
           },
@@ -452,8 +457,12 @@ describe('Testing Rest Query', () => {
           scoreBy: [
             ['age', 'locations.address.created', '2019-01-03T00:00:00.000Z', [[0, 2], [86399, 1], [100000, 0]], {
               and: [['locations.address.centre', 'distance', [0, 0], '1km']]
-            }]]
-        })).to.deep.equal([offer2, offer1]);
+            }]
+          ]
+        }, { raw: true })).hits.hits.map(o => o.sort)).to.deep.equal([
+          [2, offer2.id],
+          [1, offer1.id]
+        ]);
       });
     });
 
