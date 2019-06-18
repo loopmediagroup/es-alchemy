@@ -645,7 +645,8 @@
               },
               "query": {
                 "match_all": {}
-              }
+              },
+              "score_mode": "max"
             }
           },
           {

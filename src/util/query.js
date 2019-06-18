@@ -39,7 +39,7 @@ module.exports.build = (allowedFields, {
   }
   if (scoreBy.length !== 0) {
     set(result, 'query.bool.should', [
-      { function_score: { script_score: { script: { source: '0' } }, query: { match_all: {} } } },
+      { function_score: { script_score: { script: { source: '0' } }, query: { match_all: {} }, score_mode: 'max' } },
       ...scoreBy
         .map(s => [
           s[1].substring(0, s[1].lastIndexOf('.')),
