@@ -220,15 +220,21 @@ describe('Testing Rest Query', () => {
         await upsert('offer', [offer1, offer2]);
         await Promise.all([
           {
-            scoreBy: [['==', 'flags', 'three', [[0, 0], [1, 1]]]],
+            scoreBy: [['==', 'flags', 'three', [[0, 0], [1, 0], [1, 1]]]],
             result: [offer2, offer1]
           },
           {
-            scoreBy: [['==', 'flags', 'one', [[0, 0], [1, 1]]], ['==', 'flags', 'two', [[0, 0], [1, 1]]]],
+            scoreBy: [
+              ['==', 'flags', 'one', [[0, 0], [1, 0], [1, 1]]],
+              ['==', 'flags', 'two', [[0, 0], [1, 0], [1, 1]]]
+            ],
             result: [offer1, offer2]
           },
           {
-            scoreBy: [['==', 'flags', 'two', [[0, 0], [1, 3]]], ['==', 'flags', 'three', [[0, 0], [1, 1]]]],
+            scoreBy: [
+              ['==', 'flags', 'two', [[0, 0], [1, 0], [1, 3]]],
+              ['==', 'flags', 'three', [[0, 0], [1, 0], [1, 1]]]
+            ],
             result: [offer1, offer2]
           }
         ].map(async ({ scoreBy, result }) => {
@@ -254,20 +260,20 @@ describe('Testing Rest Query', () => {
         await upsert('offer', [offer1, offer2]);
         await Promise.all([
           {
-            scoreBy: [['==', 'locations.address.keywords', 'three', [[0, 0], [1, 1]]]],
+            scoreBy: [['==', 'locations.address.keywords', 'three', [[0, 0], [1, 0], [1, 1]]]],
             result: [offer2, offer1]
           },
           {
             scoreBy: [
-              ['==', 'locations.address.keywords', 'one', [[0, 0], [1, 1]]],
-              ['==', 'locations.address.keywords', 'two', [[0, 0], [1, 1]]]
+              ['==', 'locations.address.keywords', 'one', [[0, 0], [1, 0], [1, 1]]],
+              ['==', 'locations.address.keywords', 'two', [[0, 0], [1, 0], [1, 1]]]
             ],
             result: [offer1, offer2]
           },
           {
             scoreBy: [
-              ['==', 'locations.address.keywords', 'two', [[0, 0], [1, 3]]],
-              ['==', 'locations.address.keywords', 'three', [[0, 0], [1, 1]]]
+              ['==', 'locations.address.keywords', 'two', [[0, 0], [1, 0], [1, 3]]],
+              ['==', 'locations.address.keywords', 'three', [[0, 0], [1, 0], [1, 1]]]
             ],
             result: [offer1, offer2]
           }
@@ -293,11 +299,11 @@ describe('Testing Rest Query', () => {
         await upsert('address', [address1, address2]);
         await Promise.all([
           {
-            scoreBy: [['distance', 'centre', [0, 0], [[0, 1], [1, 0]]]],
+            scoreBy: [['distance', 'centre', [0, 0], [[0, 1], [1, 1], [1, 0]]]],
             result: [address1, address2]
           },
           {
-            scoreBy: [['distance', 'centre', [1, 1], [[0, 1], [1, 0]]]],
+            scoreBy: [['distance', 'centre', [1, 1], [[0, 1], [1, 1], [1, 0]]]],
             result: [address2, address1]
           }
         ].map(async ({ scoreBy, result }) => {
@@ -330,11 +336,11 @@ describe('Testing Rest Query', () => {
         await upsert('offer', [offer1, offer2]);
         await Promise.all([
           {
-            scoreBy: [['distance', 'locations.address.centre', [0, 0], [[0, 1], [1, 0]]]],
+            scoreBy: [['distance', 'locations.address.centre', [0, 0], [[0, 1], [1, 1], [1, 0]]]],
             result: [offer1, offer2]
           },
           {
-            scoreBy: [['distance', 'locations.address.centre', [1, 1], [[0, 1], [1, 0]]]],
+            scoreBy: [['distance', 'locations.address.centre', [1, 1], [[0, 1], [1, 1], [1, 0]]]],
             result: [offer2, offer1]
           }
         ].map(async ({ scoreBy, result }) => {
@@ -359,11 +365,11 @@ describe('Testing Rest Query', () => {
         await upsert('address', [address1, address2]);
         await Promise.all([
           {
-            scoreBy: [['age', 'created', '2019-02-01T00:00:00.000Z', [[0, 0], [1, 1]]]],
+            scoreBy: [['age', 'created', '2019-02-01T00:00:00.000Z', [[0, 0], [1, 0], [1, 1]]]],
             result: [address1, address2]
           },
           {
-            scoreBy: [['age', 'created', '2019-02-01T00:00:00.000Z', [[0, 1], [1, 0]]]],
+            scoreBy: [['age', 'created', '2019-02-01T00:00:00.000Z', [[0, 1], [1, 0], [1, 0]]]],
             result: [address2, address1]
           }
         ].map(async ({ scoreBy, result }) => {
@@ -390,11 +396,11 @@ describe('Testing Rest Query', () => {
         await upsert('offer', [offer1, offer2]);
         await Promise.all([
           {
-            scoreBy: [['age', 'locations.address.created', '2019-02-01T00:00:00.000Z', [[0, 0], [1, 1]]]],
+            scoreBy: [['age', 'locations.address.created', '2019-02-01T00:00:00.000Z', [[0, 0], [1, 0], [1, 1]]]],
             result: [offer1, offer2]
           },
           {
-            scoreBy: [['age', 'locations.address.created', '2019-02-01T00:00:00.000Z', [[0, 1], [1, 0]]]],
+            scoreBy: [['age', 'locations.address.created', '2019-02-01T00:00:00.000Z', [[0, 1], [1, 1], [1, 0]]]],
             result: [offer2, offer1]
           }
         ].map(async ({ scoreBy, result }) => {
@@ -437,7 +443,9 @@ describe('Testing Rest Query', () => {
         expect((await query('offer', {
           toReturn: ['id', 'locations.address.created', 'locations.address.centre'],
           scoreBy: [
-            ['age', 'locations.address.created', '2019-01-03T00:00:00.000Z', [[0, 2], [86399, 1], [100000, 0]], {
+            ['age', 'locations.address.created', '2019-01-03T00:00:00.000Z', [
+              [0, 2], [86399, 2], [86399, 1], [100000, 1], [100000, 0]
+            ], {
               and: [['locations.address.centre', 'distance', [0, 0], '1km']]
             }]
           ]
@@ -455,7 +463,9 @@ describe('Testing Rest Query', () => {
           },
           toReturn: ['id', 'locations.address.created', 'locations.address.centre'],
           scoreBy: [
-            ['age', 'locations.address.created', '2019-01-03T00:00:00.000Z', [[0, 2], [86399, 1], [100000, 0]], {
+            ['age', 'locations.address.created', '2019-01-03T00:00:00.000Z', [
+              [0, 2], [86399, 2], [86399, 1], [100000, 1], [100000, 0]
+            ], {
               and: [['locations.address.centre', 'distance', [0, 0], '1km']]
             }]
           ]
@@ -485,9 +495,11 @@ describe('Testing Rest Query', () => {
         expect((await query('offer', {
           toReturn: ['id', 'flags', 'locations.id', 'locations.address.centre'],
           scoreBy: [
-            ['distance', 'locations.address.centre', [0, 0], [[0, 7], [157, 3], [314, 2]]],
-            ['==', 'flags', 'exclusive', [[0, 0], [1, 3]]],
-            ['==', 'flags', 'featured', [[0, 0], [1, 11]]]
+            ['distance', 'locations.address.centre', [0, 0], [
+              [0, 7], [157, 7], [157, 3], [314, 3], [314, 2]
+            ]],
+            ['==', 'flags', 'exclusive', [[0, 0], [1, 0], [1, 3]]],
+            ['==', 'flags', 'featured', [[0, 0], [1, 0], [1, 11]]]
           ]
         }, { raw: true })).hits.hits.map(o => o.sort)).to.deep.equal([
           [18, offer3.id],
@@ -507,11 +519,11 @@ describe('Testing Rest Query', () => {
         expect((await query('offer', {
           toReturn: ['id', 'flags', 'locations.id', 'locations.address.centre'],
           scoreBy: [
-            ['distance', 'locations.address.centre', [0, 0], [[0, 3], [157, 2]]],
-            ['==', 'flags', 'exclusive', [[0, 0], [1, 2]], {
+            ['distance', 'locations.address.centre', [0, 0], [[0, 3], [157, 3], [157, 2]]],
+            ['==', 'flags', 'exclusive', [[0, 0], [1, 0], [1, 2]], {
               and: [['locations.address.centre', 'distance', [0, 0], '160m']]
             }],
-            ['==', 'flags', 'featured', [[0, 0], [1, 5]], {
+            ['==', 'flags', 'featured', [[0, 0], [1, 0], [1, 5]], {
               and: [['locations.address.centre', 'distance', [0, 0], '5m']]
             }]
           ]

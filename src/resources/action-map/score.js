@@ -3,9 +3,12 @@ const { buildQuery } = require('../../util/filter');
 
 const remap = `
 double remap(def value, def map) {
-  for (int i = map.length - 2; i >= 0; i -= 2) {
+  if (map[map.length - 2] <= value) {
+    return map[map.length - 1];
+  }
+  for (int i = map.length - 4; i >= 0; i -= 2) {
     if (map[i] <= value) {
-      return map[i + 1];
+      return map[i + 1] + (map[i + 3] - map[i + 1]) * ((value - map[i]) / (map[i + 2] - map[i]));
     }
   }
   return map[1];
