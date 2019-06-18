@@ -60,7 +60,7 @@ return a % ${frequency} == 0 ? 0 : 1;} else {return 1;}
         nested: Object.assign(
           { path: l.substring(0, l.lastIndexOf('.')) },
           filter === null ? {} : {
-            filter: buildQuery(filter, ctx.allowedFields, l.substring(0, l.indexOf('.')))
+            filter: buildQuery(filter, ctx.allowedFields, l.substring(0, l.lastIndexOf('.')))
           }
         )
       }
@@ -74,7 +74,7 @@ return a % ${frequency} == 0 ? 0 : 1;} else {return 1;}
         nested: Object.assign(
           { path: l.substring(0, l.lastIndexOf('.')) },
           filter === null ? {} : {
-            filter: buildQuery(filter, ctx.allowedFields, l.substring(0, l.indexOf('.')))
+            filter: buildQuery(filter, ctx.allowedFields, l.substring(0, l.lastIndexOf('.')))
           }
         )
       }
