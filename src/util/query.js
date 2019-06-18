@@ -1,5 +1,6 @@
 const assert = require('assert');
 const get = require('lodash.get');
+const set = require('lodash.set');
 const isEqual = require('lodash.isequal');
 const objectFields = require('object-fields');
 const actionMap = require('../resources/action-map');
@@ -37,14 +38,15 @@ module.exports.build = (allowedFields, {
     result.query = buildQuery(filterBy, allowedFields);
   }
   if (scoreBy.length !== 0) {
-    result.query = {
-      function_score: {
-        query: get(result, 'query', { match_all: {} }),
-        functions: scoreBy.map(e => actionMap.score[e[0]](...e.slice(1))),
-        score_mode: 'sum',
-        boost_mode: 'replace'
-      }
-    };
+    set(result, 'query.bool.should', [
+      { function_score: { script_score: { script: { source: '0' } }, query: { match_all: {} }, score_mode: 'max' } },
+      ...scoreBy
+        .map(s => [
+          s[1].substring(0, s[1].lastIndexOf('.')),
+          { function_score: actionMap.score[s[0]](s.slice(1), { allowedFields }) }
+        ])
+        .map(([path, query]) => (path !== '' ? ({ nested: { path, query, score_mode: 'max' } }) : query))
+    ]);
   }
   result.sort = [
     ...orderBy,

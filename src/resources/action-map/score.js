@@ -1,4 +1,5 @@
 const assert = require('assert');
+const { buildQuery } = require('../../util/filter');
 
 const remap = `
 double remap(def value, def map) {
@@ -15,8 +16,12 @@ const scoreMapper = (map) => {
   return map.reduce((p, [k, v]) => p.concat(k, v), []);
 };
 
+const buildNestedQuery = (filter, ctx, target) => (filter === null
+  ? { match_all: {} }
+  : buildQuery(filter, ctx.allowedFields, target.substring(0, target.lastIndexOf('.'))));
+
 module.exports = {
-  random: (target, seed, map) => ({
+  random: ([target, seed, map, filter = null], ctx) => ({
     script_score: {
       script: {
         lang: 'painless',
@@ -34,9 +39,12 @@ return remap(result, params.map);
           map: scoreMapper(map)
         }
       }
-    }
+    },
+    score_mode: 'max',
+    boost_mode: 'replace',
+    query: buildNestedQuery(filter, ctx, target)
   }),
-  '==': (target, value, map) => ({
+  '==': ([target, value, map, filter = null], ctx) => ({
     script_score: {
       script: {
         lang: 'painless',
@@ -51,9 +59,12 @@ return remap(result, params.map);
           map: scoreMapper(map)
         }
       }
-    }
+    },
+    score_mode: 'max',
+    boost_mode: 'replace',
+    query: buildNestedQuery(filter, ctx, target)
   }),
-  distance: (target, location, map) => ({
+  distance: ([target, location, map, filter = null], ctx) => ({
     script_score: {
       script: {
         lang: 'painless',
@@ -85,9 +96,12 @@ return result;
           map: scoreMapper(map)
         }
       }
-    }
+    },
+    score_mode: 'max',
+    boost_mode: 'replace',
+    query: buildNestedQuery(filter, ctx, target)
   }),
-  age: (target, timestamp, map) => ({
+  age: ([target, timestamp, map, filter = null], ctx) => ({
     script_score: {
       script: {
         lang: 'painless',
@@ -107,6 +121,9 @@ return result;
           map: scoreMapper(map)
         }
       }
-    }
+    },
+    score_mode: 'max',
+    boost_mode: 'replace',
+    query: buildNestedQuery(filter, ctx, target)
   })
 };
