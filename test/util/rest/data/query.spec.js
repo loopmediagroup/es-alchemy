@@ -536,6 +536,44 @@ describe('Testing Rest Query', () => {
         ]);
       });
     });
+
+    describe('Testing mapping functionality', () => {
+      const address1 = {
+        id: uuid4(),
+        centre: [0, 0]
+      };
+      const address2 = {
+        id: uuid4(),
+        centre: [0.001, 0.001]
+      };
+      const address3 = {
+        id: uuid4(),
+        centre: [0.01, 0.01]
+      };
+      it('Testing mapping function as step function', async () => {
+        await upsert('address', [address1, address2, address3]);
+        expect((await query('address', {
+          toReturn: ['id', 'centre'],
+          scoreBy: [['distance', 'centre', [0, 0], [[0, 2], [150, 2], [150, 1], [1000, 1], [1000, 0]]]]
+        }, { raw: true })).hits.hits.map(a => a.sort)).to.deep.equal([
+          [2, address1.id],
+          [1, address2.id],
+          [0, address3.id]
+        ]);
+      });
+
+      it('Testing mapping function as linear function', async () => {
+        await upsert('address', [address1, address2, address3]);
+        expect((await query('address', {
+          toReturn: ['id', 'centre'],
+          scoreBy: [['distance', 'centre', [0, 0], [[0, 5], [1000, 1], [2000, 0]]]]
+        }, { raw: true })).hits.hits.map(a => a.sort)).to.deep.equal([
+          [5, address1.id],
+          [4.3710103, address2.id],
+          [0.42746934, address3.id]
+        ]);
+      });
+    });
   });
 
   it('Testing Multi Version Query', async () => {
