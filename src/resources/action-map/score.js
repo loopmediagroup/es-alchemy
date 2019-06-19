@@ -8,7 +8,8 @@ double remap(def value, def map) {
   }
   for (int i = map.length - 4; i >= 0; i -= 2) {
     if (map[i] <= value) {
-      return map[i + 1] + (map[i + 3] - map[i + 1]) * ((value - map[i]) / (map[i + 2] - map[i]));
+      double percent = (value - map[i]) / (double)(map[i + 2] - map[i]);
+      return map[i + 1] + (map[i + 3] - map[i + 1]) * percent;
     }
   }
   return map[1];
