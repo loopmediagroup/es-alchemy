@@ -11,7 +11,13 @@
     "test": "npm run clean && npm run gardener && npm run test-simple",
     "coveralls": "node ./node_modules/coveralls/bin/coveralls.js < ./coverage/lcov.info",
     "semantic-release": "npm run build-clean && npx semantic-release",
-    "gardener": "node gardener"
+    "gardener": "node gardener",
+    "t": "yarn test",
+    "ts": "yarn run test-simple",
+    "tsv": "yarn run test-simple --verbose",
+    "yu": "yarn upgrade --latest --force",
+    "docker": "docker run -u`id -u`:`id -g` -v $(pwd):/user/project -v ~/.aws:/user/.aws -v ~/.npmrc:/user/.npmrc -w /user/project -it --entrypoint /bin/bash",
+    "yi": "yarn install --frozen-lockfile"
   },
   "repository": {
     "type": "git",
@@ -35,16 +41,16 @@
   "devDependencies": {
     "@babel/cli": "7.5.5",
     "@babel/core": "7.5.5",
-    "@babel/plugin-proposal-object-rest-spread": "7.5.4",
+    "@babel/plugin-proposal-object-rest-spread": "7.5.5",
     "@babel/register": "7.5.5",
-    "@blackflux/eslint-plugin-rules": "1.0.22",
-    "@blackflux/robo-config-plugin": "2.0.1",
+    "@blackflux/eslint-plugin-rules": "1.0.26",
+    "@blackflux/robo-config-plugin": "2.1.4",
     "babel-eslint": "10.0.2",
     "chai": "4.2.0",
     "coveralls": "3.0.5",
     "deep-equal-in-any-order": "1.0.16",
-    "eslint": "6.0.1",
-    "js-gardener": "2.0.51",
+    "eslint": "6.1.0",
+    "js-gardener": "2.0.55",
     "nyc": "14.1.1",
     "request": "2.88.0",
     "request-promise-native": "1.0.7",
@@ -98,9 +104,9 @@
     "lodash.get": "4.4.2",
     "lodash.isequal": "4.5.0",
     "lodash.set": "4.3.2",
-    "object-fields": "1.3.10",
+    "object-fields": "1.3.12",
     "object-hash": "1.3.1",
-    "object-scan": "10.0.4"
+    "object-scan": "10.0.5"
   },
   "peerDependencies": {
     "request": "^2.88.0",
