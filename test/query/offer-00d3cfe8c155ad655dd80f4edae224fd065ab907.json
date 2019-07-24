@@ -356,7 +356,7 @@
       }
     ]
   },
-  "toReturn": "id",
+  "toReturn": ["id"],
   "offset": 0,
   "scoreBy": null
 }

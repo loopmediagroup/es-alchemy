@@ -2,7 +2,6 @@ const assert = require('assert');
 const get = require('lodash.get');
 const set = require('lodash.set');
 const isEqual = require('lodash.isequal');
-const objectFields = require('object-fields');
 const actionMap = require('../resources/action-map');
 const { fromCursor } = require('../util/paging');
 const { buildQuery } = require('./filter');
@@ -17,13 +16,14 @@ module.exports.build = (allowedFields, {
   cursor
 }) => {
   assert(cursor === undefined || offset === undefined, 'Cannot override offset with cursor.');
+  assert(Array.isArray(toReturn));
   const cursorPayload = cursor !== undefined ? fromCursor(cursor) : null;
   const { size, from } = {
     size: typeof limit === 'number' ? limit : get(cursorPayload, 'limit', 20),
     from: typeof offset === 'number' ? offset : get(cursorPayload, 'offset', 0)
   };
   const result = {
-    _source: typeof toReturn === 'string' ? objectFields.split(toReturn) : toReturn,
+    _source: toReturn,
     size,
     from
   };
