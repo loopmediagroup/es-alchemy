@@ -16,7 +16,7 @@ const buildRec = (filterBy, allowedFields, root) => {
 
   // handle "or" and "and" clauses
   assert(
-    typeof filterBy === 'object' && !Array.isArray(filterBy),
+    filterBy instanceof Object && !Array.isArray(filterBy),
     'Filter clause expected to be of type object.'
   );
   const filterKeys = Object.keys(filterBy);
