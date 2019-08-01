@@ -5,7 +5,7 @@ const objectHash = require('object-hash');
 
 const buildPropertiesRec = (node, models) => {
   assert(
-    typeof node === 'object' && Array.isArray(node) === false,
+    node instanceof Object && Array.isArray(node) === false,
     'Invalid specs definition.'
   );
   assert(
@@ -17,7 +17,7 @@ const buildPropertiesRec = (node, models) => {
     'Model name not string.'
   );
   assert(
-    node.nested === undefined || (typeof node.nested === 'object' && !Array.isArray(node.nested)),
+    node.nested === undefined || (node.nested instanceof Object && !Array.isArray(node.nested)),
     'Nested expected to be of type object.'
   );
   assert(

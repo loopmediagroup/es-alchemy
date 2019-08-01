@@ -5,7 +5,7 @@ const fieldDefinitions = require('../resources/field-definitions');
 module.exports = ({
   compile: (specs) => {
     assert(
-      typeof specs.fields === 'object' && !Array.isArray(specs.fields),
+      specs.fields instanceof Object && !Array.isArray(specs.fields),
       'Model definition expected to be of type object.'
     );
     Object.values(specs.fields).forEach(fieldType => assert(
