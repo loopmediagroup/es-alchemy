@@ -8,4 +8,4 @@ module.exports = (call, index, mapping, limit) => call(
   }
 )
   // eslint-disable-next-line no-underscore-dangle
-  .then(r => r.body.hits.hits.reduce((p, e) => p.concat(e._id), []));
+  .then((r) => r.body.hits.hits.reduce((p, e) => p.concat(e._id), []));

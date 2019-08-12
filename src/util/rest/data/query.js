@@ -11,7 +11,7 @@ module.exports = (call, idx, rels, mapping, filter) => call('GET', `${idx}@*`, {
     // inject id requests for all entries
     const filterNew = cloneDeep(filter);
     // eslint-disable-next-line no-underscore-dangle
-    filterNew._source.push(...objectFields.getParents(filterNew._source).map(p => `${p}.id`));
+    filterNew._source.push(...objectFields.getParents(filterNew._source).map((p) => `${p}.id`));
     // eslint-disable-next-line no-underscore-dangle
     filterNew._source = [...new Set(filterNew._source)].sort();
     return filterNew;
@@ -24,12 +24,12 @@ module.exports = (call, idx, rels, mapping, filter) => call('GET', `${idx}@*`, {
     const rewriterRemap = (() => {
       // eslint-disable-next-line no-underscore-dangle
       const resultRemaps = filter._source
-        .map(f => [f, get(mapping, `mappings.${[idx, ...f.split('.')].join('.properties.')}.type`)])
-        .filter(f => f[1] !== undefined)
+        .map((f) => [f, get(mapping, `mappings.${[idx, ...f.split('.')].join('.properties.')}.type`)])
+        .filter((f) => f[1] !== undefined)
         .reduce((p, [field, fieldMapping]) => Object.assign(p, {
-          [field]: e => resultRemap[fieldMapping](e)
+          [field]: (e) => resultRemap[fieldMapping](e)
         }), {});
-      return input => objectScan(Object.keys(resultRemaps), {
+      return (input) => objectScan(Object.keys(resultRemaps), {
         joined: false,
         useArraySelector: false,
         breakFn: (key, value, { isMatch, matchedBy, parents }) => {
@@ -49,14 +49,14 @@ module.exports = (call, idx, rels, mapping, filter) => call('GET', `${idx}@*`, {
     const injectArrays = (() => {
       // eslint-disable-next-line no-underscore-dangle
       const arrays = objectFields.getParents(filter._source)
-        .filter(e => rels[e].endsWith('[]'))
-        .map(e => e.split('.'))
+        .filter((e) => rels[e].endsWith('[]'))
+        .map((e) => e.split('.'))
         .reduce((p, c) => {
           const key = c.slice(0, -1).join('.');
           const value = c.slice(-1).join('.');
           return Object.assign(p, { [key]: (p[key] || []).concat(value) });
         }, {});
-      return input => objectScan(Object.keys(arrays), {
+      return (input) => objectScan(Object.keys(arrays), {
         joined: false,
         useArraySelector: false,
         filterFn: (key, value, { matchedBy }) => {

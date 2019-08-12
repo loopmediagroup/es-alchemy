@@ -48,23 +48,23 @@ describe('Testing REST interaction', () => {
     await validate(0, {});
     expect(await index.rest.data.historic('offer')).to.deep.equal([]);
     // insert data
-    expect(await index.rest.data.update('offer', { upsert: uuids.map(id => ({ id })) })).to.equal(true);
+    expect(await index.rest.data.update('offer', { upsert: uuids.map((id) => ({ id })) })).to.equal(true);
     await validate(3, {});
     expect(await index.rest.data.historic('offer')).to.deep.equal([]);
     // create new version of index
-    index.index.register('offer', Object.assign({}, indices.offer, { fields: ['id'] }));
+    index.index.register('offer', { ...indices.offer, fields: ['id'] });
     expect(await index.rest.mapping.create('offer')).to.equal(true);
     await validate(3, { [`offer@${mappingHash}`]: 3 });
     await checkDocs(uuids);
     expect((await index.rest.data.historic('offer')).sort()).to.deep.equal(uuids);
     expect((await index.rest.data.historic('offer', 1)).length).to.deep.equal(1);
     // update data
-    expect(await index.rest.data.update('offer', { upsert: uuids.map(id => ({ id })) })).to.equal(true);
+    expect(await index.rest.data.update('offer', { upsert: uuids.map((id) => ({ id })) })).to.equal(true);
     await validate(3, { [`offer@${mappingHash}`]: 0 });
     await checkDocs(uuids);
     expect(await index.rest.data.historic('offer')).to.deep.equal([]);
     // update data again
-    expect(await index.rest.data.update('offer', { upsert: uuids.map(id => ({ id })) })).to.equal(true);
+    expect(await index.rest.data.update('offer', { upsert: uuids.map((id) => ({ id })) })).to.equal(true);
     await validate(3, {});
     await checkDocs(uuids);
     expect(await index.rest.data.historic('offer')).to.deep.equal([]);
@@ -77,7 +77,7 @@ describe('Testing REST interaction', () => {
     expect(await index.rest.mapping.create('offer')).to.equal(true);
     expect(await index.rest.mapping.historic('offer')).to.deep.equal({});
     // create new version of index
-    index.index.register('offer', Object.assign({}, indices.offer, { fields: ['id'] }));
+    index.index.register('offer', { ...indices.offer, fields: ['id'] });
     expect(await index.rest.mapping.create('offer')).to.equal(true);
     expect(await index.rest.mapping.historic('offer')).to.deep.equal({});
     // cleanup
@@ -110,7 +110,7 @@ describe('Testing REST interaction', () => {
         size: 20
       }
     });
-    expect(await index.rest.data.update('offer', { upsert: uuids.map(id => ({ id })) })).to.equal(true);
+    expect(await index.rest.data.update('offer', { upsert: uuids.map((id) => ({ id })) })).to.equal(true);
     expect(await index.rest.data.refresh('offer')).to.equal(true);
     expect(await index.rest.data.count('offer')).to.equal(3);
     const filter2 = index.query.build('offer', {
@@ -187,7 +187,7 @@ describe('Testing REST interaction', () => {
       }))
       .reduce((p, c) => p.then(() => c), Promise.resolve());
     // cleanup mappings
-    await Promise.all(Object.keys(queryMappings).map(idx => index.rest.mapping.delete(idx)));
+    await Promise.all(Object.keys(queryMappings).map((idx) => index.rest.mapping.delete(idx)));
   }).timeout(10000);
 
   it('Testing mapping indexExists', async () => {

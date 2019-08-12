@@ -24,7 +24,7 @@ const buildRec = (filterBy, allowedFields, root) => {
     ['["or"]', '["and"]', '["and","target"]', '["not"]'].includes(JSON.stringify(filterKeys.sort())),
     'Invalid filter clause provided.'
   );
-  const clause = filterKeys.filter(e => e !== 'target')[0];
+  const clause = filterKeys.filter((e) => e !== 'target')[0];
   const filters = clause === 'not' ? [filterBy[clause]] : filterBy[clause];
   const target = filterBy.target || 'separate';
   assert(['separate', 'union'].includes(target));

@@ -27,7 +27,7 @@ module.exports = (getRels, getMapping, options) => {
       get(options, 'endpoint', 'elasticsearch:9200'),
       idx.replace(/@/g, '%40').replace(/,/g, '%2C'),
       endpoint
-    ].filter(e => e !== '').join('/'),
+    ].filter((e) => e !== '').join('/'),
     body,
     headers,
     aws: {
@@ -59,18 +59,18 @@ module.exports = (getRels, getMapping, options) => {
   return {
     call: (method, idx, opts = {}) => call(method, idx, opts),
     mapping: {
-      create: idx => mappingCreate(call, idx, getMapping(idx)),
-      delete: idx => mappingDelete(call, idx),
-      exists: idx => mappingExists(call, idx, getMapping(idx)),
-      get: idx => mappingGet(call, idx, getMapping(idx)),
-      historic: idx => mappingHistoric(call, idx, getMapping(idx)),
+      create: (idx) => mappingCreate(call, idx, getMapping(idx)),
+      delete: (idx) => mappingDelete(call, idx),
+      exists: (idx) => mappingExists(call, idx, getMapping(idx)),
+      get: (idx) => mappingGet(call, idx, getMapping(idx)),
+      historic: (idx) => mappingHistoric(call, idx, getMapping(idx)),
       list: () => mappingList(call),
-      recreate: idx => mappingRecreate(call, idx, getMapping(idx))
+      recreate: (idx) => mappingRecreate(call, idx, getMapping(idx))
     },
     data: {
-      count: idx => dataCount(call, idx),
+      count: (idx) => dataCount(call, idx),
       query: (idx, filter) => dataQuery(call, idx, getRels(idx), getMapping(idx), filter),
-      refresh: idx => dataRefresh(call, idx),
+      refresh: (idx) => dataRefresh(call, idx),
       historic: (idx, limit = 100) => dataHistoric(call, idx, getMapping(idx), limit),
       update: (idx, opts) => dataUpdate(call, idx, getMapping(idx), opts)
     }

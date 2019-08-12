@@ -8,16 +8,17 @@ module.exports = ({
       specs.fields instanceof Object && !Array.isArray(specs.fields),
       'Model definition expected to be of type object.'
     );
-    Object.values(specs.fields).forEach(fieldType => assert(
+    Object.values(specs.fields).forEach((fieldType) => assert(
       fieldDefinitions[fieldType.endsWith('[]') ? fieldType.slice(0, -2) : fieldType] !== undefined,
       `Unknown field type given: ${fieldType}`
     ));
-    return Object.assign({}, specs, {
+    return {
+      ...specs,
       fields: Object
         .entries(specs.fields)
         .reduce((prev, [key, value]) => Object.assign(prev, {
           [key]: fieldDefinitions[value.endsWith('[]') ? value.slice(0, -2) : value]
         }), {})
-    });
+    };
   }
 });

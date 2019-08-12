@@ -21,7 +21,7 @@ describe('Testing Rest Query', () => {
 
   const upsert = async (model, models) => {
     expect(await index.rest.data.update(model, {
-      upsert: models.map(o => index.data.remap(model, o))
+      upsert: models.map((o) => index.data.remap(model, o))
     }), `${model} update failed`).to.equal(true);
     expect(await index.rest.data.refresh(model), `${model} refresh failed`).to.equal(true);
   };
@@ -449,7 +449,7 @@ describe('Testing Rest Query', () => {
               and: [['locations.address.centre', 'distance', [0, 0], '1km']]
             }]
           ]
-        }, { raw: true })).hits.hits.map(o => o.sort)).to.deep.equal([
+        }, { raw: true })).hits.hits.map((o) => o.sort)).to.deep.equal([
           [2, offer2.id],
           [1, offer1.id],
           [0, offer3.id]
@@ -469,7 +469,7 @@ describe('Testing Rest Query', () => {
               and: [['locations.address.centre', 'distance', [0, 0], '1km']]
             }]
           ]
-        }, { raw: true })).hits.hits.map(o => o.sort)).to.deep.equal([
+        }, { raw: true })).hits.hits.map((o) => o.sort)).to.deep.equal([
           [2, offer2.id],
           [1, offer1.id]
         ]);
@@ -501,7 +501,7 @@ describe('Testing Rest Query', () => {
             ['==', 'flags', 'exclusive', [[0, 0], [1, 0], [1, 3]]],
             ['==', 'flags', 'featured', [[0, 0], [1, 0], [1, 11]]]
           ]
-        }, { raw: true })).hits.hits.map(o => o.sort)).to.deep.equal([
+        }, { raw: true })).hits.hits.map((o) => o.sort)).to.deep.equal([
           [18, offer3.id],
           [14, offer6.id],
           [13, offer9.id],
@@ -527,7 +527,7 @@ describe('Testing Rest Query', () => {
               and: [['locations.address.centre', 'distance', [0, 0], '5m']]
             }]
           ]
-        }, { raw: true })).hits.hits.map(o => o.sort)).to.deep.equal([
+        }, { raw: true })).hits.hits.map((o) => o.sort)).to.deep.equal([
           [8, offer3.id],
           [5, offer2.id],
           [4, offer5.id],
@@ -559,7 +559,7 @@ describe('Testing Rest Query', () => {
         expect((await query('address', {
           toReturn: ['id', 'centre'],
           scoreBy: [['distance', 'centre', [0, 0], [[0, 2], [150, 2], [150, 1], [1000, 1], [1000, 0]]]]
-        }, { raw: true })).hits.hits.map(a => a.sort)).to.deep.equal([
+        }, { raw: true })).hits.hits.map((a) => a.sort)).to.deep.equal([
           [2, address1.id],
           [1, address2.id],
           [0, address3.id]
@@ -571,7 +571,7 @@ describe('Testing Rest Query', () => {
         expect((await query('address', {
           toReturn: ['id', 'centre'],
           scoreBy: [['distance', 'centre', [0, 0], [[5, 5], [1000, 1], [2000, 0]]]]
-        }, { raw: true })).hits.hits.map(a => a.sort)).to.deep.equal([
+        }, { raw: true })).hits.hits.map((a) => a.sort)).to.deep.equal([
           [5, address1.id],
           [4.38795, address2.id],
           [0.42746934, address3.id],

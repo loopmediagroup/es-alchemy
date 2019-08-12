@@ -81,12 +81,12 @@ module.exports = {
       }
     }
   }),
-  exists: l => ({
+  exists: (l) => ({
     exists: {
       field: l
     }
   }),
-  notexists: l => ({
+  notexists: (l) => ({
     bool: {
       must_not: {
         exists: {
@@ -98,8 +98,8 @@ module.exports = {
   search: (l, r) => ({
     bool: {
       filter: r.toLowerCase().split(/[^0-9a-z]+/)
-        .filter(e => !!e)
-        .map(e => ({
+        .filter((e) => !!e)
+        .map((e) => ({
           wildcard: {
             [l]: {
               value: `${e}*`
@@ -113,7 +113,7 @@ module.exports = {
       filter: {
         geo_shape: {
           [l]: {
-            shape: r.length === 2 && r.every(p => typeof p === 'number')
+            shape: r.length === 2 && r.every((p) => typeof p === 'number')
               ? { type: 'point', coordinates: r }
               : { type: 'polygon', coordinates: [r] },
             relation: 'intersects'
