@@ -31,7 +31,7 @@ module.exports.build = (allowedFields, {
   assert(Array.isArray(result._source), 'Invalid toReturn provided.');
   assert(
     // eslint-disable-next-line no-underscore-dangle
-    allowedFields === null || isEqual(toReturn, ['']) || result._source.every(f => allowedFields.includes(f)),
+    allowedFields === null || isEqual(toReturn, ['']) || result._source.every((f) => allowedFields.includes(f)),
     'Invalid field(s) provided.'
   );
   if (filterBy.length !== 0) {
@@ -41,7 +41,7 @@ module.exports.build = (allowedFields, {
     set(result, 'query.bool.should', [
       { function_score: { script_score: { script: { source: '0' } }, query: { match_all: {} }, score_mode: 'max' } },
       ...scoreBy
-        .map(s => [
+        .map((s) => [
           s[1].substring(0, s[1].lastIndexOf('.')),
           { function_score: actionMap.score[s[0]](s.slice(1), { allowedFields }) }
         ])
@@ -55,6 +55,6 @@ module.exports.build = (allowedFields, {
       ? []
       : [['id', 'asc']])
   ]
-    .map(e => actionMap.order[e[1]]([e[0], ...e.slice(2)], { allowedFields }));
+    .map((e) => actionMap.order[e[1]]([e[0], ...e.slice(2)], { allowedFields }));
   return result;
 };

@@ -176,7 +176,7 @@ To (re)create a mapping in Elasticsearch run:
 
 <!-- eslint-disable no-undef -->
 ```js
-Promise.all(esa.index.list().map(idx => esa.rest.mapping.recreate(idx)))
+Promise.all(esa.index.list().map((idx) => esa.rest.mapping.recreate(idx)))
   .then(() => {
     // ...
   });
