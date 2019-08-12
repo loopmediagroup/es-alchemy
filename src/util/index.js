@@ -9,7 +9,7 @@ const buildPropertiesRec = (node, models) => {
     'Invalid specs definition.'
   );
   assert(
-    Object.keys(node).every(e => ['model', 'fields', 'sources', 'nested', 'flat'].includes(e)),
+    Object.keys(node).every((e) => ['model', 'fields', 'sources', 'nested', 'flat'].includes(e)),
     'Unknown specs entry provided.'
   );
   assert(
@@ -30,16 +30,17 @@ const buildPropertiesRec = (node, models) => {
     'Model name not registered.'
   );
   assert(
-    node.fields.every(f => model.compiled.fields[f] !== undefined),
+    node.fields.every((f) => model.compiled.fields[f] !== undefined),
     'Unknown field provided.'
   );
   const nested = Object.entries(node.nested || {});
   return nested.reduce(
     (prev, [key, value]) => Object.assign(prev, {
-      [key]: Object.assign(
-        { properties: buildPropertiesRec(value, models), type: 'nested' },
-        get(value, 'flat', false) === true ? { include_in_root: true } : {}
-      )
+      [key]: {
+        properties: buildPropertiesRec(value, models),
+        type: 'nested',
+        ...(get(value, 'flat', false) === true ? { include_in_root: true } : {})
+      }
     }),
     node.fields.reduce((prev, key) => Object.assign(prev, { [key]: model.compiled.fields[key] }), {})
   );
@@ -50,7 +51,7 @@ const extractFieldsRec = (node, prefix = []) => Object
   .map(([relName, childNode]) => extractFieldsRec(childNode, prefix.concat(relName)))
   .reduce(
     (p, c) => p.concat(c),
-    node.fields.map(field => prefix.concat(field).join('.'))
+    node.fields.map((field) => prefix.concat(field).join('.'))
   );
 
 const extractRelsRec = (node, prefix = []) => Object
@@ -82,6 +83,6 @@ module.exports = ({
       }
     };
   },
-  extractFields: specs => extractFieldsRec(specs),
-  extractRels: spec => extractRelsRec(spec)
+  extractFields: (specs) => extractFieldsRec(specs),
+  extractRels: (spec) => extractRelsRec(spec)
 });

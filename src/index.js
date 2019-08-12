@@ -21,7 +21,7 @@ module.exports = (options) => {
   const registerIndex = (name, specs) => {
     assert(!name.includes('@'), 'Index name must not include `@`.');
     indices[name] = {
-      specs: Object.assign({ name }, specs),
+      specs: { name, ...specs },
       mapping: index.generateMapping(name, specs, models),
       fields: index.extractFields(specs),
       rels: index.extractRels(specs)
@@ -35,11 +35,11 @@ module.exports = (options) => {
     index: {
       register: (idx, specs) => registerIndex(idx, specs),
       list: () => Object.keys(indices).sort(),
-      getMapping: idx => cloneDeep(indices[idx].mapping),
-      getFields: idx => cloneDeep(indices[idx].fields),
-      getRels: idx => cloneDeep(indices[idx].rels),
-      getModel: idx => indices[idx].specs.model,
-      getSpecs: idx => cloneDeep(indices[idx].specs)
+      getMapping: (idx) => cloneDeep(indices[idx].mapping),
+      getFields: (idx) => cloneDeep(indices[idx].fields),
+      getRels: (idx) => cloneDeep(indices[idx].rels),
+      getModel: (idx) => indices[idx].specs.model,
+      getSpecs: (idx) => cloneDeep(indices[idx].specs)
     },
     data: {
       remap: (idx, input) => data.remap(indices[idx].specs, input, models),
@@ -48,7 +48,7 @@ module.exports = (options) => {
     query: {
       build: (idx = null, opts = {}) => query.build(idx === null ? null : indices[idx].fields, opts)
     },
-    rest: rest(idx => get(indices[idx], 'rels', null), idx => get(indices[idx], 'mapping', null), options)
+    rest: rest((idx) => get(indices[idx], 'rels', null), (idx) => get(indices[idx], 'mapping', null), options)
   };
 };
 

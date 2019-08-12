@@ -4,13 +4,14 @@ const { buildQuery } = require('../../util/filter');
 
 module.exports = {
   distance: ([l, loc]) => ({
-    _geo_distance: Object.assign({
+    _geo_distance: {
       [l]: loc,
       order: 'asc',
       unit: 'm',
       mode: 'min',
-      distance_type: 'arc'
-    }, l.indexOf('.') === -1 ? {} : { nested: { path: l.substring(0, l.lastIndexOf('.')) } })
+      distance_type: 'arc',
+      ...(l.indexOf('.') === -1 ? {} : { nested: { path: l.substring(0, l.lastIndexOf('.')) } })
+    }
   }),
   random: ([_, seed]) => ({
     _script: {
@@ -53,31 +54,31 @@ return a % ${frequency} == 0 ? 0 : 1;} else {return 1;}
     }
   }),
   asc: ([l, mode = null, filter = null], ctx) => ({
-    [l]: Object.assign(
-      { order: 'asc' },
-      mode !== null ? { mode } : {},
-      l.indexOf('.') === -1 ? {} : {
-        nested: Object.assign(
-          { path: l.substring(0, l.lastIndexOf('.')) },
-          filter === null ? {} : {
+    [l]: {
+      order: 'asc',
+      ...(mode !== null ? { mode } : {}),
+      ...(l.indexOf('.') === -1 ? {} : {
+        nested: {
+          path: l.substring(0, l.lastIndexOf('.')),
+          ...(filter === null ? {} : {
             filter: buildQuery(filter, ctx.allowedFields, l.substring(0, l.lastIndexOf('.')))
-          }
-        )
-      }
-    )
+          })
+        }
+      })
+    }
   }),
   desc: ([l, mode = null, filter = null], ctx) => ({
-    [l]: Object.assign(
-      { order: 'desc' },
-      mode !== null ? { mode } : {},
-      l.indexOf('.') === -1 ? {} : {
-        nested: Object.assign(
-          { path: l.substring(0, l.lastIndexOf('.')) },
-          filter === null ? {} : {
+    [l]: {
+      order: 'desc',
+      ...(mode !== null ? { mode } : {}),
+      ...(l.indexOf('.') === -1 ? {} : {
+        nested: {
+          path: l.substring(0, l.lastIndexOf('.')),
+          ...(filter === null ? {} : {
             filter: buildQuery(filter, ctx.allowedFields, l.substring(0, l.lastIndexOf('.')))
-          }
-        )
-      }
-    )
+          })
+        }
+      })
+    }
   })
 };

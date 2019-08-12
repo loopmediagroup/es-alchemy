@@ -28,7 +28,7 @@ describe('Testing index', () => {
 
   it('Testing specs', () => {
     Object.entries(indices).forEach(([k, v]) => {
-      expect(index.index.getSpecs(k)).to.deep.equal(Object.assign({ name: k }, v));
+      expect(index.index.getSpecs(k)).to.deep.equal({ name: k, ...v });
     });
   });
 

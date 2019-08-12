@@ -7,7 +7,7 @@ module.exports = async (call, idx, mapping, { remove = [], upsert = [] }) => {
 
   if (oldVersionsEmpty.length !== 0) {
     // delete old, empty versions
-    await Promise.all(oldVersionsEmpty.map(i => call('DELETE', i)));
+    await Promise.all(oldVersionsEmpty.map((i) => call('DELETE', i)));
   }
 
   // eslint-disable-next-line no-underscore-dangle
@@ -15,9 +15,9 @@ module.exports = async (call, idx, mapping, { remove = [], upsert = [] }) => {
   const payload = [];
 
   // delete elements from old index versions
-  [...upsert.map(doc => doc.id), ...remove]
-    .forEach(docId => oldVersionsNonEmpty
-      .forEach(i => payload.push(JSON.stringify({ delete: { _index: i, _type: idx, _id: docId } }))));
+  [...upsert.map((doc) => doc.id), ...remove]
+    .forEach((docId) => oldVersionsNonEmpty
+      .forEach((i) => payload.push(JSON.stringify({ delete: { _index: i, _type: idx, _id: docId } }))));
 
   upsert.forEach((doc) => {
     // `update` performs no action when exact document already indexed (reduced load)
@@ -36,5 +36,5 @@ module.exports = async (call, idx, mapping, { remove = [], upsert = [] }) => {
     body: payload.concat('').join('\n'),
     headers: { 'content-type': 'application/x-ndjson' },
     json: false
-  }).then(r => r.statusCode === 200 && !JSON.parse(r.body).errors);
+  }).then((r) => r.statusCode === 200 && !JSON.parse(r.body).errors);
 };

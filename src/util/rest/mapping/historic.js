@@ -7,5 +7,5 @@ module.exports = (call, idx, mapping) => call(
   `${idx}@*,-${idx}@${mapping.mappings[idx]._meta.hash}`,
   { endpoint: '_stats/docs' }
 )
-  .then(r => Object.entries(get(r, 'body.indices', {}))
+  .then((r) => Object.entries(get(r, 'body.indices', {}))
     .reduce((p, [k, v]) => Object.assign(p, { [k]: get(v, 'total.docs.count', 0) }), {}));

@@ -9,7 +9,7 @@ module.exports = async (call, idx, mapping) => {
     .entries(await historic(call, idx, mapping))
     .filter(([_, docCount]) => docCount === 0).map(([name, _]) => name);
   if (oldVersionsEmpty.length !== 0) {
-    await Promise.all(oldVersionsEmpty.map(i => call('DELETE', i)));
+    await Promise.all(oldVersionsEmpty.map((i) => call('DELETE', i)));
   }
 
   return r.statusCode === 200 && r.body.acknowledged === true;

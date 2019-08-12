@@ -4,4 +4,4 @@ module.exports = (call, index, mapping) => call(
   `${index}@${mapping.mappings[index]._meta.hash}`,
   { body: null }
 )
-  .then(r => r.statusCode === 200);
+  .then((r) => r.statusCode === 200);
