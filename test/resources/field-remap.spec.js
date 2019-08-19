@@ -2,7 +2,7 @@ const expect = require('chai').expect;
 const Index = require('../../src/index');
 const fieldDefinitions = require('../../src/resources/field-definitions');
 const fieldRemap = require('../../src/resources/field-remap');
-const { remaps, registerEntitiesForIndex } = require('../util');
+const { remaps, registerEntitiesForIndex } = require('../helper');
 
 describe('Testing fields meta', () => {
   let index;

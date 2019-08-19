@@ -1,7 +1,7 @@
 const { expect } = require('chai');
 const uuid4 = require('uuid/v4');
 const Index = require('../../../src/index');
-const { registerEntitiesForIndex } = require('../../util');
+const { registerEntitiesForIndex } = require('../../helper');
 
 describe('Testing rest', () => {
   it('Testing responseHook.', async () => {

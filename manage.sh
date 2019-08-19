@@ -7,6 +7,7 @@ docker run \
 docker build -t lambda-environment-node -f docker/Dockerfile . &&
 docker run \
   --link es63:elasticsearch \
+  --net host \
   -u`id -u`:`id -g` \
   -v $(pwd):/user/project \
   -v ~/.aws:/user/.aws \

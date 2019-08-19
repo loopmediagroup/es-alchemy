@@ -1,7 +1,7 @@
 const { expect } = require('chai');
 const uuid4 = require('uuid/v4');
 const Index = require('../../../../src/index');
-const { indices, queryMappings, registerEntitiesForIndex } = require('../../../util');
+const { indices, queryMappings, registerEntitiesForIndex } = require('../../../helper');
 
 describe('Testing REST interaction', () => {
   let index;

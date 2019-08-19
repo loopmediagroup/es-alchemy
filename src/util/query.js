@@ -3,7 +3,7 @@ const get = require('lodash.get');
 const set = require('lodash.set');
 const isEqual = require('lodash.isequal');
 const actionMap = require('../resources/action-map');
-const { fromCursor } = require('../util/paging');
+const { fromCursor } = require('./paging');
 const { buildQuery } = require('./filter');
 
 module.exports.build = (allowedFields, {
