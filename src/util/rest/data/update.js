@@ -1,4 +1,4 @@
-const historic = require('./../mapping/historic');
+const historic = require('../mapping/historic');
 
 module.exports = async (call, idx, mapping, { remove = [], upsert = [] }) => {
   const oldVersionsEntries = Object.entries(await historic(call, idx, mapping));

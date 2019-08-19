@@ -2,7 +2,7 @@ const assert = require('assert');
 const { expect } = require('chai');
 const uuid4 = require('uuid/v4');
 const Index = require('../../../../src/index');
-const { registerEntitiesForIndex } = require('../../../util');
+const { registerEntitiesForIndex } = require('../../../helper');
 
 describe('Testing Rest Query', () => {
   let index;

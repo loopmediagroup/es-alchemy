@@ -8,7 +8,7 @@ const {
   fields,
   rels,
   registerEntitiesForIndex
-} = require('./util');
+} = require('./helper');
 
 chai.use(deepEqualInAnyOrder);
 
