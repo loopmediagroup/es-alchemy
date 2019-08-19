@@ -13,12 +13,13 @@ RUN touch ~/.bashrc && \
 
 RUN touch ~/.bash_aliases && \
   echo '# yarn-upgrade' >> ~/.bashrc && \
-  echo "alias yu='yarn upgrade --latest --force'" >> ~/.bashrc && \
+  echo "alias u='yarn upgrade --latest --force'" >> ~/.bashrc && \
   echo '# yarn re-install' >> ~/.bashrc && \
-  echo "alias yi='yarn install --frozen-lockfile'" >> ~/.bashrc && \
+  echo "alias i='yarn install --frozen-lockfile'" >> ~/.bashrc && \
   echo '# run tests' >> ~/.bashrc && \
   echo "alias t='yarn test'" >> ~/.bashrc && \
   echo "alias ts='yarn run test-simple'" >> ~/.bashrc && \
+  echo "alias tsv='yarn run test-simple --verbose'" >> ~/.bashrc && \
   source ~/.bash_aliases
 
 RUN chmod -R 757 /user

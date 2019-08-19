@@ -1,7 +1,7 @@
 // Convert raw data into index ready data
 const assert = require('assert');
 const fieldRemap = require('../resources/field-remap');
-const { buildPageObject } = require('../util/paging');
+const { buildPageObject } = require('./paging');
 
 const remapRec = (specs, input, models) => {
   const result = [];

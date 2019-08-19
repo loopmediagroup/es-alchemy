@@ -1,7 +1,7 @@
 const { expect } = require('chai');
 const Index = require('../../src/index');
 const { toCursor } = require('../../src/util/paging');
-const { registerEntitiesForIndex, query } = require('../util');
+const { registerEntitiesForIndex, query } = require('../helper');
 
 describe('Testing Query Creation', () => {
   let index;
