@@ -1,4 +1,5 @@
 const { expect } = require('chai');
+const { describe } = require('node-tdd');
 const uuid4 = require('uuid/v4');
 const Index = require('../../../../src/index');
 const { registerEntitiesForIndex } = require('../../../helper');

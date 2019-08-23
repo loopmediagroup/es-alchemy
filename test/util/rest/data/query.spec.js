@@ -1,10 +1,11 @@
 const assert = require('assert');
 const { expect } = require('chai');
+const { describe } = require('node-tdd');
 const uuid4 = require('uuid/v4');
 const Index = require('../../../../src/index');
 const { registerEntitiesForIndex } = require('../../../helper');
 
-describe('Testing Rest Query', () => {
+describe('Testing Rest Query', { timeout: 10000 }, () => {
   let index;
 
   beforeEach(async () => {
@@ -95,7 +96,7 @@ describe('Testing Rest Query', () => {
           and: ['locations.address.street == value1', 'locations.address.city == value2']
         }
       })).length).to.equal(0);
-    }).timeout(10000);
+    });
 
     it('Testing nested filtered in sort', async () => {
       const offer1 = {
@@ -171,7 +172,7 @@ describe('Testing Rest Query', () => {
           sort: ['2', '2', offer4.id]
         }
       ]);
-    }).timeout(10000);
+    });
   });
 
   it('Testing twice nested empty relationship returned as empty list.', async () => {
@@ -240,7 +241,7 @@ describe('Testing Rest Query', () => {
         ].map(async ({ scoreBy, result }) => {
           expect(await query('offer', { toReturn: ['id', 'flags'], scoreBy }), `${scoreBy}`).to.deep.equal(result);
         }));
-      }).timeout(10000);
+      });
 
       it('Testing existence in array nested', async () => {
         const offer1 = {
@@ -283,7 +284,7 @@ describe('Testing Rest Query', () => {
             scoreBy
           }), `${scoreBy}`).to.deep.equal(result);
         }));
-      }).timeout(10000);
+      });
     });
 
     describe('Testing scoring by distance', () => {
@@ -413,27 +414,32 @@ describe('Testing Rest Query', () => {
     });
 
     describe('Testing filters with scoring', () => {
-      const offer1 = {
-        id: uuid4(),
-        locations: [
-          { address: { created: '2019-01-02T00:00:00.000Z', centre: [0, 0] } },
-          { address: { created: '2019-01-03T00:00:00.000Z', centre: [1, 1] } }
-        ]
-      };
-      const offer2 = {
-        id: uuid4(),
-        locations: [
-          { address: { created: '2019-01-02T00:00:00.000Z', centre: [1, 1] } },
-          { address: { created: '2019-01-03T00:00:00.000Z', centre: [0, 0] } }
-        ]
-      };
-      const offer3 = {
-        id: uuid4(),
-        locations: [
-          { address: { created: '2019-01-01T00:00:00.000Z', centre: [1, 1] } },
-          { address: { created: '2019-01-01T00:00:00.000Z', centre: [1, 1] } }
-        ]
-      };
+      let offer1;
+      let offer2;
+      let offer3;
+      before(() => {
+        offer1 = {
+          id: uuid4(),
+          locations: [
+            { address: { created: '2019-01-02T00:00:00.000Z', centre: [0, 0] } },
+            { address: { created: '2019-01-03T00:00:00.000Z', centre: [1, 1] } }
+          ]
+        };
+        offer2 = {
+          id: uuid4(),
+          locations: [
+            { address: { created: '2019-01-02T00:00:00.000Z', centre: [1, 1] } },
+            { address: { created: '2019-01-03T00:00:00.000Z', centre: [0, 0] } }
+          ]
+        };
+        offer3 = {
+          id: uuid4(),
+          locations: [
+            { address: { created: '2019-01-01T00:00:00.000Z', centre: [1, 1] } },
+            { address: { created: '2019-01-01T00:00:00.000Z', centre: [1, 1] } }
+          ]
+        };
+      });
 
       beforeEach(async () => {
         await upsert('offer', [offer1, offer2, offer3]);
@@ -477,18 +483,32 @@ describe('Testing Rest Query', () => {
     });
 
     describe('Testing multiple scoreBy', () => {
-      const location1 = { id: uuid4(), address: { centre: [0, 0] } };
-      const location2 = { id: uuid4(), address: { centre: [0.001, 0.001] } };
-      const location3 = { id: uuid4(), address: { centre: [0.002, 0.002] } };
-      const offer1 = { id: uuid4(), locations: [location1, location2], flags: [] };
-      const offer2 = { id: uuid4(), locations: [location1, location2], flags: ['exclusive'] };
-      const offer3 = { id: uuid4(), locations: [location1, location2], flags: ['featured'] };
-      const offer4 = { id: uuid4(), locations: [location2, location3], flags: [] };
-      const offer5 = { id: uuid4(), locations: [location2, location3], flags: ['exclusive'] };
-      const offer6 = { id: uuid4(), locations: [location2, location3], flags: ['featured'] };
-      const offer7 = { id: uuid4(), locations: [location3], flags: [] };
-      const offer8 = { id: uuid4(), locations: [location3], flags: ['exclusive'] };
-      const offer9 = { id: uuid4(), locations: [location3], flags: ['featured'] };
+      let location1;
+      let location2;
+      let location3;
+      let offer1;
+      let offer2;
+      let offer3;
+      let offer4;
+      let offer5;
+      let offer6;
+      let offer7;
+      let offer8;
+      let offer9;
+      before(() => {
+        location1 = { id: uuid4(), address: { centre: [0, 0] } };
+        location2 = { id: uuid4(), address: { centre: [0.001, 0.001] } };
+        location3 = { id: uuid4(), address: { centre: [0.002, 0.002] } };
+        offer1 = { id: uuid4(), locations: [location1, location2], flags: [] };
+        offer2 = { id: uuid4(), locations: [location1, location2], flags: ['exclusive'] };
+        offer3 = { id: uuid4(), locations: [location1, location2], flags: ['featured'] };
+        offer4 = { id: uuid4(), locations: [location2, location3], flags: [] };
+        offer5 = { id: uuid4(), locations: [location2, location3], flags: ['exclusive'] };
+        offer6 = { id: uuid4(), locations: [location2, location3], flags: ['featured'] };
+        offer7 = { id: uuid4(), locations: [location3], flags: [] };
+        offer8 = { id: uuid4(), locations: [location3], flags: ['exclusive'] };
+        offer9 = { id: uuid4(), locations: [location3], flags: ['featured'] };
+      });
 
       it('Testing multiple scoring', async () => {
         await upsert('offer', [offer1, offer2, offer3, offer4, offer5, offer6, offer7, offer8, offer9]);
@@ -538,22 +558,29 @@ describe('Testing Rest Query', () => {
     });
 
     describe('Testing mapping functionality', () => {
-      const address1 = {
-        id: uuid4(),
-        centre: [0, 0]
-      };
-      const address2 = {
-        id: uuid4(),
-        centre: [0.001, 0.001]
-      };
-      const address3 = {
-        id: uuid4(),
-        centre: [0.01, 0.01]
-      };
-      const address4 = {
-        id: uuid4(),
-        centre: [0.1, 0.1]
-      };
+      let address1;
+      let address2;
+      let address3;
+      let address4;
+      before(() => {
+        address1 = {
+          id: uuid4(),
+          centre: [0, 0]
+        };
+        address2 = {
+          id: uuid4(),
+          centre: [0.001, 0.001]
+        };
+        address3 = {
+          id: uuid4(),
+          centre: [0.01, 0.01]
+        };
+        address4 = {
+          id: uuid4(),
+          centre: [0.1, 0.1]
+        };
+      });
+
       it('Testing mapping function as step function', async () => {
         await upsert('address', [address1, address2, address3]);
         expect((await query('address', {
