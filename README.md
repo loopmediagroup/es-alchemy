@@ -319,6 +319,7 @@ const ESA = require('es-alchemy');
 ESA({
   responseHook: ({ request, response }) => {
     if (response.elapsedTime > 500) {
+      // eslint-disable-next-line no-undef
       logger.warning(`Query time ${request.index}\n${JSON.stringify(request.body)}`);
     }
   }

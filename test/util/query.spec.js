@@ -1,4 +1,5 @@
 const { expect } = require('chai');
+const { describe } = require('node-tdd');
 const Index = require('../../src/index');
 const { toCursor } = require('../../src/util/paging');
 const { registerEntitiesForIndex, query } = require('../helper');

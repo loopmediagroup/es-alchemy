@@ -1,4 +1,5 @@
 const { expect } = require('chai');
+const { describe } = require('node-tdd');
 const { toCursor, fromCursor } = require('../../src/util/paging');
 
 describe('Testing paging.', () => {

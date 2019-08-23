@@ -1,9 +1,10 @@
 const { expect } = require('chai');
+const { describe } = require('node-tdd');
 const uuid4 = require('uuid/v4');
 const Index = require('../../../../src/index');
 const { indices, queryMappings, registerEntitiesForIndex } = require('../../../helper');
 
-describe('Testing REST interaction', () => {
+describe('Testing REST interaction', { timeout: 10000 }, () => {
   let index;
 
   beforeEach(() => {
@@ -137,7 +138,7 @@ describe('Testing REST interaction', () => {
     expect(await index.rest.data.count('offer')).to.equal(0);
     // cleanup
     expect(await index.rest.mapping.delete('offer')).to.equal(true);
-  }).timeout(10000);
+  });
 
   it('Testing delete not found', async () => {
     expect(await index.rest.mapping.delete('offer')).to.equal(true);
@@ -188,7 +189,7 @@ describe('Testing REST interaction', () => {
       .reduce((p, c) => p.then(() => c), Promise.resolve());
     // cleanup mappings
     await Promise.all(Object.keys(queryMappings).map((idx) => index.rest.mapping.delete(idx)));
-  }).timeout(10000);
+  });
 
   it('Testing mapping indexExists', async () => {
     expect(await index.rest.mapping.exists('offer')).to.equal(false);
