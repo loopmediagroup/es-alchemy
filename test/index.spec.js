@@ -1,4 +1,5 @@
 const expect = require('chai').expect;
+const { describe } = require('node-tdd');
 const chai = require('chai');
 const deepEqualInAnyOrder = require('deep-equal-in-any-order');
 const Index = require('../src/index');
