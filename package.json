@@ -49,7 +49,7 @@
     "chai": "4.2.0",
     "coveralls": "3.0.6",
     "deep-equal-in-any-order": "1.0.19",
-    "eslint": "6.2.1",
+    "eslint": "6.2.2",
     "eslint-config-airbnb-base": "14.0.0",
     "eslint-plugin-import": "2.18.2",
     "eslint-plugin-jasmine": "2.10.1",
