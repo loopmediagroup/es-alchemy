@@ -47,7 +47,7 @@
     "@blackflux/robo-config-plugin": "2.6.15",
     "babel-eslint": "10.0.3",
     "chai": "4.2.0",
-    "coveralls": "3.0.6",
+    "coveralls": "3.0.7",
     "deep-equal-in-any-order": "1.0.21",
     "eslint": "6.5.1",
     "eslint-config-airbnb-base": "14.0.0",
