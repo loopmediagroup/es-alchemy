@@ -11,7 +11,7 @@ RUN touch ~/.bashrc && \
   curl -o- -L https://yarnpkg.com/install.sh | bash && \
   source ~/.bashrc
 
-RUN touch ~/.bash_aliases && \
+RUN touch ~/.bashrc && \
   echo '# yarn-upgrade' >> ~/.bashrc && \
   echo "alias u='yarn upgrade --latest --force'" >> ~/.bashrc && \
   echo '# yarn re-install' >> ~/.bashrc && \
@@ -20,7 +20,7 @@ RUN touch ~/.bash_aliases && \
   echo "alias t='yarn test'" >> ~/.bashrc && \
   echo "alias ts='yarn run test-simple'" >> ~/.bashrc && \
   echo "alias tsv='yarn run test-simple --verbose'" >> ~/.bashrc && \
-  source ~/.bash_aliases
+  source ~/.bashrc
 
 RUN chmod -R 757 /user
 
