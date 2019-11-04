@@ -60,7 +60,7 @@
     "node-tdd": "2.5.18",
     "nyc": "14.1.1",
     "request": "2.88.0",
-    "request-promise-native": "1.0.7",
+    "request-promise-native": "1.0.8",
     "semantic-release": "15.13.30",
     "uuid": "3.3.3"
   },
