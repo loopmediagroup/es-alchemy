@@ -72,7 +72,7 @@ module.exports = (getRels, getMapping, options) => {
       query: (idx, filter) => dataQuery(call, idx, getRels(idx), getMapping(idx), filter),
       refresh: (idx) => dataRefresh(call, idx),
       historic: (idx, limit = 100) => dataHistoric(call, idx, getMapping(idx), limit),
-      update: (idx, opts) => dataUpdate(call, idx, getMapping(idx), opts)
+      update: (idx, opts) => dataUpdate(call, idx, getRels(idx), getMapping(idx), opts)
     }
   };
 };
