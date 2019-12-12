@@ -34,8 +34,31 @@ describe('Testing version', () => {
     expect(await index.rest.mapping.delete('offer')).to.equal(true);
   });
 
-  it('Test returning null if index does not exist', async () => {
-    expect(await index.rest.data.version('offer', 'id')).to.equal(null);
+  it('Test version number does not increase if update is identical', async () => {
+    const offerId = uuid4();
+    expect(await index.rest.mapping.create('offer')).to.equal(true);
+    expect(await index.rest.data.update('offer', {
+      upsert: [index.data.remap('offer', {
+        id: offerId,
+        meta: { k1: 'v1' }
+      })]
+    })).to.equal(true);
+    expect(await index.rest.data.refresh('offer')).to.equal(true);
+    expect(await index.rest.data.version('offer', offerId)).to.equal(1);
+    expect(await index.rest.data.update('offer', {
+      upsert: [index.data.remap('offer', {
+        id: offerId,
+        meta: { k1: 'v1' }
+      })]
+    })).to.equal(true);
+    expect(await index.rest.data.refresh('offer')).to.equal(true);
+    expect(await index.rest.data.version('offer', offerId)).to.equal(1);
+    expect(await index.rest.mapping.delete('offer')).to.equal(true);
+  });
+
+  it('Test throws an error if index does not exist', async ({ capture }) => {
+    const error = await capture(() => index.rest.data.version('offer', 'id'));
+    expect(error.message).to.equal('index_not_found_exception');
   });
 
   it('Test returning null if document does not exist', async () => {

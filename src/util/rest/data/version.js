@@ -1,7 +1,17 @@
+const assert = require('assert');
 const get = require('lodash.get');
 
-// eslint-disable-next-line no-underscore-dangle
-module.exports = (call, idx, mapping, id) => call('GET', `${idx}@${mapping.mappings[idx]._meta.hash}`, {
-  endpoint: `${idx}/${id}?_source=false`
-})
-  .then((r) => get(r, 'body._version', null));
+module.exports = (call, idx, mapping, id) => call(
+  'GET',
+  // eslint-disable-next-line no-underscore-dangle
+  `${idx}@${mapping.mappings[idx]._meta.hash}`,
+  { endpoint: `${idx}/${id}?_source=false` }
+)
+  .then((r) => {
+    const isFound = get(r, 'body.found', null);
+    assert([null, true, false].includes(isFound));
+    if (isFound === null) {
+      throw new Error(get(r, 'body.error.type'));
+    }
+    return isFound === true ? get(r, 'body._version') : null;
+  });
