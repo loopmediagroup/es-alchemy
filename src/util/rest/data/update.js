@@ -1,8 +1,20 @@
 const set = require('lodash.set');
+const Joi = require('joi-strict');
 const objectScan = require('object-scan');
 const historic = require('../mapping/historic');
 
-module.exports = async (call, idx, rels, mapping, { remove = [], upsert = [] }) => {
+module.exports = async (...args) => {
+  Joi.assert(args, Joi.array().ordered(
+    Joi.func(),
+    Joi.string(),
+    Joi.object(),
+    Joi.object(),
+    Joi.object().keys({
+      remove: Joi.array().optional(),
+      upsert: Joi.array().optional()
+    })
+  ));
+  const [call, idx, rels, mapping, { remove = [], upsert = [] }] = args;
   const oldVersionsEntries = Object.entries(await historic(call, idx, mapping));
   const oldVersionsEmpty = oldVersionsEntries.filter(([_, docCount]) => docCount === 0).map(([name, _]) => name);
   const oldVersionsNonEmpty = oldVersionsEntries.filter(([_, docCount]) => docCount !== 0).map(([name, _]) => name);
