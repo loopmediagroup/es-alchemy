@@ -65,11 +65,8 @@ module.exports = async (...args) => {
   })();
 
   actions.forEach((action) => {
-    const internalAction = action.action === 'update' && action.version === null
-      ? 'create'
-      : action.action;
     payload.push(JSON.stringify({
-      [internalAction]: {
+      [action.version === null ? 'create' : action.action]: {
         _index: index,
         _type: idx,
         _id: action.id,
