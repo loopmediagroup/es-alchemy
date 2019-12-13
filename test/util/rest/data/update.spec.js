@@ -15,16 +15,17 @@ describe('Testing data formats', () => {
   it('Testing "object" data type updating', async () => {
     const offerId = uuid4();
     expect(await index.rest.mapping.create('offer')).to.equal(true);
-    expect(await index.rest.data.update('offer', {
-      upsert: [index.data.remap('offer', {
+    expect(await index.rest.data.update('offer', [{
+      action: 'update',
+      doc: index.data.remap('offer', {
         id: offerId,
         meta: {
           k1: 'v1',
           k2: ['v2'],
           k3: []
         }
-      })]
-    })).to.equal(true);
+      })
+    }])).to.equal(true);
     expect(await index.rest.data.refresh('offer')).to.equal(true);
     const filter = index.query.build('offer', {
       toReturn: ['id', 'meta'],
@@ -52,14 +53,15 @@ describe('Testing data formats', () => {
         size: 1
       }
     });
-    expect(await index.rest.data.update('offer', {
-      upsert: [index.data.remap('offer', {
+    expect(await index.rest.data.update('offer', [{
+      action: 'update',
+      doc: index.data.remap('offer', {
         id: offerId,
         meta: {
           k4: []
         }
-      })]
-    })).to.equal(true);
+      })
+    }])).to.equal(true);
     expect(await index.rest.data.refresh('offer')).to.equal(true);
     const queryResult2 = await index.rest.data.query('offer', filter);
     expect(index.data.page(queryResult2, filter)).to.deep.equal({

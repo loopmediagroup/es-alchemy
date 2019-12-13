@@ -1,8 +1,30 @@
 const set = require('lodash.set');
+const Joi = require('joi-strict');
 const objectScan = require('object-scan');
 const historic = require('../mapping/historic');
 
-module.exports = async (call, idx, rels, mapping, { remove = [], upsert = [] }) => {
+module.exports = async (...args) => {
+  Joi.assert(args, Joi.array().ordered(
+    Joi.func(),
+    Joi.string(),
+    Joi.object(),
+    Joi.object(),
+    Joi.array().items(Joi.object().keys({
+      action: Joi.string().valid('update', 'delete'),
+      id: Joi.string().optional(),
+      doc: Joi.object().keys({
+        id: Joi.string()
+      }).unknown(true)
+        .when('action', { is: Joi.string().valid('update'), then: Joi.required(), otherwise: Joi.optional() })
+    }).or('id', 'doc'))
+  ));
+  const [call, idx, rels, mapping, actions] = args;
+  actions.forEach((action) => {
+    if (action.id === undefined) {
+      Object.assign(action, { id: action.doc.id });
+    }
+  });
+
   const oldVersionsEntries = Object.entries(await historic(call, idx, mapping));
   const oldVersionsEmpty = oldVersionsEntries.filter(([_, docCount]) => docCount === 0).map(([name, _]) => name);
   const oldVersionsNonEmpty = oldVersionsEntries.filter(([_, docCount]) => docCount !== 0).map(([name, _]) => name);
@@ -17,7 +39,7 @@ module.exports = async (call, idx, rels, mapping, { remove = [], upsert = [] }) 
   const payload = [];
 
   // delete elements from old index versions
-  [...upsert.map((doc) => doc.id), ...remove]
+  actions.map((action) => action.id)
     .forEach((docId) => oldVersionsNonEmpty
       .forEach((i) => payload.push(JSON.stringify({ delete: { _index: i, _type: idx, _id: docId } }))));
 
@@ -39,14 +61,13 @@ module.exports = async (call, idx, rels, mapping, { remove = [], upsert = [] }) 
     };
   })();
 
-  upsert.forEach((doc) => {
-    emptyToNull(doc);
-    // `update` performs no action when exact document already indexed (reduced load)
-    payload.push(JSON.stringify({ update: { _index: index, _type: idx, _id: doc.id } }));
-    payload.push(JSON.stringify({ doc, doc_as_upsert: true }));
-  });
-  remove.forEach((docId) => {
-    payload.push(JSON.stringify({ delete: { _index: index, _type: idx, _id: docId } }));
+  actions.forEach((action) => {
+    payload.push(JSON.stringify({ [action.action]: { _index: index, _type: idx, _id: action.id } }));
+    if (action.action === 'update') {
+      emptyToNull(action.doc);
+      // `update` performs no action when exact document already indexed (reduced load)
+      payload.push(JSON.stringify({ doc: action.doc, doc_as_upsert: true }));
+    }
   });
 
   if (payload.length === 0) {

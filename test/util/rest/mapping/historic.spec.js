@@ -49,7 +49,12 @@ describe('Testing REST interaction', { timeout: 10000 }, () => {
     await validate(0, {});
     expect(await index.rest.data.historic('offer')).to.deep.equal([]);
     // insert data
-    expect(await index.rest.data.update('offer', { upsert: uuids.map((id) => ({ id })) })).to.equal(true);
+    expect(await index.rest.data.update('offer', uuids.map((id) => ({
+      action: 'update',
+      doc: {
+        id
+      }
+    })))).to.equal(true);
     await validate(3, {});
     expect(await index.rest.data.historic('offer')).to.deep.equal([]);
     // create new version of index
@@ -60,12 +65,22 @@ describe('Testing REST interaction', { timeout: 10000 }, () => {
     expect((await index.rest.data.historic('offer')).sort()).to.deep.equal(uuids);
     expect((await index.rest.data.historic('offer', 1)).length).to.deep.equal(1);
     // update data
-    expect(await index.rest.data.update('offer', { upsert: uuids.map((id) => ({ id })) })).to.equal(true);
+    expect(await index.rest.data.update('offer', uuids.map((id) => ({
+      action: 'update',
+      doc: {
+        id
+      }
+    })))).to.equal(true);
     await validate(3, { [`offer@${mappingHash}`]: 0 });
     await checkDocs(uuids);
     expect(await index.rest.data.historic('offer')).to.deep.equal([]);
     // update data again
-    expect(await index.rest.data.update('offer', { upsert: uuids.map((id) => ({ id })) })).to.equal(true);
+    expect(await index.rest.data.update('offer', uuids.map((id) => ({
+      action: 'update',
+      doc: {
+        id
+      }
+    })))).to.equal(true);
     await validate(3, {});
     await checkDocs(uuids);
     expect(await index.rest.data.historic('offer')).to.deep.equal([]);
@@ -111,7 +126,12 @@ describe('Testing REST interaction', { timeout: 10000 }, () => {
         size: 20
       }
     });
-    expect(await index.rest.data.update('offer', { upsert: uuids.map((id) => ({ id })) })).to.equal(true);
+    expect(await index.rest.data.update('offer', uuids.map((id) => ({
+      action: 'update',
+      doc: {
+        id
+      }
+    })))).to.equal(true);
     expect(await index.rest.data.refresh('offer')).to.equal(true);
     expect(await index.rest.data.count('offer')).to.equal(3);
     const filter2 = index.query.build('offer', {
@@ -133,7 +153,10 @@ describe('Testing REST interaction', { timeout: 10000 }, () => {
         size: 1
       }
     });
-    expect(await index.rest.data.update('offer', { remove: uuids })).to.equal(true);
+    expect(await index.rest.data.update('offer', uuids.map((id) => ({
+      action: 'delete',
+      id
+    })))).to.equal(true);
     expect(await index.rest.data.refresh('offer')).to.equal(true);
     expect(await index.rest.data.count('offer')).to.equal(0);
     // cleanup
@@ -149,7 +172,7 @@ describe('Testing REST interaction', { timeout: 10000 }, () => {
   });
 
   it('Testing create no action', async () => {
-    expect(await index.rest.data.update('offer', {})).to.equal(true);
+    expect(await index.rest.data.update('offer', [])).to.equal(true);
   });
 
   it('Testing call without options', async () => {

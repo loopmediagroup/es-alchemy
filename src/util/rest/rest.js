@@ -8,6 +8,7 @@ const mappingHistoric = require('./mapping/historic');
 const mappingRecreate = require('./mapping/recreate');
 const mappingExists = require('./mapping/exists');
 const dataCount = require('./data/count');
+const dataVersion = require('./data/version');
 const dataQuery = require('./data/query');
 const dataRefresh = require('./data/refresh');
 const dataHistoric = require('./data/historic');
@@ -69,6 +70,7 @@ module.exports = (getRels, getMapping, options) => {
     },
     data: {
       count: (idx) => dataCount(call, idx),
+      version: (idx, id) => dataVersion(call, idx, getMapping(idx), id),
       query: (idx, filter) => dataQuery(call, idx, getRels(idx), getMapping(idx), filter),
       refresh: (idx) => dataRefresh(call, idx),
       historic: (idx, limit = 100) => dataHistoric(call, idx, getMapping(idx), limit),
