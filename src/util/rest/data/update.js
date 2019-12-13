@@ -18,6 +18,7 @@ module.exports = async (...args) => {
       }).unknown(true)
         .when('action', { is: Joi.string().valid('update'), then: Joi.required(), otherwise: Joi.optional() }),
       version: Joi.number().integer().optional().min(0)
+        .when('action', { is: Joi.string().valid('update'), then: Joi.allow(null) })
     }).or('id', 'doc'))
   ));
   const [call, idx, rels, mapping, actions] = args;
@@ -64,18 +65,25 @@ module.exports = async (...args) => {
   })();
 
   actions.forEach((action) => {
+    const internalAction = action.action === 'update' && action.version === null
+      ? 'create'
+      : action.action;
     payload.push(JSON.stringify({
-      [action.action]: {
+      [internalAction]: {
         _index: index,
         _type: idx,
         _id: action.id,
         version: action.version
       }
     }));
-    if (action.action === 'update') {
+    if (['create', 'update'].includes(internalAction)) {
       emptyToNull(action.doc);
-      // `update` performs no action when exact document already indexed (reduced load)
-      payload.push(JSON.stringify({ doc: action.doc, doc_as_upsert: true }));
+      if (internalAction === 'create') {
+        payload.push(JSON.stringify({ doc: action.doc }));
+      } else {
+        // `update` performs no action when exact document already indexed (reduced load)
+        payload.push(JSON.stringify({ doc: action.doc, doc_as_upsert: true }));
+      }
     }
   });
 
