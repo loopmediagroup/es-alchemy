@@ -76,14 +76,10 @@ module.exports = async (...args) => {
         version: action.version
       }
     }));
-    if (['create', 'update'].includes(internalAction)) {
+    if (action.action === 'update') {
       emptyToNull(action.doc);
-      if (internalAction === 'create') {
-        payload.push(JSON.stringify({ doc: action.doc }));
-      } else {
-        // `update` performs no action when exact document already indexed (reduced load)
-        payload.push(JSON.stringify({ doc: action.doc, doc_as_upsert: true }));
-      }
+      // `update` performs no action when exact document already indexed (reduced load)
+      payload.push(JSON.stringify({ doc: action.doc, doc_as_upsert: true }));
     }
   });
 
