@@ -19,7 +19,12 @@ describe('Testing rest', () => {
 
     const offerId = uuid4();
     expect(await index.rest.mapping.create('offer')).to.equal(true);
-    expect(await index.rest.data.update('offer', { upsert: [{ id: offerId }] })).to.equal(true);
+    expect(await index.rest.data.update('offer', [{
+      action: 'update',
+      doc: {
+        id: offerId
+      }
+    }])).to.equal(true);
     expect(await index.rest.data.refresh('offer')).to.equal(true);
     const filter = index.query.build('offer', {
       toReturn: ['id'],
