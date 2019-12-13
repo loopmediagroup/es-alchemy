@@ -15,7 +15,8 @@ module.exports = async (...args) => {
       doc: Joi.object().keys({
         id: Joi.string()
       }).unknown(true)
-        .when('action', { is: Joi.string().valid('update'), then: Joi.required(), otherwise: Joi.optional() })
+        .when('action', { is: Joi.string().valid('update'), then: Joi.required(), otherwise: Joi.optional() }),
+      version: Joi.number().integer().optional().min(0)
     }).or('id', 'doc'))
   ));
   const [call, idx, rels, mapping, actions] = args;
@@ -62,7 +63,14 @@ module.exports = async (...args) => {
   })();
 
   actions.forEach((action) => {
-    payload.push(JSON.stringify({ [action.action]: { _index: index, _type: idx, _id: action.id } }));
+    payload.push(JSON.stringify({
+      [action.action]: {
+        _index: index,
+        _type: idx,
+        _id: action.id,
+        version: action.version
+      }
+    }));
     if (action.action === 'update') {
       emptyToNull(action.doc);
       // `update` performs no action when exact document already indexed (reduced load)

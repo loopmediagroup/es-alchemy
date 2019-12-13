@@ -6,15 +6,38 @@ const { registerEntitiesForIndex } = require('../../../helper');
 
 describe('Testing data formats', () => {
   let index;
+  let offerId;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     index = Index({ endpoint: process.env.elasticsearchEndpoint });
     registerEntitiesForIndex(index);
+    offerId = uuid4();
+    expect(await index.rest.mapping.create('offer')).to.equal(true);
+  });
+
+  afterEach(async () => {
+    expect(await index.rest.mapping.delete('offer')).to.equal(true);
+  });
+
+  it('Testing update with version', async () => {
+    expect(await index.rest.data.update('offer', [{
+      action: 'update',
+      doc: index.data.remap('offer', { id: offerId, meta: { k1: 'v1' } })
+    }])).to.equal(true);
+    const version = await index.rest.data.version('offer', offerId);
+    expect(await index.rest.data.update('offer', [{
+      action: 'update',
+      doc: index.data.remap('offer', { id: offerId, meta: { k1: 'v2' } }),
+      version
+    }])).to.equal(true);
+    expect(await index.rest.data.update('offer', [{
+      action: 'update',
+      doc: index.data.remap('offer', { id: offerId, meta: { k1: 'v3' } }),
+      version
+    }])).to.equal(false);
   });
 
   it('Testing "object" data type updating', async () => {
-    const offerId = uuid4();
-    expect(await index.rest.mapping.create('offer')).to.equal(true);
     expect(await index.rest.data.update('offer', [{
       action: 'update',
       doc: index.data.remap('offer', {
@@ -81,8 +104,5 @@ describe('Testing data formats', () => {
         size: 1
       }
     });
-
-    // cleanup
-    expect(await index.rest.mapping.delete('offer')).to.equal(true);
   });
 });
