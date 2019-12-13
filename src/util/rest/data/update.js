@@ -16,8 +16,7 @@ module.exports = async (...args) => {
         id: Joi.string()
       }).optional()
         .unknown(true)
-        .or('id', 'doc')
-    }))
+    }).or('id', 'doc'))
   ));
   const [call, idx, rels, mapping, actions] = args;
   actions.forEach((action) => {
