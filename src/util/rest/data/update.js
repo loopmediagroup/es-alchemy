@@ -1,3 +1,4 @@
+const assert = require('assert');
 const set = require('lodash.set');
 const Joi = require('joi-strict');
 const objectScan = require('object-scan');
@@ -81,10 +82,16 @@ module.exports = async (...args) => {
   if (payload.length === 0) {
     return true;
   }
-  return call('POST', '', {
+  const r = await call('POST', '', {
     endpoint: '_bulk',
     body: payload.concat('').join('\n'),
     headers: { 'content-type': 'application/x-ndjson' },
     json: false
-  }).then((r) => r.statusCode === 200 && !JSON.parse(r.body).errors);
+  });
+  assert(r.statusCode === 200, r.body);
+  const body = JSON.parse(r.body);
+  if (body.errors === false) {
+    return true;
+  }
+  return body.items;
 };
