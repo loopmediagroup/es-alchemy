@@ -1,5 +1,6 @@
 const { expect } = require('chai');
 const { describe } = require('node-tdd');
+const Joi = require('joi-strict');
 const uuid4 = require('uuid/v4');
 const Index = require('../../../../src/index');
 const { registerEntitiesForIndex } = require('../../../helper');
@@ -30,11 +31,29 @@ describe('Testing data formats', () => {
       doc: index.data.remap('offer', { id: offerId, meta: { k1: 'v2' } }),
       version
     }])).to.equal(true);
-    expect(await index.rest.data.update('offer', [{
+    const r = await index.rest.data.update('offer', [{
       action: 'update',
       doc: index.data.remap('offer', { id: offerId, meta: { k1: 'v3' } }),
       version
-    }])).to.equal(false);
+    }]);
+    const schema = Joi.array().ordered(
+      Joi.object().keys({
+        update: Joi.object().keys({
+          _index: Joi.string(),
+          _type: Joi.string().valid('offer'),
+          _id: Joi.string(),
+          status: Joi.number().valid(409),
+          error: Joi.object().keys({
+            type: Joi.string().valid('version_conflict_engine_exception'),
+            reason: Joi.string(),
+            index_uuid: Joi.string(),
+            shard: Joi.string(),
+            index: Joi.string()
+          })
+        })
+      })
+    );
+    expect(Joi.test(r, schema)).to.equal(true);
   });
 
   it('Testing "object" data type updating', async () => {
