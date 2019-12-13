@@ -16,7 +16,6 @@ describe('Testing version', () => {
     const offerId = uuid4();
     expect(await index.rest.mapping.create('offer')).to.equal(true);
     expect(await index.rest.data.update('offer', [{
-      id: offerId,
       action: 'update',
       doc: index.data.remap('offer', {
         id: offerId,
@@ -26,7 +25,6 @@ describe('Testing version', () => {
     expect(await index.rest.data.refresh('offer')).to.equal(true);
     expect(await index.rest.data.version('offer', offerId)).to.equal(1);
     expect(await index.rest.data.update('offer', [{
-      id: offerId,
       action: 'update',
       doc: index.data.remap('offer', {
         id: offerId,
@@ -42,7 +40,6 @@ describe('Testing version', () => {
     const offerId = uuid4();
     expect(await index.rest.mapping.create('offer')).to.equal(true);
     expect(await index.rest.data.update('offer', [{
-      id: offerId,
       action: 'update',
       doc: index.data.remap('offer', {
         id: offerId,
@@ -52,7 +49,6 @@ describe('Testing version', () => {
     expect(await index.rest.data.refresh('offer')).to.equal(true);
     expect(await index.rest.data.version('offer', offerId)).to.equal(1);
     expect(await index.rest.data.update('offer', [{
-      id: offerId,
       action: 'update',
       doc: index.data.remap('offer', {
         id: offerId,
