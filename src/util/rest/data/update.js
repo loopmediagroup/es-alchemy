@@ -18,6 +18,7 @@ module.exports = async (...args) => {
       }).unknown(true)
         .when('action', { is: Joi.string().valid('update'), then: Joi.required(), otherwise: Joi.optional() }),
       version: Joi.number().integer().optional().min(0)
+        .when('action', { is: Joi.string().valid('update'), then: Joi.allow(null) })
     }).or('id', 'doc'))
   ));
   const [call, idx, rels, mapping, actions] = args;
@@ -65,7 +66,7 @@ module.exports = async (...args) => {
 
   actions.forEach((action) => {
     payload.push(JSON.stringify({
-      [action.action]: {
+      [action.version === null ? 'create' : action.action]: {
         _index: index,
         _type: idx,
         _id: action.id,

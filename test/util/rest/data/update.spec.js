@@ -20,6 +20,37 @@ describe('Testing data formats', () => {
     expect(await index.rest.mapping.delete('offer')).to.equal(true);
   });
 
+  it('Testing update fails when version null and entity exists', async () => {
+    expect(await index.rest.data.update('offer', [{
+      action: 'update',
+      doc: index.data.remap('offer', { id: offerId, meta: { k1: 'v1' } }),
+      version: null
+    }])).to.equal(true);
+    const r = await index.rest.data.update('offer', [{
+      action: 'update',
+      doc: index.data.remap('offer', { id: offerId, meta: { k1: 'v1' } }),
+      version: null
+    }]);
+    const schema = Joi.array().ordered(
+      Joi.object().keys({
+        create: Joi.object().keys({
+          _index: Joi.string(),
+          _type: Joi.string().valid('offer'),
+          _id: Joi.string(),
+          status: Joi.number().valid(409),
+          error: Joi.object().keys({
+            type: Joi.string().valid('version_conflict_engine_exception'),
+            reason: Joi.string(),
+            index_uuid: Joi.string(),
+            shard: Joi.string(),
+            index: Joi.string()
+          })
+        })
+      })
+    );
+    expect(Joi.test(r, schema)).to.equal(true);
+  });
+
   it('Testing update with version', async () => {
     expect(await index.rest.data.update('offer', [{
       action: 'update',
