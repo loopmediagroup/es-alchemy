@@ -20,6 +20,32 @@ describe('Testing data formats', () => {
     expect(await index.rest.mapping.delete('offer')).to.equal(true);
   });
 
+  it('Testing delete fails when version and entity not exists', async () => {
+    const r = await index.rest.data.update('offer', [{
+      action: 'delete',
+      id: offerId,
+      version: 1
+    }]);
+    const schema = Joi.array().ordered(
+      Joi.object().keys({
+        delete: Joi.object().keys({
+          _index: Joi.string(),
+          _type: Joi.string().valid('offer'),
+          _id: Joi.string(),
+          status: Joi.number().valid(409),
+          error: Joi.object().keys({
+            type: Joi.string().valid('version_conflict_engine_exception'),
+            reason: Joi.string(),
+            index_uuid: Joi.string(),
+            shard: Joi.string(),
+            index: Joi.string()
+          })
+        })
+      })
+    );
+    expect(Joi.test(r, schema)).to.equal(true);
+  });
+
   it('Testing update fails when version null and entity exists', async () => {
     expect(await index.rest.data.update('offer', [{
       action: 'update',
