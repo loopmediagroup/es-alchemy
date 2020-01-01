@@ -107,7 +107,7 @@
     "lib"
   ],
   "dependencies": {
-    "joi-strict": "1.1.10",
+    "joi-strict": "1.1.11",
     "lodash.clonedeep": "4.5.0",
     "lodash.get": "4.4.2",
     "lodash.isequal": "4.5.0",
