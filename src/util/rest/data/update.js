@@ -11,7 +11,7 @@ module.exports = async (...args) => {
     Joi.object(),
     Joi.object(),
     Joi.array().items(Joi.object().keys({
-      action: Joi.string().valid('update', 'delete'),
+      action: Joi.string().valid('update', 'delete', 'touch'),
       id: Joi.string().optional(),
       doc: Joi.object().keys({
         id: Joi.string()
@@ -19,6 +19,7 @@ module.exports = async (...args) => {
         .when('action', { is: Joi.string().valid('update'), then: Joi.required(), otherwise: Joi.optional() }),
       version: Joi.number().integer().optional().min(0)
         .when('action', { is: Joi.string().valid('update'), then: Joi.allow(null) })
+        .when('action', { is: Joi.string().valid('touch'), then: Joi.forbidden() })
     }).or('id', 'doc'))
   ));
   const [call, idx, rels, mapping, actions] = args;
@@ -64,21 +65,23 @@ module.exports = async (...args) => {
     };
   })();
 
-  actions.forEach((action) => {
-    payload.push(JSON.stringify({
-      [action.version === null ? 'create' : action.action]: {
-        _index: index,
-        _type: idx,
-        _id: action.id,
-        version: action.version
+  actions
+    .filter((action) => action.action !== 'touch')
+    .forEach((action) => {
+      payload.push(JSON.stringify({
+        [action.version === null ? 'create' : action.action]: {
+          _index: index,
+          _type: idx,
+          _id: action.id,
+          version: action.version
+        }
+      }));
+      if (action.action === 'update') {
+        emptyToNull(action.doc);
+        // `update` performs no action when exact document already indexed (reduced load)
+        payload.push(JSON.stringify({ doc: action.doc, doc_as_upsert: true }));
       }
-    }));
-    if (action.action === 'update') {
-      emptyToNull(action.doc);
-      // `update` performs no action when exact document already indexed (reduced load)
-      payload.push(JSON.stringify({ doc: action.doc, doc_as_upsert: true }));
-    }
-  });
+    });
 
   if (payload.length === 0) {
     return true;
