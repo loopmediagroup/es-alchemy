@@ -54,7 +54,7 @@ Example: **address.json**
 Preferably a folder `models` contains a json file for each model. An example can be
 found in the [test folder](test/models).
 
-Fields that can be used and how they get mapped in Elasticsearch can 
+Fields that can be used and how they get mapped in Elasticsearch can
 be found [here](src/resources/field-definitions.json).
 
 #### Indices
@@ -93,7 +93,7 @@ Example: **location.json**
 Preferably a folder `indices` contains a json file for each index. An example can be
 found in the [test folder](test/indices).
 
-Each index is defined as a nested structure of nodes. 
+Each index is defined as a nested structure of nodes.
 Nodes are defined recursively and each node has the following fields:
 
 ##### version
@@ -117,7 +117,7 @@ Can append `[]` for non-root nodes to indicate `to-many` relationship.
 Type: `Array`<br>
 Required.
 
-Fields of the node model that are included in this index. 
+Fields of the node model that are included in this index.
 Needs to be a subset of the fields defined on the model.
 
 ##### sources
@@ -125,7 +125,7 @@ Needs to be a subset of the fields defined on the model.
 Type: `Array`<br>
 Default: `[""]`
 
-Defines the relative sources for data ingestion. 
+Defines the relative sources for data ingestion.
 How this works is explained under data ingestion and remapping.
 
 ##### nested
@@ -133,7 +133,7 @@ How this works is explained under data ingestion and remapping.
 Type: `Object`<br>
 Default: `{}`
 
-Defines all children of the node. Keys indicate the 
+Defines all children of the node. Keys indicate the
 relationship names and the values define the nodes.
 
 To indicate that a `to-many` relationship is defined, append `[]` to the model name in the node.
@@ -146,13 +146,13 @@ Default: `false`
 This flag sets `include_in_root` to true on the generated Elasticsearch mapping.
 Internally in Elasticsearch this means all fields get flattened into the root document of the mapping.
 
-This is useful to reduce storage size by de-duplicating and to enforce 
+This is useful to reduce storage size by de-duplicating and to enforce
 `union` target style queries (see corresponding section for more on this).
 
 ### Loading Models and Indices
 
 Loading models and indices into ES-Alchemy can be done as following.
-Note that an index can only be registered once all models used in the index have been registered. 
+Note that an index can only be registered once all models used in the index have been registered.
 
 <!-- eslint-disable import/no-unresolved -->
 ```js
@@ -209,7 +209,7 @@ To remap and ingest data run
 sourceObject = {/* ... */};
 esa.rest.data
   .update('indexName', { upsert: [esa.data.remap('indexName', sourceObject)] });
-```  
+```
 
 `// todo: this needs an example`
 
@@ -239,8 +239,8 @@ Pass in object containing an `or` or `and` key, mapping to a list of filter opti
 
 A filter option is either a similarly structured object, a filter array or a string (shorthand notation).
 
-When `and` is used, a `target` key can also be present with the values `separate` or `union`. This option only takes 
-effect when multiple clauses search the same relationship. When `separate` is used, all conditions need to be 
+When `and` is used, a `target` key can also be present with the values `separate` or `union`. This option only takes
+effect when multiple clauses search the same relationship. When `separate` is used, all conditions need to be
 met on the same object. When union is used, they can be met on different objects in the relationship. The `target`
 defaults to `separate`, which is what you want in most cases.
 
@@ -295,7 +295,7 @@ The endpoint for connecting to Elasticsearch. Common values include `localhost:9
 Type: `object`<br>
 Default: `{}`
 
-Allow connection to AWS Elasticsearch instance by passing 
+Allow connection to AWS Elasticsearch instance by passing
 in object containing `accessKeyId` and `secretAccessKey`.
 
 #### responseHook
@@ -376,6 +376,7 @@ Interacting with the rest api of Elasticsearch
 - `data.count(name: String)` - get number of indexed elements from Elasticsearch (from _all_ versions)
 - `data.query(name: String, filter: Object, options: Object)` - query for data in Elasticsearch against all versions. Returns raw result body from elasticsearch.
 - `data.version(index: String, id: String)` - get version number in latest index version for document or null if document does not exist
+- `data.exists(index: String, id: String)` - check if document exists in any index version
 - `data.refresh(name: String)` - refresh Elasticsearch index, useful e.g. when testing (all versions)
 - `data.historic(index: String, limit: Integer = 100)` - fetch historic data entries as list of ids.
 - `data.update(name: String, options: Object)` - insert, update or delete objects in Elasticsearch (current version, removed touched documents from old versions and deletes old versions when empty)
