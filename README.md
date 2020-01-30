@@ -208,7 +208,7 @@ To remap and ingest data run
 ```js
 sourceObject = {/* ... */};
 esa.rest.data
-  .update('indexName', { upsert: [esa.data.remap('indexName', sourceObject)] });
+  .update('indexName', [{ action: 'update', doc: esa.data.remap('indexName', sourceObject) }]);
 ```
 
 `// todo: this needs an example`
@@ -379,7 +379,7 @@ Interacting with the rest api of Elasticsearch
 - `data.exists(index: String, id: String)` - check if document exists in any index version
 - `data.refresh(name: String)` - refresh Elasticsearch index, useful e.g. when testing (all versions)
 - `data.historic(index: String, limit: Integer = 100)` - fetch historic data entries as list of ids.
-- `data.update(name: String, options: Object)` - insert, update or delete objects in Elasticsearch (current version, removed touched documents from old versions and deletes old versions when empty)
+- `data.update(name: String, options: Object)` - update, delete or touch objects in Elasticsearch (current version, removed touched documents from old versions and deletes old versions when empty)
 
 
 ## Tests
