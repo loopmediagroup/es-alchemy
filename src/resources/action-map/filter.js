@@ -24,10 +24,24 @@ module.exports = {
       }
     }
   }),
+  '<': (l, r) => ({
+    range: {
+      [l]: {
+        lt: r
+      }
+    }
+  }),
   '>=': (l, r) => ({
     range: {
       [l]: {
         gte: r
+      }
+    }
+  }),
+  '>': (l, r) => ({
+    range: {
+      [l]: {
+        gt: r
       }
     }
   }),
