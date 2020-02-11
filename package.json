@@ -59,7 +59,7 @@
     "js-gardener": "2.0.131",
     "node-tdd": "2.7.1",
     "nyc": "15.0.0",
-    "request": "2.88.0",
+    "request": "2.88.2",
     "request-promise-native": "1.0.8",
     "semantic-release": "17.0.2",
     "uuid": "3.4.0"
