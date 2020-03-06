@@ -19,7 +19,15 @@ describe('Testing stats', () => {
           .keys({
             attributes: Joi.object(),
             indices: Joi.object(),
-            os: Joi.object()
+            os: Joi.object().keys({
+              cpu: Joi.object().keys({
+                load_average: Joi.object().keys({
+                  '1m': Joi.number(),
+                  '5m': Joi.number(),
+                  '15m': Joi.number()
+                })
+              }).unknown()
+            }).unknown()
           }).unknown())
     });
     const result = await index.rest.data.stats();
