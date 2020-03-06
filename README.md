@@ -380,6 +380,7 @@ Interacting with the rest api of Elasticsearch
 - `data.refresh(name: String)` - refresh Elasticsearch index, useful e.g. when testing (all versions)
 - `data.historic(index: String, limit: Integer = 100)` - fetch historic data entries as list of ids.
 - `data.update(name: String, options: Object)` - update, delete or touch objects in Elasticsearch (current version, removed touched documents from old versions and deletes old versions when empty)
+- `data.stats()` - returns all the statistics for nodes in a cluster like indices, cpu usage and other meta
 
 
 ## Tests
