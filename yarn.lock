@@ -4801,17 +4801,17 @@ node-sass-tilde-importer@^1.0.2:
   dependencies:
     find-parent-dir "^0.3.0"
 
-node-tdd@2.9.9:
-  version "2.9.9"
-  resolved "https://registry.yarnpkg.com/node-tdd/-/node-tdd-2.9.9.tgz#a7c13707b3e9aa70453d07a3029eedc0f7a1fea7"
-  integrity sha512-Y0mcSc0NFp8gkRd5RCXzboRIOGU5ApXAhr2aYnKhEU7pdqn594lEYL7Me2aEkdzl/UbasNg13PDCnlf68Ae2pg==
+node-tdd@2.9.11:
+  version "2.9.11"
+  resolved "https://registry.yarnpkg.com/node-tdd/-/node-tdd-2.9.11.tgz#2c58cf145d969714e5420385e7c26be638c33c87"
+  integrity sha512-yzKh/nlgoqrawgBJyr08J2+0XNl6gzcgOslGWN69Tcoqp8kk46GNdSUL5EIpgCIMeJg20LAoIxzOGF6wUrLqNA==
   dependencies:
     callsites "3.1.0"
-    joi-strict "1.2.0"
+    joi-strict "1.2.1"
     lodash.get "4.4.2"
     minimist "1.2.5"
     nock "12.0.2"
-    smart-fs "1.11.8"
+    smart-fs "1.11.9"
     timekeeper "2.2.0"
     tmp "0.1.0"
     uuid "7.0.2"
@@ -6684,6 +6684,20 @@ smart-fs@1.11.8:
   version "1.11.8"
   resolved "https://registry.yarnpkg.com/smart-fs/-/smart-fs-1.11.8.tgz#c3c268da7794018a5f81488bc63d281c3e2d1dd9"
   integrity sha512-QOK7QsswqAzpfnjNVomKM+07CzcGxKV+e845XPW3SbKdIV/XoIUetQjZG9lbyBZQxjlI2AfR5VjNaX9bkowd/w==
+  dependencies:
+    fs-extra "8.1.0"
+    js-yaml "3.13.1"
+    json-stringify-pretty-compact "2.0.0"
+    lodash.clonedeep "4.5.0"
+    lodash.isequal "4.5.0"
+    object-align "1.0.11"
+    xml-js "1.6.11"
+    yaml-boost "1.9.20"
+
+smart-fs@1.11.9:
+  version "1.11.9"
+  resolved "https://registry.yarnpkg.com/smart-fs/-/smart-fs-1.11.9.tgz#5a685e47c79edfb9cee69424da0b16ba89752a22"
+  integrity sha512-2JJZSz6TjPoLfuT+Ko56+lUTpIlrXz9GbdQBjw7mNUJ+/v/FBRFyMGANijQeJ+ZtpyW/zcBrkxnQNvDo+cuvaQ==
   dependencies:
     fs-extra "8.1.0"
     js-yaml "3.13.1"
