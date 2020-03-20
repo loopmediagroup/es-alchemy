@@ -1,7 +1,7 @@
 const { expect } = require('chai');
 const { describe } = require('node-tdd');
 const Joi = require('joi-strict');
-const uuid4 = require('uuid/v4');
+const { v4: uuid4 } = require('uuid');
 const Index = require('../../../../src/index');
 const { registerEntitiesForIndex } = require('../../../helper');
 
