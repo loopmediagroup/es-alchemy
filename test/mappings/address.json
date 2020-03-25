@@ -4,6 +4,7 @@
       "_meta": {
         "hash": "1eb58eec4e46467cad355fd1e9468c20bea6cdda"
       },
+      "dynamic": "false",
       "properties": {
         "id": {
           "type": "keyword"
