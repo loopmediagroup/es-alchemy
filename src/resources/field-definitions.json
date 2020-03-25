@@ -35,6 +35,7 @@
     "type": "keyword"
   },
   "object": {
-    "type": "object"
+    "type": "object",
+    "enabled": false
   }
 }
