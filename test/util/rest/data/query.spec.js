@@ -141,7 +141,7 @@ describe('Testing Rest Query', { timeout: 10000 }, () => {
         toReturn: ['headline']
       }, { raw: true })).hits.hits).to.deep.equal([
         {
-          _index: 'offer@3d4f4d366f2627e4b7df1350f3af1b22d7ef425e',
+          _index: 'offer@9d761c2566b75f33f2b05ddfec951e77d9718b8b',
           _type: 'offer',
           _id: offer1.id,
           _score: null,
@@ -149,7 +149,7 @@ describe('Testing Rest Query', { timeout: 10000 }, () => {
           sort: ['1', '1', offer1.id]
         },
         {
-          _index: 'offer@3d4f4d366f2627e4b7df1350f3af1b22d7ef425e',
+          _index: 'offer@9d761c2566b75f33f2b05ddfec951e77d9718b8b',
           _type: 'offer',
           _id: offer2.id,
           _score: null,
@@ -157,7 +157,7 @@ describe('Testing Rest Query', { timeout: 10000 }, () => {
           sort: ['1', '2', offer2.id]
         },
         {
-          _index: 'offer@3d4f4d366f2627e4b7df1350f3af1b22d7ef425e',
+          _index: 'offer@9d761c2566b75f33f2b05ddfec951e77d9718b8b',
           _type: 'offer',
           _id: offer3.id,
           _score: null,
@@ -165,7 +165,7 @@ describe('Testing Rest Query', { timeout: 10000 }, () => {
           sort: ['2', '1', offer3.id]
         },
         {
-          _index: 'offer@3d4f4d366f2627e4b7df1350f3af1b22d7ef425e',
+          _index: 'offer@9d761c2566b75f33f2b05ddfec951e77d9718b8b',
           _type: 'offer',
           _id: offer4.id,
           _score: null,
