@@ -72,15 +72,16 @@ module.exports = ({
       'Root node can not be Array.'
     );
     const properties = buildPropertiesRec(specs, models);
+    const def = {
+      dynamic: 'false',
+      properties,
+      _meta: {}
+    };
+    // eslint-disable-next-line no-underscore-dangle
+    def._meta.hash = objectHash(def);
     return {
       mappings: {
-        [name]: {
-          dynamic: 'false',
-          properties,
-          _meta: {
-            hash: objectHash(properties)
-          }
-        }
+        [name]: def
       }
     };
   },
