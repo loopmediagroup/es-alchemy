@@ -2,7 +2,7 @@
   "mappings": {
     "offer": {
       "_meta": {
-        "hash": "18cce1f85000e66a59e17420b708f5687fc48a89"
+        "hash": "3d4f4d366f2627e4b7df1350f3af1b22d7ef425e"
       },
       "properties": {
         "id": {
@@ -12,6 +12,7 @@
           "type": "text"
         },
         "meta": {
+          "enabled": false,
           "type": "object"
         },
         "flags": {
