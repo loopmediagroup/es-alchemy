@@ -75,6 +75,7 @@ module.exports = ({
     return {
       mappings: {
         [name]: {
+          dynamic: 'false',
           properties,
           _meta: {
             hash: objectHash(properties)
