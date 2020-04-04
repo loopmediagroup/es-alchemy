@@ -75,6 +75,8 @@ module.exports = (call, idx, rels, mapping, filter) => call('GET', `${idx}@*`, {
       });
       return (input) => scanner(input);
     })();
+    // eslint-disable-next-line no-underscore-dangle
+    const retainResult = objectFields.Retainer(filter._source);
     esResult.body.hits.hits.forEach((r) => {
       // eslint-disable-next-line no-underscore-dangle
       rewriterRemap(r._source);
@@ -83,7 +85,7 @@ module.exports = (call, idx, rels, mapping, filter) => call('GET', `${idx}@*`, {
       // PART 3: workaround for https://github.com/elastic/elasticsearch/issues/23796
       // filter injected ids out for final result
       // eslint-disable-next-line no-underscore-dangle
-      objectFields.retain(r._source, filter._source);
+      retainResult(r._source);
     });
     return esResult.body;
   });
