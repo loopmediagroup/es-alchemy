@@ -52,16 +52,17 @@ module.exports = async (...args) => {
     const relsToCheck = Object.entries(rels)
       .filter(([_, v]) => v.endsWith('[]'))
       .map(([k]) => k);
-    return (input) => {
-      objectScan(relsToCheck, {
-        useArraySelector: false,
-        joined: false,
-        breakFn: (k, v, { isMatch }) => {
-          if (isMatch && Array.isArray(v) && v.length === 0) {
-            set(input, k, null);
-          }
+    const scanner = objectScan(relsToCheck, {
+      useArraySelector: false,
+      joined: false,
+      breakFn: (k, v, { isMatch, context }) => {
+        if (isMatch && Array.isArray(v) && v.length === 0) {
+          set(context.input, k, null);
         }
-      })(input);
+      }
+    });
+    return (input) => {
+      scanner(input, { input });
     };
   })();
 

@@ -29,12 +29,14 @@ module.exports = (call, idx, rels, mapping, filter) => call('GET', `${idx}@*`, {
         .reduce((p, [field, fieldMapping]) => Object.assign(p, {
           [field]: (e) => resultRemap[fieldMapping](e)
         }), {});
-      return (input) => objectScan(Object.keys(resultRemaps), {
+      const scanner = objectScan(Object.keys(resultRemaps), {
         joined: false,
         useArraySelector: false,
-        breakFn: (key, value, { isMatch, matchedBy, parents }) => {
+        breakFn: (key, value, {
+          isMatch, matchedBy, parents, context
+        }) => {
           if (isMatch) {
-            const parent = key.length === 1 ? input : parents[0];
+            const parent = key.length === 1 ? context.input : parents[0];
             matchedBy.forEach((m) => {
               parent[key[key.length - 1]] = resultRemaps[m](parent[key[key.length - 1]]);
             });
@@ -42,7 +44,8 @@ module.exports = (call, idx, rels, mapping, filter) => call('GET', `${idx}@*`, {
           }
           return false;
         }
-      })(input);
+      });
+      return (input) => scanner(input, { input });
     })();
     // PART 2: workaround for https://github.com/elastic/elasticsearch/issues/23796
     // inject empty arrays where no results
@@ -56,7 +59,7 @@ module.exports = (call, idx, rels, mapping, filter) => call('GET', `${idx}@*`, {
           const value = c.slice(-1).join('.');
           return Object.assign(p, { [key]: (p[key] || []).concat(value) });
         }, {});
-      return (input) => objectScan(Object.keys(arrays), {
+      const scanner = objectScan(Object.keys(arrays), {
         joined: false,
         useArraySelector: false,
         filterFn: (key, value, { matchedBy }) => {
@@ -69,7 +72,8 @@ module.exports = (call, idx, rels, mapping, filter) => call('GET', `${idx}@*`, {
             });
           });
         }
-      })(input);
+      });
+      return (input) => scanner(input);
     })();
     esResult.body.hits.hits.forEach((r) => {
       // eslint-disable-next-line no-underscore-dangle
