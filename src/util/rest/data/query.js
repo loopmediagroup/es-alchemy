@@ -32,10 +32,13 @@ module.exports = (call, idx, rels, mapping, filter) => call('GET', `${idx}@*`, {
       const scanner = objectScan(Object.keys(resultRemaps), {
         joined: false,
         useArraySelector: false,
-        breakFn: (key, value, {
-          isMatch, matchedBy, parents, context
+        breakFn: ({
+          getKey, isMatch, getMatchedBy, getParents, context
         }) => {
           if (isMatch) {
+            const key = getKey();
+            const matchedBy = getMatchedBy();
+            const parents = getParents();
             const parent = key.length === 1 ? context.input : parents[0];
             matchedBy.forEach((m) => {
               parent[key[key.length - 1]] = resultRemaps[m](parent[key[key.length - 1]]);
@@ -62,7 +65,7 @@ module.exports = (call, idx, rels, mapping, filter) => call('GET', `${idx}@*`, {
       const scanner = objectScan(Object.keys(arrays), {
         joined: false,
         useArraySelector: false,
-        filterFn: (key, value, { matchedBy }) => {
+        filterFn: ({ value, matchedBy }) => {
           matchedBy.forEach((m) => {
             arrays[m].forEach((e) => {
               if (value[e] === undefined) {
