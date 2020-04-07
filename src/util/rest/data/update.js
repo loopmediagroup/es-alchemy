@@ -55,9 +55,15 @@ module.exports = async (...args) => {
     const scanner = objectScan(relsToCheck, {
       useArraySelector: false,
       joined: false,
-      breakFn: (k, v, { isMatch, context }) => {
-        if (isMatch && Array.isArray(v) && v.length === 0) {
-          set(context.input, k, null);
+      breakFn: ({
+        getKey, getValue, isMatch, context
+      }) => {
+        if (isMatch) {
+          const value = getValue();
+          if (Array.isArray(value) && value.length === 0) {
+            const key = getKey();
+            set(context.input, key, null);
+          }
         }
       }
     });
