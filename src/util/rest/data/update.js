@@ -39,7 +39,7 @@ module.exports = async (...args) => {
   }
 
   // eslint-disable-next-line no-underscore-dangle
-  const index = `${idx}@${mapping.mappings[idx]._meta.hash}`;
+  const index = `${idx}@${mapping.mappings._meta.hash}`;
   const payload = [];
 
   // delete elements from old index versions
@@ -78,7 +78,6 @@ module.exports = async (...args) => {
       payload.push(JSON.stringify({
         [action.version === null ? 'create' : action.action]: {
           _index: index,
-          _type: idx,
           _id: action.id,
           version: action.version
         }

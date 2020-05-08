@@ -24,7 +24,7 @@ module.exports = (call, idx, rels, mapping, filter) => call('GET', `${idx}@*`, {
     const rewriterRemap = (() => {
       // eslint-disable-next-line no-underscore-dangle
       const resultRemaps = filter._source
-        .map((f) => [f, get(mapping, `mappings.${[idx, ...f.split('.')].join('.properties.')}.type`)])
+        .map((f) => [f, get(mapping, `mappings.properties.${[...f.split('.')].join('.properties.')}.type`)])
         .filter((f) => f[1] !== undefined)
         .reduce((p, [field, fieldMapping]) => Object.assign(p, {
           [field]: (e) => resultRemap[fieldMapping](e)

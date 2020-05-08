@@ -1,46 +1,44 @@
 {
   "mappings": {
-    "location": {
-      "_meta": {
-        "hash": "127f07825e9279eb9f3bf334e5dd575916f09128"
+    "_meta": {
+      "hash": "127f07825e9279eb9f3bf334e5dd575916f09128"
+    },
+    "dynamic": "false",
+    "properties": {
+      "id": {
+        "type": "keyword"
       },
-      "dynamic": "false",
-      "properties": {
-        "id": {
-          "type": "keyword"
-        },
-        "name": {
-          "type": "keyword"
-        },
-        "address": {
-          "properties": {
-            "id": {
-              "type": "keyword"
-            },
-            "keywords": {
-              "type": "keyword"
-            },
-            "street": {
-              "type": "text"
-            },
-            "city": {
-              "type": "text"
-            },
-            "country": {
-              "type": "text"
-            },
-            "centre": {
-              "type": "geo_point"
-            },
-            "area": {
-              "type": "geo_shape"
-            },
-            "timezone": {
-              "type": "text"
-            }
+      "name": {
+        "type": "keyword"
+      },
+      "address": {
+        "properties": {
+          "id": {
+            "type": "keyword"
           },
-          "type": "nested"
-        }
+          "keywords": {
+            "type": "keyword"
+          },
+          "street": {
+            "type": "text"
+          },
+          "city": {
+            "type": "text"
+          },
+          "country": {
+            "type": "text"
+          },
+          "centre": {
+            "type": "geo_point"
+          },
+          "area": {
+            "type": "geo_shape"
+          },
+          "timezone": {
+            "type": "text"
+          }
+        },
+        "type": "nested"
       }
     }
   }
