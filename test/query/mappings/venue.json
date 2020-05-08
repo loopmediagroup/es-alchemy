@@ -1,163 +1,161 @@
 {
   "mappings": {
-    "venue": {
-      "properties": {
-        "name": {
-          "type": "text"
-        },
-        "keywords": {
-          "type": "nested",
-          "properties": {
-            "id": {
-              "type": "keyword"
-            },
-            "names": {
-              "type": "text"
-            }
+    "properties": {
+      "name": {
+        "type": "text"
+      },
+      "keywords": {
+        "type": "nested",
+        "properties": {
+          "id": {
+            "type": "keyword"
           },
-          "include_in_root": false
+          "names": {
+            "type": "text"
+          }
         },
-        "offers": {
-          "type": "nested",
-          "properties": {
-            "exclusive": {
-              "type": "boolean"
-            },
-            "placement_priority": {
-              "type": "long"
-            },
-            "returned_for_type_c": {
-              "type": "boolean"
-            },
-            "name": {
-              "type": "text"
-            },
-            "min_version": {
-              "type": "long"
-            },
-            "returned_for_type_a": {
-              "type": "boolean"
-            },
-            "is_limited": {
-              "type": "boolean"
-            },
-            "returned_for_type_b": {
-              "type": "boolean"
-            },
-            "flagged": {
-              "type": "boolean"
-            },
-            "id": {
-              "type": "keyword"
-            },
-            "desc": {
-              "type": "text"
-            }
+        "include_in_root": false
+      },
+      "offers": {
+        "type": "nested",
+        "properties": {
+          "exclusive": {
+            "type": "boolean"
           },
-          "include_in_root": false
-        },
-        "collections": {
-          "type": "nested",
-          "properties": {
-            "id": {
-              "type": "keyword"
-            }
+          "placement_priority": {
+            "type": "long"
           },
-          "include_in_root": false
-        },
-        "location": {
-          "type": "geo_point"
-        },
-        "availabilities": {
-          "type": "nested",
-          "properties": {
-            "enabled": {
-              "type": "boolean"
-            },
-            "starts": {
-              "type": "date",
-              "format": "yyyy-MM-dd'T'HH:mm:ss.SSSSSSZZ||yyyy-MM-dd'T'HH:mm:ssZZ"
-            },
-            "id": {
-              "type": "long"
-            },
-            "ends": {
-              "type": "date",
-              "format": "yyyy-MM-dd'T'HH:mm:ss.SSSSSSZZ||yyyy-MM-dd'T'HH:mm:ssZZ"
-            },
-            "created": {
-              "type": "date",
-              "format": "yyyy-MM-dd'T'HH:mm:ss.SSSSSSZZ||yyyy-MM-dd'T'HH:mm:ssZZ"
-            }
+          "returned_for_type_c": {
+            "type": "boolean"
           },
-          "include_in_root": false
-        },
-        "types": {
-          "type": "nested",
-          "properties": {
-            "id": {
-              "type": "keyword"
-            }
+          "name": {
+            "type": "text"
           },
-          "include_in_root": false
-        },
-        "business": {
-          "type": "nested",
-          "properties": {
-            "id": {
-              "type": "long"
-            },
-            "name": {
-              "type": "text"
-            }
+          "min_version": {
+            "type": "long"
           },
-          "include_in_root": false
-        },
-        "primary_types": {
-          "type": "nested",
-          "properties": {
-            "score_random_scale": {
-              "type": "long"
-            },
-            "id": {
-              "type": "keyword"
-            },
-            "score_distance_scale": {
-              "type": "long"
-            }
+          "returned_for_type_a": {
+            "type": "boolean"
           },
-          "include_in_root": true
-        },
-        "regions": {
-          "type": "nested",
-          "properties": {
-            "id": {
-              "type": "keyword"
-            },
-            "location": {
-              "type": "geo_point"
-            }
+          "is_limited": {
+            "type": "boolean"
           },
-          "include_in_root": false
-        },
-        "id": {
-          "type": "keyword"
-        },
-        "categories": {
-          "type": "nested",
-          "properties": {
-            "id": {
-              "type": "keyword"
-            },
-            "name": {
-              "type": "text"
-            }
+          "returned_for_type_b": {
+            "type": "boolean"
           },
-          "include_in_root": false
+          "flagged": {
+            "type": "boolean"
+          },
+          "id": {
+            "type": "keyword"
+          },
+          "desc": {
+            "type": "text"
+          }
         },
-        "desc": {
-          "type": "text"
-        }
+        "include_in_root": false
+      },
+      "collections": {
+        "type": "nested",
+        "properties": {
+          "id": {
+            "type": "keyword"
+          }
+        },
+        "include_in_root": false
+      },
+      "location": {
+        "type": "geo_point"
+      },
+      "availabilities": {
+        "type": "nested",
+        "properties": {
+          "enabled": {
+            "type": "boolean"
+          },
+          "starts": {
+            "type": "date",
+            "format": "yyyy-MM-dd'T'HH:mm:ss.SSSSSSZZ||yyyy-MM-dd'T'HH:mm:ssZZ"
+          },
+          "id": {
+            "type": "long"
+          },
+          "ends": {
+            "type": "date",
+            "format": "yyyy-MM-dd'T'HH:mm:ss.SSSSSSZZ||yyyy-MM-dd'T'HH:mm:ssZZ"
+          },
+          "created": {
+            "type": "date",
+            "format": "yyyy-MM-dd'T'HH:mm:ss.SSSSSSZZ||yyyy-MM-dd'T'HH:mm:ssZZ"
+          }
+        },
+        "include_in_root": false
+      },
+      "types": {
+        "type": "nested",
+        "properties": {
+          "id": {
+            "type": "keyword"
+          }
+        },
+        "include_in_root": false
+      },
+      "business": {
+        "type": "nested",
+        "properties": {
+          "id": {
+            "type": "long"
+          },
+          "name": {
+            "type": "text"
+          }
+        },
+        "include_in_root": false
+      },
+      "primary_types": {
+        "type": "nested",
+        "properties": {
+          "score_random_scale": {
+            "type": "long"
+          },
+          "id": {
+            "type": "keyword"
+          },
+          "score_distance_scale": {
+            "type": "long"
+          }
+        },
+        "include_in_root": true
+      },
+      "regions": {
+        "type": "nested",
+        "properties": {
+          "id": {
+            "type": "keyword"
+          },
+          "location": {
+            "type": "geo_point"
+          }
+        },
+        "include_in_root": false
+      },
+      "id": {
+        "type": "keyword"
+      },
+      "categories": {
+        "type": "nested",
+        "properties": {
+          "id": {
+            "type": "keyword"
+          },
+          "name": {
+            "type": "text"
+          }
+        },
+        "include_in_root": false
+      },
+      "desc": {
+        "type": "text"
       }
     }
   }
