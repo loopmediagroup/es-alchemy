@@ -45,7 +45,7 @@ module.exports = async (...args) => {
   // delete elements from old index versions
   actions.map((action) => action.id)
     .forEach((docId) => oldVersionsNonEmpty
-      .forEach((i) => payload.push(JSON.stringify({ delete: { _index: i, _type: idx, _id: docId } }))));
+      .forEach((i) => payload.push(JSON.stringify({ delete: { _index: i, _id: docId } }))));
 
   // todo: can reduce traversal, but need good tests first / possibly need to adjust object-scan
   const emptyToNull = (() => {
