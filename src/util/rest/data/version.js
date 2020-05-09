@@ -5,7 +5,7 @@ module.exports = (call, idx, mapping, id) => call(
   'GET',
   // eslint-disable-next-line no-underscore-dangle
   `${idx}@${mapping.mappings._meta.hash}`,
-  { endpoint: `${idx}/${id}?_source=false` }
+  { endpoint: `_doc/${id}?_source=false` }
 )
   .then((r) => {
     const isFound = get(r, 'body.found', null);
