@@ -75,18 +75,18 @@
           },
           "starts": {
             "type": "date",
-            "format": "yyyy-MM-dd'T'HH:mm:ss.SSSSSSZZ||yyyy-MM-dd'T'HH:mm:ssZZ"
+            "format": "yyyy-MM-dd'T'HH:mm:ss.SSSX"
           },
           "id": {
             "type": "long"
           },
           "ends": {
             "type": "date",
-            "format": "yyyy-MM-dd'T'HH:mm:ss.SSSSSSZZ||yyyy-MM-dd'T'HH:mm:ssZZ"
+            "format": "yyyy-MM-dd'T'HH:mm:ss.SSSX"
           },
           "created": {
             "type": "date",
-            "format": "yyyy-MM-dd'T'HH:mm:ss.SSSSSSZZ||yyyy-MM-dd'T'HH:mm:ssZZ"
+            "format": "yyyy-MM-dd'T'HH:mm:ss.SSSX"
           }
         },
         "include_in_root": false

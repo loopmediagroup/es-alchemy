@@ -1,7 +1,7 @@
 {
   "mappings": {
     "_meta": {
-      "hash": "6ba58946455564d3f53ef295356ae6ad6997ef56"
+      "hash": "a2066a68e07cc088f3fb8921ba0fa4f3541b569a"
     },
     "dynamic": "false",
     "properties": {
@@ -12,7 +12,7 @@
         "type": "geo_point"
       },
       "created": {
-        "format": "yyyy-MM-dd'T'HH:mm:ss.SSSSSSZZ||yyyy-MM-dd'T'HH:mm:ssZZ",
+        "format": "yyyy-MM-dd'T'HH:mm:ss.SSSX",
         "type": "date"
       }
     }
