@@ -335,6 +335,10 @@ is removed from all old version and updated in the current version as required. 
 When the version of an index changes the new index mapping needs to be created. Calling `mapping.create` on
 every initialization should be ok to do.
 
+## Document Signatures
+
+Document signatures can be used to ensure that a document updated is the document that the signature was read for.
+
 ## Api
 
 Available commands
@@ -376,6 +380,7 @@ Interacting with the rest api of Elasticsearch
 - `data.count(name: String)` - get number of indexed elements from Elasticsearch (from _all_ versions)
 - `data.query(name: String, filter: Object, options: Object)` - query for data in Elasticsearch against all versions. Returns raw result body from elasticsearch.
 - `data.version(index: String, id: String)` - get version number in latest index version for document or null if document does not exist
+- `data.signature(index: String, id: String)` - get signature as `${_seq_no')}_${_primary_term}` in latest index version for document or null if document does not exist
 - `data.exists(index: String, id: String)` - check if document exists in any index version
 - `data.refresh(name: String)` - refresh Elasticsearch index, useful e.g. when testing (all versions)
 - `data.historic(index: String, limit: Integer = 100)` - fetch historic data entries as list of ids.

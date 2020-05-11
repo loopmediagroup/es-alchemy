@@ -141,32 +141,32 @@ describe('Testing Rest Query', { timeout: 10000 }, () => {
         toReturn: ['headline']
       }, { raw: true })).hits.hits).to.deep.equal([
         {
-          _index: 'offer@9d761c2566b75f33f2b05ddfec951e77d9718b8b',
-          _type: 'offer',
+          _index: 'offer@6a1b8f491e156e356ab57e8df046b9f449acb440',
+          _type: '_doc',
           _id: offer1.id,
           _score: null,
           _source: { headline: 'First' },
           sort: ['1', '1', offer1.id]
         },
         {
-          _index: 'offer@9d761c2566b75f33f2b05ddfec951e77d9718b8b',
-          _type: 'offer',
+          _index: 'offer@6a1b8f491e156e356ab57e8df046b9f449acb440',
+          _type: '_doc',
           _id: offer2.id,
           _score: null,
           _source: { headline: 'Second' },
           sort: ['1', '2', offer2.id]
         },
         {
-          _index: 'offer@9d761c2566b75f33f2b05ddfec951e77d9718b8b',
-          _type: 'offer',
+          _index: 'offer@6a1b8f491e156e356ab57e8df046b9f449acb440',
+          _type: '_doc',
           _id: offer3.id,
           _score: null,
           _source: { headline: 'Third' },
           sort: ['2', '1', offer3.id]
         },
         {
-          _index: 'offer@9d761c2566b75f33f2b05ddfec951e77d9718b8b',
-          _type: 'offer',
+          _index: 'offer@6a1b8f491e156e356ab57e8df046b9f449acb440',
+          _type: '_doc',
           _id: offer4.id,
           _score: null,
           _source: { headline: 'Fourth' },
@@ -611,7 +611,7 @@ describe('Testing Rest Query', { timeout: 10000 }, () => {
 
   it('Testing Multi Version Query', async () => {
     const indexName = 'version-index-test';
-    const meta = { mappings: { idx: { properties: { uuid: { type: 'keyword' } } } } };
+    const meta = { mappings: { properties: { uuid: { type: 'keyword' } } } };
 
     // initialization
     await index.rest.call('DELETE', `${indexName}@*`);
@@ -622,13 +622,13 @@ describe('Testing Rest Query', { timeout: 10000 }, () => {
 
     // add data
     const uuid = uuid4();
-    await index.rest.call('PUT', `${indexName}@2/idx/${uuid}`, { body: { uuid } });
-    await index.rest.call('PUT', `${indexName}@1/idx/${uuid}`, { body: { uuid } });
+    await index.rest.call('PUT', `${indexName}@2/_doc/${uuid}`, { body: { uuid } });
+    await index.rest.call('PUT', `${indexName}@1/_doc/${uuid}`, { body: { uuid } });
     await index.rest.call('POST', `${indexName}@*`, { endpoint: '_refresh' });
 
     // run query
     const result = await index.rest.call('GET', `${indexName}@*`, { endpoint: '_search' });
-    expect(result.body.hits.total).to.equal(2);
+    expect(result.body.hits.total.value).to.equal(2);
 
     // cleanup
     const delResult = await index.rest.call('DELETE', `${indexName}@*`);

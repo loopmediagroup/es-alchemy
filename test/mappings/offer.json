@@ -1,111 +1,109 @@
 {
   "mappings": {
-    "offer": {
-      "_meta": {
-        "hash": "9d761c2566b75f33f2b05ddfec951e77d9718b8b"
+    "_meta": {
+      "hash": "6a1b8f491e156e356ab57e8df046b9f449acb440"
+    },
+    "dynamic": "false",
+    "properties": {
+      "id": {
+        "type": "keyword"
       },
-      "dynamic": "false",
-      "properties": {
-        "id": {
-          "type": "keyword"
-        },
-        "headline": {
-          "type": "text"
-        },
-        "meta": {
-          "enabled": false,
-          "type": "object"
-        },
-        "flags": {
-          "type": "keyword"
-        },
-        "locations": {
-          "properties": {
-            "id": {
-              "type": "keyword"
-            },
-            "name": {
-              "type": "keyword"
-            },
-            "address": {
-              "include_in_root": true,
-              "properties": {
-                "id": {
-                  "type": "keyword"
-                },
-                "street": {
-                  "type": "text"
-                },
-                "city": {
-                  "type": "text"
-                },
-                "country": {
-                  "type": "text"
-                },
-                "centre": {
-                  "type": "geo_point"
-                },
-                "area": {
-                  "type": "geo_shape"
-                },
-                "timezone": {
-                  "type": "text"
-                },
-                "keywords": {
-                  "type": "keyword"
-                },
-                "created": {
-                  "format": "yyyy-MM-dd'T'HH:mm:ss.SSSSSSZZ||yyyy-MM-dd'T'HH:mm:ssZZ",
-                  "type": "date"
-                }
+      "headline": {
+        "type": "text"
+      },
+      "meta": {
+        "enabled": false,
+        "type": "object"
+      },
+      "flags": {
+        "type": "keyword"
+      },
+      "locations": {
+        "properties": {
+          "id": {
+            "type": "keyword"
+          },
+          "name": {
+            "type": "keyword"
+          },
+          "address": {
+            "include_in_root": true,
+            "properties": {
+              "id": {
+                "type": "keyword"
               },
-              "type": "nested"
-            },
-            "tags": {
-              "properties": {
-                "id": {
-                  "type": "keyword"
-                },
-                "name": {
-                  "type": "text"
-                }
+              "street": {
+                "type": "text"
               },
-              "type": "nested"
-            }
+              "city": {
+                "type": "text"
+              },
+              "country": {
+                "type": "text"
+              },
+              "centre": {
+                "type": "geo_point"
+              },
+              "area": {
+                "type": "geo_shape"
+              },
+              "timezone": {
+                "type": "text"
+              },
+              "keywords": {
+                "type": "keyword"
+              },
+              "created": {
+                "format": "yyyy-MM-dd'T'HH:mm:ss.SSSX",
+                "type": "date"
+              }
+            },
+            "type": "nested"
           },
-          "type": "nested"
+          "tags": {
+            "properties": {
+              "id": {
+                "type": "keyword"
+              },
+              "name": {
+                "type": "text"
+              }
+            },
+            "type": "nested"
+          }
         },
-        "tags": {
-          "properties": {
-            "id": {
-              "type": "keyword"
-            },
-            "name": {
-              "type": "text"
-            }
+        "type": "nested"
+      },
+      "tags": {
+        "properties": {
+          "id": {
+            "type": "keyword"
           },
-          "type": "nested",
-          "include_in_root": true
+          "name": {
+            "type": "text"
+          }
         },
-        "flatAddress": {
-          "properties": {
-            "centre": {
-              "type": "geo_point"
-            },
-            "id": {
-              "type": "keyword"
-            },
-            "keywords": {
-              "type": "keyword"
-            },
-            "created": {
-              "format": "yyyy-MM-dd'T'HH:mm:ss.SSSSSSZZ||yyyy-MM-dd'T'HH:mm:ssZZ",
-              "type": "date"
-            }
+        "type": "nested",
+        "include_in_root": true
+      },
+      "flatAddress": {
+        "properties": {
+          "centre": {
+            "type": "geo_point"
           },
-          "type": "nested",
-          "include_in_root": true
-        }
+          "id": {
+            "type": "keyword"
+          },
+          "keywords": {
+            "type": "keyword"
+          },
+          "created": {
+            "format": "yyyy-MM-dd'T'HH:mm:ss.SSSX",
+            "type": "date"
+          }
+        },
+        "type": "nested",
+        "include_in_root": true
       }
     }
   }

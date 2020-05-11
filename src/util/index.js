@@ -80,9 +80,7 @@ module.exports = ({
     // eslint-disable-next-line no-underscore-dangle
     def._meta.hash = objectHash(def);
     return {
-      mappings: {
-        [name]: def
-      }
+      mappings: def
     };
   },
   extractFields: (specs) => extractFieldsRec(specs),

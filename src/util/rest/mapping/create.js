@@ -2,7 +2,7 @@ const historic = require('./historic');
 
 module.exports = async (call, idx, mapping) => {
   // eslint-disable-next-line no-underscore-dangle
-  const r = await call('PUT', `${idx}@${mapping.mappings[idx]._meta.hash}`, { body: mapping });
+  const r = await call('PUT', `${idx}@${mapping.mappings._meta.hash}`, { body: mapping });
 
   // delete old, empty versions
   const oldVersionsEmpty = Object

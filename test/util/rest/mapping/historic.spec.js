@@ -41,7 +41,7 @@ describe('Testing REST interaction', { timeout: 10000 }, () => {
 
   it('Testing Versioning (populated)', async () => {
     // eslint-disable-next-line no-underscore-dangle
-    const mappingHash = index.index.getMapping('offer').mappings.offer._meta.hash;
+    const mappingHash = index.index.getMapping('offer').mappings._meta.hash;
     const uuids = [uuid4(), uuid4(), uuid4()].sort();
     await index.rest.mapping.delete('offer');
     // create new index
@@ -102,7 +102,7 @@ describe('Testing REST interaction', { timeout: 10000 }, () => {
 
   it('Testing lifecycle', async () => {
     // eslint-disable-next-line no-underscore-dangle
-    const mappingHash = index.index.getMapping('offer').mappings.offer._meta.hash;
+    const mappingHash = index.index.getMapping('offer').mappings._meta.hash;
     const uuids = [uuid4(), uuid4(), uuid4()].sort();
     await index.rest.mapping.delete('offer');
     expect(await index.rest.mapping.list()).to.deep.equal([]);
@@ -203,8 +203,8 @@ describe('Testing REST interaction', { timeout: 10000 }, () => {
           _shards: {
             failed: 0,
             skipped: 0,
-            successful: 5,
-            total: 5
+            successful: 1,
+            total: 1
           },
           timed_out: false
         });

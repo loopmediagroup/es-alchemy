@@ -17,7 +17,7 @@ module.exports = async (...args) => {
         id: Joi.string()
       }).unknown(true)
         .when('action', { is: Joi.string().valid('update'), then: Joi.required(), otherwise: Joi.optional() }),
-      version: Joi.number().integer().optional().min(0)
+      signature: Joi.string().pattern(/^\d+_\d+$/).optional()
         .when('action', { is: Joi.string().valid('update'), then: Joi.allow(null) })
         .when('action', { is: Joi.string().valid('touch'), then: Joi.forbidden() })
     }).or('id', 'doc'))
@@ -39,13 +39,13 @@ module.exports = async (...args) => {
   }
 
   // eslint-disable-next-line no-underscore-dangle
-  const index = `${idx}@${mapping.mappings[idx]._meta.hash}`;
+  const index = `${idx}@${mapping.mappings._meta.hash}`;
   const payload = [];
 
   // delete elements from old index versions
   actions.map((action) => action.id)
     .forEach((docId) => oldVersionsNonEmpty
-      .forEach((i) => payload.push(JSON.stringify({ delete: { _index: i, _type: idx, _id: docId } }))));
+      .forEach((i) => payload.push(JSON.stringify({ delete: { _index: i, _id: docId } }))));
 
   // todo: can reduce traversal, but need good tests first / possibly need to adjust object-scan
   const emptyToNull = (() => {
@@ -75,18 +75,32 @@ module.exports = async (...args) => {
   actions
     .filter((action) => action.action !== 'touch')
     .forEach((action) => {
+      const hasSignature = action.signature !== undefined;
+      const isSignatureNull = action.signature === null;
+      let signature = {};
+      if (hasSignature) {
+        signature = {
+          if_seq_no: null,
+          if_primary_term: null
+        };
+        if (!isSignatureNull) {
+          [
+            signature.if_seq_no,
+            signature.if_primary_term
+          ] = action.signature.split('_');
+        }
+      }
       payload.push(JSON.stringify({
-        [action.version === null ? 'create' : action.action]: {
+        [isSignatureNull ? 'create' : action.action]: {
           _index: index,
-          _type: idx,
           _id: action.id,
-          version: action.version
+          ...signature
         }
       }));
       if (action.action === 'update') {
         emptyToNull(action.doc);
         // `update` performs no action when exact document already indexed (reduced load)
-        payload.push(JSON.stringify({ doc: action.doc, doc_as_upsert: true }));
+        payload.push(JSON.stringify({ doc: action.doc, doc_as_upsert: !hasSignature }));
       }
     });
 
