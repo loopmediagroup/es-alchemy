@@ -4,7 +4,7 @@ const { v4: uuid4 } = require('uuid');
 const Index = require('../../../../src/index');
 const { registerEntitiesForIndex } = require('../../../helper');
 
-describe('Testing version', () => {
+describe('Testing signature', () => {
   let index;
 
   beforeEach(() => {
@@ -12,9 +12,9 @@ describe('Testing version', () => {
     registerEntitiesForIndex(index);
   });
 
-  it('Test retrieving a version number for a document', async () => {
+  it('Test retrieving a signature for a document', async () => {
     const offerId = uuid4();
-    expect(await index.rest.mapping.create('offer')).to.equal(true);
+    expect(await index.rest.mapping.recreate('offer')).to.equal(true);
     expect(await index.rest.data.update('offer', [{
       action: 'update',
       doc: index.data.remap('offer', {
@@ -23,7 +23,7 @@ describe('Testing version', () => {
       })
     }])).to.equal(true);
     expect(await index.rest.data.refresh('offer')).to.equal(true);
-    expect(await index.rest.data.version('offer', offerId)).to.equal(1);
+    expect(await index.rest.data.signature('offer', offerId)).to.equal('0_1');
     expect(await index.rest.data.update('offer', [{
       action: 'update',
       doc: index.data.remap('offer', {
@@ -32,13 +32,13 @@ describe('Testing version', () => {
       })
     }])).to.equal(true);
     expect(await index.rest.data.refresh('offer')).to.equal(true);
-    expect(await index.rest.data.version('offer', offerId)).to.equal(2);
+    expect(await index.rest.data.signature('offer', offerId)).to.equal('1_1');
     expect(await index.rest.mapping.delete('offer')).to.equal(true);
   });
 
-  it('Test version and signature do not increase if update is identical', async () => {
+  it('Test signature does not change if update is identical', async () => {
     const offerId = uuid4();
-    expect(await index.rest.mapping.create('offer')).to.equal(true);
+    expect(await index.rest.mapping.recreate('offer')).to.equal(true);
     expect(await index.rest.data.update('offer', [{
       action: 'update',
       doc: index.data.remap('offer', {
@@ -47,7 +47,6 @@ describe('Testing version', () => {
       })
     }])).to.equal(true);
     expect(await index.rest.data.refresh('offer')).to.equal(true);
-    expect(await index.rest.data.version('offer', offerId)).to.equal(1);
     expect(await index.rest.data.signature('offer', offerId)).to.equal('0_1');
     expect(await index.rest.data.update('offer', [{
       action: 'update',
@@ -57,47 +56,18 @@ describe('Testing version', () => {
       })
     }])).to.equal(true);
     expect(await index.rest.data.refresh('offer')).to.equal(true);
-    expect(await index.rest.data.version('offer', offerId)).to.equal(1);
-    expect(await index.rest.data.signature('offer', offerId)).to.equal('0_1');
-    expect(await index.rest.mapping.delete('offer')).to.equal(true);
-  });
-
-  it('Test version and signature do not increase if update is identical (with signature)', async () => {
-    const offerId = uuid4();
-    expect(await index.rest.mapping.create('offer')).to.equal(true);
-    expect(await index.rest.data.update('offer', [{
-      action: 'update',
-      doc: index.data.remap('offer', {
-        id: offerId,
-        meta: { k1: 'v1' },
-        signature: null
-      })
-    }])).to.equal(true);
-    expect(await index.rest.data.refresh('offer')).to.equal(true);
-    expect(await index.rest.data.version('offer', offerId)).to.equal(1);
-    expect(await index.rest.data.signature('offer', offerId)).to.equal('0_1');
-    expect(await index.rest.data.update('offer', [{
-      action: 'update',
-      doc: index.data.remap('offer', {
-        id: offerId,
-        meta: { k1: 'v1' },
-        signature: '0_1'
-      })
-    }])).to.equal(true);
-    expect(await index.rest.data.refresh('offer')).to.equal(true);
-    expect(await index.rest.data.version('offer', offerId)).to.equal(1);
     expect(await index.rest.data.signature('offer', offerId)).to.equal('0_1');
     expect(await index.rest.mapping.delete('offer')).to.equal(true);
   });
 
   it('Test throws an error if index does not exist', async ({ capture }) => {
-    const error = await capture(() => index.rest.data.version('offer', 'id'));
+    const error = await capture(() => index.rest.data.signature('offer', 'id'));
     expect(error.message).to.equal('index_not_found_exception');
   });
 
   it('Test returning null if document does not exist', async () => {
-    expect(await index.rest.mapping.create('offer')).to.equal(true);
-    expect(await index.rest.data.version('offer', 'id')).to.equal(null);
+    expect(await index.rest.mapping.recreate('offer')).to.equal(true);
+    expect(await index.rest.data.signature('offer', 'id')).to.equal(null);
     expect(await index.rest.mapping.delete('offer')).to.equal(true);
   });
 });

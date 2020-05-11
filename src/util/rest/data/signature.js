@@ -5,7 +5,9 @@ module.exports = (call, idx, mapping, id) => call(
   'GET',
   // eslint-disable-next-line no-underscore-dangle
   `${idx}@${mapping.mappings._meta.hash}`,
-  { endpoint: `_doc/${id}?_source=false` }
+  {
+    endpoint: `_doc/${id}?_source=false`
+  }
 )
   .then((r) => {
     const isFound = get(r, 'body.found', null);
@@ -13,5 +15,5 @@ module.exports = (call, idx, mapping, id) => call(
     if (isFound === null) {
       throw new Error(get(r, 'body.error.type'));
     }
-    return isFound === true ? get(r, 'body._version') : null;
+    return isFound === true ? `${get(r, 'body._seq_no')}_${get(r, 'body._primary_term')}` : null;
   });

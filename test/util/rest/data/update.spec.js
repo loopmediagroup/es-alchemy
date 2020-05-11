@@ -20,17 +20,17 @@ describe('Testing data formats', () => {
     expect(await index.rest.mapping.delete('offer')).to.equal(true);
   });
 
-  it('Testing delete fails when version and entity not exists', async () => {
+  it('Testing delete fails when signature and entity not exists', async () => {
     const r = await index.rest.data.update('offer', [{
       action: 'delete',
       id: offerId,
-      version: 1
+      signature: '0_1'
     }]);
     const schema = Joi.array().ordered(
       Joi.object().keys({
         delete: Joi.object().keys({
           _index: Joi.string(),
-          _type: Joi.string().valid('offer'),
+          _type: Joi.string().valid('_doc'),
           _id: Joi.string(),
           status: Joi.number().valid(409),
           error: Joi.object().keys({
@@ -46,22 +46,22 @@ describe('Testing data formats', () => {
     expect(Joi.test(r, schema)).to.equal(true);
   });
 
-  it('Testing update fails when version null and entity exists', async () => {
+  it('Testing update fails when signature null and entity exists', async () => {
     expect(await index.rest.data.update('offer', [{
       action: 'update',
       doc: index.data.remap('offer', { id: offerId, meta: { k1: 'v1' } }),
-      version: null
+      signature: null
     }])).to.equal(true);
     const r = await index.rest.data.update('offer', [{
       action: 'update',
       doc: index.data.remap('offer', { id: offerId, meta: { k1: 'v1' } }),
-      version: null
+      signature: null
     }]);
     const schema = Joi.array().ordered(
       Joi.object().keys({
         create: Joi.object().keys({
           _index: Joi.string(),
-          _type: Joi.string().valid('offer'),
+          _type: Joi.string().valid('_doc'),
           _id: Joi.string(),
           status: Joi.number().valid(409),
           error: Joi.object().keys({
@@ -77,27 +77,27 @@ describe('Testing data formats', () => {
     expect(Joi.test(r, schema)).to.equal(true);
   });
 
-  it('Testing update with version', async () => {
+  it('Testing update with signature', async () => {
     expect(await index.rest.data.update('offer', [{
       action: 'update',
       doc: index.data.remap('offer', { id: offerId, meta: { k1: 'v1' } })
     }])).to.equal(true);
-    const version = await index.rest.data.version('offer', offerId);
+    const signature = await index.rest.data.signature('offer', offerId);
     expect(await index.rest.data.update('offer', [{
       action: 'update',
       doc: index.data.remap('offer', { id: offerId, meta: { k1: 'v2' } }),
-      version
+      signature
     }])).to.equal(true);
     const r = await index.rest.data.update('offer', [{
       action: 'update',
       doc: index.data.remap('offer', { id: offerId, meta: { k1: 'v3' } }),
-      version
+      signature
     }]);
     const schema = Joi.array().ordered(
       Joi.object().keys({
         update: Joi.object().keys({
           _index: Joi.string(),
-          _type: Joi.string().valid('offer'),
+          _type: Joi.string().valid('_doc'),
           _id: Joi.string(),
           status: Joi.number().valid(409),
           error: Joi.object().keys({

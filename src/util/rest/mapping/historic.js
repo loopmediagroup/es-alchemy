@@ -4,7 +4,7 @@ const get = require('lodash.get');
 module.exports = (call, idx, mapping) => call(
   'GET',
   // eslint-disable-next-line no-underscore-dangle
-  `${idx}@*,-${idx}@${mapping.mappings[idx]._meta.hash}`,
+  `${idx}@*,-${idx}@${mapping.mappings._meta.hash}`,
   { endpoint: '_stats/docs' }
 )
   .then((r) => Object.entries(get(r, 'body.indices', {}))

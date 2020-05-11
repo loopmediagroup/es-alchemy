@@ -54,7 +54,7 @@ return remap(result, params.map);
         lang: 'painless',
         inline: `
 ${remap}
-int result = doc[params.target].values.contains(params.value) ? 1 : 0;
+int result = doc[params.target].contains(params.value) ? 1 : 0;
 return remap(result, params.map);
 `,
         params: {
@@ -79,7 +79,7 @@ double lat2 = params.lat;
 double lon2 = params.lon;
 double TO_METERS = 6371008.7714D;
 double TO_RADIANS = Math.PI / 180D;
-for (int i = 0; i < doc[params.target].values.length; i++) {
+for (int i = 0; i < doc[params.target].length; i++) {
   // todo: https://github.com/elastic/elasticsearch/issues/25796
   double lat1 = doc[params.target][i].lat;
   double lon1 = doc[params.target][i].lon;
@@ -113,7 +113,7 @@ return result;
 ${remap}
 double result = 0;
 long timestamp = Instant.parse(params.timestamp).getEpochSecond();
-for (int i = 0; i < doc[params.target].values.length; i++) {
+for (int i = 0; i < doc[params.target].length; i++) {
   long age = timestamp - doc[params.target][i].getMillis() / 1000;
   result = Math.max(result, remap(age, params.map));
 }
