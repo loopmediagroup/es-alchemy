@@ -1,4 +1,5 @@
 const { expect } = require('chai');
+const get = require('lodash.get');
 const { describe } = require('node-tdd');
 const { v4: uuid4 } = require('uuid');
 const Index = require('../../../../src/index');
@@ -55,6 +56,33 @@ describe('Testing signature', () => {
         meta: { k1: 'v1' }
       })
     }])).to.equal(true);
+    expect(await index.rest.data.refresh('offer')).to.equal(true);
+    expect(await index.rest.data.signature('offer', offerId)).to.equal('0_1');
+    expect(await index.rest.mapping.delete('offer')).to.equal(true);
+  });
+
+  it('Test signature mismatch', async () => {
+    const offerId = uuid4();
+    expect(await index.rest.mapping.recreate('offer')).to.equal(true);
+    expect(await index.rest.data.update('offer', [{
+      action: 'update',
+      doc: index.data.remap('offer', {
+        id: offerId,
+        meta: { k1: 'v1' }
+      })
+    }])).to.equal(true);
+    expect(await index.rest.data.refresh('offer')).to.equal(true);
+    expect(await index.rest.data.signature('offer', offerId)).to.equal('0_1');
+    const err = await index.rest.data.update('offer', [{
+      action: 'update',
+      doc: index.data.remap('offer', {
+        id: offerId,
+        meta: { k1: 'v1' }
+      }),
+      signature: '1_1'
+    }]);
+    expect(get(err, [0, 'update', 'error', 'type']))
+      .to.equal('version_conflict_engine_exception');
     expect(await index.rest.data.refresh('offer')).to.equal(true);
     expect(await index.rest.data.signature('offer', offerId)).to.equal('0_1');
     expect(await index.rest.mapping.delete('offer')).to.equal(true);
