@@ -47,6 +47,18 @@ describe('Testing Rest Query', { timeout: 10000 }, () => {
       })).to.deep.equal([offer]);
     });
 
+    it('Filter by document id', async () => {
+      const offer = {
+        id: uuid4(),
+        meta: { k1: 'v1', k2: ['v2'], k3: [] }
+      };
+      await upsert('offer', [offer]);
+      expect(await query('offer', {
+        toReturn: ['id', 'meta'],
+        filterBy: { and: [['_id', '==', offer.id]] }
+      })).to.deep.equal([offer]);
+    });
+
     it('Testing property type "geo_shape" returned as list', async () => {
       const offer = {
         id: uuid4(),

@@ -23,7 +23,7 @@ module.exports = (options) => {
     indices[name] = {
       specs: { name, ...specs },
       mapping: index.generateMapping(name, specs, models),
-      fields: index.extractFields(specs),
+      fields: index.extractFields(specs).concat('_id'),
       rels: index.extractRels(specs)
     };
   };
