@@ -43,7 +43,7 @@ describe('Testing index', () => {
   it('Testing fields', () => {
     expect(index.index.list()).to.deep.equal(Object.keys(fields).sort());
     Object.entries(fields).forEach(([k, v]) => {
-      expect(index.index.getFields(k)).to.deep.equal(v);
+      expect(index.index.getFields(k)).to.deep.equal(v.concat('_id'));
     });
   });
 
