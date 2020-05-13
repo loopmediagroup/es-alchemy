@@ -1,7 +1,7 @@
 {
   "orderBy": [
     [
-      "id",
+      "_id",
       "asc"
     ]
   ],
@@ -135,11 +135,6 @@
   "limit": 100,
   "result": {
     "sort": [
-      {
-        "id": {
-          "order": "asc"
-        }
-      },
       {
         "_id": {
           "order": "asc"
