@@ -59,6 +59,30 @@ describe('Testing Rest Query', { timeout: 10000 }, () => {
       })).to.deep.equal([offer]);
     });
 
+    it('Search after document id', async () => {
+      const ids = [uuid4(), uuid4()].sort();
+      const offer1 = { id: ids[0] };
+      const offer2 = { id: ids[1] };
+      await upsert('offer', [offer1, offer2]);
+
+      const filter = (offerId) => ({
+        _source: ['_id'],
+        from: 0,
+        size: 20,
+        search_after: [offerId],
+        sort: [
+          { _id: { order: 'asc' } }
+        ]
+      });
+
+      const r1 = await index.rest.data.query('offer', filter(offer1.id));
+      expect(r1.hits.hits.length).to.equal(1);
+      // eslint-disable-next-line no-underscore-dangle
+      expect(r1.hits.hits[0]._id).to.equal(offer2.id);
+      const r2 = await index.rest.data.query('offer', filter(offer2.id));
+      expect(r2.hits.hits.length).to.equal(0);
+    });
+
     it('Testing property type "geo_shape" returned as list', async () => {
       const offer = {
         id: uuid4(),
