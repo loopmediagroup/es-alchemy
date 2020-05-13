@@ -11,6 +11,7 @@ module.exports.build = (allowedFields, {
   filterBy = [],
   orderBy = [],
   scoreBy = [],
+  searchAfter = [],
   limit,
   offset,
   cursor
@@ -48,12 +49,15 @@ module.exports.build = (allowedFields, {
         .map(([path, query]) => (path !== '' ? ({ nested: { path, query, score_mode: 'max' } }) : query))
     ]);
   }
+  if (searchAfter.length !== 0) {
+    set(result, 'search_after', searchAfter);
+  }
   result.sort = [
     ...orderBy,
     ...(scoreBy.length !== 0 ? [['_score', 'desc', null]] : []),
-    ...(get(orderBy.slice(-1), '[0][0]') === 'id' && ['asc', 'desc'].includes(get(orderBy.slice(-1), '[0][1]'))
+    ...(get(orderBy.slice(-1), '[0][0]') === '_id' && ['asc', 'desc'].includes(get(orderBy.slice(-1), '[0][1]'))
       ? []
-      : [['id', 'asc']])
+      : [['_id', 'asc']])
   ]
     .map((e) => actionMap.order[e[1]]([e[0], ...e.slice(2)], { allowedFields }));
   return result;

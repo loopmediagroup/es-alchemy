@@ -31,22 +31,22 @@ describe('Testing Query Creation', () => {
       _source: [''],
       size: 20,
       from: 0,
-      sort: [{ id: { order: 'asc' } }]
+      sort: [{ _id: { order: 'asc' } }]
     });
   });
 
-  it('Testing query.build with cursor.', () => {
+  it('Testing query.build with cursor', () => {
     expect(index.query.build(undefined, {
       cursor: toCursor({ limit: 10, offset: 10 })
     })).to.deep.equal({
       _source: [''],
       size: 10,
       from: 10,
-      sort: [{ id: { order: 'asc' } }]
+      sort: [{ _id: { order: 'asc' } }]
     });
   });
 
-  it('Testing query.build with cursor limit override.', () => {
+  it('Testing query.build with cursor limit override', () => {
     expect(index.query.build(undefined, {
       cursor: toCursor({ limit: 10, offset: 10 }),
       limit: 15
@@ -54,7 +54,7 @@ describe('Testing Query Creation', () => {
       _source: [''],
       size: 15,
       from: 10,
-      sort: [{ id: { order: 'asc' } }]
+      sort: [{ _id: { order: 'asc' } }]
     });
   });
 });
