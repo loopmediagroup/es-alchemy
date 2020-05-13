@@ -137,6 +137,11 @@
   "result": {
     "sort": [
       {
+        "_id": {
+          "order": "asc"
+        }
+      },
+      {
         "_script": {
           "script": {
             "lang": "painless",
@@ -146,11 +151,6 @@
             }
           },
           "type": "number",
-          "order": "asc"
-        }
-      },
-      {
-        "id": {
           "order": "asc"
         }
       }

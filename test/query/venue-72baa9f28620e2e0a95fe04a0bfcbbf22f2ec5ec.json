@@ -133,6 +133,11 @@
         "id": {
           "order": "asc"
         }
+      },
+      {
+        "_id": {
+          "order": "asc"
+        }
       }
     ],
     "from": 0,
