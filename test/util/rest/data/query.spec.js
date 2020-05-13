@@ -59,6 +59,26 @@ describe('Testing Rest Query', { timeout: 10000 }, () => {
       })).to.deep.equal([offer]);
     });
 
+    it('Search after document id', async () => {
+      const ids = [uuid4(), uuid4()].sort();
+      const offer1 = { id: ids[0] };
+      const offer2 = { id: ids[1] };
+      await upsert('offer', [offer1, offer2]);
+
+      const q = (offerId) => query('offer', {
+        toReturn: ['_id'],
+        searchAfter: [offerId],
+        orderBy: [['_id', 'asc']]
+      }, { raw: true });
+
+      const r1 = await q(offer1.id);
+      expect(r1.hits.hits.length).to.equal(1);
+      // eslint-disable-next-line no-underscore-dangle
+      expect(r1.hits.hits[0]._id).to.equal(offer2.id);
+      const r2 = await q(offer2.id);
+      expect(r2.hits.hits.length).to.equal(0);
+    });
+
     it('Testing property type "geo_shape" returned as list', async () => {
       const offer = {
         id: uuid4(),
@@ -205,20 +225,20 @@ describe('Testing Rest Query', { timeout: 10000 }, () => {
       expect(await index.rest.mapping.recreate('offer')).to.equal(true);
       await Promise.all([
         {
-          orderBy: [['id', 'desc', 'max']],
-          result: { sort: [{ id: { mode: 'max', order: 'desc' } }] }
+          orderBy: [['_id', 'desc', 'max']],
+          result: { sort: [{ _id: { mode: 'max', order: 'desc' } }] }
         },
         {
-          orderBy: [['id', 'desc', 'min']],
-          result: { sort: [{ id: { mode: 'min', order: 'desc' } }] }
+          orderBy: [['_id', 'desc', 'min']],
+          result: { sort: [{ _id: { mode: 'min', order: 'desc' } }] }
         },
         {
-          orderBy: [['id', 'asc', 'max']],
-          result: { sort: [{ id: { mode: 'max', order: 'asc' } }] }
+          orderBy: [['_id', 'asc', 'max']],
+          result: { sort: [{ _id: { mode: 'max', order: 'asc' } }] }
         },
         {
-          orderBy: [['id', 'asc', 'min']],
-          result: { sort: [{ id: { mode: 'min', order: 'asc' } }] }
+          orderBy: [['_id', 'asc', 'min']],
+          result: { sort: [{ _id: { mode: 'min', order: 'asc' } }] }
         }
       ].map(async ({ orderBy, result }) => {
         expect(await index.query.build('offer', { toReturn: ['id'], orderBy })).to.deep.contain(result);

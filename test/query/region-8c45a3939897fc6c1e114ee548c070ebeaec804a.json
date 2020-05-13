@@ -15,7 +15,7 @@
   "result": {
     "sort": [
       {
-        "id": {
+        "_id": {
           "order": "asc"
         }
       }
