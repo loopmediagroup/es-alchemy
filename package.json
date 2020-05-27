@@ -49,7 +49,7 @@
     "chai": "4.2.0",
     "coveralls": "3.1.0",
     "deep-equal-in-any-order": "1.0.27",
-    "eslint": "6.8.0",
+    "eslint": "7.1.0",
     "eslint-config-airbnb-base": "14.1.0",
     "eslint-plugin-import": "2.20.2",
     "eslint-plugin-json": "2.1.1",
@@ -111,9 +111,9 @@
     "lodash.get": "4.4.2",
     "lodash.isequal": "4.5.0",
     "lodash.set": "4.3.2",
-    "object-fields": "2.0.4",
+    "object-fields": "2.0.5",
     "object-hash": "2.0.3",
-    "object-scan": "13.0.2"
+    "object-scan": "13.0.3"
   },
   "peerDependencies": {
     "request": "^2.88.0",
