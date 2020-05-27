@@ -113,7 +113,7 @@
     "lodash.set": "4.3.2",
     "object-fields": "2.0.4",
     "object-hash": "2.0.3",
-    "object-scan": "13.0.2"
+    "object-scan": "13.0.3"
   },
   "peerDependencies": {
     "request": "^2.88.0",
