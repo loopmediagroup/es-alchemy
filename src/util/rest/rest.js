@@ -17,7 +17,6 @@ const dataHistoric = require('./data/historic');
 const dataUpdate = require('./data/update');
 const dataStats = require('./data/stats');
 
-
 module.exports = (getRels, getMapping, options) => {
   const call = (method, idx, {
     endpoint = '',
