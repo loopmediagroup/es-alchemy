@@ -4951,16 +4951,18 @@ node-sass-tilde-importer@^1.0.2:
   dependencies:
     find-parent-dir "^0.3.0"
 
-node-tdd@2.16.1:
-  version "2.16.1"
-  resolved "https://registry.yarnpkg.com/node-tdd/-/node-tdd-2.16.1.tgz#f37a00f3df8e11a6f61ec36b2b4fc11f3dd24bfc"
-  integrity sha512-d3+hS/hFgeSNS5fupRrkbaJEHE5YuZyv3KN9sWiNu0CEfEvdMnzalpfngW6aRdZqBSL3ferwi3uK97n86rFotw==
+node-tdd@2.17.0:
+  version "2.17.0"
+  resolved "https://registry.yarnpkg.com/node-tdd/-/node-tdd-2.17.0.tgz#ee9c4b455efdb597be3840750774ceb5b5247236"
+  integrity sha512-eBRhEH0DV/yytPZgIRf5N86OLbUXRfEtdDV2vNCdU6KE0W5ZoSKNqQ9gtuaInFHH3faC/wWN8y4gG6Vgwhpemg==
   dependencies:
     callsites "3.1.0"
-    joi-strict "1.2.2"
+    joi-strict "1.2.3"
+    lodash.clonedeep "4.5.0"
     lodash.get "4.4.2"
     minimist "1.2.5"
     nock "13.0.2"
+    object-scan "13.1.2"
     smart-fs "1.11.15"
     timekeeper "2.2.0"
     tmp "0.2.1"
