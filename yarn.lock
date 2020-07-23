@@ -239,10 +239,10 @@
   dependencies:
     smart-fs "1.11.15"
 
-"@blackflux/robo-config-plugin@3.5.2":
-  version "3.5.2"
-  resolved "https://registry.yarnpkg.com/@blackflux/robo-config-plugin/-/robo-config-plugin-3.5.2.tgz#93f402511d99598ec18ea6af72c14351c2125b3e"
-  integrity sha512-nh9aClx4Hv8XEsEyak6yCIrnlVFL3L+z+kc7ERGP9OtRss91MkLohqW2r6Wh+CcwZI9PTAJlvWCFdt+NMQ6d6w==
+"@blackflux/robo-config-plugin@3.5.3":
+  version "3.5.3"
+  resolved "https://registry.yarnpkg.com/@blackflux/robo-config-plugin/-/robo-config-plugin-3.5.3.tgz#633bbfdeb0332fc6585cf23b47285e4e3a0c602d"
+  integrity sha512-e6guVfntw74rjH5hgBpC/Rb97qKbpuJRtmi+N2S0tjT5SdC9sUgXCfu2R5tUM7cK8caMMQenx8fXCI6E6CD/iw==
 
 "@hapi/address@^4.0.1":
   version "4.0.1"
@@ -2246,13 +2246,13 @@ eslint-plugin-import@2.22.0:
     resolve "^1.17.0"
     tsconfig-paths "^3.9.0"
 
-eslint-plugin-json@2.1.1:
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-json/-/eslint-plugin-json-2.1.1.tgz#7b9c4da2121f6f48d44efceb9a99ac0d4d12b299"
-  integrity sha512-Ktsab8ij33V2KFLhh4alC1FYztdmbV32DeMZYYUCZm4kKLW1s4DrleKKgtbAHSJsmshCK5QGOZtfyc2r3jCRsg==
+eslint-plugin-json@2.1.2:
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-json/-/eslint-plugin-json-2.1.2.tgz#5bc1c221984583c0c5ff21c488386e8263a6bbb7"
+  integrity sha512-isM/fsUxS4wN1+nLsWoV5T4gLgBQnsql3nMTr8u+cEls1bL8rRQO5CP5GtxJxaOfbcKqnz401styw+H/P+e78Q==
   dependencies:
-    lodash "^4.17.15"
-    vscode-json-languageservice "^3.5.1"
+    lodash "^4.17.19"
+    vscode-json-languageservice "^3.7.0"
 
 eslint-plugin-markdown@1.0.2:
   version "1.0.2"
@@ -7795,7 +7795,7 @@ vfile@^2.0.0:
     unist-util-stringify-position "^1.0.0"
     vfile-message "^1.0.0"
 
-vscode-json-languageservice@^3.5.1:
+vscode-json-languageservice@^3.7.0:
   version "3.7.0"
   resolved "https://registry.yarnpkg.com/vscode-json-languageservice/-/vscode-json-languageservice-3.7.0.tgz#0174417f139cf41dd60c84538fd052385bfb46f6"
   integrity sha512-nGLqcBhTjdfkl8Dz9sYGK/ZCTjscYFoIjYw+qqkWB+vyNfM0k/AyIoT73DQvB/PArteCKjEVfQUF72GRZEDSbQ==
