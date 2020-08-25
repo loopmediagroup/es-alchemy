@@ -19,14 +19,13 @@ module.exports.build = (allowedFields, {
   assert(cursor === undefined || offset === undefined, 'Cannot override offset with cursor.');
   assert(Array.isArray(toReturn));
   const cursorPayload = cursor !== undefined ? fromCursor(cursor) : null;
-  const { size, from } = {
-    size: typeof limit === 'number' ? limit : get(cursorPayload, 'limit', 20),
-    from: typeof offset === 'number' ? offset : get(cursorPayload, 'offset', 0)
-  };
   const result = {
     _source: toReturn,
-    size,
-    from
+    search_after: Array.isArray(searchAfter) && searchAfter.length !== 0
+      ? searchAfter
+      : get(cursorPayload, 'searchAfter', []),
+    size: typeof limit === 'number' ? limit : get(cursorPayload, 'limit', 20),
+    from: typeof offset === 'number' ? offset : get(cursorPayload, 'offset', 0)
   };
   // eslint-disable-next-line no-underscore-dangle
   assert(Array.isArray(result._source), 'Invalid toReturn provided.');
@@ -49,9 +48,6 @@ module.exports.build = (allowedFields, {
         .map(([path, query]) => (path !== '' ? ({ nested: { path, query, score_mode: 'max' } }) : query))
     ]);
   }
-  if (searchAfter.length !== 0) {
-    set(result, 'search_after', searchAfter);
-  }
   result.sort = [
     ...orderBy,
     ...(scoreBy.length !== 0 ? [['_score', 'desc', null]] : []),
@@ -60,5 +56,8 @@ module.exports.build = (allowedFields, {
       : [['_id', 'asc']])
   ]
     .map((e) => actionMap.order[e[1]]([e[0], ...e.slice(2)], { allowedFields }));
+  if (result.search_after.length === 0) {
+    delete result.search_after;
+  }
   return result;
 };
