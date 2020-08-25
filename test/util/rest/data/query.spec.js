@@ -4,6 +4,7 @@ const { describe } = require('node-tdd');
 const { v4: uuid4 } = require('uuid');
 const Index = require('../../../../src/index');
 const { registerEntitiesForIndex } = require('../../../helper');
+const { objectEncode } = require('../../../../src/util/paging');
 
 describe('Testing Rest Query', { timeout: 10000 }, () => {
   let index;
@@ -77,6 +78,26 @@ describe('Testing Rest Query', { timeout: 10000 }, () => {
       expect(r1.hits.hits[0]._id).to.equal(offer2.id);
       const r2 = await q(offer2.id);
       expect(r2.hits.hits.length).to.equal(0);
+    });
+
+    it('Search after custom cursor', async () => {
+      const ids = [uuid4(), uuid4()].sort();
+      const offer1 = { id: ids[0] };
+      const offer2 = { id: ids[1] };
+      await upsert('offer', [offer1, offer2]);
+
+      const q = (offerId, offset = 0) => query('offer', {
+        toReturn: ['_id', 'id'],
+        cursor: objectEncode({ limit: 1, offset, searchAfter: [offerId] }),
+        orderBy: [['_id', 'asc']]
+      });
+
+      const r1 = await q(offer1.id);
+      expect(r1.length).to.equal(1);
+      expect(r1[0].id).to.equal(offer2.id);
+
+      const r2 = await q(offer2.id);
+      expect(r2.length).to.equal(0);
     });
 
     it('Testing property type "geo_shape" returned as list', async () => {

@@ -11,6 +11,7 @@ describe('Testing paging.', () => {
   });
 
   it('Testing fromCursor', () => {
-    expect(fromCursor('eyJsaW1pdCI6MTAsIm9mZnNldCI6MH0=')).to.deep.equal({ limit: 10, offset: 0 });
+    expect(fromCursor('eyJsaW1pdCI6MjAsIm9mZnNldCI6MCwic2VhcmNoQWZ0ZXIiOltdfQ=='))
+      .to.deep.equal({ limit: 20, offset: 0, searchAfter: [] });
   });
 });

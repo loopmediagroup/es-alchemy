@@ -4,8 +4,8 @@ module.exports.objectEncode = objectEncode;
 const objectDecode = (base64) => JSON.parse(Buffer.from(base64, 'base64').toString('utf8'));
 
 module.exports.fromCursor = (cursor) => {
-  const { limit, offset } = objectDecode(cursor);
-  return { limit, offset };
+  const { limit, offset, searchAfter } = objectDecode(cursor);
+  return { limit, offset, searchAfter };
 };
 
 const toCursor = ({
@@ -21,7 +21,7 @@ module.exports.buildPageObject = (hits, filter) => {
   const searchAfter = filter.search_after;
   const limit = filter.size;
   const offset = filter.from;
-  const scroll = countReturned === limit && limit > 0 ? {
+  const scroll = offset === 0 && countReturned === limit ? {
     limit,
     offset,
     searchAfter: hits.hits[hits.hits.length - 1].sort
@@ -29,18 +29,16 @@ module.exports.buildPageObject = (hits, filter) => {
   if (scroll !== null) {
     scroll.cursor = toCursor(scroll);
   }
-  const next = countReturned === limit ? {
+  const next = searchAfter !== undefined && countReturned === limit ? {
     limit,
-    offset: offset + limit,
-    ...(searchAfter === undefined ? {} : { searchAfter })
+    offset: offset + limit
   } : null;
   if (next !== null) {
     next.cursor = toCursor(next);
   }
-  const previous = offset > 0 ? {
+  const previous = searchAfter !== undefined && offset > 0 ? {
     limit,
-    offset: Math.max(0, offset - limit),
-    ...(searchAfter === undefined ? {} : { searchAfter })
+    offset: Math.max(0, offset - limit)
   } : null;
   if (previous !== null) {
     previous.cursor = toCursor(previous);
