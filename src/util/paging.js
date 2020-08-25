@@ -21,6 +21,7 @@ module.exports.buildPageObject = (hits, filter) => {
   const searchAfter = filter.search_after;
   const limit = filter.size;
   const offset = filter.from;
+  const noSearchAfter = !Array.isArray(searchAfter) || searchAfter.length === 0;
   const scroll = offset === 0 && countReturned === limit ? {
     limit,
     offset,
@@ -29,14 +30,14 @@ module.exports.buildPageObject = (hits, filter) => {
   if (scroll !== null) {
     scroll.cursor = toCursor(scroll);
   }
-  const next = searchAfter !== undefined && countReturned === limit ? {
+  const next = noSearchAfter && countReturned === limit ? {
     limit,
     offset: offset + limit
   } : null;
   if (next !== null) {
     next.cursor = toCursor(next);
   }
-  const previous = searchAfter !== undefined && offset > 0 ? {
+  const previous = noSearchAfter && offset > 0 ? {
     limit,
     offset: Math.max(0, offset - limit)
   } : null;
@@ -47,10 +48,10 @@ module.exports.buildPageObject = (hits, filter) => {
     scroll,
     next,
     previous,
-    index: {
+    index: noSearchAfter ? {
       current: 1 + Math.ceil((offset * 1.0) / limit),
       max: Math.max(1, 1 + Math.floor((countTotal - 0.1) / limit))
-    },
+    } : null,
     size: limit
   };
 };
