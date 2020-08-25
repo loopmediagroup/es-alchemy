@@ -1,24 +1,43 @@
 const objectEncode = (obj) => Buffer.from(JSON.stringify(obj)).toString('base64');
+module.exports.objectEncode = objectEncode;
 
 const objectDecode = (base64) => JSON.parse(Buffer.from(base64, 'base64').toString('utf8'));
 
 module.exports.fromCursor = (cursor) => {
-  const { limit, offset } = objectDecode(cursor);
-  return { limit, offset };
+  const { limit, offset, searchAfter } = objectDecode(cursor);
+  return { limit, offset, searchAfter };
 };
 
-const toCursor = ({ limit = 20, offset = 0 } = {}) => objectEncode({ limit, offset });
+const toCursor = ({
+  limit = 20,
+  offset = 0,
+  searchAfter = []
+} = {}) => objectEncode({ limit, offset, searchAfter });
 module.exports.toCursor = toCursor;
 
-module.exports.buildPageObject = (countReturned, countTotal, limit, offset) => {
-  const next = countReturned === limit ? {
+module.exports.buildPageObject = (hits, filter) => {
+  const countReturned = hits.hits.length;
+  const countTotal = hits.total.value;
+  const searchAfter = filter.search_after;
+  const limit = filter.size;
+  const offset = filter.from;
+  const noSearchAfter = !Array.isArray(searchAfter) || searchAfter.length === 0;
+  const scroll = offset === 0 && countReturned === limit ? {
+    limit,
+    offset,
+    searchAfter: hits.hits[hits.hits.length - 1].sort
+  } : null;
+  if (scroll !== null) {
+    scroll.cursor = toCursor(scroll);
+  }
+  const next = noSearchAfter && countReturned === limit ? {
     limit,
     offset: offset + limit
   } : null;
   if (next !== null) {
     next.cursor = toCursor(next);
   }
-  const previous = offset > 0 ? {
+  const previous = noSearchAfter && offset > 0 ? {
     limit,
     offset: Math.max(0, offset - limit)
   } : null;
@@ -26,12 +45,13 @@ module.exports.buildPageObject = (countReturned, countTotal, limit, offset) => {
     previous.cursor = toCursor(previous);
   }
   return {
+    scroll,
     next,
     previous,
-    index: {
+    index: noSearchAfter ? {
       current: 1 + Math.ceil((offset * 1.0) / limit),
       max: Math.max(1, 1 + Math.floor((countTotal - 0.1) / limit))
-    },
+    } : null,
     size: limit
   };
 };

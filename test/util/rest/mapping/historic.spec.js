@@ -28,8 +28,9 @@ describe('Testing REST interaction', { timeout: 10000 }, () => {
     expect(index.data.page(queryResult, filter)).to.deep.equal({
       payload: [{ id: uuids[1] }],
       page: {
-        next: { limit: 1, offset: 2, cursor: 'eyJsaW1pdCI6MSwib2Zmc2V0IjoyfQ==' },
-        previous: { limit: 1, offset: 0, cursor: 'eyJsaW1pdCI6MSwib2Zmc2V0IjowfQ==' },
+        next: { limit: 1, offset: 2, cursor: 'eyJsaW1pdCI6MSwib2Zmc2V0IjoyLCJzZWFyY2hBZnRlciI6W119' },
+        previous: { limit: 1, offset: 0, cursor: 'eyJsaW1pdCI6MSwib2Zmc2V0IjowLCJzZWFyY2hBZnRlciI6W119' },
+        scroll: null,
         index: {
           max: 3,
           current: 2
@@ -119,6 +120,7 @@ describe('Testing REST interaction', { timeout: 10000 }, () => {
       page: {
         next: null,
         previous: null,
+        scroll: null,
         index: {
           current: 1,
           max: 1
@@ -144,8 +146,9 @@ describe('Testing REST interaction', { timeout: 10000 }, () => {
     expect(index.data.page(queryResult2, filter2)).to.deep.equal({
       payload: [{ id: uuids[1] }],
       page: {
-        next: { limit: 1, offset: 2, cursor: 'eyJsaW1pdCI6MSwib2Zmc2V0IjoyfQ==' },
-        previous: { limit: 1, offset: 0, cursor: 'eyJsaW1pdCI6MSwib2Zmc2V0IjowfQ==' },
+        next: { limit: 1, offset: 2, cursor: 'eyJsaW1pdCI6MSwib2Zmc2V0IjoyLCJzZWFyY2hBZnRlciI6W119' },
+        previous: { limit: 1, offset: 0, cursor: 'eyJsaW1pdCI6MSwib2Zmc2V0IjowLCJzZWFyY2hBZnRlciI6W119' },
+        scroll: null,
         index: {
           max: 3,
           current: 2

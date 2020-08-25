@@ -4,6 +4,7 @@ const Joi = require('joi-strict');
 const { v4: uuid4 } = require('uuid');
 const Index = require('../../../../src/index');
 const { registerEntitiesForIndex } = require('../../../helper');
+const { objectEncode } = require('../../../../src/util/paging');
 
 describe('Testing data formats', () => {
   let index;
@@ -148,8 +149,16 @@ describe('Testing data formats', () => {
         }
       }],
       page: {
-        next: { limit: 1, offset: 1, cursor: 'eyJsaW1pdCI6MSwib2Zmc2V0IjoxfQ==' },
+        next: { limit: 1, offset: 1, cursor: 'eyJsaW1pdCI6MSwib2Zmc2V0IjoxLCJzZWFyY2hBZnRlciI6W119' },
         previous: null,
+        scroll: {
+          cursor: objectEncode({ limit: 1, offset: 0, searchAfter: [offerId] }),
+          limit: 1,
+          offset: 0,
+          searchAfter: [
+            offerId
+          ]
+        },
         index: {
           max: 1,
           current: 1
@@ -176,7 +185,19 @@ describe('Testing data formats', () => {
         }
       }],
       page: {
-        next: { limit: 1, offset: 1, cursor: 'eyJsaW1pdCI6MSwib2Zmc2V0IjoxfQ==' },
+        next: {
+          limit: 1,
+          offset: 1,
+          cursor: 'eyJsaW1pdCI6MSwib2Zmc2V0IjoxLCJzZWFyY2hBZnRlciI6W119'
+        },
+        scroll: {
+          cursor: objectEncode({ limit: 1, offset: 0, searchAfter: [offerId] }),
+          limit: 1,
+          offset: 0,
+          searchAfter: [
+            offerId
+          ]
+        },
         previous: null,
         index: {
           max: 1,
