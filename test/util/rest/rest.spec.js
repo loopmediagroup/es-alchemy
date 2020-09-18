@@ -36,4 +36,67 @@ describe('Testing rest', () => {
     // cleanup
     expect(await index.rest.mapping.delete('offer')).to.equal(true);
   });
+
+  it('Testing disable auto index creation', async () => {
+    // setup
+    const index = Index({ endpoint: process.env.elasticsearchEndpoint });
+    registerEntitiesForIndex(index);
+
+    const offerId = uuid4();
+    // index auto creation works by default
+    expect(await index.rest.mapping.exists('offer')).to.equal(false);
+    expect(await index.rest.data.update('offer', [{
+      action: 'update',
+      doc: {
+        id: offerId
+      }
+    }])).to.equal(true);
+    expect(await index.rest.mapping.delete('offer')).to.equal(true);
+
+    // update setting
+    const r1 = await index.rest.call('PUT', '', {
+      endpoint: '_cluster/settings',
+      body: {
+        persistent: {
+          'action.auto_create_index': 'false'
+        }
+      },
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    expect(r1.body).to.deep.equal({
+      acknowledged: true,
+      persistent: { action: { auto_create_index: 'false' } },
+      transient: {}
+    });
+
+    // index auto creation no longer works
+    expect(await index.rest.mapping.exists('offer')).to.equal(false);
+    const r = await index.rest.data.update('offer', [{
+      action: 'update',
+      doc: {
+        id: offerId
+      }
+    }]);
+    expect(r[0].update.error.type).to.equal('index_not_found_exception');
+
+    // restore setting
+    const r2 = await index.rest.call('PUT', '', {
+      endpoint: '_cluster/settings',
+      body: {
+        persistent: {
+          'action.auto_create_index': 'true'
+        }
+      },
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    expect(r2.body).to.deep.equal({
+      acknowledged: true,
+      persistent: { action: { auto_create_index: 'true' } },
+      transient: {}
+    });
+  });
 });
