@@ -5457,10 +5457,10 @@ object-scan@13.3.8:
   resolved "https://registry.yarnpkg.com/object-scan/-/object-scan-13.3.8.tgz#a354752cff057ec1cfde3a56a6522662735e8d59"
   integrity sha512-2dDYo3736YbxOE8AFDeT5+kXjFs34wsqubyZp5rLaFwtzQ1oyiGp1e5yROWyxcRo29R1e3z69L/POcr47zZe/g==
 
-object-scan@13.6.2:
-  version "13.6.2"
-  resolved "https://registry.yarnpkg.com/object-scan/-/object-scan-13.6.2.tgz#c4f597c072dc5a51f4a96dee8fcd431d4201b3ea"
-  integrity sha512-7vxnuzZILVxDE16JaGzcW5TO6A/PFMFwsTAacIS5ISP5GXGugVQhgrqDI7P2IqaqPkIousVlXWlHV3lQ4MIpLg==
+object-scan@13.6.3:
+  version "13.6.3"
+  resolved "https://registry.yarnpkg.com/object-scan/-/object-scan-13.6.3.tgz#afe223edad0f925c5bcfd3ee8f985e839625473a"
+  integrity sha512-u6UxiTJFJ0fEpW+anJOLk1Aju9Y9rom3V7gUeW2pFhFa7SqT+GbEKNJtHH/qiUOvatlS29H9tPuEWYTx5I8mEg==
 
 object-treeify@1.1.28:
   version "1.1.28"
@@ -6720,10 +6720,10 @@ sax@>=0.6.0, sax@^1.2.4:
   resolved "https://registry.yarnpkg.com/sax/-/sax-1.2.4.tgz#2816234e2378bddc4e5354fab5caa895df7100d9"
   integrity sha512-NqVDv9TpANUjFm0N8uM5GxL36UgKi9/atZw+x7YFnQ8ckwFGKrl4xX4yWtrey3UJm5nP1kUbnYgLopqWNSRhWw==
 
-semantic-release@17.2.1:
-  version "17.2.1"
-  resolved "https://registry.yarnpkg.com/semantic-release/-/semantic-release-17.2.1.tgz#739bad395219110cc30d1ef7029fa2e03e3b4b72"
-  integrity sha512-+xbLWsT9NoibeMMJw4te0pbY4q/Z1gt/vzhB0z9RRNGVyqCgQiK5NUJ11eW6etSyPZ9QFeAMnqO2dzscWUTy2w==
+semantic-release@17.2.2:
+  version "17.2.2"
+  resolved "https://registry.yarnpkg.com/semantic-release/-/semantic-release-17.2.2.tgz#520dae9cd188c7cdcc5216a7aad131548fc5cec7"
+  integrity sha512-LNU68ud3a3oU46H11OThXaKAK430jGGGTIF4VsiP843kRmS6s8kVCceLRdi7yWWz/sCCMD0zygPTQV2Jw79J5g==
   dependencies:
     "@semantic-release/commit-analyzer" "^8.0.0"
     "@semantic-release/error" "^2.2.0"
