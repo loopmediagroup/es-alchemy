@@ -1,5 +1,6 @@
 const expect = require('chai').expect;
 const { describe } = require('node-tdd');
+const sfs = require('smart-fs');
 const chai = require('chai');
 const deepEqualInAnyOrder = require('deep-equal-in-any-order');
 const Index = require('../src/index');
@@ -13,7 +14,10 @@ const {
 
 chai.use(deepEqualInAnyOrder);
 
-describe('Testing index', () => {
+describe('Testing index', {
+  timestamp: 1604445188,
+  useTmpDir: true
+}, () => {
   let index;
 
   beforeEach(() => {
@@ -52,5 +56,17 @@ describe('Testing index', () => {
     Object.entries(rels).forEach(([k, v]) => {
       expect(index.index.getRels(k)).to.deep.equal(v);
     });
+  });
+
+  it('Testing persist', ({ dir }) => {
+    expect(index.index.persist(dir)).to.equal(true);
+    expect(sfs.walkDir(dir).sort()).to.deep.equal(
+      [
+        'address@a2066a68e07cc088f3fb8921ba0fa4f3541b569a.json',
+        'location@127f07825e9279eb9f3bf334e5dd575916f09128.json',
+        'offer@6a1b8f491e156e356ab57e8df046b9f449acb440.json'
+      ]
+    );
+    expect(index.index.persist(dir)).to.equal(false);
   });
 });

@@ -1,6 +1,8 @@
 const assert = require('assert');
+const path = require('path');
 const get = require('lodash.get');
 const cloneDeep = require('lodash.clonedeep');
+const sfs = require('smart-fs');
 const model = require('./util/model');
 const index = require('./util/index');
 const data = require('./util/data');
@@ -33,6 +35,21 @@ module.exports = (options) => {
       register: (name, specs) => registerModel(name, specs)
     },
     index: {
+      persist: (folder) => {
+        let result = false;
+        Object.entries(indices).forEach(([idx, def]) => {
+          const key = `${idx}@${get(def, 'mapping.mappings._meta.hash')}.json`;
+          const filePath = path.join(folder, key);
+          if (!sfs.existsSync(filePath)) {
+            sfs.smartWrite(filePath, {
+              timestamp: Math.floor(new Date().getTime() / 1000),
+              ...def
+            });
+            result = true;
+          }
+        });
+        return result;
+      },
       register: (idx, specs) => registerIndex(idx, specs),
       list: () => Object.keys(indices).sort(),
       getMapping: (idx) => cloneDeep(indices[idx].mapping),
