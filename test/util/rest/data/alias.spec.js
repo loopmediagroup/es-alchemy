@@ -12,7 +12,7 @@ describe('Testing alias', () => {
     registerEntitiesForIndex(index);
     getAliases = async () => {
       const r = await index.rest.call('GET', '_cat/aliases');
-      return r.body.map(({ alias }) => alias)
+      return r.body.map(({ alias }) => alias);
     };
   });
 
