@@ -7,6 +7,7 @@ const mappingList = require('./mapping/list');
 const mappingHistoric = require('./mapping/historic');
 const mappingRecreate = require('./mapping/recreate');
 const mappingExists = require('./mapping/exists');
+const dataAlias = require('./data/alias');
 const dataCount = require('./data/count');
 const dataVersion = require('./data/version');
 const dataSignature = require('./data/signature');
@@ -71,6 +72,7 @@ module.exports = (getRels, getMapping, options) => {
       recreate: (idx) => mappingRecreate(call, idx, getMapping(idx))
     },
     data: {
+      alias: (idx) => dataAlias(call, idx, getMapping(idx)),
       count: (idx) => dataCount(call, idx),
       version: (idx, id) => dataVersion(call, idx, getMapping(idx), id),
       signature: (idx, id) => dataSignature(call, idx, getMapping(idx), id),

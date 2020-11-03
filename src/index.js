@@ -33,16 +33,6 @@ module.exports = (options) => {
       register: (name, specs) => registerModel(name, specs)
     },
     index: {
-      load: (folder) => {
-
-      },
-      persist: (folder) => {
-        // todo:
-        // take everything in "indices" and write as file to folder
-        // for file name, use `${index}@${mapping.def._meta.hash}`
-        // add timestamp: unix
-        // only write if file not exists
-      },
       register: (idx, specs) => registerIndex(idx, specs),
       list: () => Object.keys(indices).sort(),
       getMapping: (idx) => cloneDeep(indices[idx].mapping),
