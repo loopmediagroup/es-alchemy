@@ -15,7 +15,6 @@ const {
 chai.use(deepEqualInAnyOrder);
 
 describe('Testing index', {
-  timestamp: 1604445188,
   useTmpDir: true
 }, () => {
   let index;
