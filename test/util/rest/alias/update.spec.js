@@ -3,7 +3,7 @@ const { describe } = require('node-tdd');
 const Index = require('../../../../src/index');
 const { registerEntitiesForIndex } = require('../../../helper');
 
-describe('Testing alias', () => {
+describe('Testing alias update', () => {
   let index;
   let getAliases;
 
@@ -18,7 +18,7 @@ describe('Testing alias', () => {
 
   it('Test alias an index version', async () => {
     expect(await index.rest.mapping.create('offer')).to.equal(true);
-    expect(await index.rest.data.alias('offer')).to.equal(true);
+    expect(await index.rest.alias.update('offer')).to.equal(true);
     expect(await getAliases()).to.deep.equal(['offer']);
     expect(await index.rest.mapping.delete('offer')).to.equal(true);
     expect(await getAliases()).to.deep.equal([]);
