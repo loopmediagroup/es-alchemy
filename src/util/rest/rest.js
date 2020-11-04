@@ -7,6 +7,7 @@ const mappingList = require('./mapping/list');
 const mappingHistoric = require('./mapping/historic');
 const mappingRecreate = require('./mapping/recreate');
 const mappingExists = require('./mapping/exists');
+const aliasGet = require('./alias/get');
 const aliasUpdate = require('./alias/update');
 const dataCount = require('./data/count');
 const dataVersion = require('./data/version');
@@ -63,6 +64,7 @@ module.exports = (getRels, getMapping, options) => {
   return {
     call: (method, idx, opts = {}) => call(method, idx, opts),
     alias: {
+      get: (idx) => aliasGet(call, idx),
       update: (idx) => aliasUpdate(call, idx, getMapping(idx))
     },
     mapping: {
