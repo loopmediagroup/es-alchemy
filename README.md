@@ -371,8 +371,8 @@ Available commands
 Interacting with the rest api of Elasticsearch
 
 - `call(method: String, name: String, options: Object)` - make direct API call to Elasticsearch
-- `alias.update(name: String)` - update alias for index linking to current index version
 - `alias.get(name: String)` - return the index version for alias
+- `alias.update(name: String)` - update alias for index linking to current index version
 - `mapping.create(name: String)` - create mapping on Elasticsearch (call when version changes)
 - `mapping.delete(name: String)` - delete mapping from Elasticsearch (deletes _all_ versions)
 - `mapping.exists(name: String)` - returns `true` if latest mapping exists
