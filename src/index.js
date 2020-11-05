@@ -34,7 +34,6 @@ module.exports = (options) => {
       register: (name, specs) => registerModel(name, specs)
     },
     index: {
-      persist: (folder) => versions.persist(indices, folder),
       register: (idx, specs) => registerIndex(idx, specs),
       list: () => Object.keys(indices).sort(),
       getMapping: (idx) => cloneDeep(indices[idx].mapping),
@@ -49,6 +48,9 @@ module.exports = (options) => {
     },
     query: {
       build: (idx = null, opts = {}) => query.build(idx === null ? null : indices[idx].fields, opts)
+    },
+    versions: {
+      persist: (folder) => versions.persist(indices, folder)
     },
     rest: rest((idx) => get(indices[idx], 'rels', null), (idx) => get(indices[idx], 'mapping', null), options)
   };
