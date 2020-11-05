@@ -27,6 +27,9 @@ module.exports = (...lists) => {
   }
   return {
     result,
-    cursor: cursor.map((pos, idx) => lists[idx][Math.max(0, pos - 1)])
+    cursor: cursor.map((pos, idx) => {
+      const last = lists[idx][Math.max(0, pos - 1)];
+      return last === undefined ? null : last;
+    })
   };
 };

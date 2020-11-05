@@ -39,7 +39,7 @@ describe('Testing traverse', () => {
     const result = traverse([], ['a', 'b', 'c']);
     expect(result).to.deep.equal({
       result: ['a', 'b', 'c'],
-      cursor: [undefined, 'c']
+      cursor: [null, 'c']
     });
   });
 
