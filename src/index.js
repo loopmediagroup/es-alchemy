@@ -1,13 +1,11 @@
 const assert = require('assert');
-const path = require('path');
 const get = require('lodash.get');
 const cloneDeep = require('lodash.clonedeep');
-const set = require('lodash.set');
-const sfs = require('smart-fs');
 const model = require('./util/model');
 const index = require('./util/index');
 const data = require('./util/data');
 const query = require('./util/query');
+const versions = require('./util/versions');
 const rest = require('./util/rest/rest');
 const loadJsonInDir = require('./util/load-json-in-dir');
 
@@ -31,25 +29,12 @@ module.exports = (options) => {
     };
   };
 
-  const indexVersions = {};
-
   return {
     model: {
       register: (name, specs) => registerModel(name, specs)
     },
     index: {
-      persist: (folder) => index.persist(indices, folder),
-      load: (folder) => {
-        const files = sfs.walkDir(folder)
-          .filter((f) => f.endsWith('.json'))
-          .map((f) => f.slice(0, -5));
-        files.forEach((file) => {
-          const def = sfs.smartRead(path.join(folder, `${file}.json`));
-          const defPath = file.split('@');
-          set(indexVersions, defPath, def);
-        });
-        return indexVersions;
-      },
+      persist: (folder) => versions.persist(indices, folder),
       register: (idx, specs) => registerIndex(idx, specs),
       list: () => Object.keys(indices).sort(),
       getMapping: (idx) => cloneDeep(indices[idx].mapping),
