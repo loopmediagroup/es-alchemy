@@ -2,9 +2,6 @@ module.exports = (...lists) => {
   const result = [];
   const cursor = [...Array(lists.length).keys()].map(() => 0);
   const len = Math.max(...lists.map(({ length }) => length));
-  if (len === 0) {
-    return null;
-  }
   while (Math.max(...cursor) < len) {
     const docs = new Set();
     cursor.forEach((pos, idx) => {

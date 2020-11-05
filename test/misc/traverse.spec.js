@@ -45,12 +45,18 @@ describe('Testing traverse', () => {
 
   it('Test one empty list', () => {
     const result = traverse([]);
-    expect(result).to.equal(null);
+    expect(result).to.deep.equal({
+      result: [],
+      cursor: [null]
+    });
   });
 
   it('Test multiple empty lists', () => {
     const result = traverse([], []);
-    expect(result).to.equal(null);
+    expect(result).to.deep.equal({
+      result: [],
+      cursor: [null, null]
+    });
   });
 
   it('Test some indices already paged', () => {
