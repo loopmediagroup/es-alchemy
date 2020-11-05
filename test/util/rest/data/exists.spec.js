@@ -15,6 +15,7 @@ describe('Testing exists', () => {
   it('Test exists is true if document exists', async () => {
     const offerId = uuid4();
     expect(await index.rest.mapping.create('offer')).to.equal(true);
+    expect(await index.rest.alias.update('offer')).to.equal(true);
     expect(await index.rest.data.update('offer', [{
       action: 'update',
       doc: index.data.remap('offer', {
@@ -29,6 +30,7 @@ describe('Testing exists', () => {
 
   it('Testing exists is false if document does not exist', async () => {
     expect(await index.rest.mapping.create('offer')).to.equal(true);
+    expect(await index.rest.alias.update('offer')).to.equal(true);
     expect(await index.rest.data.exists('offer', 'id')).to.equal(false);
     expect(await index.rest.mapping.delete('offer')).to.equal(true);
   });

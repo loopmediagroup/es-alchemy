@@ -13,7 +13,9 @@ describe('Testing Rest Query', { timeout: 10000 }, () => {
     index = Index({ endpoint: process.env.elasticsearchEndpoint });
     registerEntitiesForIndex(index);
     assert(await index.rest.mapping.create('offer') === true, 'Offer index exists');
+    assert(await index.rest.alias.update('offer') === true, 'Offer alias exists');
     assert(await index.rest.mapping.create('address') === true, 'Address index exists');
+    assert(await index.rest.alias.update('address') === true, 'Address alias exists');
   });
 
   afterEach(async () => {

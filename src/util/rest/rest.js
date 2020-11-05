@@ -15,7 +15,6 @@ const dataSignature = require('./data/signature');
 const dataExists = require('./data/exists');
 const dataQuery = require('./data/query');
 const dataRefresh = require('./data/refresh');
-const dataHistoric = require('./data/historic');
 const dataUpdate = require('./data/update');
 const dataStats = require('./data/stats');
 
@@ -83,7 +82,6 @@ module.exports = (getRels, getMapping, options) => {
       exists: (idx, id) => dataExists(call, idx, id),
       query: (idx, filter) => dataQuery(call, idx, getRels(idx), getMapping(idx), filter),
       refresh: (idx) => dataRefresh(call, idx),
-      historic: (idx, limit = 100) => dataHistoric(call, idx, getMapping(idx), limit),
       update: (idx, opts) => dataUpdate(call, idx, getRels(idx), getMapping(idx), opts),
       stats: () => dataStats(call)
     }

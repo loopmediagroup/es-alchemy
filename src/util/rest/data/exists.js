@@ -1,7 +1,7 @@
 const assert = require('assert');
 const get = require('lodash.get');
 
-module.exports = (call, idx, id) => call('GET', `${idx}@*`, {
+module.exports = (call, idx, id) => call('GET', idx, {
   endpoint: '_count',
   body: { query: { match: { _id: id } } }
 })

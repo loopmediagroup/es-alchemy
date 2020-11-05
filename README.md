@@ -23,7 +23,7 @@ Outline of how [ESAlchemy](https://github.com/loopmediagroup/es-alchemy) can be 
 
 - Define data models
 - Define indices based on the data models
-- Generate (current version) mappings from indices and then create them in Elasticsearch
+- Generate (current version) mappings from indices, create them in Elasticsearch and alias them
 - Obtain input data as defined in the source mappings of index and remap it
 - Insert remapped data into Elasticsearch
 - Build a query using the ES-Alchemy query syntax
@@ -330,10 +330,10 @@ ESA({
 
 Indices are versioned using a computed hash deduced from their schema. So an index named `foo` uses
 multiple mappings as `foo@HASH` under the hood. When updating or deleting a document the document
-is removed from all old version and updated in the current version as required. Empty, old version are removed.
+is changed in all version. Which index version is active depends on the index alias.
 
 When the version of an index changes the new index mapping needs to be created. Calling `mapping.create` on
-every initialization should be ok to do.
+every initialization should be ok to do this.
 
 ## Document Signatures
 
@@ -380,14 +380,13 @@ Interacting with the rest api of Elasticsearch
 - `mapping.historic(name: String)` - get _old_ mapping versions and their respective document counts from Elasticsearch
 - `mapping.list()` - Lists all mappings currently in Elasticsearch
 - `mapping.recreate(name: String)` - recreate mapping on Elasticsearch (deletes _all_ versions and recreates current version)
-- `data.count(name: String)` - get number of indexed elements from Elasticsearch (from _all_ versions)
-- `data.query(name: String, filter: Object, options: Object)` - query for data in Elasticsearch against all versions. Returns raw result body from elasticsearch.
-- `data.version(index: String, id: String)` - get version number in latest index version for document or null if document does not exist
-- `data.signature(index: String, id: String)` - get signature as `${_seq_no')}_${_primary_term}` in latest index version for document or null if document does not exist
-- `data.exists(index: String, id: String)` - check if document exists in any index version
+- `data.count(name: String)` - get number of indexed elements from alias
+- `data.query(name: String, filter: Object, options: Object)` - query for data in Elasticsearch against alias. Returns raw result body from elasticsearch.
+- `data.version(index: String, id: String)` - get version number in alias for document or null if document does not exist
+- `data.signature(index: String, id: String)` - get signature as `${_seq_no')}_${_primary_term}` in alias for document or null if document does not exist
+- `data.exists(index: String, id: String)` - check if document exists in alias
 - `data.refresh(name: String)` - refresh Elasticsearch index, useful e.g. when testing (all versions)
-- `data.historic(index: String, limit: Integer = 100)` - fetch historic data entries as list of ids.
-- `data.update(name: String, options: Object)` - update, delete or touch objects in Elasticsearch (current version, removed touched documents from old versions and deletes old versions when empty)
+- `data.update(name: String, options: Object)` - update or delete documents in Elasticsearch (all index versions)
 - `data.stats()` - returns all the statistics for the nodes in a cluster like: indices, cpu usage and other meta
 
 
