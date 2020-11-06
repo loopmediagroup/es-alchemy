@@ -349,6 +349,7 @@ Available commands
 
 #### index
 
+- `versions.persist(folder: String)` - persist index versions to a specified folder (history of versions)
 - `register(name: String, definitions: Object)` - register an index with ES-Alchemy
 - `list()` - list all indices registered with ES-Alchemy
 - `getMapping(name: String)` - get the mapping for Elasticsearch for this index
@@ -364,10 +365,6 @@ Available commands
 #### query
 
 - `build(name: String?, options: Object)` - build a query, index is optional and can be passed as null, see details in corresponding section
-
-#### versions
-
-- `persist(folder: String)` - persist index versions to a specified folder (history of versions)
 
 #### rest
 

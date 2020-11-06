@@ -16,7 +16,7 @@ describe('Testing Versions', {
   });
 
   it('Testing load', ({ dir }) => {
-    expect(index.versions.persist(dir)).to.equal(true);
+    expect(index.index.versions.persist(dir)).to.equal(true);
     const result = versions.load(dir);
     const schema = Joi.object().pattern(
       Joi.string().valid(
