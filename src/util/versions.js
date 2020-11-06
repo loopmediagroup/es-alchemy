@@ -30,5 +30,6 @@ module.exports.load = (folder) => {
     const defPath = file.split('@');
     set(indexVersions, defPath, def);
   });
-  return indexVersions;
 };
+
+module.exports.get = () => indexVersions;

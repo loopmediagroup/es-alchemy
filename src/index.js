@@ -35,7 +35,9 @@ module.exports = (options) => {
     },
     index: {
       versions: {
-        persist: (folder) => versions.persist(indices, folder)
+        persist: (folder) => versions.persist(indices, folder),
+        load: (folder) => versions.load(folder),
+        get: () => versions.get()
       },
       register: (idx, specs) => registerIndex(idx, specs),
       list: () => Object.keys(indices).sort(),
