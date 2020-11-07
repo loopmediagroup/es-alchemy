@@ -2,6 +2,7 @@ const get = require('lodash.get');
 const request = require('request-promise-native');
 const mappingCreate = require('./mapping/create');
 const mappingDelete = require('./mapping/delete');
+const mappingDiverged = require('./mapping/diverged');
 const mappingGet = require('./mapping/get');
 const mappingList = require('./mapping/list');
 const mappingHistoric = require('./mapping/historic');
@@ -19,7 +20,7 @@ const dataHistoric = require('./data/historic');
 const dataUpdate = require('./data/update');
 const dataStats = require('./data/stats');
 
-module.exports = (getRels, getMapping, options) => {
+module.exports = (getRels, getMapping, getIndex, options) => {
   const call = (method, idx, {
     endpoint = '',
     body = {},
@@ -70,6 +71,7 @@ module.exports = (getRels, getMapping, options) => {
     mapping: {
       create: (idx) => mappingCreate(call, idx, getMapping(idx)),
       delete: (idx) => mappingDelete(call, idx),
+      diverged: (idx) => mappingDiverged(call, idx, getIndex(idx)),
       exists: (idx) => mappingExists(call, idx, getMapping(idx)),
       get: (idx) => mappingGet(call, idx, getMapping(idx)),
       historic: (idx) => mappingHistoric(call, idx, getMapping(idx)),
