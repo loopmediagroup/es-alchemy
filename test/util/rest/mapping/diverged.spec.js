@@ -27,6 +27,7 @@ describe('Testing diverged', {
         headline: 'headline'
       })
     }])).to.equal(true);
+    expect(await index.rest.data.refresh('offer')).to.equal(true);
     await index.rest.mapping.diverged('offer');
     expect(await index.rest.mapping.delete('offer')).to.equal(true);
   });

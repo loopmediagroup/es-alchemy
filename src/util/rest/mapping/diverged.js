@@ -1,9 +1,6 @@
-const path = require('path');
 const get = require('lodash.get');
-const set = require('lodash.set');
-const sfs = require('smart-fs');
 const { get: getPersistedVersions } = require('../../versions');
-const { build } = require('../../query');
+const traverse = require('../../../misc/traverse');
 
 const getPersistedVersionsByIndex = (idx) => {
   const persistedVersions = getPersistedVersions();
@@ -18,15 +15,21 @@ const getESVersionsByIndex = async (call, idx) => {
   return result.body.map(({ index }) => index);
 };
 
-module.exports = async (call, idx, indexSpec, query) => {
+const listDocuments = async (call, idx) => {
+  const result = await call('GET', idx, { endpoint: '_search' });
+  return result.body.hits.hits;
+};
+
+module.exports = async (call, idx, indexSpec) => {
+  const registeredVersion = `${idx}@${get(indexSpec, 'mapping.mappings._meta.hash')}`;
   const persistedVersions = getPersistedVersionsByIndex(idx);
   const esVersions = await getESVersionsByIndex(call, idx);
-  const registeredVersion = `${idx}@${get(indexSpec, 'mapping.mappings._meta.hash')}`;
-  const filter = build(['id', 'headline'], {
-    toReturn: ['id', 'headline'],
-    limit: 1,
-    offset: 0
-  });
-  const result = await query(registeredVersion, filter);
+  const docs = await Promise.all([
+    registeredVersion,
+    ...persistedVersions,
+    ...esVersions
+  ].map((i) => listDocuments(call, i)));
+  const ids = docs.map((e) => e.map(({ _id: id }) => id));
+  console.log(traverse(...ids))
 };
 

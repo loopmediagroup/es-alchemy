@@ -62,8 +62,6 @@ module.exports = (getRels, getMapping, getIndex, options) => {
       return response;
     });
 
-  const query = (idx, filter) => dataQuery(call, idx, getRels(idx), getMapping(idx), filter);
-
   return {
     call: (method, idx, opts = {}) => call(method, idx, opts),
     alias: {
@@ -73,7 +71,7 @@ module.exports = (getRels, getMapping, getIndex, options) => {
     mapping: {
       create: (idx) => mappingCreate(call, idx, getMapping(idx)),
       delete: (idx) => mappingDelete(call, idx),
-      diverged: (idx) => mappingDiverged(call, idx, getIndex(idx), query),
+      diverged: (idx) => mappingDiverged(call, idx, getIndex(idx)),
       exists: (idx) => mappingExists(call, idx, getMapping(idx)),
       get: (idx) => mappingGet(call, idx, getMapping(idx)),
       historic: (idx) => mappingHistoric(call, idx, getMapping(idx)),
@@ -85,7 +83,7 @@ module.exports = (getRels, getMapping, getIndex, options) => {
       version: (idx, id) => dataVersion(call, idx, getMapping(idx), id),
       signature: (idx, id) => dataSignature(call, idx, getMapping(idx), id),
       exists: (idx, id) => dataExists(call, idx, id),
-      query: (idx, filter) => query(idx, filter),
+      query: (idx, filter) => dataQuery(call, idx, getRels(idx), getMapping(idx), filter),
       refresh: (idx) => dataRefresh(call, idx),
       historic: (idx, limit = 100) => dataHistoric(call, idx, getMapping(idx), limit),
       update: (idx, opts) => dataUpdate(call, idx, getRels(idx), getMapping(idx), opts),
