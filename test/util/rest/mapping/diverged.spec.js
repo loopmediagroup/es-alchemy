@@ -2,7 +2,7 @@ const { expect } = require('chai');
 const { describe } = require('node-tdd');
 const { v4: uuid4 } = require('uuid');
 const Index = require('../../../../src/index');
-const { indices, queryMappings, registerEntitiesForIndex } = require('../../../helper');
+const { registerEntitiesForIndex } = require('../../../helper');
 
 describe('Testing diverged', {
   useTmpDir: true
@@ -28,7 +28,10 @@ describe('Testing diverged', {
       })
     }])).to.equal(true);
     expect(await index.rest.data.refresh('offer')).to.equal(true);
-    await index.rest.mapping.diverged('offer');
+    expect(await index.rest.mapping.diverged('offer')).to.deep.equal({
+      cursor: [offerId, offerId, offerId],
+      result: []
+    });
     expect(await index.rest.mapping.delete('offer')).to.equal(true);
   });
 });

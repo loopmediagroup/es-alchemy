@@ -30,6 +30,5 @@ module.exports = async (call, idx, indexSpec) => {
     ...esVersions
   ].map((i) => listDocuments(call, i)));
   const ids = docs.map((e) => e.map(({ _id: id }) => id));
-  console.log(traverse(...ids))
+  return traverse(...ids);
 };
-
