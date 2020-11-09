@@ -1,6 +1,8 @@
 // Translate index from esalchemy syntax to ES syntax
 const assert = require('assert');
+const path = require('path');
 const get = require('lodash.get');
+const sfs = require('smart-fs');
 const objectHash = require('object-hash');
 
 const buildPropertiesRec = (node, models) => {
@@ -84,5 +86,20 @@ module.exports = ({
     };
   },
   extractFields: (specs) => extractFieldsRec(specs),
-  extractRels: (spec) => extractRelsRec(spec)
+  extractRels: (spec) => extractRelsRec(spec),
+  persist: (indices, folder) => {
+    let result = false;
+    Object.entries(indices).forEach(([idx, def]) => {
+      const key = `${idx}@${get(def, 'mapping.mappings._meta.hash')}.json`;
+      const filePath = path.join(folder, key);
+      if (!sfs.existsSync(filePath)) {
+        sfs.smartWrite(filePath, {
+          timestamp: Math.floor(new Date().getTime() / 1000),
+          ...def
+        });
+        result = true;
+      }
+    });
+    return result;
+  }
 });
