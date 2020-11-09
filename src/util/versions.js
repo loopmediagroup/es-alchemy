@@ -3,6 +3,15 @@ const path = require('path');
 const get = require('lodash.get');
 const set = require('lodash.set');
 const sfs = require('smart-fs');
+const Joi = require('joi-strict');
+
+const versionSchema = Joi.object().keys({
+  timestamp: Joi.number().integer(),
+  specs: Joi.object(),
+  mapping: Joi.object(),
+  fields: Joi.array().items(Joi.string()),
+  rels: Joi.object()
+});
 
 module.exports = () => {
   const indexVersions = {};
@@ -30,6 +39,7 @@ module.exports = () => {
       assert(files.length !== 0, 'No files found');
       files.forEach((file) => {
         const def = sfs.smartRead(path.join(folder, `${file}.json`));
+        Joi.assert(def, versionSchema);
         const defPath = file.split('@');
         set(indexVersions, defPath, def);
       });
