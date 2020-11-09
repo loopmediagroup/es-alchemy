@@ -4,7 +4,7 @@ const get = require('lodash.get');
 const set = require('lodash.set');
 const sfs = require('smart-fs');
 
-module.exports = (() => {
+module.exports = () => {
   const indexVersions = {};
   return {
     persist: (indices, folder) => {
@@ -27,6 +27,7 @@ module.exports = (() => {
       const files = sfs.walkDir(folder)
         .filter((f) => f.endsWith('.json'))
         .map((f) => f.slice(0, -5));
+      assert(files.length !== 0, 'No files found');
       files.forEach((file) => {
         const def = sfs.smartRead(path.join(folder, `${file}.json`));
         const defPath = file.split('@');
@@ -36,4 +37,4 @@ module.exports = (() => {
     list: () => Object.keys(indexVersions),
     get: (index) => indexVersions[index]
   };
-});
+};

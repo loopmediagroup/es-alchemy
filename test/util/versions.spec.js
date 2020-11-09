@@ -14,17 +14,7 @@ describe('Testing Versions', {
   beforeEach(() => {
     versions = Versions();
     hash = uuid4();
-    indices = {
-      offer: {
-        mapping: {
-          mappings: {
-            _meta: {
-              hash
-            }
-          }
-        }
-      }
-    };
+    indices = { offer: { mapping: { mappings: { _meta: { hash } } } } };
   });
 
   it('Testing list', ({ dir }) => {
