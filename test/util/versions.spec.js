@@ -2,6 +2,7 @@ const { expect } = require('chai');
 const { v4: uuid4 } = require('uuid');
 const { describe } = require('node-tdd');
 const Joi = require('joi-strict');
+const Versions = require('../../src/util/versions');
 
 describe('Testing Versions', {
   useTmpDir: true
@@ -11,11 +12,7 @@ describe('Testing Versions', {
   let indices;
 
   beforeEach(() => {
-    Object.keys(require.cache).forEach((key) => {
-      delete require.cache[key];
-    });
-    // eslint-disable-next-line global-require
-    versions = require('../../src/util/versions');
+    versions = Versions();
     hash = uuid4();
     indices = {
       offer: {
@@ -30,10 +27,17 @@ describe('Testing Versions', {
     };
   });
 
+  it('Testing list', ({ dir }) => {
+    expect(versions.persist(indices, dir)).to.equal(true);
+    versions.load(dir);
+    const result = versions.list();
+    expect(result).to.deep.equal(['offer']);
+  });
+
   it('Testing get', ({ dir }) => {
     expect(versions.persist(indices, dir)).to.equal(true);
     versions.load(dir);
-    const result = versions.get(dir);
+    const result = versions.get('offer');
     const schema = Joi.object().pattern(
       Joi.string().valid(hash),
       Joi.object().keys({
@@ -41,7 +45,7 @@ describe('Testing Versions', {
         mapping: Joi.object()
       })
     );
-    expect(Object.keys(result).sort()).to.deep.equal(['offer']);
-    expect(Object.values(result).every((e) => Joi.test(e, schema))).to.equal(true);
+    expect(Object.keys(result).sort()).to.deep.equal([hash]);
+    expect(Joi.test(result, schema)).to.equal(true);
   });
 });
