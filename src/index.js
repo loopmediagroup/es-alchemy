@@ -5,12 +5,11 @@ const model = require('./util/model');
 const index = require('./util/index');
 const data = require('./util/data');
 const query = require('./util/query');
-const Versions = require('./util/versions');
+const versions = require('./util/versions');
 const rest = require('./util/rest/rest');
 const loadJsonInDir = require('./util/load-json-in-dir');
 
 module.exports = (options) => {
-  const versions = Versions();
   const models = {};
   const registerModel = (name, specs) => {
     models[name] = {

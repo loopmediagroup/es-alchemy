@@ -2,7 +2,6 @@ const { expect } = require('chai');
 const { v4: uuid4 } = require('uuid');
 const { describe } = require('node-tdd');
 const Joi = require('joi-strict');
-const Versions = require('../../src/util/versions');
 
 describe('Testing Versions', {
   useTmpDir: true
@@ -12,7 +11,11 @@ describe('Testing Versions', {
   let indices;
 
   beforeEach(() => {
-    versions = Versions();
+    Object.keys(require.cache).forEach((key) => {
+      delete require.cache[key];
+    });
+    // eslint-disable-next-line global-require
+    versions = require('../../src/util/versions');
     hash = uuid4();
     indices = {
       offer: {
