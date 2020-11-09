@@ -5,11 +5,12 @@ const model = require('./util/model');
 const index = require('./util/index');
 const data = require('./util/data');
 const query = require('./util/query');
-const versions = require('./util/versions');
+const Versions = require('./util/versions');
 const rest = require('./util/rest/rest');
 const loadJsonInDir = require('./util/load-json-in-dir');
 
 module.exports = (options) => {
+  const versions = Versions();
   const models = {};
   const registerModel = (name, specs) => {
     models[name] = {
@@ -36,8 +37,7 @@ module.exports = (options) => {
     index: {
       versions: {
         persist: (folder) => versions.persist(indices, folder),
-        load: (folder) => versions.load(folder),
-        get: () => versions.get()
+        load: (folder) => versions.load(folder)
       },
       register: (idx, specs) => registerIndex(idx, specs),
       list: () => Object.keys(indices).sort(),
