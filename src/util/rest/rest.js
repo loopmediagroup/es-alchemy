@@ -20,7 +20,7 @@ const dataHistoric = require('./data/historic');
 const dataUpdate = require('./data/update');
 const dataStats = require('./data/stats');
 
-module.exports = (getRels, getMapping, options) => {
+module.exports = (getRels, getMapping, versions, options) => {
   const call = (method, idx, {
     endpoint = '',
     body = {},
@@ -75,7 +75,7 @@ module.exports = (getRels, getMapping, options) => {
       get: (idx) => mappingGet(call, idx, getMapping(idx)),
       historic: (idx) => mappingHistoric(call, idx, getMapping(idx)),
       list: () => mappingList(call),
-      prune: (folder) => mappingPrune(call, folder),
+      prune: () => mappingPrune(call, versions),
       recreate: (idx) => mappingRecreate(call, idx, getMapping(idx))
     },
     data: {

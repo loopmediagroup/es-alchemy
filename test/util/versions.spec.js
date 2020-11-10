@@ -20,6 +20,14 @@ describe('Testing Versions', {
     expect(result).to.deep.equal(['offer']);
   });
 
+  it('Testing listWithVersions', ({ fixture, dir }) => {
+    const offerIndex = fixture('offer');
+    expect(versions.persist(offerIndex, dir)).to.equal(true);
+    versions.load(dir);
+    const result = versions.listWithVersions();
+    expect(result).to.deep.equal(['offer@6a1b8f491e156e356ab57e8df046b9f449acb440']);
+  });
+
   it('Testing get', ({ fixture, dir }) => {
     const offerIndex = fixture('offer');
     expect(versions.persist(offerIndex, dir)).to.equal(true);

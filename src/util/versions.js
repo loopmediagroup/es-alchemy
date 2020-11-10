@@ -45,6 +45,11 @@ module.exports = () => {
       });
     },
     list: () => Object.keys(indexVersions),
+    listWithVersions: () => Object.entries(indexVersions)
+      .reduce((prev, [idx, def]) => {
+        const index = Object.keys(def).map((e) => `${idx}@${e}`);
+        return prev.concat(index);
+      }, []),
     get: (index) => indexVersions[index]
   };
 };

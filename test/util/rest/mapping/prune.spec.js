@@ -34,7 +34,8 @@ describe('Testing prune', {
   it('Test pruning an old index', async ({ dir }) => {
     expect(await index.rest.mapping.create('offer')).to.equal(true);
     expect(await index.rest.mapping.create('address')).to.equal(true);
-    expect(index.index.persist(dir)).to.equal(true);
+    expect(index.index.versions.persist(dir)).to.equal(true);
+    index.index.versions.load(dir);
     index.model.register('offer', updatedOfferModel);
     index.index.register('offer', updatedOfferIndex);
     expect(await index.rest.mapping.create('offer')).to.equal(true);
@@ -42,7 +43,7 @@ describe('Testing prune', {
       'offer@e35ec51a3c35e2d9982e1ac2bbe23957a637a9e0',
       'address@a2066a68e07cc088f3fb8921ba0fa4f3541b569a'
     ]);
-    expect(await index.rest.mapping.prune(dir)).to.deep.equal(['offer@e35ec51a3c35e2d9982e1ac2bbe23957a637a9e0']);
+    expect(await index.rest.mapping.prune()).to.deep.equal(['offer@e35ec51a3c35e2d9982e1ac2bbe23957a637a9e0']);
     expect(await getIndices()).to.deep.equal(['address@a2066a68e07cc088f3fb8921ba0fa4f3541b569a']);
     expect(await index.rest.mapping.delete('offer')).to.equal(true);
     expect(await index.rest.mapping.delete('address')).to.equal(true);
