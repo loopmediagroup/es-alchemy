@@ -58,7 +58,7 @@ describe('Testing index', {
   });
 
   it('Testing persist', ({ dir }) => {
-    expect(index.index.persist(dir)).to.equal(true);
+    expect(index.index.versions.persist(dir)).to.equal(true);
     expect(sfs.walkDir(dir).sort()).to.deep.equal(
       [
         'address@a2066a68e07cc088f3fb8921ba0fa4f3541b569a.json',
@@ -66,6 +66,11 @@ describe('Testing index', {
         'offer@6a1b8f491e156e356ab57e8df046b9f449acb440.json'
       ]
     );
-    expect(index.index.persist(dir)).to.equal(false);
+    expect(index.index.versions.persist(dir)).to.equal(false);
+  });
+
+  it('Testing load', async ({ dir }) => {
+    expect(index.index.versions.persist(dir)).to.equal(true);
+    expect(index.index.versions.load(dir)).to.equal(undefined);
   });
 });
