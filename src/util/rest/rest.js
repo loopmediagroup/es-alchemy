@@ -75,7 +75,7 @@ module.exports = (getRels, getMapping, versions, options) => {
       get: (idx) => mappingGet(call, idx, getMapping(idx)),
       historic: (idx) => mappingHistoric(call, idx, getMapping(idx)),
       list: () => mappingList(call),
-      prune: () => mappingPrune(call, versions),
+      prune: (idx) => mappingPrune(call, versions, idx),
       recreate: (idx) => mappingRecreate(call, idx, getMapping(idx))
     },
     data: {

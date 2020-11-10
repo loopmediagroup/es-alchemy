@@ -1,0 +1,79 @@
+{
+  "model": "offer",
+  "fields": [
+    "id",
+    "headline",
+    "meta",
+    "flags",
+    "subhead"
+  ],
+  "sources": [
+    ""
+  ],
+  "nested": {
+    "locations": {
+      "model": "location[]",
+      "fields": [
+        "id",
+        "name"
+      ],
+      "sources": [
+        "locations"
+      ],
+      "nested": {
+        "address": {
+          "model": "address",
+          "fields": [
+            "id",
+            "street",
+            "city",
+            "country",
+            "centre",
+            "area",
+            "timezone",
+            "keywords",
+            "created"
+          ],
+          "sources": [
+            "address"
+          ],
+          "flat": true
+        },
+        "tags": {
+          "model": "tag[]",
+          "fields": [
+            "id",
+            "name"
+          ],
+          "sources": [
+            "tags"
+          ]
+        }
+      }
+    },
+    "tags": {
+      "model": "tag[]",
+      "fields": [
+        "id",
+        "name"
+      ],
+      "sources": [
+        "locations.tags"
+      ],
+      "flat": true
+    },
+    "flatAddress": {
+      "model": "address[]",
+      "fields": [
+        "id",
+        "centre",
+        "keywords",
+        "created"
+      ],
+      "sources": [
+        "locations.address"
+      ],
+      "flat": true
+    }
+  }
+}
