@@ -45,6 +45,12 @@ module.exports = () => {
       });
     },
     list: () => Object.keys(indexVersions),
-    get: (index) => indexVersions[index]
+    get: (index) => {
+      const result = indexVersions[index];
+      if (result === undefined) {
+        throw new Error('Index must be loaded');
+      }
+      return result;
+    }
   };
 };

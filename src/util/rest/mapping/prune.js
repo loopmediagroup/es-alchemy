@@ -11,14 +11,12 @@ const deleteIndexVersion = (call, idx, version) => call('DELETE', `${idx}@${vers
   .then((r) => r.statusCode === 200 && r.body.acknowledged === true);
 
 module.exports = async (call, versions, idx) => {
+  const localVersions = Object.keys(versions.get(idx));
   const remoteVersions = await getIndexVersions(call, idx);
-  const localVersions = versions.get(idx);
-  assert(localVersions !== undefined, 'Index must be loaded');
-  const persistedVersions = Object.keys(localVersions);
-  const versionsToPrune = remoteVersions.filter((i) => !persistedVersions.includes(i));
-  const indicesPrunedResult = await Promise.all(
+  const versionsToPrune = remoteVersions.filter((i) => !localVersions.includes(i));
+  const versionsPrunedResult = await Promise.all(
     versionsToPrune.map((version) => deleteIndexVersion(call, idx, version))
   );
-  assert(indicesPrunedResult.every((e) => e === true), versionsToPrune);
+  assert(versionsPrunedResult.every((e) => e === true), versionsToPrune);
   return versionsToPrune;
 };
