@@ -1,9 +1,0 @@
-{
-  "fields": {
-    "id": "uuid",
-    "headline": "string",
-    "meta": "object",
-    "flags": "keyword[]",
-    "subhead": "string"
-  }
-}

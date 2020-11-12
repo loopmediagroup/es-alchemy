@@ -1,5 +1,7 @@
+const path = require('path');
 const { expect } = require('chai');
 const { describe } = require('node-tdd');
+const sfs = require('smart-fs');
 const { v4: uuid4 } = require('uuid');
 const Index = require('../../../../src/index');
 const { registerEntitiesForIndex } = require('../../../helper');
@@ -7,9 +9,20 @@ const { registerEntitiesForIndex } = require('../../../helper');
 describe('Testing prune', {
   useTmpDir: true
 }, () => {
+  let updatedOfferModel;
+  let updatedOfferIndex;
   let index;
   let offerId;
   let getIndices;
+
+  before(() => {
+    const [offerModelPath, offerIndexPath] = ['models', 'indices']
+      .map((v) => path.join(__dirname, '..', '..', '..', `${v}`, 'offer.json'));
+    updatedOfferModel = sfs.smartRead(offerModelPath);
+    updatedOfferIndex = sfs.smartRead(offerIndexPath);
+    updatedOfferModel.fields.subhead = 'string';
+    updatedOfferIndex.fields.push('subhead');
+  });
 
   beforeEach(() => {
     index = Index({ endpoint: process.env.elasticsearchEndpoint });
@@ -21,9 +34,7 @@ describe('Testing prune', {
     };
   });
 
-  it('Test pruning an old index', async ({ fixture, dir }) => {
-    const updatedOfferModel = fixture('models/offer.json');
-    const updatedOfferIndex = fixture('indices/offer.json');
+  it('Test pruning an old index', async ({ dir }) => {
     expect(await index.rest.mapping.create('offer')).to.equal(true);
     expect(await index.rest.data.update('offer', [{
       action: 'update',
