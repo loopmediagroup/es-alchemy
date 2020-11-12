@@ -380,6 +380,7 @@ Interacting with the rest api of Elasticsearch
 - `mapping.get(name: String)` - get mapping details from Elasticsearch (current version)
 - `mapping.list()` - Lists all mappings currently in Elasticsearch
 - `mapping.prune(index: String)` - Removes index versions from Elasticsearch that are not tracked (unknown)
+- `mapping.sync(index: String)` - Creates tracked (known) indices in Elasticsearch when missing
 - `mapping.recreate(name: String)` - recreate mapping on Elasticsearch (deletes _all_ versions and recreates current version)
 - `data.count(name: String)` - get number of indexed elements from alias
 - `data.query(name: String, filter: Object, options: Object)` - query for data in Elasticsearch against alias. Returns raw result body from elasticsearch.

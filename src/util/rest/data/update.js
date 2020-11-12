@@ -4,21 +4,21 @@ const Joi = require('joi-strict');
 const objectScan = require('object-scan');
 
 module.exports = async (...args) => {
+  // todo: delete with signature, delete against alias index, and delete from others
+  // todo: delete without signature, delete from others
+
   Joi.assert(args, Joi.array().ordered(
     Joi.func(),
     Joi.string(),
     Joi.object(),
     Joi.object(),
     Joi.array().items(Joi.object().keys({
-      action: Joi.string().valid('update', 'delete', 'touch'),
+      action: Joi.string().valid('update', 'delete'),
       id: Joi.string().optional(),
-      doc: Joi.object().keys({
-        id: Joi.string()
-      }).unknown(true)
+      doc: Joi.object().keys({ id: Joi.string() }).unknown(true)
         .when('action', { is: Joi.string().valid('update'), then: Joi.required(), otherwise: Joi.optional() }),
       signature: Joi.string().pattern(/^\d+_\d+$/).optional()
         .when('action', { is: Joi.string().valid('update'), then: Joi.allow(null) })
-        .when('action', { is: Joi.string().valid('touch'), then: Joi.forbidden() })
     }).or('id', 'doc'))
   ));
   const [call, idx, rels, mapping, actions] = args;
