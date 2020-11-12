@@ -115,11 +115,6 @@ describe('Testing data formats', () => {
     expect(Joi.test(r, schema)).to.equal(true);
   });
 
-  it('Testing touch', async () => {
-    expect(await index.rest.data.update('offer', [{ action: 'touch', id: offerId }]))
-      .to.equal(true);
-  });
-
   it('Testing "object" data type updating', async () => {
     expect(await index.rest.data.update('offer', [{
       action: 'update',
