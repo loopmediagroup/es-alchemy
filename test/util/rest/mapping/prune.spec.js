@@ -54,7 +54,7 @@ describe('Testing prune', {
       'offer@e35ec51a3c35e2d9982e1ac2bbe23957a637a9e0',
       'offer@6a1b8f491e156e356ab57e8df046b9f449acb440'
     ]);
-    expect(await index.rest.mapping.prune('offer')).to.deep.equal(['e35ec51a3c35e2d9982e1ac2bbe23957a637a9e0']);
+    expect(await index.rest.mapping.prune('offer')).to.deep.equal(['offer@e35ec51a3c35e2d9982e1ac2bbe23957a637a9e0']);
     expect(await getIndices()).to.deep.equal(['offer@6a1b8f491e156e356ab57e8df046b9f449acb440']);
     expect(await index.rest.mapping.delete('offer')).to.equal(true);
   });
