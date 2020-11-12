@@ -349,7 +349,8 @@ Available commands
 
 #### index
 
-- `persist(folder: String)` - persist index versions to a specified folder (history of versions)
+- `versions.persist(folder: String)` - persist index versions to a specified folder (history of versions)
+- `versions.load(folder: String)` - loads persisted index versions into memory
 - `register(name: String, definitions: Object)` - register an index with ES-Alchemy
 - `list()` - list all indices registered with ES-Alchemy
 - `getMapping(name: String)` - get the mapping for Elasticsearch for this index
