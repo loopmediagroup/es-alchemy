@@ -34,6 +34,7 @@ describe('Testing prune', {
     };
   });
 
+  // TODO: refactor test
   it('Test pruning an old index', async ({ dir }) => {
     expect(await index.rest.mapping.create('offer')).to.equal(true);
     expect(await index.rest.data.update('offer', [{
