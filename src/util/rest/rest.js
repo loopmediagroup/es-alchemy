@@ -5,7 +5,6 @@ const mappingDelete = require('./mapping/delete');
 const mappingGet = require('./mapping/get');
 const mappingList = require('./mapping/list');
 const mappingPrune = require('./mapping/prune');
-const mappingHistoric = require('./mapping/historic');
 const mappingRecreate = require('./mapping/recreate');
 const mappingExists = require('./mapping/exists');
 const aliasGet = require('./alias/get');
@@ -72,7 +71,6 @@ module.exports = (getRels, getMapping, versions, options) => {
       delete: (idx) => mappingDelete(call, idx),
       exists: (idx) => mappingExists(call, idx, getMapping(idx)),
       get: (idx) => mappingGet(call, idx, getMapping(idx)),
-      historic: (idx) => mappingHistoric(call, idx, getMapping(idx)),
       list: () => mappingList(call),
       prune: (idx) => mappingPrune(call, versions, idx),
       recreate: (idx) => mappingRecreate(call, idx, getMapping(idx))

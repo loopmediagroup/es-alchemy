@@ -2,7 +2,6 @@ const assert = require('assert');
 const set = require('lodash.set');
 const Joi = require('joi-strict');
 const objectScan = require('object-scan');
-const historic = require('../mapping/historic');
 
 module.exports = async (...args) => {
   Joi.assert(args, Joi.array().ordered(
@@ -29,23 +28,12 @@ module.exports = async (...args) => {
     }
   });
 
-  const oldVersionsEntries = Object.entries(await historic(call, idx, mapping));
-  const oldVersionsEmpty = oldVersionsEntries.filter(([_, docCount]) => docCount === 0).map(([name, _]) => name);
-  const oldVersionsNonEmpty = oldVersionsEntries.filter(([_, docCount]) => docCount !== 0).map(([name, _]) => name);
-
-  if (oldVersionsEmpty.length !== 0) {
-    // delete old, empty versions
-    await Promise.all(oldVersionsEmpty.map((i) => call('DELETE', i)));
-  }
+  // generate clones of data for update and prune as needed for mapping
+  // generate clones of delete actions for other mappings
 
   // eslint-disable-next-line no-underscore-dangle
   const index = `${idx}@${mapping.mappings._meta.hash}`;
   const payload = [];
-
-  // delete elements from old index versions
-  actions.map((action) => action.id)
-    .forEach((docId) => oldVersionsNonEmpty
-      .forEach((i) => payload.push(JSON.stringify({ delete: { _index: i, _id: docId } }))));
 
   // todo: can reduce traversal, but need good tests first / possibly need to adjust object-scan
   const emptyToNull = (() => {

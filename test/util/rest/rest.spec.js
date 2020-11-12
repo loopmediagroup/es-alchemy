@@ -19,6 +19,7 @@ describe('Testing rest', () => {
 
     const offerId = uuid4();
     expect(await index.rest.mapping.create('offer')).to.equal(true);
+    expect(await index.rest.alias.update('offer')).to.equal(true);
     expect(await index.rest.data.update('offer', [{
       action: 'update',
       doc: {

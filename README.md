@@ -378,7 +378,6 @@ Interacting with the rest api of Elasticsearch
 - `mapping.delete(name: String)` - delete mapping from Elasticsearch (deletes _all_ versions)
 - `mapping.exists(name: String)` - returns `true` if latest mapping exists
 - `mapping.get(name: String)` - get mapping details from Elasticsearch (current version)
-- `mapping.historic(name: String)` - get _old_ mapping versions and their respective document counts from Elasticsearch
 - `mapping.list()` - Lists all mappings currently in Elasticsearch
 - `mapping.prune(index: String)` - Removes index versions from Elasticsearch that are not tracked (unknown)
 - `mapping.recreate(name: String)` - recreate mapping on Elasticsearch (deletes _all_ versions and recreates current version)
