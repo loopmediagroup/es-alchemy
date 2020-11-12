@@ -37,4 +37,8 @@ describe('Testing Versions', {
     );
     expect(Joi.test(result, schema)).to.equal(true);
   });
+
+  it('Testing get index not loaded error', () => {
+    expect(() => versions.get('offer')).to.throw('Index must be loaded');
+  });
 });
