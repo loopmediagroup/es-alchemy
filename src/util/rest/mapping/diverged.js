@@ -15,7 +15,6 @@ const getESVersionsByIndex = async (call, idx) => {
 
 const listDocuments = async (call, idx) => {
   const result = await call('GET', idx, { endpoint: '_search' });
-  // console.log(result.body)
   return result.body.hits.hits;
 };
 
