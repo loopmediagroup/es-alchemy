@@ -1,11 +1,9 @@
 const get = require('lodash.get');
-const { get: getPersistedVersions } = require('../../versions');
 const traverse = require('../../../misc/traverse');
 
-const getPersistedVersionsByIndex = (idx) => {
-  const persistedVersions = getPersistedVersions();
-  const indexVersions = persistedVersions[idx];
-  return Object.keys(indexVersions).map((version) => `${idx}@${version}`);
+const getPersistedVersionsByIndex = (versions, idx) => {
+  const persistedVersions = Object.keys(versions.get(idx));
+  return persistedVersions.map((version) => `${idx}@${version}`);
 };
 
 const getESVersionsByIndex = async (call, idx) => {
@@ -17,12 +15,13 @@ const getESVersionsByIndex = async (call, idx) => {
 
 const listDocuments = async (call, idx) => {
   const result = await call('GET', idx, { endpoint: '_search' });
+  // console.log(result.body)
   return result.body.hits.hits;
 };
 
-module.exports = async (call, idx, indexSpec) => {
+module.exports = async (call, versions, indexSpec, idx) => {
   const registeredVersion = `${idx}@${get(indexSpec, 'mapping.mappings._meta.hash')}`;
-  const persistedVersions = getPersistedVersionsByIndex(idx);
+  const persistedVersions = getPersistedVersionsByIndex(versions, idx);
   const esVersions = await getESVersionsByIndex(call, idx);
   const docs = await Promise.all([
     registeredVersion,

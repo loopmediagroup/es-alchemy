@@ -351,7 +351,6 @@ Available commands
 
 - `versions.persist(folder: String)` - persist index versions to a specified folder (history of versions)
 - `versions.load(folder: String)` - loads persisted index versions into memory
-- `versions.get()` - retrieve index versions stored in memory
 - `register(name: String, definitions: Object)` - register an index with ES-Alchemy
 - `list()` - list all indices registered with ES-Alchemy
 - `getMapping(name: String)` - get the mapping for Elasticsearch for this index
@@ -381,6 +380,7 @@ Interacting with the rest api of Elasticsearch
 - `mapping.get(name: String)` - get mapping details from Elasticsearch (current version)
 - `mapping.historic(name: String)` - get _old_ mapping versions and their respective document counts from Elasticsearch
 - `mapping.list()` - Lists all mappings currently in Elasticsearch
+- `mapping.prune(index: String)` - Removes index versions from Elasticsearch that are not tracked (unknown)
 - `mapping.recreate(name: String)` - recreate mapping on Elasticsearch (deletes _all_ versions and recreates current version)
 - `data.count(name: String)` - get number of indexed elements from Elasticsearch (from _all_ versions)
 - `data.query(name: String, filter: Object, options: Object)` - query for data in Elasticsearch against all versions. Returns raw result body from elasticsearch.

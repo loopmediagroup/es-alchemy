@@ -5,6 +5,7 @@ const mappingDelete = require('./mapping/delete');
 const mappingDiverged = require('./mapping/diverged');
 const mappingGet = require('./mapping/get');
 const mappingList = require('./mapping/list');
+const mappingPrune = require('./mapping/prune');
 const mappingHistoric = require('./mapping/historic');
 const mappingRecreate = require('./mapping/recreate');
 const mappingExists = require('./mapping/exists');
@@ -20,7 +21,7 @@ const dataHistoric = require('./data/historic');
 const dataUpdate = require('./data/update');
 const dataStats = require('./data/stats');
 
-module.exports = (getRels, getMapping, getIndex, options) => {
+module.exports = (getRels, getMapping, versions, getIndex, options) => {
   const call = (method, idx, {
     endpoint = '',
     body = {},
@@ -71,11 +72,12 @@ module.exports = (getRels, getMapping, getIndex, options) => {
     mapping: {
       create: (idx) => mappingCreate(call, idx, getMapping(idx)),
       delete: (idx) => mappingDelete(call, idx),
-      diverged: (idx) => mappingDiverged(call, idx, getIndex(idx)),
+      diverged: (idx) => mappingDiverged(call, versions, getIndex(idx), idx),
       exists: (idx) => mappingExists(call, idx, getMapping(idx)),
       get: (idx) => mappingGet(call, idx, getMapping(idx)),
       historic: (idx) => mappingHistoric(call, idx, getMapping(idx)),
       list: () => mappingList(call),
+      prune: (idx) => mappingPrune(call, versions, idx),
       recreate: (idx) => mappingRecreate(call, idx, getMapping(idx))
     },
     data: {
