@@ -2,8 +2,11 @@ const assert = require('assert');
 const path = require('path');
 const get = require('lodash.get');
 const set = require('lodash.set');
+const has = require('lodash.has');
+const isEqual = require('lodash.isequal');
 const sfs = require('smart-fs');
 const Joi = require('joi-strict');
+const objectScan = require('object-scan');
 
 const versionSchema = Joi.object().keys({
   timestamp: Joi.number().integer(),
@@ -12,6 +15,30 @@ const versionSchema = Joi.object().keys({
   fields: Joi.array().items(Joi.string()),
   rels: Joi.object()
 });
+
+const validate = (() => {
+  const asSimple = (v) => {
+    if (['text', 'keyword'].includes(v)) {
+      return '<simple>';
+    }
+    return v;
+  };
+  const scanner = objectScan(['*.*.mapping.mappings.**.properties.*.type'], {
+    filterFn: ({ context, key: k, value }) => {
+      const key = [k[0], ...k.slice(4)];
+      if (!has(context, key)) {
+        set(context, key, value);
+      } else if (!isEqual(asSimple(value), asSimple(get(context, key)))) {
+        throw new Error(`Index inconsistency: ${JSON.stringify({
+          key,
+          valueA: value,
+          valueB: get(context, key)
+        })}`);
+      }
+    }
+  });
+  return (indexVersions) => scanner(indexVersions, {});
+})();
 
 module.exports = () => {
   const indexVersions = {};
@@ -43,6 +70,7 @@ module.exports = () => {
         const defPath = file.split('@');
         set(indexVersions, defPath, def);
       });
+      validate(indexVersions);
     },
     list: () => Object.keys(indexVersions),
     get: (index) => {
