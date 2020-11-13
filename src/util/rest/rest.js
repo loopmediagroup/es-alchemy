@@ -2,6 +2,7 @@ const get = require('lodash.get');
 const request = require('request-promise-native');
 const mappingCreate = require('./mapping/create');
 const mappingDelete = require('./mapping/delete');
+const mappingDiverged = require('./mapping/diverged');
 const mappingGet = require('./mapping/get');
 const mappingList = require('./mapping/list');
 const mappingPrune = require('./mapping/prune');
@@ -72,6 +73,7 @@ module.exports = (getRels, getMapping, versions, options) => {
     mapping: {
       create: (idx) => mappingCreate(call, idx, getMapping(idx)),
       delete: (idx) => mappingDelete(call, idx),
+      diverged: (idx, cursor) => mappingDiverged(call, versions, getMapping(idx), idx, cursor),
       exists: (idx) => mappingExists(call, idx, getMapping(idx)),
       get: (idx) => mappingGet(call, idx, getMapping(idx)),
       historic: (idx) => mappingHistoric(call, idx, getMapping(idx)),
