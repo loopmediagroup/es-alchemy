@@ -8,22 +8,42 @@ describe('Testing Versions', {
 }, () => {
   let versions;
 
-  beforeEach(() => {
+  beforeEach(({ fixture, dir }) => {
     versions = Versions();
-  });
-
-  it('Testing list', ({ fixture, dir }) => {
     const offerIndex = fixture('offer');
     expect(versions.persist(offerIndex, dir)).to.equal(true);
     versions.load(dir);
+  });
+
+  it('Testing getModel', () => {
+    const result = versions.getModel('offer');
+    expect(result).to.deep.equal('offer');
+  });
+
+  it('Testing getFields', () => {
+    const result = versions.getFields('offer');
+    // todo: as fixture (dont use length)
+    expect(result.length).to.deep.equal(23);
+  });
+
+  it('Testing getRels', () => {
+    const result = versions.getRels('offer');
+    // todo: as fixture
+    expect(result).to.deep.equal({
+      locations: 'location[]',
+      'locations.address': 'address',
+      'locations.tags': 'tag[]',
+      tags: 'tag[]',
+      flatAddress: 'address[]'
+    });
+  });
+
+  it('Testing list', () => {
     const result = versions.list();
     expect(result).to.deep.equal(['offer']);
   });
 
-  it('Testing get', ({ fixture, dir }) => {
-    const offerIndex = fixture('offer');
-    expect(versions.persist(offerIndex, dir)).to.equal(true);
-    versions.load(dir);
+  it('Testing get', () => {
     const result = versions.get('offer');
     const schema = Joi.object().pattern(
       Joi.string().valid('6a1b8f491e156e356ab57e8df046b9f449acb440'),
@@ -39,6 +59,6 @@ describe('Testing Versions', {
   });
 
   it('Testing get index not loaded error', () => {
-    expect(() => versions.get('offer')).to.throw('Index must be loaded');
+    expect(() => versions.get('unknown')).to.throw('Index must be loaded');
   });
 });
