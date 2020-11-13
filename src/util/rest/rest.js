@@ -72,7 +72,7 @@ module.exports = (getRels, getMapping, versions, options) => {
     mapping: {
       create: (idx) => mappingCreate(call, idx, getMapping(idx)),
       delete: (idx) => mappingDelete(call, idx),
-      diverged: (idx, cursor = null) => mappingDiverged(call, versions, getMapping(idx), idx, cursor),
+      diverged: (idx, cursor) => mappingDiverged(call, versions, getMapping(idx), idx, cursor),
       exists: (idx) => mappingExists(call, idx, getMapping(idx)),
       get: (idx) => mappingGet(call, idx, getMapping(idx)),
       historic: (idx) => mappingHistoric(call, idx, getMapping(idx)),
