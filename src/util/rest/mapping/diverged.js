@@ -28,7 +28,7 @@ module.exports = async (call, versions, mapping, idx, cursor = null) => {
   return {
     result: traverseResult.result,
     cursor: traverseResult.cursor.reduce((prev, c, i) => Object.assign(prev, {
-      [localVersions[i]]: c === null ? null : c
+      [localVersions[i]]: c
     }), {})
   };
 };
