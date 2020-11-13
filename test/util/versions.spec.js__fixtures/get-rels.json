@@ -1,0 +1,7 @@
+{
+  "locations": "location[]",
+  "locations.address": "address",
+  "locations.tags": "tag[]",
+  "tags": "tag[]",
+  "flatAddress": "address[]"
+}
