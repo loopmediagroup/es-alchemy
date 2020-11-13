@@ -351,6 +351,9 @@ Available commands
 
 - `versions.persist(folder: String)` - persist index versions to a specified folder (history of versions)
 - `versions.load(folder: String)` - loads persisted index versions into memory
+- `versions.getFields(name: String)` - get union of fields for all index versions
+- `versions.getRels(name: String)` - get union of rels for this index (returned as object mapping to node type)
+- `versions.getModel(name: String)` - get top level model for this index (can never be changed)
 - `register(name: String, definitions: Object)` - register an index with ES-Alchemy
 - `list()` - list all indices registered with ES-Alchemy
 - `getMapping(name: String)` - get the mapping for Elasticsearch for this index
