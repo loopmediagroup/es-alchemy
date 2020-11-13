@@ -21,7 +21,7 @@ const dataHistoric = require('./data/historic');
 const dataUpdate = require('./data/update');
 const dataStats = require('./data/stats');
 
-module.exports = (getRels, getMapping, versions, getIndex, options) => {
+module.exports = (getRels, getMapping, versions, options) => {
   const call = (method, idx, {
     endpoint = '',
     body = {},
@@ -72,7 +72,7 @@ module.exports = (getRels, getMapping, versions, getIndex, options) => {
     mapping: {
       create: (idx) => mappingCreate(call, idx, getMapping(idx)),
       delete: (idx) => mappingDelete(call, idx),
-      diverged: (idx) => mappingDiverged(call, versions, getIndex(idx), idx),
+      diverged: (idx, cursor = null) => mappingDiverged(call, versions, getMapping(idx), idx, cursor),
       exists: (idx) => mappingExists(call, idx, getMapping(idx)),
       get: (idx) => mappingGet(call, idx, getMapping(idx)),
       historic: (idx) => mappingHistoric(call, idx, getMapping(idx)),

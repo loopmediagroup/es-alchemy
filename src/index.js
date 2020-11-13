@@ -58,7 +58,6 @@ module.exports = (options) => {
       (idx) => get(indices[idx], 'rels', null),
       (idx) => get(indices[idx], 'mapping', null),
       versions,
-      (idx) => indices[idx],
       options
     )
   };

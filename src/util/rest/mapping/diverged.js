@@ -1,4 +1,3 @@
-const get = require('lodash.get');
 const traverse = require('../../../misc/traverse');
 
 const getPersistedVersionsByIndex = (versions, idx) => {
@@ -6,27 +5,39 @@ const getPersistedVersionsByIndex = (versions, idx) => {
   return persistedVersions.map((version) => `${idx}@${version}`);
 };
 
-const getESVersionsByIndex = async (call, idx) => {
-  const result = await call('GET', '', {
-    endpoint: `_cat/indices/${idx}@*`
+const listDocuments = async (call, idx, cursor) => {
+  const result = await call('GET', idx, {
+    endpoint: '_search',
+    body: {
+      _source: ['id'],
+      ...(cursor === null ? {} : { search_after: [cursor] }),
+      size: 99,
+      sort: [
+        {
+          _id: {
+            order: 'asc'
+          }
+        }
+      ]
+    }
   });
-  return result.body.map(({ index }) => index);
+  return result.body.hits.hits.map(({ _id: id }) => id);
 };
 
-const listDocuments = async (call, idx) => {
-  const result = await call('GET', idx, { endpoint: '_search' });
-  return result.body.hits.hits;
-};
-
-module.exports = async (call, versions, indexSpec, idx) => {
-  const registeredVersion = `${idx}@${get(indexSpec, 'mapping.mappings._meta.hash')}`;
-  const persistedVersions = getPersistedVersionsByIndex(versions, idx);
-  const esVersions = await getESVersionsByIndex(call, idx);
-  const docs = await Promise.all([
-    registeredVersion,
-    ...persistedVersions,
-    ...esVersions
-  ].map((i) => listDocuments(call, i)));
-  const ids = docs.map((e) => e.map(({ _id: id }) => id));
-  return traverse(...ids);
+module.exports = async (call, versions, mapping, idx, cursor = null) => {
+  const localVersions = getPersistedVersionsByIndex(versions, idx);
+  if (cursor !== null) {
+    const cursorKeys = Object.keys(cursor);
+    if (cursorKeys.length !== localVersions.length || !cursorKeys.every((c) => localVersions.includes(c))) {
+      throw new Error('Invalid cursor keys');
+    }
+  }
+  const docs = await Promise.all(localVersions.map((i) => listDocuments(call, i, cursor === null ? null : cursor[i])));
+  const traverseResult = traverse(...docs);
+  return {
+    result: traverseResult.result,
+    cursor: traverseResult.cursor.reduce((prev, c, i) => Object.assign(prev, {
+      [localVersions[i]]: c === null ? null : c
+    }), {})
+  };
 };
