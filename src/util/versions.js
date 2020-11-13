@@ -16,6 +16,25 @@ const versionSchema = Joi.object().keys({
   rels: Joi.object()
 });
 
+const extractFieldsRec = (node, prefix = []) => Object
+  .entries(node.nested || {})
+  .map(([relName, childNode]) => extractFieldsRec(childNode, prefix.concat(relName)))
+  .reduce(
+    (p, c) => p.concat(c),
+    node.fields.map((field) => prefix.concat(field).join('.'))
+  );
+
+const extractRelsRec = (node, prefix = []) => Object
+  .entries(node.nested || {})
+  .reduce((prev, [relName, childNode]) => {
+    const childPrefix = prefix.concat(relName);
+    return Object.assign(
+      prev,
+      { [childPrefix.join('.')]: childNode.model },
+      extractRelsRec(childNode, childPrefix)
+    );
+  }, {});
+
 const validate = (() => {
   const asSimple = (v) => {
     if (['text', 'keyword'].includes(v)) {
@@ -43,6 +62,32 @@ const validate = (() => {
 module.exports = () => {
   const indexVersions = {};
   return {
+    getModel: (idx) => Object.values(indexVersions[idx])[0].specs.model,
+    getFields: (idx) => {
+      const result = new Set();
+      Object
+        .values(indexVersions[idx])
+        .forEach(({ specs }) => {
+          extractFieldsRec(specs)
+            .forEach((f) => {
+              result.add(f);
+            });
+        });
+      return [...result];
+    },
+    getRels: (idx) => {
+      const result = {};
+      Object
+        .values(indexVersions[idx])
+        .forEach(({ specs }) => {
+          Object
+            .entries(extractRelsRec(specs))
+            .forEach(([k, v]) => {
+              result[k] = v;
+            });
+        });
+      return result;
+    },
     persist: (indices, folder) => {
       let result = false;
       Object.entries(indices).forEach(([idx, def]) => {
