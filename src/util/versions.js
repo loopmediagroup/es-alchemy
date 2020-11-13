@@ -2,8 +2,10 @@ const assert = require('assert');
 const path = require('path');
 const get = require('lodash.get');
 const set = require('lodash.set');
+const isEqual = require('lodash.isequal');
 const sfs = require('smart-fs');
 const Joi = require('joi-strict');
+const objectScan = require('object-scan');
 
 const versionSchema = Joi.object().keys({
   timestamp: Joi.number().integer(),
@@ -77,8 +79,6 @@ module.exports = () => {
       return result;
     },
     load: (folder) => {
-      // todo: validate
-      // ...
       assert(Object.keys(indexVersions).length === 0, 'Cannot call load multiple times');
       const files = sfs.walkDir(folder)
         .filter((f) => f.endsWith('.json'))
@@ -90,6 +90,19 @@ module.exports = () => {
         const defPath = file.split('@');
         set(indexVersions, defPath, def);
       });
+      objectScan(['**'], {
+        filterFn: ({ context, key, value }) => {
+          if (!(key in context)) {
+            context[key] = value;
+          } else if (!isEqual(value, context[key])) {
+            // todo: keyword and text are ok and should not raise
+            // ...
+            // todo: add coverage
+            throw new Error(`Index inconsistency: ${JSON.stringify({ key, valueA: value, valueB: context[key] })}`);
+          }
+        },
+        joined: true
+      })(indexVersions, {});
     },
     list: () => Object.keys(indexVersions),
     get: (index) => {
