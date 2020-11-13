@@ -85,7 +85,7 @@ describe('Testing diverged', {
         'offer@6a1b8f491e156e356ab57e8df046b9f449acb440': '120ecadc-7344-4516-a54f-76b05111f47f'
       }
     }));
-    expect(error.message).to.equal('Invalid cursor keys');
+    expect(error.message).to.equal('Invalid cursor provided');
     expect(await index.rest.mapping.delete('offer')).to.equal(true);
   });
 

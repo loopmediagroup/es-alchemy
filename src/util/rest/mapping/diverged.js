@@ -20,7 +20,7 @@ module.exports = async (call, versions, mapping, idx, cursor = null) => {
   if (cursor !== null) {
     const cursorKeys = Object.keys(cursor);
     if (!isEqual(localVersions, cursorKeys)) {
-      throw new Error('Invalid cursor keys');
+      throw new Error('Invalid cursor provided');
     }
   }
   const docs = await Promise.all(localVersions.map((i) => listDocuments(call, i, cursor === null ? null : cursor[i])));
