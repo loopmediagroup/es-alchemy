@@ -61,7 +61,6 @@ module.exports = async (...args) => {
   })();
 
   actions
-    .filter((action) => action.action !== 'touch')
     .forEach((action) => {
       const hasSignature = action.signature !== undefined;
       const isSignatureNull = action.signature === null;
