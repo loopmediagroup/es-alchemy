@@ -28,7 +28,7 @@ describe('Testing diverged', {
     updatedOfferIndex = sfs.smartRead(offerIndexPath);
     updatedOfferModel.fields.subhead = 'string';
     updatedOfferIndex.fields.push('subhead');
-    createAndPersistEntity = async ({ dir, input }) => {
+    createAndPersistEntity = async (dir, input) => {
       expect(await index.rest.mapping.create('offer')).to.equal(true);
       expect(index.index.versions.persist(dir)).to.equal(true);
       expect(index.index.versions.load(dir)).to.equal(undefined);
@@ -46,12 +46,9 @@ describe('Testing diverged', {
   });
 
   it('Testing single index', async ({ dir }) => {
-    await createAndPersistEntity({
-      dir,
-      input: {
-        id: offerId1,
-        headline: 'headline'
-      }
+    await createAndPersistEntity(dir, {
+      id: offerId1,
+      headline: 'headline'
     });
     expect(await index.rest.mapping.diverged('offer')).to.deep.equal({
       result: [],
@@ -61,12 +58,9 @@ describe('Testing diverged', {
   });
 
   it('Testing index with cursor', async ({ dir }) => {
-    await createAndPersistEntity({
-      dir,
-      input: {
-        id: offerId1,
-        headline: 'headline'
-      }
+    await createAndPersistEntity(dir, {
+      id: offerId1,
+      headline: 'headline'
     });
     const result = await index.rest.mapping.diverged('offer');
     expect(result).to.deep.equal({
@@ -96,23 +90,17 @@ describe('Testing diverged', {
   });
 
   it('Testing documents not in sync', async ({ dir }) => {
-    await createAndPersistEntity({
-      dir,
-      input: {
-        id: offerId1,
-        headline: 'headline'
-      }
+    await createAndPersistEntity(dir, {
+      id: offerId1,
+      headline: 'headline'
     });
     instantiateIndex();
     index.model.register('offer', updatedOfferModel);
     index.index.register('offer', updatedOfferIndex);
-    await createAndPersistEntity({
-      dir,
-      input: {
-        id: offerId2,
-        headline: 'headline',
-        subhead: 'subhead'
-      }
+    await createAndPersistEntity(dir, {
+      id: offerId2,
+      headline: 'headline',
+      subhead: 'subhead'
     });
     const result = await index.rest.mapping.diverged('offer');
     expect(result).to.deep.equal({
