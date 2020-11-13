@@ -120,7 +120,7 @@ describe('Testing diverged', {
       { 'offer@6a1b8f491e156e356ab57e8df046b9f449acb440': null }
     )).to.deep.equal({
       result: [],
-      cursor: { 'offer@6a1b8f491e156e356ab57e8df046b9f449acb440': null }
+      cursor: null
     });
     expect(await index.rest.mapping.delete('offer')).to.equal(true);
   });

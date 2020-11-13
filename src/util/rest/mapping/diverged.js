@@ -33,6 +33,12 @@ module.exports = async (call, versions, mapping, idx, cursor = null) => {
     return listDocuments(call, i, cursor[i]);
   }));
   const traverseResult = traverse(...docs);
+  if (traverseResult.cursor.every((c) => c === null)) {
+    return {
+      result: traverseResult.result,
+      cursor: null
+    };
+  }
   return {
     result: traverseResult.result,
     cursor: traverseResult.cursor.reduce((prev, c, i) => Object.assign(prev, {
