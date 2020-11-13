@@ -20,22 +20,14 @@ describe('Testing Versions', {
     expect(result).to.deep.equal('offer');
   });
 
-  it('Testing getFields', () => {
+  it('Testing getFields', ({ fixture }) => {
     const result = versions.getFields('offer');
-    // todo: as fixture (dont use length)
-    expect(result.length).to.deep.equal(23);
+    expect(result).to.deep.equal(fixture('get-fields'));
   });
 
-  it('Testing getRels', () => {
+  it('Testing getRels', ({ fixture }) => {
     const result = versions.getRels('offer');
-    // todo: as fixture
-    expect(result).to.deep.equal({
-      locations: 'location[]',
-      'locations.address': 'address',
-      'locations.tags': 'tag[]',
-      tags: 'tag[]',
-      flatAddress: 'address[]'
-    });
+    expect(result).to.deep.equal(fixture('get-rels'));
   });
 
   it('Testing list', () => {
