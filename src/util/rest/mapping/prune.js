@@ -1,14 +1,5 @@
 const assert = require('assert');
-
-const getIndexVersions = async (call, idx) => {
-  const result = await call('GET', '', {
-    endpoint: `_cat/indices/${idx}@*`
-  });
-  return result.body.map(({ index }) => index.split('@')[1]);
-};
-
-const deleteIndexVersion = (call, idx, version) => call('DELETE', `${idx}@${version}`)
-  .then((r) => r.statusCode === 200 && r.body.acknowledged === true);
+const { getIndexVersions, deleteIndexVersion } = require('../index/versions');
 
 module.exports = async (call, versions, idx) => {
   const localVersions = Object.keys(versions.get(idx));
