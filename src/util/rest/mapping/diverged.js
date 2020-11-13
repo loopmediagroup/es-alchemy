@@ -1,3 +1,4 @@
+const isEqual = require('lodash.isequal');
 const traverse = require('../../../misc/traverse');
 
 const listDocuments = async (call, idx, cursor) => {
@@ -18,7 +19,7 @@ module.exports = async (call, versions, mapping, idx, cursor = null) => {
     .map((version) => `${idx}@${version}`);
   if (cursor !== null) {
     const cursorKeys = Object.keys(cursor);
-    if (cursorKeys.length !== localVersions.length || !cursorKeys.every((c) => localVersions.includes(c))) {
+    if (!isEqual(localVersions, cursorKeys)) {
       throw new Error('Invalid cursor keys');
     }
   }
