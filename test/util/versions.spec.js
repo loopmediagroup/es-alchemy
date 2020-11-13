@@ -8,35 +8,25 @@ describe('Testing Versions', {
   useTmpDir: true
 }, () => {
   let versions;
+  let loadOfferIndex;
 
   beforeEach(({ fixture, dir }) => {
     versions = Versions();
-    const offerIndex = fixture('offer');
-    expect(versions.persist(offerIndex, dir)).to.equal(true);
-    versions.load(dir);
-  });
-
-  it('Testing getModel', () => {
-    const result = versions.getModel('offer');
-    expect(result).to.deep.equal('offer');
-  });
-
-  it('Testing getFields', ({ fixture }) => {
-    const result = versions.getFields('offer');
-    expect(result).to.deep.equal(fixture('get-fields'));
-  });
-
-  it('Testing getRels', ({ fixture }) => {
-    const result = versions.getRels('offer');
-    expect(result).to.deep.equal(fixture('get-rels'));
+    loadOfferIndex = () => {
+      const offerIndex = fixture('offer');
+      expect(versions.persist(offerIndex, dir)).to.equal(true);
+      versions.load(dir);
+    };
   });
 
   it('Testing list', () => {
+    loadOfferIndex();
     const result = versions.list();
     expect(result).to.deep.equal(['offer']);
   });
 
   it('Testing get', () => {
+    loadOfferIndex();
     const result = versions.get('offer');
     const schema = Joi.object().pattern(
       Joi.string().valid('6a1b8f491e156e356ab57e8df046b9f449acb440'),
@@ -52,10 +42,10 @@ describe('Testing Versions', {
   });
 
   it('Testing get index not loaded error', () => {
-    expect(() => versions.get('unknown')).to.throw('Index must be loaded');
+    expect(() => versions.get('offer')).to.throw('Index must be loaded');
   });
 
-  it('Testing load index inconsistency error', async ({ fixture, dir }) => {
+  it('Testing load index inconsistency error', ({ fixture, dir }) => {
     const offerIndex = fixture('offer');
     expect(versions.persist(offerIndex, dir)).to.equal(true);
     set(offerIndex, 'offer.mapping.mappings.properties.headline.type', 'object');
@@ -64,5 +54,23 @@ describe('Testing Versions', {
     expect(() => versions.load(dir)).to.throw(
       'Index inconsistency: {"key":["offer","properties","headline","type"],"valueA":"text","valueB":"object"}'
     );
+  });
+
+  it('Testing getModel', () => {
+    loadOfferIndex();
+    const result = versions.getModel('offer');
+    expect(result).to.deep.equal('offer');
+  });
+
+  it('Testing getFields', ({ fixture }) => {
+    loadOfferIndex();
+    const result = versions.getFields('offer');
+    expect(result).to.deep.equal(fixture('get-fields'));
+  });
+
+  it('Testing getRels', ({ fixture }) => {
+    loadOfferIndex();
+    const result = versions.getRels('offer');
+    expect(result).to.deep.equal(fixture('get-rels'));
   });
 });
