@@ -80,10 +80,7 @@ describe('Testing diverged', {
     expect(index.index.versions.load(dir)).to.equal(undefined);
     const error = await capture(() => index.rest.mapping.diverged('offer', {
       result: [],
-      cursor: {
-        'offer@e35ec51a3c35e2d9982e1ac2bbe23957a637a9e0': '120ecadc-7344-4516-a54f-76b05111f47f',
-        'offer@6a1b8f491e156e356ab57e8df046b9f449acb440': '120ecadc-7344-4516-a54f-76b05111f47f'
-      }
+      cursor: {}
     }));
     expect(error.message).to.equal('Invalid cursor provided');
     expect(await index.rest.mapping.delete('offer')).to.equal(true);
@@ -109,6 +106,21 @@ describe('Testing diverged', {
         'offer@e35ec51a3c35e2d9982e1ac2bbe23957a637a9e0': offerId2,
         'offer@6a1b8f491e156e356ab57e8df046b9f449acb440': offerId1
       }
+    });
+    expect(await index.rest.mapping.delete('offer')).to.equal(true);
+  });
+
+  it('Testing index with null cursor', async ({ dir }) => {
+    await createAndPersistEntity(dir, {
+      id: offerId1,
+      headline: 'headline'
+    });
+    expect(await index.rest.mapping.diverged(
+      'offer',
+      { 'offer@6a1b8f491e156e356ab57e8df046b9f449acb440': null }
+    )).to.deep.equal({
+      result: [],
+      cursor: { 'offer@6a1b8f491e156e356ab57e8df046b9f449acb440': null }
     });
     expect(await index.rest.mapping.delete('offer')).to.equal(true);
   });

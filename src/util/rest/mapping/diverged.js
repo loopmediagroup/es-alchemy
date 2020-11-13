@@ -23,7 +23,15 @@ module.exports = async (call, versions, mapping, idx, cursor = null) => {
       throw new Error('Invalid cursor provided');
     }
   }
-  const docs = await Promise.all(localVersions.map((i) => listDocuments(call, i, cursor === null ? null : cursor[i])));
+  const docs = await Promise.all(localVersions.map((i) => {
+    if (cursor === null) {
+      return listDocuments(call, i, null);
+    }
+    if (cursor[i] === null) {
+      return Promise.all([]);
+    }
+    return listDocuments(call, i, cursor[i]);
+  }));
   const traverseResult = traverse(...docs);
   return {
     result: traverseResult.result,
