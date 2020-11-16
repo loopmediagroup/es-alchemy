@@ -12,9 +12,9 @@ describe('Testing data formats', { useTmpDir: true }, () => {
   let index;
   let instantiateIndex;
   let createIndexVersion;
-  let getMetaFromDocs;
   let updatedOfferModel;
   let updatedOfferIndex;
+  let getMetaFromDocs;
   let offerId;
 
   before(() => {
