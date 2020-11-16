@@ -7,6 +7,7 @@ const isEqual = require('lodash.isequal');
 const sfs = require('smart-fs');
 const Joi = require('joi-strict');
 const objectScan = require('object-scan');
+const { extractFields, extractRels } = require('./index');
 
 const versionSchema = Joi.object().keys({
   timestamp: Joi.number().integer(),
@@ -15,25 +16,6 @@ const versionSchema = Joi.object().keys({
   fields: Joi.array().items(Joi.string()),
   rels: Joi.object()
 });
-
-const extractFieldsRec = (node, prefix = []) => Object
-  .entries(node.nested || {})
-  .map(([relName, childNode]) => extractFieldsRec(childNode, prefix.concat(relName)))
-  .reduce(
-    (p, c) => p.concat(c),
-    node.fields.map((field) => prefix.concat(field).join('.'))
-  );
-
-const extractRelsRec = (node, prefix = []) => Object
-  .entries(node.nested || {})
-  .reduce((prev, [relName, childNode]) => {
-    const childPrefix = prefix.concat(relName);
-    return Object.assign(
-      prev,
-      { [childPrefix.join('.')]: childNode.model },
-      extractRelsRec(childNode, childPrefix)
-    );
-  }, {});
 
 const validate = (() => {
   const asSimple = (v) => {
@@ -68,7 +50,7 @@ module.exports = () => {
       Object
         .values(indexVersions[idx])
         .forEach(({ specs }) => {
-          extractFieldsRec(specs)
+          extractFields(specs)
             .forEach((f) => {
               result.add(f);
             });
@@ -81,7 +63,7 @@ module.exports = () => {
         .values(indexVersions[idx])
         .forEach(({ specs }) => {
           Object
-            .entries(extractRelsRec(specs))
+            .entries(extractRels(specs))
             .forEach(([k, v]) => {
               result[k] = v;
             });
