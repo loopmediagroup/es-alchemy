@@ -2,6 +2,7 @@ const expect = require('chai').expect;
 const { describe } = require('node-tdd');
 const sfs = require('smart-fs');
 const chai = require('chai');
+const { v4: uuid4 } = require('uuid');
 const deepEqualInAnyOrder = require('deep-equal-in-any-order');
 const Index = require('../src/index');
 const {
@@ -18,10 +19,12 @@ describe('Testing index', {
   useTmpDir: true
 }, () => {
   let index;
+  let offerId;
 
   beforeEach(() => {
     index = Index({ endpoint: process.env.elasticsearchEndpoint });
     registerEntitiesForIndex(index);
+    offerId = uuid4();
   });
 
   it('Testing models', ({ dir }) => {
@@ -78,5 +81,23 @@ describe('Testing index', {
   it('Testing load', async ({ dir }) => {
     expect(index.index.versions.persist(dir)).to.equal(true);
     expect(index.index.versions.load(dir)).to.equal(undefined);
+  });
+
+  it('Testing count', async ({ dir }) => {
+    expect(await index.rest.mapping.create('offer')).to.equal(true);
+    expect(index.index.versions.persist(dir)).to.equal(true);
+    expect(index.index.versions.load(dir)).to.equal(undefined);
+    expect(await index.rest.alias.update('offer')).to.equal(true);
+    expect(await index.rest.data.count('offer')).to.equal(0);
+    expect(await index.rest.data.update('offer', [{
+      action: 'update',
+      doc: index.data.remap('offer', {
+        id: offerId,
+        meta: { k1: 'v1' }
+      })
+    }])).to.equal(true);
+    expect(await index.rest.data.refresh('offer')).to.equal(true);
+    expect(await index.rest.data.count('offer')).to.equal(1);
+    expect(await index.rest.mapping.delete('offer')).to.equal(true);
   });
 });
