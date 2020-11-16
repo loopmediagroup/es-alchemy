@@ -1,23 +1,54 @@
+const path = require('path');
 const { expect } = require('chai');
 const { describe } = require('node-tdd');
 const Joi = require('joi-strict');
+const sfs = require('smart-fs');
 const { v4: uuid4 } = require('uuid');
 const Index = require('../../../../src/index');
-const { registerEntitiesForIndex } = require('../../../helper');
+const { registerEntitiesForIndex, getIndices } = require('../../../helper');
 const { objectEncode } = require('../../../../src/util/paging');
 
 describe('Testing data formats', { useTmpDir: true }, () => {
   let index;
+  let instantiateIndex;
+  let createIndexVersion;
+  let updatedOfferModel;
+  let updatedOfferIndex;
+  let getMetaFromDocs;
   let offerId;
 
+  before(() => {
+    instantiateIndex = () => {
+      index = Index({ endpoint: process.env.elasticsearchEndpoint });
+      registerEntitiesForIndex(index);
+    };
+    createIndexVersion = async (dir) => {
+      expect(await index.rest.mapping.create('offer')).to.equal(true);
+      expect(await index.rest.alias.update('offer')).to.equal(true);
+      expect(index.index.versions.persist(dir)).to.equal(true);
+      expect(index.index.versions.load(dir)).to.equal(undefined);
+    };
+    const [offerModelPath, offerIndexPath] = ['models', 'indices']
+      .map((v) => path.join(__dirname, '..', '..', '..', `${v}`, 'offer.json'));
+    updatedOfferModel = sfs.smartRead(offerModelPath);
+    updatedOfferIndex = sfs.smartRead(offerIndexPath);
+    updatedOfferModel.fields.subhead = 'string';
+    updatedOfferIndex.fields.push('subhead');
+    getMetaFromDocs = async (idx) => {
+      const r = await index.rest.call('GET', idx, {
+        endpoint: '_search',
+        body: {
+          _source: ['id', 'meta']
+        }
+      });
+      return r.body.hits.hits.map(({ _source: source }) => source.meta[0]);
+    };
+  });
+
   beforeEach(async ({ dir }) => {
-    index = Index({ endpoint: process.env.elasticsearchEndpoint });
-    registerEntitiesForIndex(index);
+    instantiateIndex();
+    await createIndexVersion(dir);
     offerId = uuid4();
-    expect(await index.rest.mapping.create('offer')).to.equal(true);
-    expect(await index.rest.alias.update('offer')).to.equal(true);
-    expect(await index.index.versions.persist(dir)).to.equal(true);
-    expect(await index.index.versions.load(dir)).to.equal(undefined);
   });
 
   afterEach(async () => {
@@ -204,5 +235,34 @@ describe('Testing data formats', { useTmpDir: true }, () => {
         size: 1
       }
     });
+  });
+
+  it('Testing update with signature in two versions', async ({ dir }) => {
+    expect(await index.rest.data.update('offer', [{
+      action: 'update',
+      doc: index.data.remap('offer', { id: offerId, meta: { k1: 'v1' } })
+    }])).to.equal(true);
+    expect(await index.rest.data.refresh('offer')).to.equal(true);
+    instantiateIndex();
+    index.model.register('offer', updatedOfferModel);
+    index.index.register('offer', updatedOfferIndex);
+    await createIndexVersion(dir);
+    expect(await index.rest.data.update('offer', [{
+      action: 'update',
+      doc: index.data.remap('offer', { id: offerId, meta: { k1: 'v1' } })
+    }])).to.equal(true);
+    expect(await index.rest.data.refresh('offer')).to.equal(true);
+    const signature = await index.rest.data.signature('offer', offerId);
+    const indices = await getIndices(index, 'offer');
+    const result1 = await Promise.all(indices.map((i) => getMetaFromDocs(i)));
+    expect(result1.every(([{ k1 }]) => k1 === 'v1')).to.equal(true);
+    await index.rest.data.update('offer', [{
+      action: 'update',
+      doc: index.data.remap('offer', { id: offerId, meta: { k1: 'v2' } }),
+      signature
+    }]);
+    expect(await index.rest.data.refresh('offer')).to.equal(true);
+    const result2 = await Promise.all(indices.map((i) => getMetaFromDocs(i)));
+    expect(result2.every(([{ k1 }]) => k1 === 'v2')).to.equal(true);
   });
 });

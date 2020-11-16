@@ -19,6 +19,11 @@ const registerEntitiesForIndex = (index) => {
   });
 };
 
+const getIndices = async (index, idx) => {
+  const r = await index.rest.call('GET', `_cat/indices/${idx}@*`);
+  return r.body.map(({ index: indexVersion }) => indexVersion);
+};
+
 module.exports = {
   models,
   indices,
@@ -28,5 +33,6 @@ module.exports = {
   remaps,
   query,
   queryMappings,
-  registerEntitiesForIndex
+  registerEntitiesForIndex,
+  getIndices
 };
