@@ -36,11 +36,11 @@ describe('Testing data formats', { useTmpDir: true }, () => {
     updatedOfferIndex = sfs.smartRead(offerIndexPath);
     updatedOfferModel.fields.subhead = 'string';
     updatedOfferIndex.fields.push('subhead');
-    queryVersions = async (idx) => {
+    queryVersions = async (idx, fields = ['id', 'meta', 'subhead']) => {
       const r = await index.rest.call('GET', `${idx}@*`, {
         endpoint: '_search',
         body: {
-          _source: ['id', 'meta', 'subhead']
+          _source: fields
         }
       });
       return r.body.hits.hits.map(({ _index: version, _source: data }) => ({ version, data }));
@@ -331,5 +331,29 @@ describe('Testing data formats', { useTmpDir: true }, () => {
       version: 'offer@e35ec51a3c35e2d9982e1ac2bbe23957a637a9e0',
       data: { meta: [{ k1: 'v1' }], subhead: 'entry', id: offerId }
     }]);
+  });
+
+  it('Testing update where empty relationship gets nulled', async ({ dir }) => {
+    await setupTwoIndices(dir);
+    const r1 = await index.rest.data.update('offer', [{
+      action: 'update',
+      doc: index.data.remap('offer', { id: offerId, locations: [{ id: 'loc1' }] })
+    }]);
+    expect(r1).to.equal(true);
+    expect(await index.rest.data.refresh('offer')).to.equal(true);
+    expect(await queryVersions('offer', ['id', 'locations.id'])).to.deep.equal([
+      { version: 'offer@6a1b8f491e156e356ab57e8df046b9f449acb440', data: { id: offerId, locations: [{ id: 'loc1' }] } },
+      { version: 'offer@e35ec51a3c35e2d9982e1ac2bbe23957a637a9e0', data: { id: offerId, locations: [{ id: 'loc1' }] } }
+    ]);
+    const r2 = await index.rest.data.update('offer', [{
+      action: 'update',
+      doc: index.data.remap('offer', { id: offerId, locations: [] })
+    }]);
+    expect(r2).to.equal(true);
+    expect(await index.rest.data.refresh('offer')).to.equal(true);
+    expect(await queryVersions('offer', ['id', 'locations.id'])).to.deep.equal([
+      { version: 'offer@6a1b8f491e156e356ab57e8df046b9f449acb440', data: { id: offerId } },
+      { version: 'offer@e35ec51a3c35e2d9982e1ac2bbe23957a637a9e0', data: { id: offerId } }
+    ]);
   });
 });

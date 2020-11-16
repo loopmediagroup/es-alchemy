@@ -12,6 +12,10 @@ module.exports = async (call, idx, versions, actions_) => {
       .when('action', { is: Joi.string().valid('update'), then: Joi.allow(null) })
   }).or('id', 'doc')));
 
+  if (actions_.length === 0) {
+    return true;
+  }
+
   const alias = await aliasGet(call, idx);
 
   const payload = [];
@@ -51,9 +55,6 @@ module.exports = async (call, idx, versions, actions_) => {
     });
   });
 
-  if (payload.length === 0) {
-    return true;
-  }
   const r = await call('POST', '', {
     endpoint: '_bulk',
     body: payload.concat('').join('\n'),

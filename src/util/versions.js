@@ -104,7 +104,7 @@ module.exports = () => {
             .map(([k]) => k);
           const emptyToNull = objectScan(relsToCheck, {
             useArraySelector: false,
-            filterFn: ({ value, parent, property }) => {
+            breakFn: ({ value, parent, property }) => {
               if (Array.isArray(value) && value.length === 0) {
                 // eslint-disable-next-line no-param-reassign
                 parent[property] = null;
