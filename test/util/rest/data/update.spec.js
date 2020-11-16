@@ -40,7 +40,7 @@ describe('Testing data formats', { useTmpDir: true }, () => {
       const r = await index.rest.call('GET', `${idx}@*`, {
         endpoint: '_search',
         body: {
-          _source: ['id', 'meta']
+          _source: ['id', 'meta', 'subhead']
         }
       });
       return r.body.hits.hits.map(({ _index: version, _source: data }) => ({ version, data }));
@@ -312,5 +312,24 @@ describe('Testing data formats', { useTmpDir: true }, () => {
     expect(await queryVersions('offer')).to.deep.equal([
       { version: 'offer@e35ec51a3c35e2d9982e1ac2bbe23957a637a9e0', data: { meta: [{ k1: 'v1' }], id: offerId } }
     ]);
+  });
+
+  it('Testing update with field pruning', async ({ dir }) => {
+    await setupTwoIndices(dir);
+    const signature = await index.rest.data.signature('offer', offerId);
+    const r = await index.rest.data.update('offer', [{
+      action: 'update',
+      doc: index.data.remap('offer', { id: offerId, subhead: 'entry' }),
+      signature
+    }]);
+    expect(r).to.equal(true);
+    expect(await index.rest.data.refresh('offer')).to.equal(true);
+    expect(await queryVersions('offer')).to.deep.equal([{
+      version: 'offer@6a1b8f491e156e356ab57e8df046b9f449acb440',
+      data: { meta: [{ k1: 'v1' }], id: offerId }
+    }, {
+      version: 'offer@e35ec51a3c35e2d9982e1ac2bbe23957a637a9e0',
+      data: { meta: [{ k1: 'v1' }], subhead: 'entry', id: offerId }
+    }]);
   });
 });
