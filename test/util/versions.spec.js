@@ -35,7 +35,8 @@ describe('Testing Versions', {
         specs: Joi.object(),
         mapping: Joi.object(),
         fields: Joi.array().items(Joi.string()),
-        rels: Joi.object()
+        rels: Joi.object(),
+        prepare: Joi.function()
       })
     );
     expect(Joi.test(result, schema)).to.equal(true);
