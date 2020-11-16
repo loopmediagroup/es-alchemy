@@ -36,15 +36,15 @@ module.exports = (options) => {
     },
     index: {
       versions: {
+        getModel: (idx) => versions.getModel(idx),
+        getFields: (idx) => versions.getFields(idx),
+        getRels: (idx) => versions.getRels(idx),
         persist: (folder) => versions.persist(indices, folder),
         load: (folder) => versions.load(folder)
       },
       register: (idx, specs) => registerIndex(idx, specs),
       list: () => Object.keys(indices).sort(),
       getMapping: (idx) => cloneDeep(indices[idx].mapping),
-      getFields: (idx) => cloneDeep(indices[idx].fields),
-      getRels: (idx) => cloneDeep(indices[idx].rels),
-      getModel: (idx) => indices[idx].specs.model,
       getSpecs: (idx) => cloneDeep(indices[idx].specs)
     },
     data: {
