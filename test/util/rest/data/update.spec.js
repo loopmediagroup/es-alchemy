@@ -356,4 +356,8 @@ describe('Testing data formats', { useTmpDir: true }, () => {
       { version: 'offer@e35ec51a3c35e2d9982e1ac2bbe23957a637a9e0', data: { id: offerId } }
     ]);
   });
+
+  it('Testing empty update', async () => {
+    expect(await index.rest.data.update('offer', [])).to.equal(true);
+  });
 });
