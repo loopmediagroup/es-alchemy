@@ -1,11 +1,12 @@
 const path = require('path');
 const { expect } = require('chai');
 const { describe } = require('node-tdd');
+const get = require('lodash.get');
 const Joi = require('joi-strict');
 const sfs = require('smart-fs');
 const { v4: uuid4 } = require('uuid');
 const Index = require('../../../../src/index');
-const { registerEntitiesForIndex, getIndices } = require('../../../helper');
+const { registerEntitiesForIndex } = require('../../../helper');
 const { objectEncode } = require('../../../../src/util/paging');
 
 describe('Testing data formats', { useTmpDir: true }, () => {
@@ -14,7 +15,8 @@ describe('Testing data formats', { useTmpDir: true }, () => {
   let createIndexVersion;
   let updatedOfferModel;
   let updatedOfferIndex;
-  let getMetaFromDocs;
+  let queryVersions;
+  let setupTwoIndices;
   let offerId;
 
   before(() => {
@@ -34,14 +36,29 @@ describe('Testing data formats', { useTmpDir: true }, () => {
     updatedOfferIndex = sfs.smartRead(offerIndexPath);
     updatedOfferModel.fields.subhead = 'string';
     updatedOfferIndex.fields.push('subhead');
-    getMetaFromDocs = async (idx) => {
-      const r = await index.rest.call('GET', idx, {
+    queryVersions = async (idx) => {
+      const r = await index.rest.call('GET', `${idx}@*`, {
         endpoint: '_search',
         body: {
           _source: ['id', 'meta']
         }
       });
-      return r.body.hits.hits.map(({ _source: source }) => source.meta[0]);
+      return r.body.hits.hits.map(({ _index: version, _source: data }) => ({ version, data }));
+    };
+    setupTwoIndices = async (dir) => {
+      instantiateIndex();
+      index.model.register('offer', updatedOfferModel);
+      index.index.register('offer', updatedOfferIndex);
+      await createIndexVersion(dir);
+      expect(await index.rest.data.update('offer', [{
+        action: 'update',
+        doc: index.data.remap('offer', { id: offerId, meta: { k1: 'v1' } })
+      }])).to.equal(true);
+      expect(await index.rest.data.refresh('offer')).to.equal(true);
+      expect(await queryVersions('offer')).to.deep.equal([
+        { version: 'offer@6a1b8f491e156e356ab57e8df046b9f449acb440', data: { meta: [{ k1: 'v1' }], id: offerId } },
+        { version: 'offer@e35ec51a3c35e2d9982e1ac2bbe23957a637a9e0', data: { meta: [{ k1: 'v1' }], id: offerId } }
+      ]);
     };
   });
 
@@ -237,32 +254,63 @@ describe('Testing data formats', { useTmpDir: true }, () => {
     });
   });
 
-  it('Testing update with signature in two versions', async ({ dir }) => {
-    expect(await index.rest.data.update('offer', [{
-      action: 'update',
-      doc: index.data.remap('offer', { id: offerId, meta: { k1: 'v1' } })
-    }])).to.equal(true);
-    expect(await index.rest.data.refresh('offer')).to.equal(true);
-    instantiateIndex();
-    index.model.register('offer', updatedOfferModel);
-    index.index.register('offer', updatedOfferIndex);
-    await createIndexVersion(dir);
-    expect(await index.rest.data.update('offer', [{
-      action: 'update',
-      doc: index.data.remap('offer', { id: offerId, meta: { k1: 'v1' } })
-    }])).to.equal(true);
-    expect(await index.rest.data.refresh('offer')).to.equal(true);
+  it('Testing update with signature match', async ({ dir }) => {
+    await setupTwoIndices(dir);
     const signature = await index.rest.data.signature('offer', offerId);
-    const indices = await getIndices(index, 'offer');
-    const result1 = await Promise.all(indices.map((i) => getMetaFromDocs(i)));
-    expect(result1.every(([{ k1 }]) => k1 === 'v1')).to.equal(true);
-    await index.rest.data.update('offer', [{
+    const r = await index.rest.data.update('offer', [{
       action: 'update',
       doc: index.data.remap('offer', { id: offerId, meta: { k1: 'v2' } }),
       signature
     }]);
+    expect(r).to.equal(true);
     expect(await index.rest.data.refresh('offer')).to.equal(true);
-    const result2 = await Promise.all(indices.map((i) => getMetaFromDocs(i)));
-    expect(result2.every(([{ k1 }]) => k1 === 'v2')).to.equal(true);
+    expect(await queryVersions('offer')).to.deep.equal([
+      { version: 'offer@6a1b8f491e156e356ab57e8df046b9f449acb440', data: { meta: [{ k1: 'v2' }], id: offerId } },
+      { version: 'offer@e35ec51a3c35e2d9982e1ac2bbe23957a637a9e0', data: { meta: [{ k1: 'v2' }], id: offerId } }
+    ]);
+  });
+
+  it('Testing update with signature mismatch', async ({ dir }) => {
+    await setupTwoIndices(dir);
+    const r = await index.rest.data.update('offer', [{
+      action: 'update',
+      doc: index.data.remap('offer', { id: offerId, meta: { k1: 'v2' } }),
+      signature: '1_1'
+    }]);
+    expect(r.map(({ update }) => get(update, 'error.type')))
+      .to.deep.equal(['version_conflict_engine_exception', undefined]);
+    expect(await index.rest.data.refresh('offer')).to.equal(true);
+    expect(await queryVersions('offer')).to.deep.equal([
+      { version: 'offer@6a1b8f491e156e356ab57e8df046b9f449acb440', data: { meta: [{ k1: 'v2' }], id: offerId } },
+      { version: 'offer@e35ec51a3c35e2d9982e1ac2bbe23957a637a9e0', data: { meta: [{ k1: 'v1' }], id: offerId } }
+    ]);
+  });
+
+  it('Testing delete with signature match', async ({ dir }) => {
+    await setupTwoIndices(dir);
+    const signature = await index.rest.data.signature('offer', offerId);
+    const r = await index.rest.data.update('offer', [{
+      action: 'delete',
+      doc: index.data.remap('offer', { id: offerId }),
+      signature
+    }]);
+    expect(r).to.equal(true);
+    expect(await index.rest.data.refresh('offer')).to.equal(true);
+    expect(await queryVersions('offer')).to.deep.equal([]);
+  });
+
+  it('Testing delete with signature mismatch', async ({ dir }) => {
+    await setupTwoIndices(dir);
+    const r = await index.rest.data.update('offer', [{
+      action: 'delete',
+      doc: index.data.remap('offer', { id: offerId }),
+      signature: '1_1'
+    }]);
+    expect(r.map(({ delete: del }) => get(del, 'error.type')))
+      .to.deep.equal(['version_conflict_engine_exception', undefined]);
+    expect(await index.rest.data.refresh('offer')).to.equal(true);
+    expect(await queryVersions('offer')).to.deep.equal([
+      { version: 'offer@e35ec51a3c35e2d9982e1ac2bbe23957a637a9e0', data: { meta: [{ k1: 'v1' }], id: offerId } }
+    ]);
   });
 });
