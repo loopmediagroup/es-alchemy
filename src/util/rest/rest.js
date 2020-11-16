@@ -86,7 +86,7 @@ module.exports = (getRels, getMapping, versions, options) => {
       exists: (idx, id) => dataExists(call, idx, id),
       query: (idx, filter) => dataQuery(call, idx, getRels(idx), getMapping(idx), filter),
       refresh: (idx) => dataRefresh(call, idx),
-      update: (idx, opts) => dataUpdate(call, idx, getRels(idx), getMapping(idx), opts),
+      update: (idx, opts) => dataUpdate(call, idx, versions.get(idx), opts),
       stats: () => dataStats(call)
     }
   };

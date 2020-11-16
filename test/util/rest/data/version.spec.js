@@ -4,12 +4,14 @@ const { v4: uuid4 } = require('uuid');
 const Index = require('../../../../src/index');
 const { registerEntitiesForIndex } = require('../../../helper');
 
-describe('Testing version', () => {
+describe('Testing version', { useTmpDir: true }, () => {
   let index;
 
-  beforeEach(() => {
+  beforeEach(async ({ dir }) => {
     index = Index({ endpoint: process.env.elasticsearchEndpoint });
     registerEntitiesForIndex(index);
+    expect(await index.index.versions.persist(dir)).to.equal(true);
+    expect(await index.index.versions.load(dir)).to.equal(undefined);
   });
 
   it('Test retrieving a version number for a document', async () => {
