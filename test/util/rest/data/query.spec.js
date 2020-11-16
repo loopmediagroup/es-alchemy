@@ -104,6 +104,50 @@ describe('Testing Rest Query', { useTmpDir: true, timeout: 10000 }, () => {
       expect(r2.length).to.equal(0);
     });
 
+    it('Testing paging without searchAfter', async () => {
+      const [offerId1, offerId2] = [uuid4(), uuid4()].sort();
+      const offer1 = { id: offerId1 };
+      const offer2 = { id: offerId2 };
+      await upsert('offer', [offer1, offer2]);
+      const q = async (opts) => {
+        const filter = index.query.build('offer', {
+          toReturn: ['_id', 'id'],
+          orderBy: [['_id', 'asc']],
+          ...opts
+        });
+        const queryResult = await index.rest.data.query('offer', filter);
+        const { next, previous } = index.data.page(queryResult, filter).page;
+        return { next, previous };
+      };
+      const result1 = await q({ limit: 2 });
+      expect(result1).to.deep.equal({
+        next: {
+          limit: 2,
+          offset: 2,
+          cursor: 'eyJsaW1pdCI6Miwib2Zmc2V0IjoyLCJzZWFyY2hBZnRlciI6W119'
+        },
+        previous: null
+      });
+      const result2 = await q({ cursor: result1.next.cursor });
+      expect(result2).to.deep.equal({
+        next: null,
+        previous: {
+          limit: 2,
+          offset: 0,
+          cursor: 'eyJsaW1pdCI6Miwib2Zmc2V0IjowLCJzZWFyY2hBZnRlciI6W119'
+        }
+      });
+      const result3 = await q({ cursor: result2.previous.cursor });
+      expect(result3).to.deep.equal({
+        next: {
+          limit: 2,
+          offset: 2,
+          cursor: 'eyJsaW1pdCI6Miwib2Zmc2V0IjoyLCJzZWFyY2hBZnRlciI6W119'
+        },
+        previous: null
+      });
+    });
+
     it('Testing property type "geo_shape" returned as list', async () => {
       const offer = {
         id: uuid4(),
