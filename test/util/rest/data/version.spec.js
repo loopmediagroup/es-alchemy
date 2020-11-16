@@ -4,17 +4,20 @@ const { v4: uuid4 } = require('uuid');
 const Index = require('../../../../src/index');
 const { registerEntitiesForIndex } = require('../../../helper');
 
-describe('Testing version', () => {
+describe('Testing version', { useTmpDir: true }, () => {
   let index;
 
-  beforeEach(() => {
+  beforeEach(async ({ dir }) => {
     index = Index({ endpoint: process.env.elasticsearchEndpoint });
     registerEntitiesForIndex(index);
+    expect(await index.index.versions.persist(dir)).to.equal(true);
+    expect(await index.index.versions.load(dir)).to.equal(undefined);
   });
 
   it('Test retrieving a version number for a document', async () => {
     const offerId = uuid4();
     expect(await index.rest.mapping.create('offer')).to.equal(true);
+    expect(await index.rest.alias.update('offer')).to.equal(true);
     expect(await index.rest.data.update('offer', [{
       action: 'update',
       doc: index.data.remap('offer', {
@@ -39,6 +42,7 @@ describe('Testing version', () => {
   it('Test version and signature do not increase if update is identical', async () => {
     const offerId = uuid4();
     expect(await index.rest.mapping.create('offer')).to.equal(true);
+    expect(await index.rest.alias.update('offer')).to.equal(true);
     expect(await index.rest.data.update('offer', [{
       action: 'update',
       doc: index.data.remap('offer', {
@@ -65,6 +69,7 @@ describe('Testing version', () => {
   it('Test version and signature do not increase if update is identical (with signature)', async () => {
     const offerId = uuid4();
     expect(await index.rest.mapping.create('offer')).to.equal(true);
+    expect(await index.rest.alias.update('offer')).to.equal(true);
     expect(await index.rest.data.update('offer', [{
       action: 'update',
       doc: index.data.remap('offer', {
@@ -97,6 +102,7 @@ describe('Testing version', () => {
 
   it('Test returning null if document does not exist', async () => {
     expect(await index.rest.mapping.create('offer')).to.equal(true);
+    expect(await index.rest.alias.update('offer')).to.equal(true);
     expect(await index.rest.data.version('offer', 'id')).to.equal(null);
     expect(await index.rest.mapping.delete('offer')).to.equal(true);
   });

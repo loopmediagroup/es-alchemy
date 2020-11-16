@@ -46,6 +46,7 @@ const buildPropertiesRec = (node, models) => {
   );
 };
 
+// todo: remove
 const extractFieldsRec = (node, prefix = []) => Object
   .entries(node.nested || {})
   .map(([relName, childNode]) => extractFieldsRec(childNode, prefix.concat(relName)))
@@ -54,6 +55,7 @@ const extractFieldsRec = (node, prefix = []) => Object
     node.fields.map((field) => prefix.concat(field).join('.'))
   );
 
+// todo: remove
 const extractRelsRec = (node, prefix = []) => Object
   .entries(node.nested || {})
   .reduce((prev, [relName, childNode]) => {

@@ -6,15 +6,18 @@ const Index = require('../../../../src/index');
 const { registerEntitiesForIndex } = require('../../../helper');
 const { objectEncode } = require('../../../../src/util/paging');
 
-describe('Testing data formats', () => {
+describe('Testing data formats', { useTmpDir: true }, () => {
   let index;
   let offerId;
 
-  beforeEach(async () => {
+  beforeEach(async ({ dir }) => {
     index = Index({ endpoint: process.env.elasticsearchEndpoint });
     registerEntitiesForIndex(index);
     offerId = uuid4();
     expect(await index.rest.mapping.create('offer')).to.equal(true);
+    expect(await index.rest.alias.update('offer')).to.equal(true);
+    expect(await index.index.versions.persist(dir)).to.equal(true);
+    expect(await index.index.versions.load(dir)).to.equal(undefined);
   });
 
   afterEach(async () => {
@@ -112,11 +115,6 @@ describe('Testing data formats', () => {
       })
     );
     expect(Joi.test(r, schema)).to.equal(true);
-  });
-
-  it('Testing touch', async () => {
-    expect(await index.rest.data.update('offer', [{ action: 'touch', id: offerId }]))
-      .to.equal(true);
   });
 
   it('Testing "object" data type updating', async () => {

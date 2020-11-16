@@ -4,8 +4,8 @@ const { v4: uuid4 } = require('uuid');
 const Index = require('../../../src/index');
 const { registerEntitiesForIndex } = require('../../helper');
 
-describe('Testing rest', () => {
-  it('Testing responseHook.', async () => {
+describe('Testing rest', { useTmpDir: true }, () => {
+  it('Testing responseHook.', async ({ dir }) => {
     // setup
     const index = Index({
       endpoint: process.env.elasticsearchEndpoint,
@@ -16,9 +16,12 @@ describe('Testing rest', () => {
       }
     });
     registerEntitiesForIndex(index);
+    expect(await index.index.versions.persist(dir)).to.equal(true);
+    expect(await index.index.versions.load(dir)).to.equal(undefined);
 
     const offerId = uuid4();
     expect(await index.rest.mapping.create('offer')).to.equal(true);
+    expect(await index.rest.alias.update('offer')).to.equal(true);
     expect(await index.rest.data.update('offer', [{
       action: 'update',
       doc: {
@@ -37,10 +40,12 @@ describe('Testing rest', () => {
     expect(await index.rest.mapping.delete('offer')).to.equal(true);
   });
 
-  it('Testing disable auto index creation', async () => {
+  it('Testing disable auto index creation', async ({ dir }) => {
     // setup
     const index = Index({ endpoint: process.env.elasticsearchEndpoint });
     registerEntitiesForIndex(index);
+    expect(await index.index.versions.persist(dir)).to.equal(true);
+    expect(await index.index.versions.load(dir)).to.equal(undefined);
 
     const offerId = uuid4();
     // index auto creation works by default

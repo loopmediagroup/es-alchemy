@@ -7,7 +7,6 @@ const mappingGet = require('./mapping/get');
 const mappingList = require('./mapping/list');
 const mappingPrune = require('./mapping/prune');
 const mappingSync = require('./mapping/sync');
-const mappingHistoric = require('./mapping/historic');
 const mappingRecreate = require('./mapping/recreate');
 const mappingExists = require('./mapping/exists');
 const aliasGet = require('./alias/get');
@@ -18,7 +17,6 @@ const dataSignature = require('./data/signature');
 const dataExists = require('./data/exists');
 const dataQuery = require('./data/query');
 const dataRefresh = require('./data/refresh');
-const dataHistoric = require('./data/historic');
 const dataUpdate = require('./data/update');
 const dataStats = require('./data/stats');
 
@@ -76,7 +74,6 @@ module.exports = (getRels, getMapping, versions, options) => {
       diverged: (idx, cursor) => mappingDiverged(call, versions, getMapping(idx), idx, cursor),
       exists: (idx) => mappingExists(call, idx, getMapping(idx)),
       get: (idx) => mappingGet(call, idx, getMapping(idx)),
-      historic: (idx) => mappingHistoric(call, idx, getMapping(idx)),
       list: () => mappingList(call),
       prune: (idx) => mappingPrune(call, versions, idx),
       sync: (idx) => mappingSync(call, versions, idx),
@@ -89,8 +86,7 @@ module.exports = (getRels, getMapping, versions, options) => {
       exists: (idx, id) => dataExists(call, idx, id),
       query: (idx, filter) => dataQuery(call, idx, getRels(idx), getMapping(idx), filter),
       refresh: (idx) => dataRefresh(call, idx),
-      historic: (idx, limit = 100) => dataHistoric(call, idx, getMapping(idx), limit),
-      update: (idx, opts) => dataUpdate(call, idx, getRels(idx), getMapping(idx), opts),
+      update: (idx, opts) => dataUpdate(call, idx, versions.get(idx), opts),
       stats: () => dataStats(call)
     }
   };
