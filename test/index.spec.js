@@ -79,4 +79,11 @@ describe('Testing index', {
     expect(index.index.versions.persist(dir)).to.equal(true);
     expect(index.index.versions.load(dir)).to.equal(undefined);
   });
+
+  it('Testing count', async () => {
+    expect(await index.rest.mapping.create('offer')).to.equal(true);
+    expect(await index.rest.alias.update('offer')).to.equal(true);
+    expect(await index.rest.data.count('offer')).to.equal(0);
+    expect(await index.rest.mapping.delete('offer')).to.equal(true);
+  });
 });
