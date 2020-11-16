@@ -2,7 +2,6 @@ const assert = require('assert');
 const Joi = require('joi-strict');
 const aliasGet = require('../alias/get');
 
-// todo: write various tests for this (!!)
 module.exports = async (call, idx, versions, actions_) => {
   Joi.assert(actions_, Joi.array().items(Joi.object().keys({
     action: Joi.string().valid('update', 'delete'),
