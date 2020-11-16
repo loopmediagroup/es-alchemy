@@ -1,22 +1,6 @@
 const assert = require('assert');
 const Joi = require('joi-strict');
-const objectScan = require('object-scan');
 const aliasGet = require('../alias/get');
-
-const emptyToNull = (rels, input) => {
-  const relsToCheck = Object.entries(rels)
-    .filter(([_, v]) => v.endsWith('[]'))
-    .map(([k]) => k);
-  objectScan(relsToCheck, {
-    useArraySelector: false,
-    filterFn: ({ value, parent, property }) => {
-      if (Array.isArray(value) && value.length === 0) {
-        // eslint-disable-next-line no-param-reassign
-        parent[property] = null;
-      }
-    }
-  })(input);
-};
 
 // todo: write various tests for this (!!)
 module.exports = async (call, idx, versions, actions_) => {
@@ -59,12 +43,11 @@ module.exports = async (call, idx, versions, actions_) => {
         }
       }));
       if (action.action === 'update') {
-        // todo: prune data to expected fields for index map
-        // ...
-        // todo: deep copy - we don't want to mutate action
-        emptyToNull(content.rels, action.doc);
         // `update` performs no action when exact document already indexed (reduced load)
-        payload.push(JSON.stringify({ doc: action.doc, doc_as_upsert: !hasSignature }));
+        payload.push(JSON.stringify({
+          doc: content.prepare(action.doc),
+          doc_as_upsert: !hasSignature
+        }));
       }
     });
   });
