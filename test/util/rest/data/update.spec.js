@@ -5,38 +5,28 @@ const Joi = require('joi-strict');
 const sfs = require('smart-fs');
 const { v4: uuid4 } = require('uuid');
 const Index = require('../../../../src/index');
-const { registerEntitiesForIndex } = require('../../../helper');
+const { registerEntitiesForIndex, getIndices } = require('../../../helper');
 const { objectEncode } = require('../../../../src/util/paging');
 
 describe('Testing data formats', { useTmpDir: true }, () => {
   let index;
-  let createAndPersistEntity;
-  let offerId;
+  let instantiateIndex;
+  let createIndexVersion;
+  let getMetaFromDocs;
   let updatedOfferModel;
   let updatedOfferIndex;
-  let getIndices;
-  let getDoc;
-  let instantiateIndex;
+  let offerId;
 
   before(() => {
     instantiateIndex = () => {
       index = Index({ endpoint: process.env.elasticsearchEndpoint });
       registerEntitiesForIndex(index);
     };
-  });
-
-  beforeEach(async () => {
-    offerId = uuid4();
-    createAndPersistEntity = async (dir, input) => {
+    createIndexVersion = async (dir) => {
       expect(await index.rest.mapping.create('offer')).to.equal(true);
       expect(await index.rest.alias.update('offer')).to.equal(true);
       expect(index.index.versions.persist(dir)).to.equal(true);
       expect(index.index.versions.load(dir)).to.equal(undefined);
-      expect(await index.rest.data.update('offer', [{
-        action: 'update',
-        doc: index.data.remap('offer', input)
-      }])).to.equal(true);
-      expect(await index.rest.data.refresh('offer')).to.equal(true);
     };
     const [offerModelPath, offerIndexPath] = ['models', 'indices']
       .map((v) => path.join(__dirname, '..', '..', '..', `${v}`, 'offer.json'));
@@ -44,21 +34,21 @@ describe('Testing data formats', { useTmpDir: true }, () => {
     updatedOfferIndex = sfs.smartRead(offerIndexPath);
     updatedOfferModel.fields.subhead = 'string';
     updatedOfferIndex.fields.push('subhead');
-
-    getIndices = async () => {
-      const r = await index.rest.call('GET', '_cat/indices');
-      return r.body.map(({ index: indexVersion }) => indexVersion);
-    };
-
-    getDoc = async (idx) => {
+    getMetaFromDocs = async (idx) => {
       const r = await index.rest.call('GET', idx, {
         endpoint: '_search',
         body: {
           _source: ['id', 'meta']
         }
       });
-      return r.body.hits.hits;
+      return r.body.hits.hits.map(({ _source: source }) => source.meta[0]);
     };
+  });
+
+  beforeEach(async ({ dir }) => {
+    instantiateIndex();
+    await createIndexVersion(dir);
+    offerId = uuid4();
   });
 
   afterEach(async () => {
@@ -248,27 +238,31 @@ describe('Testing data formats', { useTmpDir: true }, () => {
   });
 
   it('Testing update with signature in two versions', async ({ dir }) => {
-    instantiateIndex();
-    await createAndPersistEntity(dir, {
-      id: offerId,
+    expect(await index.rest.data.update('offer', [{
+      action: 'update',
       doc: index.data.remap('offer', { id: offerId, meta: { k1: 'v1' } })
-    });
+    }])).to.equal(true);
+    expect(await index.rest.data.refresh('offer')).to.equal(true);
     instantiateIndex();
     index.model.register('offer', updatedOfferModel);
     index.index.register('offer', updatedOfferIndex);
-    await createAndPersistEntity(dir, {
-      id: offerId,
+    await createIndexVersion(dir);
+    expect(await index.rest.data.update('offer', [{
+      action: 'update',
       doc: index.data.remap('offer', { id: offerId, meta: { k1: 'v1' } })
-    });
-    // const signature = await index.rest.data.signature('offer', offerId);
-    // await index.rest.data.update('offer', [{
-    //   action: 'update',
-    //   doc: index.data.remap('offer', { id: offerId, meta: { k1: 'v2' } }),
-    //   signature
-    // }]);
-
-    console.log(await getIndices())
-    console.log(await getDoc('offer@e35ec51a3c35e2d9982e1ac2bbe23957a637a9e0', offerId))
-    console.log(await getDoc('offer@6a1b8f491e156e356ab57e8df046b9f449acb440', offerId))
+    }])).to.equal(true);
+    expect(await index.rest.data.refresh('offer')).to.equal(true);
+    const signature = await index.rest.data.signature('offer', offerId);
+    const indices = await getIndices(index, 'offer');
+    const result1 = await Promise.all(indices.map((i) => getMetaFromDocs(i)));
+    expect(result1.every(([{ k1 }]) => k1 === 'v1')).to.equal(true);
+    await index.rest.data.update('offer', [{
+      action: 'update',
+      doc: index.data.remap('offer', { id: offerId, meta: { k1: 'v2' } }),
+      signature
+    }]);
+    expect(await index.rest.data.refresh('offer')).to.equal(true);
+    const result2 = await Promise.all(indices.map((i) => getMetaFromDocs(i)));
+    expect(result2.every(([{ k1 }]) => k1 === 'v2')).to.equal(true);
   });
 });
