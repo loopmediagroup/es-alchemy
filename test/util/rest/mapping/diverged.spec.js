@@ -45,6 +45,10 @@ describe('Testing diverged', {
     [offerId1, offerId2] = [uuid4(), uuid4()].sort();
   });
 
+  afterEach(async () => {
+    expect(await index.rest.mapping.delete('offer')).to.equal(true);
+  });
+
   it('Testing single index', async ({ dir }) => {
     await createAndPersistEntity(dir, {
       id: offerId1,
@@ -54,7 +58,6 @@ describe('Testing diverged', {
       result: [],
       cursor: { 'offer@6a1b8f491e156e356ab57e8df046b9f449acb440': offerId1 }
     });
-    expect(await index.rest.mapping.delete('offer')).to.equal(true);
   });
 
   it('Testing index with cursor', async ({ dir }) => {
@@ -71,7 +74,6 @@ describe('Testing diverged', {
       result: [],
       cursor: null
     });
-    expect(await index.rest.mapping.delete('offer')).to.equal(true);
   });
 
   it('Testing invalid cursor keys', async ({ dir, capture }) => {
@@ -83,33 +85,35 @@ describe('Testing diverged', {
       cursor: {}
     }));
     expect(error.message).to.equal('Invalid cursor provided');
-    expect(await index.rest.mapping.delete('offer')).to.equal(true);
   });
 
-  // todo: fix test
-  // it('Testing documents not in sync', async ({ dir }) => {
-  //   await createAndPersistEntity(dir, {
-  //     id: offerId1,
-  //     headline: 'headline'
-  //   });
-  //   instantiateIndex();
-  //   index.model.register('offer', updatedOfferModel);
-  //   index.index.register('offer', updatedOfferIndex);
-  //   await createAndPersistEntity(dir, {
-  //     id: offerId2,
-  //     headline: 'headline',
-  //     subhead: 'subhead'
-  //   });
-  //   const result = await index.rest.mapping.diverged('offer');
-  //   expect(result).to.deep.equal({
-  //     result: [offerId1],
-  //     cursor: {
-  //       'offer@e35ec51a3c35e2d9982e1ac2bbe23957a637a9e0': offerId2,
-  //       'offer@6a1b8f491e156e356ab57e8df046b9f449acb440': offerId1
-  //     }
-  //   });
-  //   expect(await index.rest.mapping.delete('offer')).to.equal(true);
-  // });
+  it('Testing documents not in sync', async ({ dir }) => {
+    await createAndPersistEntity(dir, {
+      id: offerId1,
+      headline: 'headline'
+    });
+    instantiateIndex();
+    index.model.register('offer', updatedOfferModel);
+    index.index.register('offer', updatedOfferIndex);
+    await createAndPersistEntity(dir, {
+      id: offerId2,
+      headline: 'headline',
+      subhead: 'subhead'
+    });
+    const result1 = await index.rest.mapping.diverged('offer');
+    expect(result1).to.deep.equal({
+      result: [offerId1],
+      cursor: {
+        'offer@e35ec51a3c35e2d9982e1ac2bbe23957a637a9e0': offerId2,
+        'offer@6a1b8f491e156e356ab57e8df046b9f449acb440': offerId2
+      }
+    });
+    const result2 = await index.rest.mapping.diverged('offer', result1.cursor);
+    expect(result2).to.deep.equal({
+      result: [],
+      cursor: null
+    });
+  });
 
   it('Testing index with null cursor', async ({ dir }) => {
     await createAndPersistEntity(dir, {
@@ -123,6 +127,5 @@ describe('Testing diverged', {
       result: [],
       cursor: null
     });
-    expect(await index.rest.mapping.delete('offer')).to.equal(true);
   });
 });
