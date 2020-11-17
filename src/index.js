@@ -36,6 +36,9 @@ module.exports = (options) => {
     },
     index: {
       versions: {
+        getModel: (idx) => versions.getModel(idx),
+        getFields: (idx) => versions.getFields(idx),
+        getRels: (idx) => versions.getRels(idx),
         persist: (folder) => versions.persist(indices, folder),
         load: (folder) => versions.load(folder)
       },
@@ -43,8 +46,6 @@ module.exports = (options) => {
       list: () => Object.keys(indices).sort(),
       getMapping: (idx) => cloneDeep(indices[idx].mapping),
       getFields: (idx) => cloneDeep(indices[idx].fields),
-      getRels: (idx) => cloneDeep(indices[idx].rels),
-      getModel: (idx) => indices[idx].specs.model,
       getSpecs: (idx) => cloneDeep(indices[idx].specs)
     },
     data: {
@@ -54,7 +55,12 @@ module.exports = (options) => {
     query: {
       build: (idx = null, opts = {}) => query.build(idx === null ? null : indices[idx].fields, opts)
     },
-    rest: rest((idx) => get(indices[idx], 'rels', null), (idx) => get(indices[idx], 'mapping', null), options)
+    rest: rest(
+      (idx) => get(indices[idx], 'rels', null),
+      (idx) => get(indices[idx], 'mapping', null),
+      versions,
+      options
+    )
   };
 };
 

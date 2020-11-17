@@ -24,9 +24,11 @@ describe('Testing index', {
     registerEntitiesForIndex(index);
   });
 
-  it('Testing models', () => {
+  it('Testing models', ({ dir }) => {
+    expect(index.index.versions.persist(dir)).to.equal(true);
+    expect(index.index.versions.load(dir)).to.equal(undefined);
     Object.entries(indices).forEach(([k, v]) => {
-      expect(index.index.getModel(k)).to.equal(v.model);
+      expect(index.index.versions.getModel(k)).to.equal(v.model);
     });
   });
 
@@ -43,17 +45,28 @@ describe('Testing index', {
     });
   });
 
-  it('Testing fields', () => {
+  it('Testing index fields', () => {
     expect(index.index.list()).to.deep.equal(Object.keys(fields).sort());
     Object.entries(fields).forEach(([k, v]) => {
       expect(index.index.getFields(k)).to.deep.equal(v.concat('_id'));
     });
   });
 
-  it('Testing rels', () => {
+  it('Testing fields', ({ dir }) => {
+    expect(index.index.versions.persist(dir)).to.equal(true);
+    expect(index.index.versions.load(dir)).to.equal(undefined);
+    expect(index.index.list()).to.deep.equal(Object.keys(fields).sort());
+    Object.entries(fields).forEach(([k, v]) => {
+      expect(index.index.versions.getFields(k)).to.deep.equal(v);
+    });
+  });
+
+  it('Testing rels', ({ dir }) => {
+    expect(index.index.versions.persist(dir)).to.equal(true);
+    expect(index.index.versions.load(dir)).to.equal(undefined);
     expect(index.index.list()).to.deep.equal(Object.keys(rels).sort());
     Object.entries(rels).forEach(([k, v]) => {
-      expect(index.index.getRels(k)).to.deep.equal(v);
+      expect(index.index.versions.getRels(k)).to.deep.equal(v);
     });
   });
 

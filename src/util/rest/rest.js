@@ -1,25 +1,30 @@
 const get = require('lodash.get');
 const request = require('request-promise-native');
+const mappingApplied = require('./mapping/applied');
+const mappingApply = require('./mapping/apply');
 const mappingCreate = require('./mapping/create');
 const mappingDelete = require('./mapping/delete');
+const mappingDiverged = require('./mapping/diverged');
 const mappingGet = require('./mapping/get');
 const mappingList = require('./mapping/list');
-const mappingHistoric = require('./mapping/historic');
+const mappingPrune = require('./mapping/prune');
+const mappingPruned = require('./mapping/pruned');
 const mappingRecreate = require('./mapping/recreate');
 const mappingExists = require('./mapping/exists');
 const aliasGet = require('./alias/get');
 const aliasUpdate = require('./alias/update');
+const aliasUpdated = require('./alias/updated');
 const dataCount = require('./data/count');
-const dataVersion = require('./data/version');
-const dataSignature = require('./data/signature');
 const dataExists = require('./data/exists');
 const dataQuery = require('./data/query');
 const dataRefresh = require('./data/refresh');
-const dataHistoric = require('./data/historic');
-const dataUpdate = require('./data/update');
+const dataSignature = require('./data/signature');
 const dataStats = require('./data/stats');
+const dataSynced = require('./data/synced');
+const dataUpdate = require('./data/update');
+const dataVersion = require('./data/version');
 
-module.exports = (getRels, getMapping, options) => {
+module.exports = (getRels, getMapping, versions, options) => {
   const call = (method, idx, {
     endpoint = '',
     body = {},
@@ -65,27 +70,32 @@ module.exports = (getRels, getMapping, options) => {
     call: (method, idx, opts = {}) => call(method, idx, opts),
     alias: {
       get: (idx) => aliasGet(call, idx),
-      update: (idx) => aliasUpdate(call, idx, getMapping(idx))
+      update: (idx) => aliasUpdate(call, idx, getMapping(idx)),
+      updated: (idx) => aliasUpdated(call, idx, getMapping(idx))
     },
     mapping: {
+      applied: (idx) => mappingApplied(call, versions, idx),
+      apply: (idx) => mappingApply(call, versions, idx),
       create: (idx) => mappingCreate(call, idx, getMapping(idx)),
       delete: (idx) => mappingDelete(call, idx),
+      diverged: (idx, cursor) => mappingDiverged(call, versions, getMapping(idx), idx, cursor),
       exists: (idx) => mappingExists(call, idx, getMapping(idx)),
       get: (idx) => mappingGet(call, idx, getMapping(idx)),
-      historic: (idx) => mappingHistoric(call, idx, getMapping(idx)),
       list: () => mappingList(call),
+      prune: (idx) => mappingPrune(call, versions, idx),
+      pruned: (idx) => mappingPruned(call, versions, idx),
       recreate: (idx) => mappingRecreate(call, idx, getMapping(idx))
     },
     data: {
       count: (idx) => dataCount(call, idx),
-      version: (idx, id) => dataVersion(call, idx, getMapping(idx), id),
-      signature: (idx, id) => dataSignature(call, idx, getMapping(idx), id),
       exists: (idx, id) => dataExists(call, idx, id),
       query: (idx, filter) => dataQuery(call, idx, getRels(idx), getMapping(idx), filter),
       refresh: (idx) => dataRefresh(call, idx),
-      historic: (idx, limit = 100) => dataHistoric(call, idx, getMapping(idx), limit),
-      update: (idx, opts) => dataUpdate(call, idx, getRels(idx), getMapping(idx), opts),
-      stats: () => dataStats(call)
+      signature: (idx, id) => dataSignature(call, idx, getMapping(idx), id),
+      stats: () => dataStats(call),
+      synced: (idx) => dataSynced(call, versions, idx),
+      update: (idx, opts) => dataUpdate(call, idx, versions.get(idx), opts),
+      version: (idx, id) => dataVersion(call, idx, getMapping(idx), id)
     }
   };
 };

@@ -4,21 +4,34 @@ const { v4: uuid4 } = require('uuid');
 const Index = require('../../../src/index');
 const { registerEntitiesForIndex } = require('../../helper');
 
-describe('Testing rest', () => {
-  it('Testing responseHook.', async () => {
-    // setup
-    const index = Index({
-      endpoint: process.env.elasticsearchEndpoint,
-      responseHook: ({ request, response }) => {
-        expect(Object.keys(request)).to.deep.equal(['headers', 'method', 'endpoint', 'index', 'body']);
-        expect(Object.keys(response)).to.include.members(['statusCode', 'body', 'headers', 'timings']);
-        expect(response.statusCode).to.equal(200);
-      }
-    });
-    registerEntitiesForIndex(index);
+describe('Testing rest', { useTmpDir: true }, () => {
+  let init;
+  let offerId;
 
-    const offerId = uuid4();
+  beforeEach(({ dir }) => {
+    init = async (responseHook) => {
+      // setup
+      const index = Index({
+        endpoint: process.env.elasticsearchEndpoint,
+        responseHook
+      });
+      registerEntitiesForIndex(index);
+      expect(await index.index.versions.persist(dir)).to.equal(true);
+      expect(await index.index.versions.load(dir)).to.equal(undefined);
+      return index;
+    };
+    offerId = uuid4();
+  });
+
+  it('Testing responseHook.', async () => {
+    const index = await init(({ request, response }) => {
+      expect(Object.keys(request)).to.deep.equal(['headers', 'method', 'endpoint', 'index', 'body']);
+      expect(Object.keys(response)).to.include.members(['statusCode', 'body', 'headers', 'timings']);
+      expect(response.statusCode).to.equal(200);
+    });
+
     expect(await index.rest.mapping.create('offer')).to.equal(true);
+    expect(await index.rest.alias.update('offer')).to.equal(true);
     expect(await index.rest.data.update('offer', [{
       action: 'update',
       doc: {
@@ -38,11 +51,7 @@ describe('Testing rest', () => {
   });
 
   it('Testing disable auto index creation', async () => {
-    // setup
-    const index = Index({ endpoint: process.env.elasticsearchEndpoint });
-    registerEntitiesForIndex(index);
-
-    const offerId = uuid4();
+    const index = await init();
     // index auto creation works by default
     expect(await index.rest.mapping.exists('offer')).to.equal(false);
     expect(await index.rest.data.update('offer', [{
@@ -98,5 +107,11 @@ describe('Testing rest', () => {
       persistent: { action: { auto_create_index: 'true' } },
       transient: {}
     });
+  });
+
+  it('Testing call without options', async () => {
+    const index = await init();
+    registerEntitiesForIndex(index);
+    expect((await index.rest.call('GET', uuid4())).statusCode).to.equal(404);
   });
 });

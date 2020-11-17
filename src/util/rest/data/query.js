@@ -5,7 +5,7 @@ const objectScan = require('object-scan');
 const objectFields = require('object-fields');
 const resultRemap = require('../../../resources/result-remap');
 
-module.exports = (call, idx, rels, mapping, filter) => call('GET', `${idx}@*`, {
+module.exports = (call, idx, rels, mapping, filter) => call('GET', idx, {
   body: (() => {
     // PART 1: workaround for https://github.com/elastic/elasticsearch/issues/23796
     // inject id requests for all entries
