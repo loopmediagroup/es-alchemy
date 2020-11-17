@@ -85,7 +85,7 @@ describe('Testing synced', { useTmpDir: true }, () => {
     expect(await index.rest.data.synced('offer')).to.equal(false);
   });
 
-  it('Test version does not exist', async ({ dir }) => {
+  it('Test remote index version does not exist', async ({ dir }) => {
     expect(await index.rest.mapping.apply('offer')).to.deep.equal(['offer@6a1b8f491e156e356ab57e8df046b9f449acb440']);
     instantiateIndex();
     index.model.register('offer', updatedOfferModel);

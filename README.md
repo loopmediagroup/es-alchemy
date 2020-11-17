@@ -375,7 +375,7 @@ Interacting with the rest api of Elasticsearch
 - `alias.get(name: String)` - return the index version for alias
 - `alias.update(name: String)` - update alias for index, linking to current index version
 - `mapping.apply(index: String)` - Creates tracked (known) indices in Elasticsearch when missing
-- `mapping.applied(index: String)` - returns true if local and remote versions are the same
+- `mapping.applied(index: String)` - returns true if every local versions exists remotely
 - `mapping.create(name: String)` - create mapping on Elasticsearch (call when version changes)
 - `mapping.delete(name: String)` - delete mapping from Elasticsearch (deletes _all_ versions)
 - `mapping.exists(name: String)` - returns `true` if latest mapping exists
@@ -389,7 +389,7 @@ Interacting with the rest api of Elasticsearch
 - `data.refresh(name: String)` - refresh Elasticsearch index, useful e.g. when testing (all versions)
 - `data.signature(index: String, id: String)` - get signature as `${_seq_no')}_${_primary_term}` in alias for document or null if document does not exist
 - `data.stats()` - returns all the statistics for the nodes in a cluster like: indices, cpu usage and other meta
-- `data.synced(index: String)` - returns true if all remote index versions have the same document count 
+- `data.synced(index: String)` - returns true if all local index version exists on remote and have the same document count 
 - `data.update(name: String, options: Object)` - update or delete documents in Elasticsearch (all index versions)
 - `data.version(index: String, id: String)` - get version number in alias for document or null if document does not exist
 
