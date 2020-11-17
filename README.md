@@ -381,7 +381,7 @@ Interacting with the rest api of Elasticsearch
 - `mapping.list()` - Lists all mappings currently in Elasticsearch
 - `mapping.prune(index: String)` - Removes index versions from Elasticsearch that are not tracked (unknown)
 - `mapping.sync(index: String)` - Creates tracked (known) indices in Elasticsearch when missing
-- `data.synced(index: String)` - returns true if local and remote versions are the same
+- `mapping.synced(index: String)` - returns true if local and remote versions are the same
 - `mapping.recreate(name: String)` - recreate mapping on Elasticsearch (deletes _all_ versions and recreates current version)
 - `data.count(name: String)` - get number of indexed elements from alias
 - `data.exists(index: String, id: String)` - check if document exists in alias
