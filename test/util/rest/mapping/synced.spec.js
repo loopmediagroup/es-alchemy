@@ -19,12 +19,12 @@ describe('Testing synced', {
     expect(await index.rest.mapping.delete('offer')).to.equal(true);
   });
 
-  it('Test mapping is synced', async ({ dir }) => {
+  it('Test mapping is synced', async () => {
     expect(await index.rest.mapping.sync('offer')).to.deep.equal(['offer@6a1b8f491e156e356ab57e8df046b9f449acb440']);
     expect(await index.rest.mapping.synced('offer')).to.equal(true);
   });
 
-  it('Test mapping is not synced', async ({ dir }) => {
+  it('Test mapping is not synced', async () => {
     expect(await index.rest.mapping.synced('offer')).to.equal(false);
   });
 });
