@@ -314,6 +314,20 @@ describe('Testing data formats', { useTmpDir: true }, () => {
     ]);
   });
 
+  it('Testing delete with signature null', async ({ dir }) => {
+    await setupTwoIndices(dir);
+    const r = await index.rest.data.update('offer', [{
+      action: 'delete',
+      doc: index.data.remap('offer', { id: offerId }),
+      signature: null
+    }]);
+    expect(r).to.equal(true);
+    expect(await index.rest.data.refresh('offer')).to.equal(true);
+    expect(await queryVersions('offer')).to.deep.equal([
+      { version: 'offer@e35ec51a3c35e2d9982e1ac2bbe23957a637a9e0', data: { meta: [{ k1: 'v1' }], id: offerId } }
+    ]);
+  });
+
   it('Testing update with field pruning', async ({ dir }) => {
     await setupTwoIndices(dir);
     const signature = await index.rest.data.signature('offer', offerId);

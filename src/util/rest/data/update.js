@@ -8,13 +8,8 @@ module.exports = async (call, idx, versions, actions_) => {
     id: Joi.string().optional(),
     doc: Joi.object().keys({ id: Joi.string() }).unknown(true)
       .when('action', { is: Joi.string().valid('update'), then: Joi.required(), otherwise: Joi.optional() }),
-    signature: Joi.string().pattern(/^\d+_\d+$/).optional()
-      .when('action', { is: Joi.string().valid('update'), then: Joi.allow(null) })
+    signature: Joi.string().pattern(/^\d+_\d+$/).allow(null).optional()
   }).or('id', 'doc')));
-
-  if (actions_.length === 0) {
-    return true;
-  }
 
   const alias = await aliasGet(call, idx);
 
@@ -38,11 +33,15 @@ module.exports = async (call, idx, versions, actions_) => {
     }
     Object.entries(versions).forEach(([version, content]) => {
       const index = `${idx}@${version}`;
+      const isAlias = index === alias;
+      if (isAlias && isSignatureNull && action.action === 'delete') {
+        return;
+      }
       payload.push(JSON.stringify({
-        [isSignatureNull ? 'create' : action.action]: {
+        [isSignatureNull && action.action === 'update' ? 'create' : action.action]: {
           _index: index,
           _id: id,
-          ...(index === alias ? signature : {})
+          ...(isAlias ? signature : {})
         }
       }));
       if (action.action === 'update') {
@@ -54,6 +53,10 @@ module.exports = async (call, idx, versions, actions_) => {
       }
     });
   });
+
+  if (payload.length === 0) {
+    return true;
+  }
 
   const r = await call('POST', '', {
     endpoint: '_bulk',
