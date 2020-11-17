@@ -8,6 +8,7 @@ const mappingDiverged = require('./mapping/diverged');
 const mappingGet = require('./mapping/get');
 const mappingList = require('./mapping/list');
 const mappingPrune = require('./mapping/prune');
+const mappingPruned = require('./mapping/pruned');
 const mappingRecreate = require('./mapping/recreate');
 const mappingExists = require('./mapping/exists');
 const aliasGet = require('./alias/get');
@@ -80,6 +81,7 @@ module.exports = (getRels, getMapping, versions, options) => {
       get: (idx) => mappingGet(call, idx, getMapping(idx)),
       list: () => mappingList(call),
       prune: (idx) => mappingPrune(call, versions, idx),
+      pruned: (idx) => mappingPruned(call, versions, idx),
       recreate: (idx) => mappingRecreate(call, idx, getMapping(idx))
     },
     data: {
