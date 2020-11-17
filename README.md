@@ -23,7 +23,7 @@ Outline of how [ESAlchemy](https://github.com/loopmediagroup/es-alchemy) can be 
 
 - Define data models
 - Define indices based on the data models
-- Generate (current version) mappings from indices, create them in Elasticsearch and alias them
+- Generate (versioned) schemas for indices, create them in Elasticsearch and alias them
 - Obtain input data as defined in the source mappings of index and remap it
 - Insert remapped data into Elasticsearch
 - Build a query using the ES-Alchemy query syntax
@@ -332,7 +332,7 @@ Indices are versioned using a computed hash deduced from their schema. So an ind
 multiple mappings as `foo@HASH` under the hood. When updating or deleting a document the document
 is changed in all version. Which index version is active depends on the index alias.
 
-When the version of an index changes the new index mapping needs to be created. Calling `mapping.create` on
+When the version of an index changes the new index mapping needs to be created. Calling `mapping.sync` on
 every initialization should be ok to do this.
 
 ## Document Signatures
@@ -377,7 +377,7 @@ Interacting with the rest api of Elasticsearch
 - `mapping.create(name: String)` - create mapping on Elasticsearch (call when version changes)
 - `mapping.delete(name: String)` - delete mapping from Elasticsearch (deletes _all_ versions)
 - `mapping.exists(name: String)` - returns `true` if latest mapping exists
-- `mapping.get(name: String)` - get mapping details from Elasticsearch (current version)
+- `mapping.get(name: String)` - get mapping details from Elasticsearch (against alias)
 - `mapping.list()` - Lists all mappings currently in Elasticsearch
 - `mapping.prune(index: String)` - Removes index versions from Elasticsearch that are not tracked (unknown)
 - `mapping.sync(index: String)` - Creates tracked (known) indices in Elasticsearch when missing
