@@ -57,7 +57,6 @@ module.exports = async (call, idx, versions, actions_) => {
   if (payload.length === 0) {
     return true;
   }
-
   const r = await call('POST', '', {
     endpoint: '_bulk',
     body: payload.concat('').join('\n'),
