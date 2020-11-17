@@ -23,7 +23,7 @@ Outline of how [ESAlchemy](https://github.com/loopmediagroup/es-alchemy) can be 
 
 - Define data models
 - Define indices based on the data models
-- Generate (versioned) schemas for indices, create them in Elasticsearch and alias them
+- Generate (versioned) schemas for indices, create them in Elasticsearch and alias them for querying
 - Obtain input data as defined in the source mappings of index and remap it
 - Insert remapped data into Elasticsearch
 - Build a query using the ES-Alchemy query syntax
@@ -353,7 +353,7 @@ Available commands
 - `versions.load(folder: String)` - loads persisted index versions into memory
 - `versions.getFields(name: String)` - get union of fields for all index versions
 - `versions.getRels(name: String)` - get union of rels for this index (returned as object mapping to node type)
-- `versions.getModel(name: String)` - get top level model for this index (can never be changed)
+- `versions.getModel(name: String)` - get top level model for this index (should never be changed)
 - `register(name: String, definitions: Object)` - register an index with ES-Alchemy
 - `list()` - list all indices registered with ES-Alchemy
 - `getMapping(name: String)` - get the mapping for Elasticsearch for this index
@@ -390,7 +390,7 @@ Interacting with the rest api of Elasticsearch
 - `data.refresh(name: String)` - refresh Elasticsearch index, useful e.g. when testing (all versions)
 - `data.signature(index: String, id: String)` - get signature as `${_seq_no')}_${_primary_term}` in alias for document or null if document does not exist
 - `data.stats()` - returns all the statistics for the nodes in a cluster like: indices, cpu usage and other meta
-- `data.synced(index: String)` - returns true if all local index version exists on remote and have the same document count 
+- `data.synced(index: String)` - returns true if all local index version exists on remote and have the same document count
 - `data.update(name: String, options: Object)` - update or delete documents in Elasticsearch (all index versions)
 - `data.version(index: String, id: String)` - get version number in alias for document or null if document does not exist
 

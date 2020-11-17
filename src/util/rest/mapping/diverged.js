@@ -28,7 +28,7 @@ module.exports = async (call, versions, mapping, idx, cursor = null) => {
       return listDocuments(call, i, null);
     }
     if (cursor[i] === null) {
-      return Promise.all([]);
+      return Promise.resolve([]);
     }
     return listDocuments(call, i, cursor[i]);
   }));
