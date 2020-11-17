@@ -13,6 +13,8 @@ describe('Testing synced', { useTmpDir: true }, () => {
   let updatedOfferIndex;
   let createIndexVersion;
   let offerId;
+  let setupNewVersion;
+  let updateDocument;
 
   before(() => {
     instantiateIndex = () => {
@@ -32,65 +34,51 @@ describe('Testing synced', { useTmpDir: true }, () => {
   });
 
   beforeEach(async ({ dir }) => {
+    offerId = uuid4();
+    setupNewVersion = async () => {
+      instantiateIndex();
+      index.model.register('offer', updatedOfferModel);
+      index.index.register('offer', updatedOfferIndex);
+      await createIndexVersion(dir);
+    };
+    updateDocument = async () => {
+      expect(await index.rest.data.update('offer', [{
+        action: 'update',
+        doc: index.data.remap('offer', {
+          id: offerId,
+          meta: { k1: 'v1' },
+          subhead: 'subhead'
+        })
+      }])).to.equal(true);
+      expect(await index.rest.data.refresh('offer')).to.equal(true);
+    };
+
     instantiateIndex();
     await createIndexVersion(dir);
-    offerId = uuid4();
+    expect(await index.rest.mapping.sync('offer'))
+      .to.deep.equal(['offer@6a1b8f491e156e356ab57e8df046b9f449acb440']);
   });
 
   afterEach(async () => {
     expect(await index.rest.mapping.delete('offer')).to.equal(true);
   });
 
-  it('Test documents are synced', async ({ dir }) => {
-    expect(await index.rest.mapping.sync('offer')).to.deep.equal(['offer@6a1b8f491e156e356ab57e8df046b9f449acb440']);
-    expect(await index.rest.data.update('offer', [{
-      action: 'update',
-      doc: index.data.remap('offer', {
-        id: offerId,
-        meta: { k1: 'v1' }
-      })
-    }])).to.equal(true);
-    instantiateIndex();
-    index.model.register('offer', updatedOfferModel);
-    index.index.register('offer', updatedOfferIndex);
-    await createIndexVersion(dir);
+  it('Test documents are synced', async () => {
+    await setupNewVersion();
     expect(await index.rest.mapping.sync('offer')).to.deep.equal(['offer@e35ec51a3c35e2d9982e1ac2bbe23957a637a9e0']);
-    expect(await index.rest.data.update('offer', [{
-      action: 'update',
-      doc: index.data.remap('offer', {
-        id: offerId,
-        meta: { k1: 'v1' },
-        subhead: 'subhead'
-      })
-    }])).to.equal(true);
-    expect(await index.rest.data.refresh('offer')).to.equal(true);
+    await updateDocument();
     expect(await index.rest.data.synced('offer')).to.equal(true);
   });
 
-  it('Test documents are not synced', async ({ dir }) => {
-    expect(await index.rest.mapping.sync('offer')).to.deep.equal(['offer@6a1b8f491e156e356ab57e8df046b9f449acb440']);
-    expect(await index.rest.data.update('offer', [{
-      action: 'update',
-      doc: index.data.remap('offer', {
-        id: offerId,
-        meta: { k1: 'v1' }
-      })
-    }])).to.equal(true);
-    expect(await index.rest.data.refresh('offer')).to.equal(true);
-    instantiateIndex();
-    index.model.register('offer', updatedOfferModel);
-    index.index.register('offer', updatedOfferIndex);
-    await createIndexVersion(dir);
+  it('Test documents are not synced', async () => {
+    await updateDocument();
+    await setupNewVersion();
     expect(await index.rest.mapping.sync('offer')).to.deep.equal(['offer@e35ec51a3c35e2d9982e1ac2bbe23957a637a9e0']);
     expect(await index.rest.data.synced('offer')).to.equal(false);
   });
 
-  it('Test remote index version does not exist', async ({ dir }) => {
-    expect(await index.rest.mapping.sync('offer')).to.deep.equal(['offer@6a1b8f491e156e356ab57e8df046b9f449acb440']);
-    instantiateIndex();
-    index.model.register('offer', updatedOfferModel);
-    index.index.register('offer', updatedOfferIndex);
-    await createIndexVersion(dir);
+  it('Test remote index version does not exist', async () => {
+    await setupNewVersion();
     expect(await index.rest.data.synced('offer')).to.equal(false);
   });
 });
