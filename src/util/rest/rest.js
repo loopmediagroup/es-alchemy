@@ -7,18 +7,20 @@ const mappingGet = require('./mapping/get');
 const mappingList = require('./mapping/list');
 const mappingPrune = require('./mapping/prune');
 const mappingSync = require('./mapping/sync');
+const mappingSynced = require('./mapping/synced');
 const mappingRecreate = require('./mapping/recreate');
 const mappingExists = require('./mapping/exists');
 const aliasGet = require('./alias/get');
 const aliasUpdate = require('./alias/update');
 const dataCount = require('./data/count');
-const dataVersion = require('./data/version');
-const dataSignature = require('./data/signature');
 const dataExists = require('./data/exists');
 const dataQuery = require('./data/query');
 const dataRefresh = require('./data/refresh');
-const dataUpdate = require('./data/update');
+const dataSignature = require('./data/signature');
 const dataStats = require('./data/stats');
+const dataSynced = require('./data/synced');
+const dataUpdate = require('./data/update');
+const dataVersion = require('./data/version');
 
 module.exports = (getRels, getMapping, versions, options) => {
   const call = (method, idx, {
@@ -77,17 +79,19 @@ module.exports = (getRels, getMapping, versions, options) => {
       list: () => mappingList(call),
       prune: (idx) => mappingPrune(call, versions, idx),
       sync: (idx) => mappingSync(call, versions, idx),
+      synced: (idx) => mappingSynced(call, versions, idx),
       recreate: (idx) => mappingRecreate(call, idx, getMapping(idx))
     },
     data: {
       count: (idx) => dataCount(call, idx),
-      version: (idx, id) => dataVersion(call, idx, getMapping(idx), id),
-      signature: (idx, id) => dataSignature(call, idx, getMapping(idx), id),
       exists: (idx, id) => dataExists(call, idx, id),
       query: (idx, filter) => dataQuery(call, idx, getRels(idx), getMapping(idx), filter),
       refresh: (idx) => dataRefresh(call, idx),
+      signature: (idx, id) => dataSignature(call, idx, getMapping(idx), id),
+      stats: () => dataStats(call),
+      synced: (idx) => dataSynced(call, idx),
       update: (idx, opts) => dataUpdate(call, idx, versions.get(idx), opts),
-      stats: () => dataStats(call)
+      version: (idx, id) => dataVersion(call, idx, getMapping(idx), id)
     }
   };
 };
