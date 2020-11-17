@@ -13,6 +13,7 @@ const mappingRecreate = require('./mapping/recreate');
 const mappingExists = require('./mapping/exists');
 const aliasGet = require('./alias/get');
 const aliasUpdate = require('./alias/update');
+const aliasUpdated = require('./alias/updated');
 const dataCount = require('./data/count');
 const dataExists = require('./data/exists');
 const dataQuery = require('./data/query');
@@ -69,7 +70,8 @@ module.exports = (getRels, getMapping, versions, options) => {
     call: (method, idx, opts = {}) => call(method, idx, opts),
     alias: {
       get: (idx) => aliasGet(call, idx),
-      update: (idx) => aliasUpdate(call, idx, getMapping(idx))
+      update: (idx) => aliasUpdate(call, idx, getMapping(idx)),
+      updated: (idx) => aliasUpdated(call, idx, getMapping(idx))
     },
     mapping: {
       applied: (idx) => mappingApplied(call, versions, idx),

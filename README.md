@@ -375,6 +375,7 @@ Interacting with the rest api of Elasticsearch
 - `call(method: String, name: String, options: Object)` - make direct API call to Elasticsearch
 - `alias.get(name: String)` - return the index version for alias
 - `alias.update(name: String)` - update alias for index, linking to current index version
+- `alias.updated(name: String)` - returns true if alias points to current index version
 - `mapping.apply(index: String)` - Creates tracked (known) indices in Elasticsearch when missing
 - `mapping.applied(index: String)` - returns true if every local versions exists remotely
 - `mapping.create(name: String)` - create mapping on Elasticsearch (call when version changes)
