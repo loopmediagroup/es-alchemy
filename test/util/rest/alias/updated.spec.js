@@ -46,7 +46,7 @@ describe('Testing alias updated', {
     expect(await index.rest.mapping.delete('offer')).to.equal(true);
   });
 
-  it('Test alias exists locally', async () => {
+  it('Test alias points to current version', async () => {
     expect(await index.rest.alias.update('offer')).to.equal(true);
     expect(await index.rest.alias.updated('offer')).to.equal(true);
   });
@@ -55,15 +55,9 @@ describe('Testing alias updated', {
     expect(await index.rest.alias.updated('offer')).to.equal(false);
   });
 
-  it('Test alias does not exist locally', async ({ dir }) => {
+  it('Test alias does not point to current version', async () => {
     expect(await index.rest.alias.update('offer')).to.equal(true);
     await setupNewVersion();
-    expect(await index.rest.mapping.apply('offer')).to.deep.equal([
-      'offer@e35ec51a3c35e2d9982e1ac2bbe23957a637a9e0'
-    ]);
-    instantiateIndex();
-    sfs.unlinkSync(path.join(dir, 'offer@6a1b8f491e156e356ab57e8df046b9f449acb440.json'));
-    expect(index.index.versions.load(dir)).to.equal(undefined);
     expect(await index.rest.alias.updated('offer')).to.deep.equal(false);
   });
 });

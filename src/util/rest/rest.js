@@ -71,7 +71,7 @@ module.exports = (getRels, getMapping, versions, options) => {
     alias: {
       get: (idx) => aliasGet(call, idx),
       update: (idx) => aliasUpdate(call, idx, getMapping(idx)),
-      updated: (idx) => aliasUpdated(call, versions, idx)
+      updated: (idx) => aliasUpdated(call, idx, getMapping(idx))
     },
     mapping: {
       applied: (idx) => mappingApplied(call, versions, idx),
