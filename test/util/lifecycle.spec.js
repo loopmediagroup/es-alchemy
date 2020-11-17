@@ -19,6 +19,8 @@ describe('Testing lifecycle', { timeout: 10000, useTmpDir: true }, () => {
   });
 
   it('Testing lifecycle', async () => {
+    // eslint-disable-next-line no-underscore-dangle
+    const mappingHash = index.index.getMapping('offer').mappings._meta.hash;
     const uuids = [uuid4(), uuid4(), uuid4()].sort();
     await index.rest.mapping.delete('offer');
     expect(await index.rest.mapping.list()).to.deep.equal([]);
@@ -26,6 +28,8 @@ describe('Testing lifecycle', { timeout: 10000, useTmpDir: true }, () => {
     expect(await index.rest.mapping.sync('offer')).to.deep.equal([]);
     expect(await index.rest.mapping.list()).to.deep.equal(['offer']);
     expect(await index.rest.alias.update('offer')).to.equal(true);
+    expect((await index.rest.mapping.get('offer')).body[`offer@${mappingHash}`])
+      .to.deep.equal(index.index.getMapping('offer'));
     const filter1 = index.query.build();
     const queryResult1 = await index.rest.data.query('offer', filter1);
     expect(index.data.page(queryResult1, filter1)).to.deep.equal({
