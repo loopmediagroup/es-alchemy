@@ -45,6 +45,13 @@ describe('Testing index', {
     });
   });
 
+  it('Testing index fields', () => {
+    expect(index.index.list()).to.deep.equal(Object.keys(fields).sort());
+    Object.entries(fields).forEach(([k, v]) => {
+      expect(index.index.getFields(k)).to.deep.equal(v.concat('_id'));
+    });
+  });
+
   it('Testing fields', ({ dir }) => {
     expect(index.index.versions.persist(dir)).to.equal(true);
     expect(index.index.versions.load(dir)).to.equal(undefined);
