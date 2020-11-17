@@ -332,7 +332,7 @@ Indices are versioned using a computed hash deduced from their schema. So an ind
 multiple mappings as `foo@HASH` under the hood. When updating or deleting a document the document
 is changed in all version. Which index version is active depends on the index alias.
 
-When the version of an index changes the new index mapping needs to be created. Calling `mapping.create` on
+When the version of an index changes the new index mapping needs to be created. Calling `mapping.sync` on
 every initialization should be ok to do this.
 
 ## Document Signatures
