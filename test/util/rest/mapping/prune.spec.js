@@ -41,7 +41,7 @@ describe('Testing prune', {
     index.index.register('offer', updatedOfferIndex);
     expect(index.index.versions.persist(dir)).to.equal(true);
     index.index.versions.load(dir);
-    expect(await index.rest.mapping.sync('offer')).to.deep.equal([
+    expect(await index.rest.mapping.apply('offer')).to.deep.equal([
       'offer@e35ec51a3c35e2d9982e1ac2bbe23957a637a9e0',
       'offer@6a1b8f491e156e356ab57e8df046b9f449acb440'
     ]);

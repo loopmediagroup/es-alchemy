@@ -332,7 +332,7 @@ Indices are versioned using a computed hash deduced from their schema. So an ind
 multiple mappings as `foo@HASH` under the hood. When updating or deleting a document the document
 is changed in all version. Which index version is active depends on the index alias.
 
-When the version of an index changes the new index mapping needs to be created. Calling `mapping.sync` on
+When the version of an index changes the new index mapping needs to be created. Calling `mapping.apply` on
 every initialization should be ok to do this.
 
 ## Document Signatures
@@ -374,14 +374,14 @@ Interacting with the rest api of Elasticsearch
 - `call(method: String, name: String, options: Object)` - make direct API call to Elasticsearch
 - `alias.get(name: String)` - return the index version for alias
 - `alias.update(name: String)` - update alias for index, linking to current index version
+- `mapping.apply(index: String)` - Creates tracked (known) indices in Elasticsearch when missing
+- `mapping.applied(index: String)` - returns true if every local versions exists remotely
 - `mapping.create(name: String)` - create mapping on Elasticsearch (call when version changes)
 - `mapping.delete(name: String)` - delete mapping from Elasticsearch (deletes _all_ versions)
 - `mapping.exists(name: String)` - returns `true` if latest mapping exists
 - `mapping.get(name: String)` - get mapping details from Elasticsearch (against alias)
 - `mapping.list()` - Lists all mappings currently in Elasticsearch
 - `mapping.prune(index: String)` - Removes index versions from Elasticsearch that are not tracked (unknown)
-- `mapping.sync(index: String)` - Creates tracked (known) indices in Elasticsearch when missing
-- `mapping.synced(index: String)` - returns true if every local versions exists remotely
 - `mapping.recreate(name: String)` - recreate mapping on Elasticsearch (deletes _all_ versions and recreates current version)
 - `data.count(name: String)` - get number of indexed elements from alias
 - `data.exists(index: String, id: String)` - check if document exists in alias

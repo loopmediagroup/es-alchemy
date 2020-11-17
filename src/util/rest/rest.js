@@ -1,13 +1,13 @@
 const get = require('lodash.get');
 const request = require('request-promise-native');
+const mappingApplied = require('./mapping/applied');
+const mappingApply = require('./mapping/apply');
 const mappingCreate = require('./mapping/create');
 const mappingDelete = require('./mapping/delete');
 const mappingDiverged = require('./mapping/diverged');
 const mappingGet = require('./mapping/get');
 const mappingList = require('./mapping/list');
 const mappingPrune = require('./mapping/prune');
-const mappingSync = require('./mapping/sync');
-const mappingSynced = require('./mapping/synced');
 const mappingRecreate = require('./mapping/recreate');
 const mappingExists = require('./mapping/exists');
 const aliasGet = require('./alias/get');
@@ -71,6 +71,8 @@ module.exports = (getRels, getMapping, versions, options) => {
       update: (idx) => aliasUpdate(call, idx, getMapping(idx))
     },
     mapping: {
+      applied: (idx) => mappingApplied(call, versions, idx),
+      apply: (idx) => mappingApply(call, versions, idx),
       create: (idx) => mappingCreate(call, idx, getMapping(idx)),
       delete: (idx) => mappingDelete(call, idx),
       diverged: (idx, cursor) => mappingDiverged(call, versions, getMapping(idx), idx, cursor),
@@ -78,8 +80,6 @@ module.exports = (getRels, getMapping, versions, options) => {
       get: (idx) => mappingGet(call, idx, getMapping(idx)),
       list: () => mappingList(call),
       prune: (idx) => mappingPrune(call, versions, idx),
-      sync: (idx) => mappingSync(call, versions, idx),
-      synced: (idx) => mappingSynced(call, versions, idx),
       recreate: (idx) => mappingRecreate(call, idx, getMapping(idx))
     },
     data: {

@@ -53,7 +53,7 @@ describe('Testing synced', { useTmpDir: true }, () => {
 
     instantiateIndex();
     await persistAndLoadVersion(dir);
-    expect(await index.rest.mapping.sync('offer'))
+    expect(await index.rest.mapping.apply('offer'))
       .to.deep.equal(['offer@6a1b8f491e156e356ab57e8df046b9f449acb440']);
   });
 
@@ -63,7 +63,7 @@ describe('Testing synced', { useTmpDir: true }, () => {
 
   it('Test documents are synced', async () => {
     await setupNewVersion();
-    expect(await index.rest.mapping.sync('offer')).to.deep.equal(['offer@e35ec51a3c35e2d9982e1ac2bbe23957a637a9e0']);
+    expect(await index.rest.mapping.apply('offer')).to.deep.equal(['offer@e35ec51a3c35e2d9982e1ac2bbe23957a637a9e0']);
     await updateDocument();
     expect(await index.rest.data.synced('offer')).to.equal(true);
   });
@@ -71,7 +71,7 @@ describe('Testing synced', { useTmpDir: true }, () => {
   it('Test documents are not synced', async () => {
     await updateDocument();
     await setupNewVersion();
-    expect(await index.rest.mapping.sync('offer')).to.deep.equal(['offer@e35ec51a3c35e2d9982e1ac2bbe23957a637a9e0']);
+    expect(await index.rest.mapping.apply('offer')).to.deep.equal(['offer@e35ec51a3c35e2d9982e1ac2bbe23957a637a9e0']);
     expect(await index.rest.data.synced('offer')).to.equal(false);
   });
 
