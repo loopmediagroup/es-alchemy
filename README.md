@@ -23,7 +23,7 @@ Outline of how [ESAlchemy](https://github.com/loopmediagroup/es-alchemy) can be 
 
 - Define data models
 - Define indices based on the data models
-- Generate (current version) mappings from indices, create them in Elasticsearch and alias them
+- Generate (versioned) schemas for indices, create them in Elasticsearch and alias them
 - Obtain input data as defined in the source mappings of index and remap it
 - Insert remapped data into Elasticsearch
 - Build a query using the ES-Alchemy query syntax
