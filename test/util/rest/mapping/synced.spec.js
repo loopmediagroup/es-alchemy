@@ -8,9 +8,11 @@ describe('Testing synced', {
 }, () => {
   let index;
 
-  beforeEach(() => {
+  beforeEach(({ dir }) => {
     index = Index({ endpoint: process.env.elasticsearchEndpoint });
     registerEntitiesForIndex(index);
+    expect(index.index.versions.persist(dir)).to.equal(true);
+    expect(index.index.versions.load(dir)).to.equal(undefined);
   });
 
   afterEach(async () => {
@@ -18,15 +20,11 @@ describe('Testing synced', {
   });
 
   it('Test mapping is synced', async ({ dir }) => {
-    expect(index.index.versions.persist(dir)).to.equal(true);
-    index.index.versions.load(dir);
     expect(await index.rest.mapping.sync('offer')).to.deep.equal(['offer@6a1b8f491e156e356ab57e8df046b9f449acb440']);
     expect(await index.rest.mapping.synced('offer')).to.equal(true);
   });
 
   it('Test mapping is not synced', async ({ dir }) => {
-    expect(index.index.versions.persist(dir)).to.equal(true);
-    index.index.versions.load(dir);
     expect(await index.rest.mapping.synced('offer')).to.equal(false);
   });
 });
