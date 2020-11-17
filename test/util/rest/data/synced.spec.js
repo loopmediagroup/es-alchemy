@@ -84,4 +84,13 @@ describe('Testing synced', { useTmpDir: true }, () => {
     expect(await index.rest.mapping.sync('offer')).to.deep.equal(['offer@e35ec51a3c35e2d9982e1ac2bbe23957a637a9e0']);
     expect(await index.rest.data.synced('offer')).to.equal(false);
   });
+
+  it('Test version does not exist', async ({ dir }) => {
+    expect(await index.rest.mapping.sync('offer')).to.deep.equal(['offer@6a1b8f491e156e356ab57e8df046b9f449acb440']);
+    instantiateIndex();
+    index.model.register('offer', updatedOfferModel);
+    index.index.register('offer', updatedOfferIndex);
+    await createIndexVersion(dir);
+    expect(await index.rest.data.synced('offer')).to.equal(false);
+  });
 });

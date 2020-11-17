@@ -89,7 +89,7 @@ module.exports = (getRels, getMapping, versions, options) => {
       refresh: (idx) => dataRefresh(call, idx),
       signature: (idx, id) => dataSignature(call, idx, getMapping(idx), id),
       stats: () => dataStats(call),
-      synced: (idx) => dataSynced(call, idx),
+      synced: (idx) => dataSynced(call, versions, idx),
       update: (idx, opts) => dataUpdate(call, idx, versions.get(idx), opts),
       version: (idx, id) => dataVersion(call, idx, getMapping(idx), id)
     }
