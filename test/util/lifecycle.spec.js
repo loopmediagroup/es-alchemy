@@ -24,8 +24,8 @@ describe('Testing lifecycle', { timeout: 10000, useTmpDir: true }, () => {
     const uuids = [uuid4(), uuid4(), uuid4()].sort();
     await index.rest.mapping.delete('offer');
     expect(await index.rest.mapping.list()).to.deep.equal([]);
-    expect(await index.rest.mapping.sync('offer')).to.deep.equal(['offer@6a1b8f491e156e356ab57e8df046b9f449acb440']);
-    expect(await index.rest.mapping.sync('offer')).to.deep.equal([]);
+    expect(await index.rest.mapping.apply('offer')).to.deep.equal(['offer@6a1b8f491e156e356ab57e8df046b9f449acb440']);
+    expect(await index.rest.mapping.apply('offer')).to.deep.equal([]);
     expect(await index.rest.mapping.list()).to.deep.equal(['offer']);
     expect(await index.rest.alias.update('offer')).to.equal(true);
     expect((await index.rest.mapping.get('offer')).body[`offer@${mappingHash}`])
