@@ -3,7 +3,6 @@ const request = require('request-promise-native');
 const mappingCreate = require('./mapping/create');
 const mappingDelete = require('./mapping/delete');
 const mappingDiverged = require('./mapping/diverged');
-const mappingGet = require('./mapping/get');
 const mappingList = require('./mapping/list');
 const mappingPrune = require('./mapping/prune');
 const mappingSync = require('./mapping/sync');
@@ -73,7 +72,6 @@ module.exports = (getRels, getMapping, versions, options) => {
       delete: (idx) => mappingDelete(call, idx),
       diverged: (idx, cursor) => mappingDiverged(call, versions, getMapping(idx), idx, cursor),
       exists: (idx) => mappingExists(call, idx, getMapping(idx)),
-      get: (idx) => mappingGet(call, idx, getMapping(idx)),
       list: () => mappingList(call),
       prune: (idx) => mappingPrune(call, versions, idx),
       sync: (idx) => mappingSync(call, versions, idx),

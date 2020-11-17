@@ -377,7 +377,6 @@ Interacting with the rest api of Elasticsearch
 - `mapping.create(name: String)` - create mapping on Elasticsearch (call when version changes)
 - `mapping.delete(name: String)` - delete mapping from Elasticsearch (deletes _all_ versions)
 - `mapping.exists(name: String)` - returns `true` if latest mapping exists
-- `mapping.get(name: String)` - get mapping details from Elasticsearch (current version)
 - `mapping.list()` - Lists all mappings currently in Elasticsearch
 - `mapping.prune(index: String)` - Removes index versions from Elasticsearch that are not tracked (unknown)
 - `mapping.sync(index: String)` - Creates tracked (known) indices in Elasticsearch when missing
