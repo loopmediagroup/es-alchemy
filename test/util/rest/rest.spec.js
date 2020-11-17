@@ -104,4 +104,10 @@ describe('Testing rest', { useTmpDir: true }, () => {
       transient: {}
     });
   });
+
+  it('Testing call without options', async () => {
+    const index = Index({ endpoint: process.env.elasticsearchEndpoint });
+    registerEntitiesForIndex(index);
+    expect((await index.rest.call('GET', uuid4())).statusCode).to.equal(404);
+  });
 });
