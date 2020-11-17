@@ -9,9 +9,7 @@ const { registerEntitiesForIndex } = require('../../../helper');
 describe('Testing synced', { useTmpDir: true }, () => {
   let index;
   let instantiateIndex;
-  let updatedOfferModel;
-  let updatedOfferIndex;
-  let createIndexVersion;
+  let persistAndLoadVersion;
   let offerId;
   let setupNewVersion;
   let updateDocument;
@@ -21,25 +19,25 @@ describe('Testing synced', { useTmpDir: true }, () => {
       index = Index({ endpoint: process.env.elasticsearchEndpoint });
       registerEntitiesForIndex(index);
     };
-    createIndexVersion = async (dir) => {
+    persistAndLoadVersion = async (dir) => {
       expect(index.index.versions.persist(dir)).to.equal(true);
       expect(index.index.versions.load(dir)).to.equal(undefined);
     };
-    const [offerModelPath, offerIndexPath] = ['models', 'indices']
-      .map((v) => path.join(__dirname, '..', '..', '..', `${v}`, 'offer.json'));
-    updatedOfferModel = sfs.smartRead(offerModelPath);
-    updatedOfferIndex = sfs.smartRead(offerIndexPath);
-    updatedOfferModel.fields.subhead = 'string';
-    updatedOfferIndex.fields.push('subhead');
   });
 
   beforeEach(async ({ dir }) => {
     offerId = uuid4();
     setupNewVersion = async () => {
       instantiateIndex();
+      const [offerModelPath, offerIndexPath] = ['models', 'indices']
+        .map((v) => path.join(__dirname, '..', '..', '..', `${v}`, 'offer.json'));
+      const updatedOfferModel = sfs.smartRead(offerModelPath);
+      const updatedOfferIndex = sfs.smartRead(offerIndexPath);
+      updatedOfferModel.fields.subhead = 'string';
+      updatedOfferIndex.fields.push('subhead');
       index.model.register('offer', updatedOfferModel);
       index.index.register('offer', updatedOfferIndex);
-      await createIndexVersion(dir);
+      await persistAndLoadVersion(dir);
     };
     updateDocument = async () => {
       expect(await index.rest.data.update('offer', [{
@@ -54,7 +52,7 @@ describe('Testing synced', { useTmpDir: true }, () => {
     };
 
     instantiateIndex();
-    await createIndexVersion(dir);
+    await persistAndLoadVersion(dir);
     expect(await index.rest.mapping.sync('offer'))
       .to.deep.equal(['offer@6a1b8f491e156e356ab57e8df046b9f449acb440']);
   });
