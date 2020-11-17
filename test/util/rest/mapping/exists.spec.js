@@ -11,10 +11,13 @@ describe('Testing exists', () => {
     registerEntitiesForIndex(index);
   });
 
+  afterEach(async () => {
+    expect(await index.rest.mapping.delete('offer')).to.equal(true);
+  });
+
   it('Testing mapping indexExists', async () => {
     expect(await index.rest.mapping.exists('offer')).to.equal(false);
     expect(await index.rest.mapping.create('offer')).to.equal(true);
     expect(await index.rest.mapping.exists('offer')).to.equal(true);
-    expect(await index.rest.mapping.delete('offer')).to.equal(true);
   });
 });

@@ -7,18 +7,19 @@ const { registerEntitiesForIndex } = require('../../../helper');
 
 describe('Testing signature', { useTmpDir: true }, () => {
   let index;
+  let offerId;
 
   beforeEach(async ({ dir }) => {
     index = Index({ endpoint: process.env.elasticsearchEndpoint });
     registerEntitiesForIndex(index);
     expect(await index.index.versions.persist(dir)).to.equal(true);
     expect(await index.index.versions.load(dir)).to.equal(undefined);
+    expect(await index.rest.mapping.recreate('offer')).to.equal(true);
+    expect(await index.rest.alias.update('offer')).to.equal(true);
+    offerId = uuid4();
   });
 
   it('Test retrieving a signature for a document', async () => {
-    const offerId = uuid4();
-    expect(await index.rest.mapping.recreate('offer')).to.equal(true);
-    expect(await index.rest.alias.update('offer')).to.equal(true);
     expect(await index.rest.data.update('offer', [{
       action: 'update',
       doc: index.data.remap('offer', {
@@ -41,9 +42,6 @@ describe('Testing signature', { useTmpDir: true }, () => {
   });
 
   it('Test signature does not change if update is identical', async () => {
-    const offerId = uuid4();
-    expect(await index.rest.mapping.recreate('offer')).to.equal(true);
-    expect(await index.rest.alias.update('offer')).to.equal(true);
     expect(await index.rest.data.update('offer', [{
       action: 'update',
       doc: index.data.remap('offer', {
@@ -66,9 +64,6 @@ describe('Testing signature', { useTmpDir: true }, () => {
   });
 
   it('Test signature mismatch', async () => {
-    const offerId = uuid4();
-    expect(await index.rest.mapping.recreate('offer')).to.equal(true);
-    expect(await index.rest.alias.update('offer')).to.equal(true);
     expect(await index.rest.data.update('offer', [{
       action: 'update',
       doc: index.data.remap('offer', {
@@ -94,13 +89,11 @@ describe('Testing signature', { useTmpDir: true }, () => {
   });
 
   it('Test throws an error if index does not exist', async ({ capture }) => {
-    const error = await capture(() => index.rest.data.signature('offer', 'id'));
+    const error = await capture(() => index.rest.data.signature('unknown', 'id'));
     expect(error.message).to.equal('index_not_found_exception');
   });
 
   it('Test returning null if document does not exist', async () => {
-    expect(await index.rest.mapping.recreate('offer')).to.equal(true);
-    expect(await index.rest.alias.update('offer')).to.equal(true);
     expect(await index.rest.data.signature('offer', 'id')).to.equal(null);
     expect(await index.rest.mapping.delete('offer')).to.equal(true);
   });
