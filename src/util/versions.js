@@ -4,9 +4,12 @@ const get = require('lodash.get');
 const set = require('lodash.set');
 const has = require('lodash.has');
 const isEqual = require('lodash.isequal');
+const cloneDeep = require('lodash.clonedeep');
 const sfs = require('smart-fs');
 const Joi = require('joi-strict');
 const objectScan = require('object-scan');
+const objectFields = require('object-fields');
+const { extractFields, extractRels } = require('./index');
 
 const versionSchema = Joi.object().keys({
   timestamp: Joi.number().integer(),
@@ -15,25 +18,6 @@ const versionSchema = Joi.object().keys({
   fields: Joi.array().items(Joi.string()),
   rels: Joi.object()
 });
-
-const extractFieldsRec = (node, prefix = []) => Object
-  .entries(node.nested || {})
-  .map(([relName, childNode]) => extractFieldsRec(childNode, prefix.concat(relName)))
-  .reduce(
-    (p, c) => p.concat(c),
-    node.fields.map((field) => prefix.concat(field).join('.'))
-  );
-
-const extractRelsRec = (node, prefix = []) => Object
-  .entries(node.nested || {})
-  .reduce((prev, [relName, childNode]) => {
-    const childPrefix = prefix.concat(relName);
-    return Object.assign(
-      prev,
-      { [childPrefix.join('.')]: childNode.model },
-      extractRelsRec(childNode, childPrefix)
-    );
-  }, {});
 
 const validate = (() => {
   const asSimple = (v) => {
@@ -68,7 +52,7 @@ module.exports = () => {
       Object
         .values(indexVersions[idx])
         .forEach(({ specs }) => {
-          extractFieldsRec(specs)
+          extractFields(specs)
             .forEach((f) => {
               result.add(f);
             });
@@ -81,7 +65,7 @@ module.exports = () => {
         .values(indexVersions[idx])
         .forEach(({ specs }) => {
           Object
-            .entries(extractRelsRec(specs))
+            .entries(extractRels(specs))
             .forEach(([k, v]) => {
               result[k] = v;
             });
@@ -113,6 +97,27 @@ module.exports = () => {
         const def = sfs.smartRead(path.join(folder, `${file}.json`));
         Joi.assert(def, versionSchema);
         const defPath = file.split('@');
+        def.prepare = (() => {
+          const retainer = objectFields.Retainer(def.fields);
+          const relsToCheck = Object.entries(def.rels)
+            .filter(([_, v]) => v.endsWith('[]'))
+            .map(([k]) => k);
+          const emptyToNull = objectScan(relsToCheck, {
+            useArraySelector: false,
+            breakFn: ({ value, parent, property }) => {
+              if (Array.isArray(value) && value.length === 0) {
+                // eslint-disable-next-line no-param-reassign
+                parent[property] = null;
+              }
+            }
+          });
+          return (doc_) => {
+            const doc = cloneDeep(doc_);
+            retainer(doc);
+            emptyToNull(doc);
+            return doc;
+          };
+        })();
         set(indexVersions, defPath, def);
       });
       validate(indexVersions);

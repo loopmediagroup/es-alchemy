@@ -4,20 +4,22 @@ const { v4: uuid4 } = require('uuid');
 const Index = require('../../../../src/index');
 const { registerEntitiesForIndex } = require('../../../helper');
 
-describe('Testing exists', { useTmpDir: true }, () => {
+describe('Testing count', { useTmpDir: true }, () => {
   let index;
+  let offerId;
 
-  beforeEach(async ({ dir }) => {
+  beforeEach(async () => {
     index = Index({ endpoint: process.env.elasticsearchEndpoint });
     registerEntitiesForIndex(index);
-    expect(await index.index.versions.persist(dir)).to.equal(true);
-    expect(await index.index.versions.load(dir)).to.equal(undefined);
+    offerId = uuid4();
   });
 
-  it('Test exists is true if document exists', async () => {
-    const offerId = uuid4();
+  it('Testing count on alias', async ({ dir }) => {
     expect(await index.rest.mapping.create('offer')).to.equal(true);
+    expect(index.index.versions.persist(dir)).to.equal(true);
+    expect(index.index.versions.load(dir)).to.equal(undefined);
     expect(await index.rest.alias.update('offer')).to.equal(true);
+    expect(await index.rest.data.count('offer')).to.equal(0);
     expect(await index.rest.data.update('offer', [{
       action: 'update',
       doc: index.data.remap('offer', {
@@ -26,14 +28,11 @@ describe('Testing exists', { useTmpDir: true }, () => {
       })
     }])).to.equal(true);
     expect(await index.rest.data.refresh('offer')).to.equal(true);
-    expect(await index.rest.data.exists('offer', offerId)).to.equal(true);
+    expect(await index.rest.data.count('offer')).to.equal(1);
     expect(await index.rest.mapping.delete('offer')).to.equal(true);
   });
 
-  it('Testing exists is false if document does not exist', async () => {
-    expect(await index.rest.mapping.create('offer')).to.equal(true);
-    expect(await index.rest.alias.update('offer')).to.equal(true);
-    expect(await index.rest.data.exists('offer', 'id')).to.equal(false);
-    expect(await index.rest.mapping.delete('offer')).to.equal(true);
+  it('Testing count not found', async () => {
+    expect(await index.rest.data.count('offer')).to.equal(false);
   });
 });
