@@ -45,6 +45,7 @@ module.exports = (options) => {
       register: (idx, specs) => registerIndex(idx, specs),
       list: () => Object.keys(indices).sort(),
       getMapping: (idx) => cloneDeep(indices[idx].mapping),
+      getFields: (idx) => cloneDeep(indices[idx].fields),
       getSpecs: (idx) => cloneDeep(indices[idx].specs)
     },
     data: {
