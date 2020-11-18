@@ -28,7 +28,8 @@ describe('Testing signature', { useTmpDir: true }, () => {
       })
     }])).to.equal(true);
     expect(await index.rest.data.refresh('offer')).to.equal(true);
-    expect(await index.rest.data.signature('offer', offerId)).to.equal('0_1');
+    expect(await index.rest.data.signature('offer', offerId))
+      .to.equal('0_1_offer@6a1b8f491e156e356ab57e8df046b9f449acb440');
     expect(await index.rest.data.update('offer', [{
       action: 'update',
       doc: index.data.remap('offer', {
@@ -37,7 +38,8 @@ describe('Testing signature', { useTmpDir: true }, () => {
       })
     }])).to.equal(true);
     expect(await index.rest.data.refresh('offer')).to.equal(true);
-    expect(await index.rest.data.signature('offer', offerId)).to.equal('1_1');
+    expect(await index.rest.data.signature('offer', offerId))
+      .to.equal('1_1_offer@6a1b8f491e156e356ab57e8df046b9f449acb440');
     expect(await index.rest.mapping.delete('offer')).to.equal(true);
   });
 
@@ -50,7 +52,8 @@ describe('Testing signature', { useTmpDir: true }, () => {
       })
     }])).to.equal(true);
     expect(await index.rest.data.refresh('offer')).to.equal(true);
-    expect(await index.rest.data.signature('offer', offerId)).to.equal('0_1');
+    expect(await index.rest.data.signature('offer', offerId))
+      .to.equal('0_1_offer@6a1b8f491e156e356ab57e8df046b9f449acb440');
     expect(await index.rest.data.update('offer', [{
       action: 'update',
       doc: index.data.remap('offer', {
@@ -59,7 +62,8 @@ describe('Testing signature', { useTmpDir: true }, () => {
       })
     }])).to.equal(true);
     expect(await index.rest.data.refresh('offer')).to.equal(true);
-    expect(await index.rest.data.signature('offer', offerId)).to.equal('0_1');
+    expect(await index.rest.data.signature('offer', offerId))
+      .to.equal('0_1_offer@6a1b8f491e156e356ab57e8df046b9f449acb440');
     expect(await index.rest.mapping.delete('offer')).to.equal(true);
   });
 
@@ -72,19 +76,21 @@ describe('Testing signature', { useTmpDir: true }, () => {
       })
     }])).to.equal(true);
     expect(await index.rest.data.refresh('offer')).to.equal(true);
-    expect(await index.rest.data.signature('offer', offerId)).to.equal('0_1');
+    expect(await index.rest.data.signature('offer', offerId))
+      .to.equal('0_1_offer@6a1b8f491e156e356ab57e8df046b9f449acb440');
     const err = await index.rest.data.update('offer', [{
       action: 'update',
       doc: index.data.remap('offer', {
         id: offerId,
         meta: { k1: 'v1' }
       }),
-      signature: '1_1'
+      signature: '1_1_offer@6a1b8f491e156e356ab57e8df046b9f449acb440'
     }]);
     expect(get(err, [0, 'update', 'error', 'type']))
       .to.equal('version_conflict_engine_exception');
     expect(await index.rest.data.refresh('offer')).to.equal(true);
-    expect(await index.rest.data.signature('offer', offerId)).to.equal('0_1');
+    expect(await index.rest.data.signature('offer', offerId))
+      .to.equal('0_1_offer@6a1b8f491e156e356ab57e8df046b9f449acb440');
     expect(await index.rest.mapping.delete('offer')).to.equal(true);
   });
 
@@ -94,7 +100,8 @@ describe('Testing signature', { useTmpDir: true }, () => {
   });
 
   it('Test returning null if document does not exist', async () => {
-    expect(await index.rest.data.signature('offer', 'id')).to.equal(null);
+    expect(await index.rest.data.signature('offer', 'id'))
+      .to.equal('null_offer@6a1b8f491e156e356ab57e8df046b9f449acb440');
     expect(await index.rest.mapping.delete('offer')).to.equal(true);
   });
 });
