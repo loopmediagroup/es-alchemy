@@ -8,7 +8,7 @@ module.exports = async (call, idx, versions, actions_) => {
     id: Joi.string().optional(),
     doc: Joi.object().keys({ id: Joi.string() }).unknown(true)
       .when('action', { is: Joi.string().valid('update'), then: Joi.required(), otherwise: Joi.optional() }),
-    signature: Joi.string().pattern(/^\d+_\d+$/).allow(null).optional()
+    signature: Joi.string().pattern(/^(?:\d+_\d+|null)_[a-zA-Z\d]+@[a-f\d]{40}$/).optional()
   }).or('id', 'doc')));
 
   const alias = await aliasGet(call, idx);
@@ -17,17 +17,19 @@ module.exports = async (call, idx, versions, actions_) => {
   actions_.forEach((action) => {
     const id = action.id || action.doc.id;
     const hasSignature = action.signature !== undefined;
-    const isSignatureNull = action.signature === null;
-    let signature = {};
+    const isSignatureNull = hasSignature && action.signature.startsWith('null_');
+    let signatureIndexVersion = null;
+    let signatureStatic = {};
     if (hasSignature) {
-      signature = {
+      signatureIndexVersion = action.signature.split('_').pop();
+      signatureStatic = {
         if_seq_no: null,
         if_primary_term: null
       };
       if (!isSignatureNull) {
         [
-          signature.if_seq_no,
-          signature.if_primary_term
+          signatureStatic.if_seq_no,
+          signatureStatic.if_primary_term
         ] = action.signature.split('_');
       }
     }
@@ -36,6 +38,12 @@ module.exports = async (call, idx, versions, actions_) => {
       const isAlias = index === alias;
       if (isAlias && isSignatureNull && action.action === 'delete') {
         return;
+      }
+      const signature = { ...signatureStatic };
+      if (isAlias && hasSignature && alias !== signatureIndexVersion) {
+        // force signature failure
+        signature.if_seq_no = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
+        signature.if_primary_term = Math.ceil(Math.random() * Number.MAX_SAFE_INTEGER);
       }
       payload.push(JSON.stringify({
         [isSignatureNull && action.action === 'update' ? 'create' : action.action]: {
