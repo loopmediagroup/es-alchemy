@@ -8,5 +8,8 @@ module.exports = (call, idx, mapping, id) => call('GET', idx, { endpoint: `_doc/
     if (isFound === null) {
       throw new Error(get(r, 'body.error.type'));
     }
-    return isFound === true ? `${get(r, 'body._seq_no')}_${get(r, 'body._primary_term')}` : null;
+    const docSignature = isFound === true
+      ? [get(r, 'body._seq_no'), get(r, 'body._primary_term')]
+      : ['null'];
+    return [...(docSignature), get(r, 'body._index')].join('_');
   });

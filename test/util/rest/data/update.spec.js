@@ -76,7 +76,7 @@ describe('Testing data formats', { useTmpDir: true }, () => {
     const r = await index.rest.data.update('offer', [{
       action: 'delete',
       id: offerId,
-      signature: '0_1'
+      signature: '0_1_offer@6a1b8f491e156e356ab57e8df046b9f449acb440'
     }]);
     const schema = Joi.array().ordered(
       Joi.object().keys({
@@ -102,12 +102,12 @@ describe('Testing data formats', { useTmpDir: true }, () => {
     expect(await index.rest.data.update('offer', [{
       action: 'update',
       doc: index.data.remap('offer', { id: offerId, meta: { k1: 'v1' } }),
-      signature: null
+      signature: 'null_offer@6a1b8f491e156e356ab57e8df046b9f449acb440'
     }])).to.equal(true);
     const r = await index.rest.data.update('offer', [{
       action: 'update',
       doc: index.data.remap('offer', { id: offerId, meta: { k1: 'v1' } }),
-      signature: null
+      signature: 'null_offer@6a1b8f491e156e356ab57e8df046b9f449acb440'
     }]);
     const schema = Joi.array().ordered(
       Joi.object().keys({
@@ -256,11 +256,10 @@ describe('Testing data formats', { useTmpDir: true }, () => {
 
   it('Testing update with signature match', async ({ dir }) => {
     await setupTwoIndices(dir);
-    const signature = await index.rest.data.signature('offer', offerId);
     const r = await index.rest.data.update('offer', [{
       action: 'update',
       doc: index.data.remap('offer', { id: offerId, meta: { k1: 'v2' } }),
-      signature
+      signature: '0_1_offer@e35ec51a3c35e2d9982e1ac2bbe23957a637a9e0'
     }]);
     expect(r).to.equal(true);
     expect(await index.rest.data.refresh('offer')).to.equal(true);
@@ -275,7 +274,23 @@ describe('Testing data formats', { useTmpDir: true }, () => {
     const r = await index.rest.data.update('offer', [{
       action: 'update',
       doc: index.data.remap('offer', { id: offerId, meta: { k1: 'v2' } }),
-      signature: '1_1'
+      signature: '1_1_offer@e35ec51a3c35e2d9982e1ac2bbe23957a637a9e0'
+    }]);
+    expect(r.map(({ update }) => get(update, 'error.type')))
+      .to.deep.equal(['version_conflict_engine_exception', undefined]);
+    expect(await index.rest.data.refresh('offer')).to.equal(true);
+    expect(await queryVersions('offer')).to.deep.equal([
+      { version: 'offer@6a1b8f491e156e356ab57e8df046b9f449acb440', data: { meta: [{ k1: 'v2' }], id: offerId } },
+      { version: 'offer@e35ec51a3c35e2d9982e1ac2bbe23957a637a9e0', data: { meta: [{ k1: 'v1' }], id: offerId } }
+    ]);
+  });
+
+  it('Testing update with signature version mismatch', async ({ dir }) => {
+    await setupTwoIndices(dir);
+    const r = await index.rest.data.update('offer', [{
+      action: 'update',
+      doc: index.data.remap('offer', { id: offerId, meta: { k1: 'v2' } }),
+      signature: '0_1_offer@0123456789012345678901234567890123456789'
     }]);
     expect(r.map(({ update }) => get(update, 'error.type')))
       .to.deep.equal(['version_conflict_engine_exception', undefined]);
@@ -288,11 +303,10 @@ describe('Testing data formats', { useTmpDir: true }, () => {
 
   it('Testing delete with signature match', async ({ dir }) => {
     await setupTwoIndices(dir);
-    const signature = await index.rest.data.signature('offer', offerId);
     const r = await index.rest.data.update('offer', [{
       action: 'delete',
       doc: index.data.remap('offer', { id: offerId }),
-      signature
+      signature: '0_1_offer@e35ec51a3c35e2d9982e1ac2bbe23957a637a9e0'
     }]);
     expect(r).to.equal(true);
     expect(await index.rest.data.refresh('offer')).to.equal(true);
@@ -304,7 +318,22 @@ describe('Testing data formats', { useTmpDir: true }, () => {
     const r = await index.rest.data.update('offer', [{
       action: 'delete',
       doc: index.data.remap('offer', { id: offerId }),
-      signature: '1_1'
+      signature: '1_1_offer@e35ec51a3c35e2d9982e1ac2bbe23957a637a9e0'
+    }]);
+    expect(r.map(({ delete: del }) => get(del, 'error.type')))
+      .to.deep.equal(['version_conflict_engine_exception', undefined]);
+    expect(await index.rest.data.refresh('offer')).to.equal(true);
+    expect(await queryVersions('offer')).to.deep.equal([
+      { version: 'offer@e35ec51a3c35e2d9982e1ac2bbe23957a637a9e0', data: { meta: [{ k1: 'v1' }], id: offerId } }
+    ]);
+  });
+
+  it('Testing delete with signature version mismatch', async ({ dir }) => {
+    await setupTwoIndices(dir);
+    const r = await index.rest.data.update('offer', [{
+      action: 'delete',
+      doc: index.data.remap('offer', { id: offerId }),
+      signature: '0_1_offer@0123456789012345678901234567890123456789'
     }]);
     expect(r.map(({ delete: del }) => get(del, 'error.type')))
       .to.deep.equal(['version_conflict_engine_exception', undefined]);
@@ -319,7 +348,7 @@ describe('Testing data formats', { useTmpDir: true }, () => {
     const r = await index.rest.data.update('offer', [{
       action: 'delete',
       doc: index.data.remap('offer', { id: offerId }),
-      signature: null
+      signature: 'null_offer@e35ec51a3c35e2d9982e1ac2bbe23957a637a9e0'
     }]);
     expect(r).to.equal(true);
     expect(await index.rest.data.refresh('offer')).to.equal(true);
