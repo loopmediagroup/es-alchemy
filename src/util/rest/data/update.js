@@ -8,7 +8,7 @@ module.exports = async (call, idx, versions, actions_) => {
     id: Joi.string().optional(),
     doc: Joi.object().keys({ id: Joi.string() }).unknown(true)
       .when('action', { is: Joi.string().valid('update'), then: Joi.required(), otherwise: Joi.optional() }),
-    signature: Joi.string().pattern(/^(?:\d+_\d+|null)_[a-zA-Z\d]+@[a-f\d]{40}$/).optional()
+    signature: Joi.string().pattern(/^(?:\d+_\d+|null)_[a-zA-Z\d-]+@[a-f\d]{40}$/).optional()
   }).or('id', 'doc')));
 
   const alias = await aliasGet(call, idx);
