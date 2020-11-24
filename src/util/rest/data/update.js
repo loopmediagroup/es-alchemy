@@ -46,7 +46,7 @@ module.exports = async (call, idx, versions, actions_) => {
         signature.if_primary_term = Math.ceil(Math.random() * Number.MAX_SAFE_INTEGER);
       }
       payload.push(JSON.stringify({
-        [isSignatureNull && action.action === 'update' ? 'create' : action.action]: {
+        [isAlias && isSignatureNull && action.action === 'update' ? 'create' : action.action]: {
           _index: index,
           _id: id,
           ...(isAlias ? signature : {})
@@ -56,7 +56,7 @@ module.exports = async (call, idx, versions, actions_) => {
         // `update` performs no action when exact document already indexed (reduced load)
         payload.push(JSON.stringify({
           doc: content.prepare(action.doc),
-          doc_as_upsert: !hasSignature
+          doc_as_upsert: !isAlias || !hasSignature
         }));
       }
     });
