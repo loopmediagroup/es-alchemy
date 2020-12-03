@@ -1,4 +1,17 @@
 {
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "folding": {
+          "tokenizer": "standard",
+          "filter": [
+            "lowercase",
+            "asciifolding"
+          ]
+        }
+      }
+    }
+  },
   "model": "address",
   "fields": [
     "id",

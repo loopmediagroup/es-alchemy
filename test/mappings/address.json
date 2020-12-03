@@ -1,7 +1,20 @@
 {
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "folding": {
+          "tokenizer": "standard",
+          "filter": [
+            "lowercase",
+            "asciifolding"
+          ]
+        }
+      }
+    }
+  },
   "mappings": {
     "_meta": {
-      "hash": "a2066a68e07cc088f3fb8921ba0fa4f3541b569a"
+      "hash": "751067e13499f5a75a58d0f4b958272be8a0d12d"
     },
     "dynamic": "false",
     "properties": {

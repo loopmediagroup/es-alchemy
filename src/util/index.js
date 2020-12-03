@@ -71,17 +71,37 @@ module.exports = ({
       !get(specs, 'model', '').endsWith('[]'),
       'Root node can not be Array.'
     );
-    const properties = buildPropertiesRec(specs, models);
+    assert(
+      Object.keys(specs).every((e) => [
+        'model', 'fields', 'sources', 'nested', 'flat', 'settings'
+      ].includes(e)),
+      'Bad index definition provided.'
+    );
+    const properties = buildPropertiesRec({
+      model: specs.model,
+      fields: specs.fields,
+      sources: specs.sources,
+      nested: specs.nested,
+      flat: specs.flat
+    }, models);
     const def = {
       dynamic: 'false',
       properties,
       _meta: {}
     };
-    // eslint-disable-next-line no-underscore-dangle
-    def._meta.hash = objectHash(def);
-    return {
-      mappings: def
-    };
+    const result = { mappings: def };
+    if (specs.settings !== undefined) {
+      result.settings = specs.settings;
+    }
+    // todo: remove if case (breaking)
+    if (Object.keys(result).length === 1 && result.mappings !== undefined) {
+      // eslint-disable-next-line no-underscore-dangle
+      def._meta.hash = objectHash(result.mappings);
+    } else {
+      // eslint-disable-next-line no-underscore-dangle
+      def._meta.hash = objectHash(result);
+    }
+    return result;
   },
   extractFields: (specs) => extractFieldsRec(specs),
   extractRels: (spec) => extractRelsRec(spec)

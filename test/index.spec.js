@@ -74,7 +74,7 @@ describe('Testing index', {
     expect(index.index.versions.persist(dir)).to.equal(true);
     expect(sfs.walkDir(dir).sort()).to.deep.equal(
       [
-        'address@a2066a68e07cc088f3fb8921ba0fa4f3541b569a.json',
+        'address@751067e13499f5a75a58d0f4b958272be8a0d12d.json',
         'location@127f07825e9279eb9f3bf334e5dd575916f09128.json',
         'offer@6a1b8f491e156e356ab57e8df046b9f449acb440.json'
       ]

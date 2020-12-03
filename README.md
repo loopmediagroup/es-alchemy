@@ -96,6 +96,10 @@ found in the [test folder](test/indices).
 Each index is defined as a nested structure of nodes.
 Nodes are defined recursively and each node has the following fields:
 
+##### settings
+
+Elasticsearch [index settings](https://www.elastic.co/guide/en/elasticsearch/reference/current/index-modules.html#index-modules-settings). Can only be defined top level.
+
 ##### version
 
 Type: `string`<br>
