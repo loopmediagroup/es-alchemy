@@ -15,5 +15,6 @@ module.exports = {
   datetime: identity,
   string: identity,
   enum: identity,
-  object: (v) => [v]
+  object: (v) => [v],
+  folded: identity
 };

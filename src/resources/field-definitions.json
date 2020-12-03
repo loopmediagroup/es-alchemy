@@ -37,5 +37,14 @@
   "object": {
     "type": "object",
     "enabled": false
+  },
+  "folded": {
+    "type": "string",
+    "fields": {
+      "folded": {
+        "type": "string",
+        "analyzer": "folding"
+      }
+    }
   }
 }
