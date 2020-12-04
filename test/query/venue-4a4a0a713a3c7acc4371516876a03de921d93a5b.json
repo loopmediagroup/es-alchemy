@@ -184,7 +184,7 @@
                       {
                         "wildcard": {
                           "name": {
-                            "value": "church*"
+                            "value": "Church*"
                           }
                         }
                       },
@@ -218,7 +218,7 @@
                       {
                         "wildcard": {
                           "desc": {
-                            "value": "church*"
+                            "value": "Church*"
                           }
                         }
                       },
@@ -258,7 +258,7 @@
                                 {
                                   "wildcard": {
                                     "offers.name": {
-                                      "value": "church*"
+                                      "value": "Church*"
                                     }
                                   }
                                 },
@@ -303,7 +303,7 @@
                                 {
                                   "wildcard": {
                                     "offers.desc": {
-                                      "value": "church*"
+                                      "value": "Church*"
                                     }
                                   }
                                 },
@@ -348,7 +348,7 @@
                                 {
                                   "wildcard": {
                                     "keywords.names": {
-                                      "value": "church*"
+                                      "value": "Church*"
                                     }
                                   }
                                 },
@@ -393,7 +393,7 @@
                                 {
                                   "wildcard": {
                                     "categories.name": {
-                                      "value": "church*"
+                                      "value": "Church*"
                                     }
                                   }
                                 },

@@ -184,14 +184,14 @@
                       {
                         "wildcard": {
                           "name": {
-                            "value": "kara*"
+                            "value": "Kara*"
                           }
                         }
                       },
                       {
                         "wildcard": {
                           "name": {
-                            "value": "leon*"
+                            "value": "Leon*"
                           }
                         }
                       }
@@ -204,14 +204,14 @@
                       {
                         "wildcard": {
                           "desc": {
-                            "value": "kara*"
+                            "value": "Kara*"
                           }
                         }
                       },
                       {
                         "wildcard": {
                           "desc": {
-                            "value": "leon*"
+                            "value": "Leon*"
                           }
                         }
                       }
@@ -230,14 +230,14 @@
                                 {
                                   "wildcard": {
                                     "offers.name": {
-                                      "value": "kara*"
+                                      "value": "Kara*"
                                     }
                                   }
                                 },
                                 {
                                   "wildcard": {
                                     "offers.name": {
-                                      "value": "leon*"
+                                      "value": "Leon*"
                                     }
                                   }
                                 }
@@ -261,14 +261,14 @@
                                 {
                                   "wildcard": {
                                     "offers.desc": {
-                                      "value": "kara*"
+                                      "value": "Kara*"
                                     }
                                   }
                                 },
                                 {
                                   "wildcard": {
                                     "offers.desc": {
-                                      "value": "leon*"
+                                      "value": "Leon*"
                                     }
                                   }
                                 }
@@ -292,14 +292,14 @@
                                 {
                                   "wildcard": {
                                     "keywords.names": {
-                                      "value": "kara*"
+                                      "value": "Kara*"
                                     }
                                   }
                                 },
                                 {
                                   "wildcard": {
                                     "keywords.names": {
-                                      "value": "leon*"
+                                      "value": "Leon*"
                                     }
                                   }
                                 }
@@ -323,14 +323,14 @@
                                 {
                                   "wildcard": {
                                     "categories.name": {
-                                      "value": "kara*"
+                                      "value": "Kara*"
                                     }
                                   }
                                 },
                                 {
                                   "wildcard": {
                                     "categories.name": {
-                                      "value": "leon*"
+                                      "value": "Leon*"
                                     }
                                   }
                                 }

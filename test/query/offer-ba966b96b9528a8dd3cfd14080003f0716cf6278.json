@@ -211,14 +211,14 @@
                       {
                         "wildcard": {
                           "name": {
-                            "value": "hoffman*"
+                            "value": "Hoffman*"
                           }
                         }
                       },
                       {
                         "wildcard": {
                           "name": {
-                            "value": "lee*"
+                            "value": "Lee*"
                           }
                         }
                       }
@@ -231,14 +231,14 @@
                       {
                         "wildcard": {
                           "desc": {
-                            "value": "hoffman*"
+                            "value": "Hoffman*"
                           }
                         }
                       },
                       {
                         "wildcard": {
                           "desc": {
-                            "value": "lee*"
+                            "value": "Lee*"
                           }
                         }
                       }
@@ -257,14 +257,14 @@
                                 {
                                   "wildcard": {
                                     "keywords.names": {
-                                      "value": "hoffman*"
+                                      "value": "Hoffman*"
                                     }
                                   }
                                 },
                                 {
                                   "wildcard": {
                                     "keywords.names": {
-                                      "value": "lee*"
+                                      "value": "Lee*"
                                     }
                                   }
                                 }
@@ -288,14 +288,14 @@
                                 {
                                   "wildcard": {
                                     "venues.name": {
-                                      "value": "hoffman*"
+                                      "value": "Hoffman*"
                                     }
                                   }
                                 },
                                 {
                                   "wildcard": {
                                     "venues.name": {
-                                      "value": "lee*"
+                                      "value": "Lee*"
                                     }
                                   }
                                 }
@@ -319,14 +319,14 @@
                                 {
                                   "wildcard": {
                                     "venues.desc": {
-                                      "value": "hoffman*"
+                                      "value": "Hoffman*"
                                     }
                                   }
                                 },
                                 {
                                   "wildcard": {
                                     "venues.desc": {
-                                      "value": "lee*"
+                                      "value": "Lee*"
                                     }
                                   }
                                 }
@@ -350,14 +350,14 @@
                                 {
                                   "wildcard": {
                                     "categories.name": {
-                                      "value": "hoffman*"
+                                      "value": "Hoffman*"
                                     }
                                   }
                                 },
                                 {
                                   "wildcard": {
                                     "categories.name": {
-                                      "value": "lee*"
+                                      "value": "Lee*"
                                     }
                                   }
                                 }

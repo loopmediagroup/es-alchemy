@@ -59,7 +59,7 @@ describe('Testing Query Creation', () => {
   });
 
   it('Testing query.build with alphabetization support', () => {
-    const q = 'crème brulée garçon niño';
+    const q = 'Crème Brulée garçon niÑo';
     const andFilter = [
       ['name', 'search', q]
     ];
@@ -78,14 +78,14 @@ describe('Testing Query Creation', () => {
                   {
                     wildcard: {
                       name: {
-                        value: 'crème*'
+                        value: 'Crème*'
                       }
                     }
                   },
                   {
                     wildcard: {
                       name: {
-                        value: 'brulée*'
+                        value: 'Brulée*'
                       }
                     }
                   },
@@ -99,7 +99,7 @@ describe('Testing Query Creation', () => {
                   {
                     wildcard: {
                       name: {
-                        value: 'niño*'
+                        value: 'niÑo*'
                       }
                     }
                   }
