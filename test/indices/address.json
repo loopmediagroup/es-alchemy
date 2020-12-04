@@ -16,6 +16,12 @@
   "fields": [
     "id",
     "centre",
+    {
+      "name": "street",
+      "overwrite": {
+        "analyzer": "folding"
+      }
+    },
     "created"
   ]
 }
