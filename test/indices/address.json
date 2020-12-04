@@ -1,8 +1,27 @@
 {
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "folding": {
+          "tokenizer": "standard",
+          "filter": [
+            "lowercase",
+            "asciifolding"
+          ]
+        }
+      }
+    }
+  },
   "model": "address",
   "fields": [
     "id",
     "centre",
+    {
+      "name": "street",
+      "overwrite": {
+        "analyzer": "folding"
+      }
+    },
     "created"
   ]
 }

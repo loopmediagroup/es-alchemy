@@ -55,7 +55,7 @@ Preferably a folder `models` contains a json file for each model. An example can
 found in the [test folder](test/models).
 
 Fields that can be used and how they get mapped in Elasticsearch can
-be found [here](src/resources/field-definitions.json).
+be found [here](src/resources/field-definitions.js).
 
 #### Indices
 
@@ -75,7 +75,10 @@ Example: **location.json**
       "fields": [
         "id",
         "street",
-        "city",
+        {
+          "name": "city",
+          "overwrite": {}
+        },
         "country",
         "centre",
         "area",
@@ -95,6 +98,10 @@ found in the [test folder](test/indices).
 
 Each index is defined as a nested structure of nodes.
 Nodes are defined recursively and each node has the following fields:
+
+##### settings
+
+Elasticsearch [index settings](https://www.elastic.co/guide/en/elasticsearch/reference/current/index-modules.html#index-modules-settings). Can only be defined top level.
 
 ##### version
 
@@ -119,6 +126,17 @@ Required.
 
 Fields of the node model that are included in this index.
 Needs to be a subset of the fields defined on the model.
+
+To customize the field definition for a given index, an object of the form
+```json
+{
+  "name": "field-name",
+  "overwrite": {
+    "custom": "option"
+  }
+}
+```
+can be used, instead of simply using `"field-name"`.
 
 ##### sources
 

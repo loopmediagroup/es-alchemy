@@ -2,6 +2,10 @@
 const assert = require('assert');
 const fieldDefinitions = require('../resources/field-definitions');
 
+const getFieldDef = (fieldType) => fieldDefinitions[
+  fieldType.endsWith('[]') ? fieldType.slice(0, -2) : fieldType
+];
+
 module.exports = ({
   compile: (specs) => {
     assert(
@@ -9,7 +13,7 @@ module.exports = ({
       'Model definition expected to be of type object.'
     );
     Object.values(specs.fields).forEach((fieldType) => assert(
-      fieldDefinitions[fieldType.endsWith('[]') ? fieldType.slice(0, -2) : fieldType] !== undefined,
+      typeof getFieldDef(fieldType) === 'function',
       `Unknown field type given: ${fieldType}`
     ));
     return {
@@ -17,7 +21,7 @@ module.exports = ({
       fields: Object
         .entries(specs.fields)
         .reduce((prev, [key, value]) => Object.assign(prev, {
-          [key]: fieldDefinitions[value.endsWith('[]') ? value.slice(0, -2) : value]
+          [key]: getFieldDef(value)
         }), {})
     };
   }

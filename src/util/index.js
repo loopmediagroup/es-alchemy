@@ -30,7 +30,7 @@ const buildPropertiesRec = (node, models) => {
     'Model name not registered.'
   );
   assert(
-    node.fields.every((f) => model.compiled.fields[f] !== undefined),
+    node.fields.every((f) => typeof model.compiled.fields[typeof f === 'string' ? f : f.name] === 'function'),
     'Unknown field provided.'
   );
   const nested = Object.entries(node.nested || {});
@@ -42,7 +42,14 @@ const buildPropertiesRec = (node, models) => {
         ...(get(value, 'flat', false) === true ? { include_in_root: true } : {})
       }
     }),
-    node.fields.reduce((prev, key) => Object.assign(prev, { [key]: model.compiled.fields[key] }), {})
+    node.fields
+      .reduce((prev, key) => {
+        const isString = typeof key === 'string';
+        const k = isString ? key : key.name;
+        // eslint-disable-next-line no-param-reassign
+        prev[k] = model.compiled.fields[k](...(isString ? [] : [get(key, 'overwrite', {})]));
+        return prev;
+      }, {})
   );
 };
 
@@ -51,7 +58,7 @@ const extractFieldsRec = (node, prefix = []) => Object
   .map(([relName, childNode]) => extractFieldsRec(childNode, prefix.concat(relName)))
   .reduce(
     (p, c) => p.concat(c),
-    node.fields.map((field) => prefix.concat(field).join('.'))
+    node.fields.map((field) => prefix.concat(typeof field === 'string' ? field : field.name).join('.'))
   );
 
 const extractRelsRec = (node, prefix = []) => Object
@@ -71,17 +78,37 @@ module.exports = ({
       !get(specs, 'model', '').endsWith('[]'),
       'Root node can not be Array.'
     );
-    const properties = buildPropertiesRec(specs, models);
+    assert(
+      Object.keys(specs).every((e) => [
+        'model', 'fields', 'sources', 'nested', 'flat', 'settings'
+      ].includes(e)),
+      'Bad index definition provided.'
+    );
+    const properties = buildPropertiesRec({
+      model: specs.model,
+      fields: specs.fields,
+      sources: specs.sources,
+      nested: specs.nested,
+      flat: specs.flat
+    }, models);
     const def = {
       dynamic: 'false',
       properties,
       _meta: {}
     };
-    // eslint-disable-next-line no-underscore-dangle
-    def._meta.hash = objectHash(def);
-    return {
-      mappings: def
-    };
+    const result = { mappings: def };
+    if (specs.settings !== undefined) {
+      result.settings = specs.settings;
+    }
+    // todo: remove if case (breaking)
+    if (Object.keys(result).length === 1 && result.mappings !== undefined) {
+      // eslint-disable-next-line no-underscore-dangle
+      def._meta.hash = objectHash(result.mappings);
+    } else {
+      // eslint-disable-next-line no-underscore-dangle
+      def._meta.hash = objectHash(result);
+    }
+    return result;
   },
   extractFields: (specs) => extractFieldsRec(specs),
   extractRels: (spec) => extractRelsRec(spec)
