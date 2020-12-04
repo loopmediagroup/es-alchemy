@@ -14,7 +14,7 @@
   },
   "mappings": {
     "_meta": {
-      "hash": "751067e13499f5a75a58d0f4b958272be8a0d12d"
+      "hash": "f6c11bba67fbff054671e358e6312904a02ac876"
     },
     "dynamic": "false",
     "properties": {
@@ -27,6 +27,10 @@
       "created": {
         "format": "yyyy-MM-dd'T'HH:mm:ss.SSSX",
         "type": "date"
+      },
+      "street": {
+        "analyzer": "folding",
+        "type": "text"
       }
     }
   }
