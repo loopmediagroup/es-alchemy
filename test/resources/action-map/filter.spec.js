@@ -10,8 +10,23 @@ const normalize = (q) => {
 };
 
 describe('Testing search filter', () => {
-  it('Testing match', () => {
+  it('Testing match words', () => {
     expect(normalize('Crème Brulée garçon niÑo'))
       .to.deep.equal(['Crème*', 'Brulée*', 'garçon*', 'niÑo*']);
+  });
+
+  it('Testing match with dashes', () => {
+    expect(normalize('a-b c- -d'))
+      .to.deep.equal(['a-b*', 'c-*', '-d*']);
+  });
+
+  it('Testing match excluded chars', () => {
+    expect(normalize('> = < 😀'))
+      .to.deep.equal([]);
+  });
+
+  it('Testing empty search', () => {
+    expect(normalize(''))
+      .to.deep.equal([]);
   });
 });
