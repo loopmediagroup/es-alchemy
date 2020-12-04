@@ -57,4 +57,59 @@ describe('Testing Query Creation', () => {
       sort: [{ _id: { order: 'asc' } }]
     });
   });
+
+  it('Testing query.build with alphabetization support', () => {
+    const q = 'Crème Brulée garçon niÑo';
+    const andFilter = [
+      ['name', 'search', q]
+    ];
+    expect(index.query.build(null, {
+      filterBy: { and: andFilter }
+    })).to.deep.equal({
+      _source: [''],
+      size: 20,
+      from: 0,
+      query: {
+        bool: {
+          filter: [
+            {
+              bool: {
+                filter: [
+                  {
+                    wildcard: {
+                      name: {
+                        value: 'Crème*'
+                      }
+                    }
+                  },
+                  {
+                    wildcard: {
+                      name: {
+                        value: 'Brulée*'
+                      }
+                    }
+                  },
+                  {
+                    wildcard: {
+                      name: {
+                        value: 'garçon*'
+                      }
+                    }
+                  },
+                  {
+                    wildcard: {
+                      name: {
+                        value: 'niÑo*'
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      sort: [{ _id: { order: 'asc' } }]
+    });
+  });
 });

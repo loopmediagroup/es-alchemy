@@ -211,14 +211,7 @@
                       {
                         "wildcard": {
                           "name": {
-                            "value": "hoffman*"
-                          }
-                        }
-                      },
-                      {
-                        "wildcard": {
-                          "name": {
-                            "value": "lee*"
+                            "value": "Hoffman-Lee*"
                           }
                         }
                       }
@@ -231,14 +224,7 @@
                       {
                         "wildcard": {
                           "desc": {
-                            "value": "hoffman*"
-                          }
-                        }
-                      },
-                      {
-                        "wildcard": {
-                          "desc": {
-                            "value": "lee*"
+                            "value": "Hoffman-Lee*"
                           }
                         }
                       }
@@ -257,14 +243,7 @@
                                 {
                                   "wildcard": {
                                     "keywords.names": {
-                                      "value": "hoffman*"
-                                    }
-                                  }
-                                },
-                                {
-                                  "wildcard": {
-                                    "keywords.names": {
-                                      "value": "lee*"
+                                      "value": "Hoffman-Lee*"
                                     }
                                   }
                                 }
@@ -288,14 +267,7 @@
                                 {
                                   "wildcard": {
                                     "venues.name": {
-                                      "value": "hoffman*"
-                                    }
-                                  }
-                                },
-                                {
-                                  "wildcard": {
-                                    "venues.name": {
-                                      "value": "lee*"
+                                      "value": "Hoffman-Lee*"
                                     }
                                   }
                                 }
@@ -319,14 +291,7 @@
                                 {
                                   "wildcard": {
                                     "venues.desc": {
-                                      "value": "hoffman*"
-                                    }
-                                  }
-                                },
-                                {
-                                  "wildcard": {
-                                    "venues.desc": {
-                                      "value": "lee*"
+                                      "value": "Hoffman-Lee*"
                                     }
                                   }
                                 }
@@ -350,14 +315,7 @@
                                 {
                                   "wildcard": {
                                     "categories.name": {
-                                      "value": "hoffman*"
-                                    }
-                                  }
-                                },
-                                {
-                                  "wildcard": {
-                                    "categories.name": {
-                                      "value": "lee*"
+                                      "value": "Hoffman-Lee*"
                                     }
                                   }
                                 }
