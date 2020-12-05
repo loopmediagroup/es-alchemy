@@ -202,14 +202,14 @@
                       {
                         "wildcard": {
                           "name": {
-                            "value": "andrea*"
+                            "value": "Andrea*"
                           }
                         }
                       },
                       {
                         "wildcard": {
                           "name": {
-                            "value": "reynolds*"
+                            "value": "Reynolds*"
                           }
                         }
                       }
@@ -222,14 +222,14 @@
                       {
                         "wildcard": {
                           "desc": {
-                            "value": "andrea*"
+                            "value": "Andrea*"
                           }
                         }
                       },
                       {
                         "wildcard": {
                           "desc": {
-                            "value": "reynolds*"
+                            "value": "Reynolds*"
                           }
                         }
                       }
@@ -248,14 +248,14 @@
                                 {
                                   "wildcard": {
                                     "keywords.names": {
-                                      "value": "andrea*"
+                                      "value": "Andrea*"
                                     }
                                   }
                                 },
                                 {
                                   "wildcard": {
                                     "keywords.names": {
-                                      "value": "reynolds*"
+                                      "value": "Reynolds*"
                                     }
                                   }
                                 }
@@ -279,14 +279,14 @@
                                 {
                                   "wildcard": {
                                     "business.name": {
-                                      "value": "andrea*"
+                                      "value": "Andrea*"
                                     }
                                   }
                                 },
                                 {
                                   "wildcard": {
                                     "business.name": {
-                                      "value": "reynolds*"
+                                      "value": "Reynolds*"
                                     }
                                   }
                                 }
@@ -310,14 +310,14 @@
                                 {
                                   "wildcard": {
                                     "venues.name": {
-                                      "value": "andrea*"
+                                      "value": "Andrea*"
                                     }
                                   }
                                 },
                                 {
                                   "wildcard": {
                                     "venues.name": {
-                                      "value": "reynolds*"
+                                      "value": "Reynolds*"
                                     }
                                   }
                                 }
@@ -341,14 +341,14 @@
                                 {
                                   "wildcard": {
                                     "venues.desc": {
-                                      "value": "andrea*"
+                                      "value": "Andrea*"
                                     }
                                   }
                                 },
                                 {
                                   "wildcard": {
                                     "venues.desc": {
-                                      "value": "reynolds*"
+                                      "value": "Reynolds*"
                                     }
                                   }
                                 }

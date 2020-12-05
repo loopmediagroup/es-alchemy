@@ -111,7 +111,7 @@ module.exports = {
   }),
   search: (l, r) => ({
     bool: {
-      filter: r.toLowerCase().split(/[^0-9a-z]+/)
+      filter: (r.match(/[(?:\b\-\b)a-zA-Z0-9À-ÖØ-öø-ÿ]+/g) || [])
         .filter((e) => !!e)
         .map((e) => ({
           wildcard: {

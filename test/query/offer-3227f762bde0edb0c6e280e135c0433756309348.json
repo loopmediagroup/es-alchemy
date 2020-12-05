@@ -211,7 +211,7 @@
                       {
                         "wildcard": {
                           "name": {
-                            "value": "hoffman*"
+                            "value": "Hoffman-*"
                           }
                         }
                       }
@@ -224,7 +224,7 @@
                       {
                         "wildcard": {
                           "desc": {
-                            "value": "hoffman*"
+                            "value": "Hoffman-*"
                           }
                         }
                       }
@@ -243,7 +243,7 @@
                                 {
                                   "wildcard": {
                                     "keywords.names": {
-                                      "value": "hoffman*"
+                                      "value": "Hoffman-*"
                                     }
                                   }
                                 }
@@ -267,7 +267,7 @@
                                 {
                                   "wildcard": {
                                     "venues.name": {
-                                      "value": "hoffman*"
+                                      "value": "Hoffman-*"
                                     }
                                   }
                                 }
@@ -291,7 +291,7 @@
                                 {
                                   "wildcard": {
                                     "venues.desc": {
-                                      "value": "hoffman*"
+                                      "value": "Hoffman-*"
                                     }
                                   }
                                 }
@@ -315,7 +315,7 @@
                                 {
                                   "wildcard": {
                                     "categories.name": {
-                                      "value": "hoffman*"
+                                      "value": "Hoffman-*"
                                     }
                                   }
                                 }

@@ -211,7 +211,7 @@
                       {
                         "wildcard": {
                           "name": {
-                            "value": "lose*"
+                            "value": "Lose*"
                           }
                         }
                       },
@@ -259,7 +259,7 @@
                       {
                         "wildcard": {
                           "desc": {
-                            "value": "lose*"
+                            "value": "Lose*"
                           }
                         }
                       },
@@ -313,7 +313,7 @@
                                 {
                                   "wildcard": {
                                     "keywords.names": {
-                                      "value": "lose*"
+                                      "value": "Lose*"
                                     }
                                   }
                                 },
@@ -372,7 +372,7 @@
                                 {
                                   "wildcard": {
                                     "venues.name": {
-                                      "value": "lose*"
+                                      "value": "Lose*"
                                     }
                                   }
                                 },
@@ -431,7 +431,7 @@
                                 {
                                   "wildcard": {
                                     "venues.desc": {
-                                      "value": "lose*"
+                                      "value": "Lose*"
                                     }
                                   }
                                 },
@@ -490,7 +490,7 @@
                                 {
                                   "wildcard": {
                                     "categories.name": {
-                                      "value": "lose*"
+                                      "value": "Lose*"
                                     }
                                   }
                                 },
