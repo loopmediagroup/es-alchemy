@@ -667,7 +667,8 @@ describe('Testing Rest Query', { useTmpDir: true, timeout: 10000 }, () => {
       before(() => {
         address1 = {
           id: uuid4(),
-          centre: [0, 0]
+          centre: [0, 0],
+          street: 'débâcle'
         };
         address2 = {
           id: uuid4(),
@@ -681,6 +682,20 @@ describe('Testing Rest Query', { useTmpDir: true, timeout: 10000 }, () => {
           id: uuid4(),
           centre: [0.1, 0.1]
         };
+      });
+
+      it('Testing folding', async () => {
+        await upsert('address', [address1]);
+        const get = async (street) => {
+          const r = await query('address', {
+            toReturn: ['id', 'centre', 'street'],
+            filterBy: { and: [['street', '==', street]] }
+          }, { raw: true });
+          // eslint-disable-next-line no-underscore-dangle
+          return r.hits.hits.map((h) => h._source);
+        };
+        expect(await get('débâcle')).to.deep.equal([address1]);
+        expect(await get('debacle')).to.deep.equal([address1]);
       });
 
       it('Testing mapping function as step function', async () => {
