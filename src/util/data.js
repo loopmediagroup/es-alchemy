@@ -27,6 +27,7 @@ const remapRec = (specs, input, models) => {
       const entry = {};
       const fieldTypes = models[specs.model.endsWith('[]') ? specs.model.slice(0, -2) : specs.model].specs.fields;
       specs.fields // handle top level
+        .map((field) => (typeof field === 'string' ? field : field.name))
         .map((field) => [field, origin[field]])
         .filter((kv) => kv[1] !== undefined)
         .reduce((prev, [key, value]) => Object.assign(prev, {
