@@ -17,7 +17,7 @@ describe('Testing search filter', () => {
 
   it('Testing match with dashes', () => {
     expect(normalize('a-b c- -d'))
-      .to.deep.equal(['a-b*', 'c-*', '-d*']);
+      .to.deep.equal(['a-b*', 'c*', 'd*']);
   });
 
   it('Testing match excluded chars', () => {
