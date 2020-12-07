@@ -111,7 +111,7 @@ module.exports = {
   }),
   search: (l, r) => ({
     bool: {
-      filter: (r.match(/[(?:\b\-\b)a-zA-Z0-9À-ÖØ-öø-ÿ]+/g) || [])
+      filter: (r.match(/(?:[a-zA-Z0-9À-ÖØ-öø-ÿ]|\b[-'’]\b)+/g) || [])
         .filter((e) => !!e)
         .map((e) => ({
           wildcard: {
