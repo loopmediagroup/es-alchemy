@@ -182,31 +182,27 @@
                   "bool": {
                     "filter": [
                       {
-                        "wildcard": {
-                          "name": {
-                            "value": "Church*"
-                          }
+                        "query_string": {
+                          "default_field": "name",
+                          "query": "Church*"
                         }
                       },
                       {
-                        "wildcard": {
-                          "name": {
-                            "value": "lawyer*"
-                          }
+                        "query_string": {
+                          "default_field": "name",
+                          "query": "lawyer*"
                         }
                       },
                       {
-                        "wildcard": {
-                          "name": {
-                            "value": "century*"
-                          }
+                        "query_string": {
+                          "default_field": "name",
+                          "query": "century*"
                         }
                       },
                       {
-                        "wildcard": {
-                          "name": {
-                            "value": "tot*"
-                          }
+                        "query_string": {
+                          "default_field": "name",
+                          "query": "tot*"
                         }
                       }
                     ]
@@ -216,31 +212,27 @@
                   "bool": {
                     "filter": [
                       {
-                        "wildcard": {
-                          "desc": {
-                            "value": "Church*"
-                          }
+                        "query_string": {
+                          "default_field": "desc",
+                          "query": "Church*"
                         }
                       },
                       {
-                        "wildcard": {
-                          "desc": {
-                            "value": "lawyer*"
-                          }
+                        "query_string": {
+                          "default_field": "desc",
+                          "query": "lawyer*"
                         }
                       },
                       {
-                        "wildcard": {
-                          "desc": {
-                            "value": "century*"
-                          }
+                        "query_string": {
+                          "default_field": "desc",
+                          "query": "century*"
                         }
                       },
                       {
-                        "wildcard": {
-                          "desc": {
-                            "value": "tot*"
-                          }
+                        "query_string": {
+                          "default_field": "desc",
+                          "query": "tot*"
                         }
                       }
                     ]
@@ -256,31 +248,27 @@
                             "bool": {
                               "filter": [
                                 {
-                                  "wildcard": {
-                                    "offers.name": {
-                                      "value": "Church*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "offers.name",
+                                    "query": "Church*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "offers.name": {
-                                      "value": "lawyer*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "offers.name",
+                                    "query": "lawyer*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "offers.name": {
-                                      "value": "century*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "offers.name",
+                                    "query": "century*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "offers.name": {
-                                      "value": "tot*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "offers.name",
+                                    "query": "tot*"
                                   }
                                 }
                               ]
@@ -301,31 +289,27 @@
                             "bool": {
                               "filter": [
                                 {
-                                  "wildcard": {
-                                    "offers.desc": {
-                                      "value": "Church*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "offers.desc",
+                                    "query": "Church*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "offers.desc": {
-                                      "value": "lawyer*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "offers.desc",
+                                    "query": "lawyer*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "offers.desc": {
-                                      "value": "century*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "offers.desc",
+                                    "query": "century*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "offers.desc": {
-                                      "value": "tot*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "offers.desc",
+                                    "query": "tot*"
                                   }
                                 }
                               ]
@@ -346,31 +330,27 @@
                             "bool": {
                               "filter": [
                                 {
-                                  "wildcard": {
-                                    "keywords.names": {
-                                      "value": "Church*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "keywords.names",
+                                    "query": "Church*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "keywords.names": {
-                                      "value": "lawyer*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "keywords.names",
+                                    "query": "lawyer*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "keywords.names": {
-                                      "value": "century*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "keywords.names",
+                                    "query": "century*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "keywords.names": {
-                                      "value": "tot*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "keywords.names",
+                                    "query": "tot*"
                                   }
                                 }
                               ]
@@ -391,31 +371,27 @@
                             "bool": {
                               "filter": [
                                 {
-                                  "wildcard": {
-                                    "categories.name": {
-                                      "value": "Church*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "categories.name",
+                                    "query": "Church*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "categories.name": {
-                                      "value": "lawyer*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "categories.name",
+                                    "query": "lawyer*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "categories.name": {
-                                      "value": "century*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "categories.name",
+                                    "query": "century*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "categories.name": {
-                                      "value": "tot*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "categories.name",
+                                    "query": "tot*"
                                   }
                                 }
                               ]

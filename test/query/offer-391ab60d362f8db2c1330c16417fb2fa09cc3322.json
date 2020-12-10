@@ -209,45 +209,39 @@
                   "bool": {
                     "filter": [
                       {
-                        "wildcard": {
-                          "name": {
-                            "value": "Lose*"
-                          }
+                        "query_string": {
+                          "default_field": "name",
+                          "query": "Lose*"
                         }
                       },
                       {
-                        "wildcard": {
-                          "name": {
-                            "value": "fast*"
-                          }
+                        "query_string": {
+                          "default_field": "name",
+                          "query": "fast*"
                         }
                       },
                       {
-                        "wildcard": {
-                          "name": {
-                            "value": "message*"
-                          }
+                        "query_string": {
+                          "default_field": "name",
+                          "query": "message*"
                         }
                       },
                       {
-                        "wildcard": {
-                          "name": {
-                            "value": "certain*"
-                          }
+                        "query_string": {
+                          "default_field": "name",
+                          "query": "certain*"
                         }
                       },
                       {
-                        "wildcard": {
-                          "name": {
-                            "value": "final*"
-                          }
+                        "query_string": {
+                          "default_field": "name",
+                          "query": "final*"
                         }
                       },
                       {
-                        "wildcard": {
-                          "name": {
-                            "value": "mark*"
-                          }
+                        "query_string": {
+                          "default_field": "name",
+                          "query": "mark*"
                         }
                       }
                     ]
@@ -257,45 +251,39 @@
                   "bool": {
                     "filter": [
                       {
-                        "wildcard": {
-                          "desc": {
-                            "value": "Lose*"
-                          }
+                        "query_string": {
+                          "default_field": "desc",
+                          "query": "Lose*"
                         }
                       },
                       {
-                        "wildcard": {
-                          "desc": {
-                            "value": "fast*"
-                          }
+                        "query_string": {
+                          "default_field": "desc",
+                          "query": "fast*"
                         }
                       },
                       {
-                        "wildcard": {
-                          "desc": {
-                            "value": "message*"
-                          }
+                        "query_string": {
+                          "default_field": "desc",
+                          "query": "message*"
                         }
                       },
                       {
-                        "wildcard": {
-                          "desc": {
-                            "value": "certain*"
-                          }
+                        "query_string": {
+                          "default_field": "desc",
+                          "query": "certain*"
                         }
                       },
                       {
-                        "wildcard": {
-                          "desc": {
-                            "value": "final*"
-                          }
+                        "query_string": {
+                          "default_field": "desc",
+                          "query": "final*"
                         }
                       },
                       {
-                        "wildcard": {
-                          "desc": {
-                            "value": "mark*"
-                          }
+                        "query_string": {
+                          "default_field": "desc",
+                          "query": "mark*"
                         }
                       }
                     ]
@@ -311,45 +299,39 @@
                             "bool": {
                               "filter": [
                                 {
-                                  "wildcard": {
-                                    "keywords.names": {
-                                      "value": "Lose*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "keywords.names",
+                                    "query": "Lose*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "keywords.names": {
-                                      "value": "fast*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "keywords.names",
+                                    "query": "fast*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "keywords.names": {
-                                      "value": "message*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "keywords.names",
+                                    "query": "message*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "keywords.names": {
-                                      "value": "certain*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "keywords.names",
+                                    "query": "certain*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "keywords.names": {
-                                      "value": "final*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "keywords.names",
+                                    "query": "final*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "keywords.names": {
-                                      "value": "mark*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "keywords.names",
+                                    "query": "mark*"
                                   }
                                 }
                               ]
@@ -370,45 +352,39 @@
                             "bool": {
                               "filter": [
                                 {
-                                  "wildcard": {
-                                    "venues.name": {
-                                      "value": "Lose*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "venues.name",
+                                    "query": "Lose*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "venues.name": {
-                                      "value": "fast*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "venues.name",
+                                    "query": "fast*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "venues.name": {
-                                      "value": "message*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "venues.name",
+                                    "query": "message*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "venues.name": {
-                                      "value": "certain*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "venues.name",
+                                    "query": "certain*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "venues.name": {
-                                      "value": "final*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "venues.name",
+                                    "query": "final*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "venues.name": {
-                                      "value": "mark*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "venues.name",
+                                    "query": "mark*"
                                   }
                                 }
                               ]
@@ -429,45 +405,39 @@
                             "bool": {
                               "filter": [
                                 {
-                                  "wildcard": {
-                                    "venues.desc": {
-                                      "value": "Lose*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "venues.desc",
+                                    "query": "Lose*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "venues.desc": {
-                                      "value": "fast*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "venues.desc",
+                                    "query": "fast*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "venues.desc": {
-                                      "value": "message*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "venues.desc",
+                                    "query": "message*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "venues.desc": {
-                                      "value": "certain*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "venues.desc",
+                                    "query": "certain*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "venues.desc": {
-                                      "value": "final*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "venues.desc",
+                                    "query": "final*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "venues.desc": {
-                                      "value": "mark*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "venues.desc",
+                                    "query": "mark*"
                                   }
                                 }
                               ]
@@ -488,45 +458,39 @@
                             "bool": {
                               "filter": [
                                 {
-                                  "wildcard": {
-                                    "categories.name": {
-                                      "value": "Lose*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "categories.name",
+                                    "query": "Lose*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "categories.name": {
-                                      "value": "fast*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "categories.name",
+                                    "query": "fast*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "categories.name": {
-                                      "value": "message*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "categories.name",
+                                    "query": "message*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "categories.name": {
-                                      "value": "certain*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "categories.name",
+                                    "query": "certain*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "categories.name": {
-                                      "value": "final*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "categories.name",
+                                    "query": "final*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "categories.name": {
-                                      "value": "mark*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "categories.name",
+                                    "query": "mark*"
                                   }
                                 }
                               ]

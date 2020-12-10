@@ -182,52 +182,45 @@
                   "bool": {
                     "filter": [
                       {
-                        "wildcard": {
-                          "name": {
-                            "value": "Well*"
-                          }
+                        "query_string": {
+                          "default_field": "name",
+                          "query": "Well*"
                         }
                       },
                       {
-                        "wildcard": {
-                          "name": {
-                            "value": "although*"
-                          }
+                        "query_string": {
+                          "default_field": "name",
+                          "query": "although*"
                         }
                       },
                       {
-                        "wildcard": {
-                          "name": {
-                            "value": "west*"
-                          }
+                        "query_string": {
+                          "default_field": "name",
+                          "query": "west*"
                         }
                       },
                       {
-                        "wildcard": {
-                          "name": {
-                            "value": "side*"
-                          }
+                        "query_string": {
+                          "default_field": "name",
+                          "query": "side*"
                         }
                       },
                       {
-                        "wildcard": {
-                          "name": {
-                            "value": "least*"
-                          }
+                        "query_string": {
+                          "default_field": "name",
+                          "query": "least*"
                         }
                       },
                       {
-                        "wildcard": {
-                          "name": {
-                            "value": "source*"
-                          }
+                        "query_string": {
+                          "default_field": "name",
+                          "query": "source*"
                         }
                       },
                       {
-                        "wildcard": {
-                          "name": {
-                            "value": "successf*"
-                          }
+                        "query_string": {
+                          "default_field": "name",
+                          "query": "successf*"
                         }
                       }
                     ]
@@ -237,52 +230,45 @@
                   "bool": {
                     "filter": [
                       {
-                        "wildcard": {
-                          "desc": {
-                            "value": "Well*"
-                          }
+                        "query_string": {
+                          "default_field": "desc",
+                          "query": "Well*"
                         }
                       },
                       {
-                        "wildcard": {
-                          "desc": {
-                            "value": "although*"
-                          }
+                        "query_string": {
+                          "default_field": "desc",
+                          "query": "although*"
                         }
                       },
                       {
-                        "wildcard": {
-                          "desc": {
-                            "value": "west*"
-                          }
+                        "query_string": {
+                          "default_field": "desc",
+                          "query": "west*"
                         }
                       },
                       {
-                        "wildcard": {
-                          "desc": {
-                            "value": "side*"
-                          }
+                        "query_string": {
+                          "default_field": "desc",
+                          "query": "side*"
                         }
                       },
                       {
-                        "wildcard": {
-                          "desc": {
-                            "value": "least*"
-                          }
+                        "query_string": {
+                          "default_field": "desc",
+                          "query": "least*"
                         }
                       },
                       {
-                        "wildcard": {
-                          "desc": {
-                            "value": "source*"
-                          }
+                        "query_string": {
+                          "default_field": "desc",
+                          "query": "source*"
                         }
                       },
                       {
-                        "wildcard": {
-                          "desc": {
-                            "value": "successf*"
-                          }
+                        "query_string": {
+                          "default_field": "desc",
+                          "query": "successf*"
                         }
                       }
                     ]
@@ -298,52 +284,45 @@
                             "bool": {
                               "filter": [
                                 {
-                                  "wildcard": {
-                                    "offers.name": {
-                                      "value": "Well*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "offers.name",
+                                    "query": "Well*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "offers.name": {
-                                      "value": "although*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "offers.name",
+                                    "query": "although*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "offers.name": {
-                                      "value": "west*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "offers.name",
+                                    "query": "west*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "offers.name": {
-                                      "value": "side*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "offers.name",
+                                    "query": "side*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "offers.name": {
-                                      "value": "least*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "offers.name",
+                                    "query": "least*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "offers.name": {
-                                      "value": "source*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "offers.name",
+                                    "query": "source*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "offers.name": {
-                                      "value": "successf*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "offers.name",
+                                    "query": "successf*"
                                   }
                                 }
                               ]
@@ -364,52 +343,45 @@
                             "bool": {
                               "filter": [
                                 {
-                                  "wildcard": {
-                                    "offers.desc": {
-                                      "value": "Well*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "offers.desc",
+                                    "query": "Well*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "offers.desc": {
-                                      "value": "although*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "offers.desc",
+                                    "query": "although*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "offers.desc": {
-                                      "value": "west*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "offers.desc",
+                                    "query": "west*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "offers.desc": {
-                                      "value": "side*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "offers.desc",
+                                    "query": "side*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "offers.desc": {
-                                      "value": "least*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "offers.desc",
+                                    "query": "least*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "offers.desc": {
-                                      "value": "source*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "offers.desc",
+                                    "query": "source*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "offers.desc": {
-                                      "value": "successf*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "offers.desc",
+                                    "query": "successf*"
                                   }
                                 }
                               ]
@@ -430,52 +402,45 @@
                             "bool": {
                               "filter": [
                                 {
-                                  "wildcard": {
-                                    "keywords.names": {
-                                      "value": "Well*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "keywords.names",
+                                    "query": "Well*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "keywords.names": {
-                                      "value": "although*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "keywords.names",
+                                    "query": "although*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "keywords.names": {
-                                      "value": "west*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "keywords.names",
+                                    "query": "west*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "keywords.names": {
-                                      "value": "side*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "keywords.names",
+                                    "query": "side*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "keywords.names": {
-                                      "value": "least*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "keywords.names",
+                                    "query": "least*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "keywords.names": {
-                                      "value": "source*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "keywords.names",
+                                    "query": "source*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "keywords.names": {
-                                      "value": "successf*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "keywords.names",
+                                    "query": "successf*"
                                   }
                                 }
                               ]
@@ -496,52 +461,45 @@
                             "bool": {
                               "filter": [
                                 {
-                                  "wildcard": {
-                                    "categories.name": {
-                                      "value": "Well*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "categories.name",
+                                    "query": "Well*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "categories.name": {
-                                      "value": "although*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "categories.name",
+                                    "query": "although*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "categories.name": {
-                                      "value": "west*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "categories.name",
+                                    "query": "west*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "categories.name": {
-                                      "value": "side*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "categories.name",
+                                    "query": "side*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "categories.name": {
-                                      "value": "least*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "categories.name",
+                                    "query": "least*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "categories.name": {
-                                      "value": "source*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "categories.name",
+                                    "query": "source*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "categories.name": {
-                                      "value": "successf*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "categories.name",
+                                    "query": "successf*"
                                   }
                                 }
                               ]

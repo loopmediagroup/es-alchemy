@@ -196,10 +196,9 @@
                   "bool": {
                     "filter": [
                       {
-                        "wildcard": {
-                          "name": {
-                            "value": "2a42ef0bb9db4e1998b732f6c10914a8*"
-                          }
+                        "query_string": {
+                          "default_field": "name",
+                          "query": "2a42ef0bb9db4e1998b732f6c10914a8*"
                         }
                       }
                     ]
@@ -209,10 +208,9 @@
                   "bool": {
                     "filter": [
                       {
-                        "wildcard": {
-                          "desc": {
-                            "value": "2a42ef0bb9db4e1998b732f6c10914a8*"
-                          }
+                        "query_string": {
+                          "default_field": "desc",
+                          "query": "2a42ef0bb9db4e1998b732f6c10914a8*"
                         }
                       }
                     ]
@@ -228,10 +226,9 @@
                             "bool": {
                               "filter": [
                                 {
-                                  "wildcard": {
-                                    "keywords.names": {
-                                      "value": "2a42ef0bb9db4e1998b732f6c10914a8*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "keywords.names",
+                                    "query": "2a42ef0bb9db4e1998b732f6c10914a8*"
                                   }
                                 }
                               ]
@@ -252,10 +249,9 @@
                             "bool": {
                               "filter": [
                                 {
-                                  "wildcard": {
-                                    "business.name": {
-                                      "value": "2a42ef0bb9db4e1998b732f6c10914a8*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "business.name",
+                                    "query": "2a42ef0bb9db4e1998b732f6c10914a8*"
                                   }
                                 }
                               ]
@@ -276,10 +272,9 @@
                             "bool": {
                               "filter": [
                                 {
-                                  "wildcard": {
-                                    "venues.name": {
-                                      "value": "2a42ef0bb9db4e1998b732f6c10914a8*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "venues.name",
+                                    "query": "2a42ef0bb9db4e1998b732f6c10914a8*"
                                   }
                                 }
                               ]
@@ -300,10 +295,9 @@
                             "bool": {
                               "filter": [
                                 {
-                                  "wildcard": {
-                                    "venues.desc": {
-                                      "value": "2a42ef0bb9db4e1998b732f6c10914a8*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "venues.desc",
+                                    "query": "2a42ef0bb9db4e1998b732f6c10914a8*"
                                   }
                                 }
                               ]

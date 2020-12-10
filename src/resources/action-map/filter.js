@@ -114,10 +114,9 @@ module.exports = {
       filter: (r.match(/(?:[a-zA-Z0-9À-ÖØ-öø-ÿ]|\b[-'’]\b)+/g) || [])
         .filter((e) => !!e)
         .map((e) => ({
-          wildcard: {
-            [l]: {
-              value: `${e}*`
-            }
+          query_string: {
+            default_field: l,
+            query: `${e}*`
           }
         }))
     }

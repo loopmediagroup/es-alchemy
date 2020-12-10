@@ -209,10 +209,9 @@
                   "bool": {
                     "filter": [
                       {
-                        "wildcard": {
-                          "name": {
-                            "value": "Hoffman-Lee*"
-                          }
+                        "query_string": {
+                          "default_field": "name",
+                          "query": "Hoffman-Lee*"
                         }
                       }
                     ]
@@ -222,10 +221,9 @@
                   "bool": {
                     "filter": [
                       {
-                        "wildcard": {
-                          "desc": {
-                            "value": "Hoffman-Lee*"
-                          }
+                        "query_string": {
+                          "default_field": "desc",
+                          "query": "Hoffman-Lee*"
                         }
                       }
                     ]
@@ -241,10 +239,9 @@
                             "bool": {
                               "filter": [
                                 {
-                                  "wildcard": {
-                                    "keywords.names": {
-                                      "value": "Hoffman-Lee*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "keywords.names",
+                                    "query": "Hoffman-Lee*"
                                   }
                                 }
                               ]
@@ -265,10 +262,9 @@
                             "bool": {
                               "filter": [
                                 {
-                                  "wildcard": {
-                                    "venues.name": {
-                                      "value": "Hoffman-Lee*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "venues.name",
+                                    "query": "Hoffman-Lee*"
                                   }
                                 }
                               ]
@@ -289,10 +285,9 @@
                             "bool": {
                               "filter": [
                                 {
-                                  "wildcard": {
-                                    "venues.desc": {
-                                      "value": "Hoffman-Lee*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "venues.desc",
+                                    "query": "Hoffman-Lee*"
                                   }
                                 }
                               ]
@@ -313,10 +308,9 @@
                             "bool": {
                               "filter": [
                                 {
-                                  "wildcard": {
-                                    "categories.name": {
-                                      "value": "Hoffman-Lee*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "categories.name",
+                                    "query": "Hoffman-Lee*"
                                   }
                                 }
                               ]
