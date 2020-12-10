@@ -14,7 +14,7 @@
   },
   "mappings": {
     "_meta": {
-      "hash": "f6c11bba67fbff054671e358e6312904a02ac876"
+      "hash": "3e737db4f9999f34316b4683e981500b9ec0eeba"
     },
     "dynamic": "false",
     "properties": {
@@ -30,6 +30,11 @@
       },
       "street": {
         "analyzer": "folding",
+        "fields": {
+          "raw": {
+            "type": "keyword"
+          }
+        },
         "type": "text"
       }
     }

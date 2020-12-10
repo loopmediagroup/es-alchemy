@@ -6,7 +6,28 @@ const actionMap = require('../resources/action-map');
 const { fromCursor } = require('./paging');
 const { buildQuery } = require('./filter');
 
-module.exports.build = (allowedFields, {
+const splitPath = (fullPath, mapping) => {
+  if (typeof fullPath !== 'string' || !fullPath.includes('.')) {
+    return [fullPath, null];
+  }
+  if (mapping === null) {
+    return [fullPath, fullPath.slice(0, fullPath.lastIndexOf('.'))];
+  }
+  let idx = 0;
+  let cur = mapping.mappings;
+  const fullPathSplit = fullPath.split('.');
+  for (let i = 0; i < fullPathSplit.length; i += 1) {
+    const segment = fullPathSplit[i];
+    if (!('properties' in cur) || !(segment in cur.properties)) {
+      break;
+    }
+    idx = i;
+    cur = cur.properties[segment];
+  }
+  return [fullPath, idx === 0 ? null : fullPathSplit.splice(0, idx).join('.')];
+};
+
+module.exports.build = (allowedFields, mapping, {
   toReturn = [''],
   filterBy = [],
   orderBy = [],
@@ -55,7 +76,7 @@ module.exports.build = (allowedFields, {
       ? []
       : [['_id', 'asc']])
   ]
-    .map((e) => actionMap.order[e[1]]([e[0], ...e.slice(2)], { allowedFields }));
+    .map((e) => actionMap.order[e[1]]([...splitPath(e[0], mapping), ...e.slice(2)], { allowedFields }));
   if (result.search_after.length === 0) {
     delete result.search_after;
   }

@@ -53,7 +53,11 @@ module.exports = (options) => {
       page: (esResult, filter) => data.page(esResult, filter)
     },
     query: {
-      build: (idx = null, opts = {}) => query.build(idx === null ? null : indices[idx].fields, opts)
+      build: (idx = null, opts = {}) => query.build(
+        idx === null ? null : indices[idx].fields,
+        idx === null ? null : indices[idx].mapping,
+        opts
+      )
     },
     rest: rest(
       (idx) => get(indices[idx], 'rels', null),
