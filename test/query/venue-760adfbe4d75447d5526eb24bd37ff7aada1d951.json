@@ -202,38 +202,33 @@
                   "bool": {
                     "filter": [
                       {
-                        "wildcard": {
-                          "name": {
-                            "value": "Two*"
-                          }
+                        "query_string": {
+                          "default_field": "name",
+                          "query": "Two*"
                         }
                       },
                       {
-                        "wildcard": {
-                          "name": {
-                            "value": "watch*"
-                          }
+                        "query_string": {
+                          "default_field": "name",
+                          "query": "watch*"
                         }
                       },
                       {
-                        "wildcard": {
-                          "name": {
-                            "value": "really*"
-                          }
+                        "query_string": {
+                          "default_field": "name",
+                          "query": "really*"
                         }
                       },
                       {
-                        "wildcard": {
-                          "name": {
-                            "value": "serve*"
-                          }
+                        "query_string": {
+                          "default_field": "name",
+                          "query": "serve*"
                         }
                       },
                       {
-                        "wildcard": {
-                          "name": {
-                            "value": "chur*"
-                          }
+                        "query_string": {
+                          "default_field": "name",
+                          "query": "chur*"
                         }
                       }
                     ]
@@ -243,38 +238,33 @@
                   "bool": {
                     "filter": [
                       {
-                        "wildcard": {
-                          "desc": {
-                            "value": "Two*"
-                          }
+                        "query_string": {
+                          "default_field": "desc",
+                          "query": "Two*"
                         }
                       },
                       {
-                        "wildcard": {
-                          "desc": {
-                            "value": "watch*"
-                          }
+                        "query_string": {
+                          "default_field": "desc",
+                          "query": "watch*"
                         }
                       },
                       {
-                        "wildcard": {
-                          "desc": {
-                            "value": "really*"
-                          }
+                        "query_string": {
+                          "default_field": "desc",
+                          "query": "really*"
                         }
                       },
                       {
-                        "wildcard": {
-                          "desc": {
-                            "value": "serve*"
-                          }
+                        "query_string": {
+                          "default_field": "desc",
+                          "query": "serve*"
                         }
                       },
                       {
-                        "wildcard": {
-                          "desc": {
-                            "value": "chur*"
-                          }
+                        "query_string": {
+                          "default_field": "desc",
+                          "query": "chur*"
                         }
                       }
                     ]
@@ -290,38 +280,33 @@
                             "bool": {
                               "filter": [
                                 {
-                                  "wildcard": {
-                                    "offers.name": {
-                                      "value": "Two*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "offers.name",
+                                    "query": "Two*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "offers.name": {
-                                      "value": "watch*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "offers.name",
+                                    "query": "watch*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "offers.name": {
-                                      "value": "really*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "offers.name",
+                                    "query": "really*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "offers.name": {
-                                      "value": "serve*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "offers.name",
+                                    "query": "serve*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "offers.name": {
-                                      "value": "chur*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "offers.name",
+                                    "query": "chur*"
                                   }
                                 }
                               ]
@@ -342,38 +327,33 @@
                             "bool": {
                               "filter": [
                                 {
-                                  "wildcard": {
-                                    "offers.desc": {
-                                      "value": "Two*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "offers.desc",
+                                    "query": "Two*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "offers.desc": {
-                                      "value": "watch*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "offers.desc",
+                                    "query": "watch*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "offers.desc": {
-                                      "value": "really*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "offers.desc",
+                                    "query": "really*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "offers.desc": {
-                                      "value": "serve*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "offers.desc",
+                                    "query": "serve*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "offers.desc": {
-                                      "value": "chur*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "offers.desc",
+                                    "query": "chur*"
                                   }
                                 }
                               ]
@@ -394,38 +374,33 @@
                             "bool": {
                               "filter": [
                                 {
-                                  "wildcard": {
-                                    "keywords.names": {
-                                      "value": "Two*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "keywords.names",
+                                    "query": "Two*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "keywords.names": {
-                                      "value": "watch*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "keywords.names",
+                                    "query": "watch*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "keywords.names": {
-                                      "value": "really*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "keywords.names",
+                                    "query": "really*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "keywords.names": {
-                                      "value": "serve*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "keywords.names",
+                                    "query": "serve*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "keywords.names": {
-                                      "value": "chur*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "keywords.names",
+                                    "query": "chur*"
                                   }
                                 }
                               ]
@@ -446,38 +421,33 @@
                             "bool": {
                               "filter": [
                                 {
-                                  "wildcard": {
-                                    "categories.name": {
-                                      "value": "Two*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "categories.name",
+                                    "query": "Two*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "categories.name": {
-                                      "value": "watch*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "categories.name",
+                                    "query": "watch*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "categories.name": {
-                                      "value": "really*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "categories.name",
+                                    "query": "really*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "categories.name": {
-                                      "value": "serve*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "categories.name",
+                                    "query": "serve*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "categories.name": {
-                                      "value": "chur*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "categories.name",
+                                    "query": "chur*"
                                   }
                                 }
                               ]

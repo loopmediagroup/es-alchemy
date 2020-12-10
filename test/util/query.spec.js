@@ -76,31 +76,27 @@ describe('Testing Query Creation', () => {
               bool: {
                 filter: [
                   {
-                    wildcard: {
-                      name: {
-                        value: 'Crème*'
-                      }
+                    query_string: {
+                      default_field: 'name',
+                      query: 'Crème*'
                     }
                   },
                   {
-                    wildcard: {
-                      name: {
-                        value: 'Brulée*'
-                      }
+                    query_string: {
+                      default_field: 'name',
+                      query: 'Brulée*'
                     }
                   },
                   {
-                    wildcard: {
-                      name: {
-                        value: 'garçon*'
-                      }
+                    query_string: {
+                      default_field: 'name',
+                      query: 'garçon*'
                     }
                   },
                   {
-                    wildcard: {
-                      name: {
-                        value: 'niÑo*'
-                      }
+                    query_string: {
+                      default_field: 'name',
+                      query: 'niÑo*'
                     }
                   }
                 ]

@@ -200,17 +200,15 @@
                   "bool": {
                     "filter": [
                       {
-                        "wildcard": {
-                          "name": {
-                            "value": "Andrea*"
-                          }
+                        "query_string": {
+                          "default_field": "name",
+                          "query": "Andrea*"
                         }
                       },
                       {
-                        "wildcard": {
-                          "name": {
-                            "value": "Reynolds*"
-                          }
+                        "query_string": {
+                          "default_field": "name",
+                          "query": "Reynolds*"
                         }
                       }
                     ]
@@ -220,17 +218,15 @@
                   "bool": {
                     "filter": [
                       {
-                        "wildcard": {
-                          "desc": {
-                            "value": "Andrea*"
-                          }
+                        "query_string": {
+                          "default_field": "desc",
+                          "query": "Andrea*"
                         }
                       },
                       {
-                        "wildcard": {
-                          "desc": {
-                            "value": "Reynolds*"
-                          }
+                        "query_string": {
+                          "default_field": "desc",
+                          "query": "Reynolds*"
                         }
                       }
                     ]
@@ -246,17 +242,15 @@
                             "bool": {
                               "filter": [
                                 {
-                                  "wildcard": {
-                                    "keywords.names": {
-                                      "value": "Andrea*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "keywords.names",
+                                    "query": "Andrea*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "keywords.names": {
-                                      "value": "Reynolds*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "keywords.names",
+                                    "query": "Reynolds*"
                                   }
                                 }
                               ]
@@ -277,17 +271,15 @@
                             "bool": {
                               "filter": [
                                 {
-                                  "wildcard": {
-                                    "business.name": {
-                                      "value": "Andrea*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "business.name",
+                                    "query": "Andrea*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "business.name": {
-                                      "value": "Reynolds*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "business.name",
+                                    "query": "Reynolds*"
                                   }
                                 }
                               ]
@@ -308,17 +300,15 @@
                             "bool": {
                               "filter": [
                                 {
-                                  "wildcard": {
-                                    "venues.name": {
-                                      "value": "Andrea*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "venues.name",
+                                    "query": "Andrea*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "venues.name": {
-                                      "value": "Reynolds*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "venues.name",
+                                    "query": "Reynolds*"
                                   }
                                 }
                               ]
@@ -339,17 +329,15 @@
                             "bool": {
                               "filter": [
                                 {
-                                  "wildcard": {
-                                    "venues.desc": {
-                                      "value": "Andrea*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "venues.desc",
+                                    "query": "Andrea*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "venues.desc": {
-                                      "value": "Reynolds*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "venues.desc",
+                                    "query": "Reynolds*"
                                   }
                                 }
                               ]
