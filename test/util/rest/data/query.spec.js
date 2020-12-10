@@ -689,14 +689,15 @@ describe('Testing Rest Query', { useTmpDir: true, timeout: 10000 }, () => {
         const get = async (street) => {
           const r = await query('address', {
             toReturn: ['id', 'centre', 'street'],
-            filterBy: { and: [['street', '==', street]] },
+            filterBy: { and: [['street', 'search', street]] },
             orderBy: [['street.raw', 'asc']]
           }, { raw: true });
           // eslint-disable-next-line no-underscore-dangle
           return r.hits.hits.map((h) => h._source);
         };
-        expect(await get('débâcle')).to.deep.equal([address1]);
+        expect(await get('Débâcle')).to.deep.equal([address1]);
         expect(await get('debacle')).to.deep.equal([address1]);
+        expect(await get('dbcl')).to.deep.equal([]);
       });
 
       it('Testing mapping function as step function', async () => {

@@ -6,7 +6,7 @@ const { search } = require('../../../src/resources/action-map/filter');
 const normalize = (q) => {
   const result = search('name', q);
   const ws = get(result, 'bool.filter');
-  return ws.map((w) => get(w, 'wildcard.name.value'));
+  return ws.map((w) => get(w, 'query_string.query'));
 };
 
 describe('Testing search filter', () => {

@@ -182,38 +182,33 @@
                   "bool": {
                     "filter": [
                       {
-                        "wildcard": {
-                          "name": {
-                            "value": "Always*"
-                          }
+                        "query_string": {
+                          "default_field": "name",
+                          "query": "Always*"
                         }
                       },
                       {
-                        "wildcard": {
-                          "name": {
-                            "value": "listen*"
-                          }
+                        "query_string": {
+                          "default_field": "name",
+                          "query": "listen*"
                         }
                       },
                       {
-                        "wildcard": {
-                          "name": {
-                            "value": "election*"
-                          }
+                        "query_string": {
+                          "default_field": "name",
+                          "query": "election*"
                         }
                       },
                       {
-                        "wildcard": {
-                          "name": {
-                            "value": "action*"
-                          }
+                        "query_string": {
+                          "default_field": "name",
+                          "query": "action*"
                         }
                       },
                       {
-                        "wildcard": {
-                          "name": {
-                            "value": "ha*"
-                          }
+                        "query_string": {
+                          "default_field": "name",
+                          "query": "ha*"
                         }
                       }
                     ]
@@ -223,38 +218,33 @@
                   "bool": {
                     "filter": [
                       {
-                        "wildcard": {
-                          "desc": {
-                            "value": "Always*"
-                          }
+                        "query_string": {
+                          "default_field": "desc",
+                          "query": "Always*"
                         }
                       },
                       {
-                        "wildcard": {
-                          "desc": {
-                            "value": "listen*"
-                          }
+                        "query_string": {
+                          "default_field": "desc",
+                          "query": "listen*"
                         }
                       },
                       {
-                        "wildcard": {
-                          "desc": {
-                            "value": "election*"
-                          }
+                        "query_string": {
+                          "default_field": "desc",
+                          "query": "election*"
                         }
                       },
                       {
-                        "wildcard": {
-                          "desc": {
-                            "value": "action*"
-                          }
+                        "query_string": {
+                          "default_field": "desc",
+                          "query": "action*"
                         }
                       },
                       {
-                        "wildcard": {
-                          "desc": {
-                            "value": "ha*"
-                          }
+                        "query_string": {
+                          "default_field": "desc",
+                          "query": "ha*"
                         }
                       }
                     ]
@@ -270,38 +260,33 @@
                             "bool": {
                               "filter": [
                                 {
-                                  "wildcard": {
-                                    "offers.name": {
-                                      "value": "Always*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "offers.name",
+                                    "query": "Always*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "offers.name": {
-                                      "value": "listen*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "offers.name",
+                                    "query": "listen*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "offers.name": {
-                                      "value": "election*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "offers.name",
+                                    "query": "election*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "offers.name": {
-                                      "value": "action*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "offers.name",
+                                    "query": "action*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "offers.name": {
-                                      "value": "ha*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "offers.name",
+                                    "query": "ha*"
                                   }
                                 }
                               ]
@@ -322,38 +307,33 @@
                             "bool": {
                               "filter": [
                                 {
-                                  "wildcard": {
-                                    "offers.desc": {
-                                      "value": "Always*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "offers.desc",
+                                    "query": "Always*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "offers.desc": {
-                                      "value": "listen*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "offers.desc",
+                                    "query": "listen*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "offers.desc": {
-                                      "value": "election*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "offers.desc",
+                                    "query": "election*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "offers.desc": {
-                                      "value": "action*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "offers.desc",
+                                    "query": "action*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "offers.desc": {
-                                      "value": "ha*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "offers.desc",
+                                    "query": "ha*"
                                   }
                                 }
                               ]
@@ -374,38 +354,33 @@
                             "bool": {
                               "filter": [
                                 {
-                                  "wildcard": {
-                                    "keywords.names": {
-                                      "value": "Always*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "keywords.names",
+                                    "query": "Always*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "keywords.names": {
-                                      "value": "listen*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "keywords.names",
+                                    "query": "listen*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "keywords.names": {
-                                      "value": "election*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "keywords.names",
+                                    "query": "election*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "keywords.names": {
-                                      "value": "action*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "keywords.names",
+                                    "query": "action*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "keywords.names": {
-                                      "value": "ha*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "keywords.names",
+                                    "query": "ha*"
                                   }
                                 }
                               ]
@@ -426,38 +401,33 @@
                             "bool": {
                               "filter": [
                                 {
-                                  "wildcard": {
-                                    "categories.name": {
-                                      "value": "Always*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "categories.name",
+                                    "query": "Always*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "categories.name": {
-                                      "value": "listen*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "categories.name",
+                                    "query": "listen*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "categories.name": {
-                                      "value": "election*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "categories.name",
+                                    "query": "election*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "categories.name": {
-                                      "value": "action*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "categories.name",
+                                    "query": "action*"
                                   }
                                 },
                                 {
-                                  "wildcard": {
-                                    "categories.name": {
-                                      "value": "ha*"
-                                    }
+                                  "query_string": {
+                                    "default_field": "categories.name",
+                                    "query": "ha*"
                                   }
                                 }
                               ]
