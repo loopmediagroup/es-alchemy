@@ -689,7 +689,8 @@ describe('Testing Rest Query', { useTmpDir: true, timeout: 10000 }, () => {
         const get = async (street) => {
           const r = await query('address', {
             toReturn: ['id', 'centre', 'street'],
-            filterBy: { and: [['street', '==', street]] }
+            filterBy: { and: [['street', '==', street]] },
+            orderBy: [['street.raw', 'asc']]
           }, { raw: true });
           // eslint-disable-next-line no-underscore-dangle
           return r.hits.hits.map((h) => h._source);
