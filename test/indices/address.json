@@ -19,7 +19,12 @@
     {
       "name": "street",
       "overwrite": {
-        "analyzer": "folding"
+        "analyzer": "folding",
+        "fields": {
+          "raw": {
+            "type": "keyword"
+          }
+        }
       }
     },
     "created"

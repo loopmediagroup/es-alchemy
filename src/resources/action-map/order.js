@@ -3,17 +3,17 @@ const crypto = require('crypto');
 const { buildQuery } = require('../../util/filter');
 
 module.exports = {
-  distance: ([l, loc]) => ({
+  distance: ([l, p, loc]) => ({
     _geo_distance: {
       [l]: loc,
       order: 'asc',
       unit: 'm',
       mode: 'min',
       distance_type: 'arc',
-      ...(l.indexOf('.') === -1 ? {} : { nested: { path: l.substring(0, l.lastIndexOf('.')) } })
+      ...(p === null ? {} : { nested: { path: p } })
     }
   }),
-  random: ([_, seed]) => ({
+  random: ([l, p, seed]) => ({
     _script: {
       script: {
         lang: 'painless',
@@ -31,7 +31,7 @@ module.exports = {
       order: 'asc'
     }
   }),
-  random_boost: ([_, seed, filter, frequency]) => ({
+  random_boost: ([l, p, seed, filter, frequency]) => ({
     _script: {
       script: {
         lang: 'painless',
@@ -53,29 +53,29 @@ return a % ${frequency} == 0 ? 0 : 1;} else {return 1;}
       order: 'asc'
     }
   }),
-  asc: ([l, mode = null, filter = null], ctx) => ({
+  asc: ([l, p, mode = null, filter = null], ctx) => ({
     [l]: {
       order: 'asc',
       ...(mode !== null ? { mode } : {}),
-      ...(l.indexOf('.') === -1 ? {} : {
+      ...(p === null ? {} : {
         nested: {
-          path: l.substring(0, l.lastIndexOf('.')),
+          path: p,
           ...(filter === null ? {} : {
-            filter: buildQuery(filter, ctx.allowedFields, l.substring(0, l.lastIndexOf('.')))
+            filter: buildQuery(filter, ctx.allowedFields, p)
           })
         }
       })
     }
   }),
-  desc: ([l, mode = null, filter = null], ctx) => ({
+  desc: ([l, p, mode = null, filter = null], ctx) => ({
     [l]: {
       order: 'desc',
       ...(mode !== null ? { mode } : {}),
-      ...(l.indexOf('.') === -1 ? {} : {
+      ...(p === null ? {} : {
         nested: {
-          path: l.substring(0, l.lastIndexOf('.')),
+          path: p,
           ...(filter === null ? {} : {
-            filter: buildQuery(filter, ctx.allowedFields, l.substring(0, l.lastIndexOf('.')))
+            filter: buildQuery(filter, ctx.allowedFields, p)
           })
         }
       })
