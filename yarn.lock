@@ -332,10 +332,10 @@
   dependencies:
     smart-fs "1.12.1"
 
-"@blackflux/robo-config-plugin@3.10.15":
-  version "3.10.15"
-  resolved "https://registry.yarnpkg.com/@blackflux/robo-config-plugin/-/robo-config-plugin-3.10.15.tgz#3ef5a4313150ecd60c29aeb1a834e7710a98b544"
-  integrity sha512-w0iDutfLeJsEQfyIKwO0LYgzS0DYis5P5p0XEoxFi+GAnn4PYJl+paMjqOO4+MZi7DIhb9YGwxd1ahzZWqXlAg==
+"@blackflux/robo-config-plugin@3.10.16":
+  version "3.10.16"
+  resolved "https://registry.yarnpkg.com/@blackflux/robo-config-plugin/-/robo-config-plugin-3.10.16.tgz#0653f850d69b543654c6a2c6a4ef73126d43c501"
+  integrity sha512-tmJgh3EnIxL9lkSL885I3HcpZZxQnBdNXSLTrJcur+rjDSUQSLTwDOjnYUXNC69NbuKDAKFHzOVgAf+7nxxSvw==
 
 "@eslint/eslintrc@^0.2.2":
   version "0.2.2"
@@ -3926,6 +3926,13 @@ joi-strict@1.2.6:
   dependencies:
     "@hapi/joi" "17.1.1"
 
+joi-strict@1.2.7:
+  version "1.2.7"
+  resolved "https://registry.yarnpkg.com/joi-strict/-/joi-strict-1.2.7.tgz#c07ce06797c897f3130a2700aa77c08a1976f709"
+  integrity sha512-B+IlHkTypuBfysiUDowmpB2/BnfJHkVEVBv1+F0Cm48u0RgDGFLUFuHGVH8NbnWSAHjCxWKzgVp3rMHxGJXZ0w==
+  dependencies:
+    "@hapi/joi" "17.1.1"
+
 js-gardener@2.0.181:
   version "2.0.181"
   resolved "https://registry.yarnpkg.com/js-gardener/-/js-gardener-2.0.181.tgz#e9cbeab8ecc74275d9613615cb8652c0bf19a496"
@@ -4951,10 +4958,10 @@ node-sass-tilde-importer@^1.0.2:
   dependencies:
     find-parent-dir "^0.3.0"
 
-node-tdd@2.18.11:
-  version "2.18.11"
-  resolved "https://registry.yarnpkg.com/node-tdd/-/node-tdd-2.18.11.tgz#a16a8c25250da48255a05b55d3beac2ae01508f7"
-  integrity sha512-toKrT9AyqkklkQU+YMD6wcDO4tS7fga56XmtGHNITGWMpY1R6Am8e8TB3lvckAVzB2yzwyVcrY2p4BpF+ylbSA==
+node-tdd@2.18.12:
+  version "2.18.12"
+  resolved "https://registry.yarnpkg.com/node-tdd/-/node-tdd-2.18.12.tgz#9d8f11f359219c9277f2897dafe77adcf6b306e1"
+  integrity sha512-zG1OfPNgRWk8vh/bGohwYT3hbBJKl1gRrVmWx4m8HiYj6z8pQVrc0YQhLRLcm6QOqI1FvK1Gx9GktNo3OGwapg==
   dependencies:
     callsites "3.1.0"
     joi-strict "1.2.5"
@@ -5366,12 +5373,12 @@ object-deep-contain@1.0.28:
   resolved "https://registry.yarnpkg.com/object-deep-contain/-/object-deep-contain-1.0.28.tgz#a9a820657ac22b475631dbf9b7555792f5cbcefa"
   integrity sha512-rlu9yObPELlwx7qkB5yCfT/PVwyBM3Ct5owNxVmH0lXMvZF+KXf/MfpJNs0JIYOB9IjlC2ImqFcfWCNEua1xZQ==
 
-object-fields@2.0.17:
-  version "2.0.17"
-  resolved "https://registry.yarnpkg.com/object-fields/-/object-fields-2.0.17.tgz#bb98485cc4ec4e99bbd1eb6800cbb1cba50e7c36"
-  integrity sha512-qnwje98C2VlBbz603hybJK+hOybfHvpVBfShuxGP2Y8LBhzcC5G1gR/wk5OLHbUChMYmDURcv+7g5OS2Mj5mDw==
+object-fields@2.0.18:
+  version "2.0.18"
+  resolved "https://registry.yarnpkg.com/object-fields/-/object-fields-2.0.18.tgz#2da0e5468a3257805929867f538d9061b999affb"
+  integrity sha512-iltpQ2DJKynZvUW/bK+JuFDLJhqQpuOY2zy+wQnzAoy1+w1FnJlLlEVWhUd2PqaDL8mmtuyo5iUopst8w428WQ==
   dependencies:
-    object-scan "13.6.6"
+    object-scan "13.6.7"
 
 object-hash@2.0.3:
   version "2.0.3"
@@ -5402,6 +5409,11 @@ object-scan@13.6.7:
   version "13.6.7"
   resolved "https://registry.yarnpkg.com/object-scan/-/object-scan-13.6.7.tgz#bdd7386c0d8b134f98d526f77fbb1661237a3260"
   integrity sha512-4srLoK81bMdUhT/A/9BHr9Iv2iG8TauegngTqrqi1JVX9cKitZBDp/nm6dpZ6+chLBjJUm+R/JI6NfXoMWce/Q==
+
+object-scan@13.6.9:
+  version "13.6.9"
+  resolved "https://registry.yarnpkg.com/object-scan/-/object-scan-13.6.9.tgz#0f3e58a53457cacfc47ff2e629c8cb0c4ad21cc1"
+  integrity sha512-313rLSzH9uE9I9aGIt+seNP/k1XvB6iAOyuDYJdnqEmG/wyVb9enG7rOtTTe6cO3KEp4B9K//D2hSj8iVlMzLA==
 
 object-treeify@1.1.29:
   version "1.1.29"
