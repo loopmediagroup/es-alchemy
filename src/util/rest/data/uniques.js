@@ -1,4 +1,3 @@
-const assert = require('assert');
 const get = require('lodash.get');
 const Joi = require('joi-strict');
 const { fromCursor, toCursor } = require('../../paging');
