@@ -60,6 +60,7 @@ module.exports = (options) => {
       )
     },
     rest: rest(
+      (idx) => get(indices[idx], 'fields', null),
       (idx) => get(indices[idx], 'rels', null),
       (idx) => get(indices[idx], 'mapping', null),
       versions,
