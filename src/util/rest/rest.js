@@ -95,7 +95,7 @@ module.exports = (getFields, getRels, getMapping, versions, options) => {
       signature: (idx, id) => dataSignature(call, idx, getMapping(idx), id),
       stats: () => dataStats(call),
       synced: (idx) => dataSynced(call, versions, idx),
-      uniques: (idx, field, params = {}) => dataUniques(call, idx, getFields(idx), field, params),
+      uniques: (idx, field, opts = {}) => dataUniques(call, idx, getFields(idx), field, opts),
       update: (idx, opts) => dataUpdate(call, idx, versions.get(idx), opts),
       version: (idx, id) => dataVersion(call, idx, getMapping(idx), id)
     }

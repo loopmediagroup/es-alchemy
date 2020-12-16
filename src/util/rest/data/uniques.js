@@ -3,20 +3,15 @@ const Joi = require('joi-strict');
 const { fromCursor, toCursor } = require('../../paging');
 const { buildQuery } = require('../../filter');
 
-module.exports = (call, idx, allowedFields, field, params) => {
-  Joi.assert(params, Joi.object().keys({
+module.exports = (call, idx, allowedFields, field, opts) => {
+  Joi.assert(opts, Joi.object().keys({
     filterBy: Joi.object().optional(),
     limit: Joi.number().integer().min(1).optional(),
     cursor: Joi.string().optional()
   }).nand('limit', 'cursor'));
-  const {
-    filterBy = {},
-    limit: limit_ = 20,
-    cursor = null
-  } = params;
-  const cursorPayload = cursor === null ? null : fromCursor(cursor);
+  const cursorPayload = 'cursor' in opts ? fromCursor(opts.cursor) : null;
   const after = get(cursorPayload, 'searchAfter', null);
-  const limit = get(cursorPayload, 'limit', limit_);
+  const limit = get(cursorPayload, 'limit', get(opts, 'limit', 20));
   const body = {
     size: 0,
     aggs: {
@@ -31,8 +26,8 @@ module.exports = (call, idx, allowedFields, field, params) => {
       }
     }
   };
-  if (Object.keys(filterBy).length !== 0) {
-    body.query = buildQuery(filterBy, allowedFields);
+  if ('filterBy' in opts) {
+    body.query = buildQuery(opts.filterBy, allowedFields);
   }
   return call('POST', idx, {
     body,
