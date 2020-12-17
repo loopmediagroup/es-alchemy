@@ -61,7 +61,10 @@ module.exports = (getFields, getRels, getMapping, versions, options) => {
             index: idx,
             body
           },
-          response
+          response: {
+            ...response,
+            headers: get(response, 'headers', response.rawHeaders)
+          }
         });
       }
       return response;
