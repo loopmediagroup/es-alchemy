@@ -9,7 +9,7 @@ module.exports = (call, idx, allowedFields, field, opts) => {
     limit: Joi.number().integer().min(1).optional(),
     cursor: Joi.string().optional()
   }).nand('limit', 'cursor'));
-  const cursorPayload = 'cursor' in opts ? fromCursor(opts.cursor) : null;
+  const cursorPayload = opts.cursor === undefined ? null: fromCursor(opts.cursor);
   const after = get(cursorPayload, 'searchAfter', null);
   const limit = get(cursorPayload, 'limit', get(opts, 'limit', 20));
   const body = {
