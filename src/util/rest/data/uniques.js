@@ -26,7 +26,7 @@ module.exports = (call, idx, allowedFields, field, opts) => {
       }
     }
   };
-  if ('filterBy' in opts) {
+  if (opts.filterBy !== undefined) {
     body.query = buildQuery(opts.filterBy, allowedFields);
   }
   return call('POST', idx, {
