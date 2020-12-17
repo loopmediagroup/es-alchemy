@@ -21,10 +21,11 @@ const dataRefresh = require('./data/refresh');
 const dataSignature = require('./data/signature');
 const dataStats = require('./data/stats');
 const dataSynced = require('./data/synced');
+const dataUniques = require('./data/uniques');
 const dataUpdate = require('./data/update');
 const dataVersion = require('./data/version');
 
-module.exports = (getRels, getMapping, versions, options) => {
+module.exports = (getFields, getRels, getMapping, versions, options) => {
   const call = (method, idx, {
     endpoint = '',
     body = {},
@@ -60,7 +61,10 @@ module.exports = (getRels, getMapping, versions, options) => {
             index: idx,
             body
           },
-          response
+          response: {
+            ...response,
+            headers: get(response, 'headers', response.rawHeaders)
+          }
         });
       }
       return response;
@@ -94,6 +98,7 @@ module.exports = (getRels, getMapping, versions, options) => {
       signature: (idx, id) => dataSignature(call, idx, getMapping(idx), id),
       stats: () => dataStats(call),
       synced: (idx) => dataSynced(call, versions, idx),
+      uniques: (idx, field, opts = {}) => dataUniques(call, idx, getFields(idx), field, opts),
       update: (idx, opts) => dataUpdate(call, idx, versions.get(idx), opts),
       version: (idx, id) => dataVersion(call, idx, getMapping(idx), id)
     }
