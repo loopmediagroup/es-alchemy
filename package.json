@@ -115,7 +115,7 @@
     "lodash.set": "4.3.2",
     "object-fields": "2.0.20",
     "object-hash": "2.1.1",
-    "object-scan": "13.7.1",
+    "object-scan": "13.8.0",
     "smart-fs": "1.12.4"
   },
   "peerDependencies": {
