@@ -20,7 +20,8 @@ module.exports = async (call, versions, actions_) => {
 
   const payload = [];
   actions_.forEach((action) => {
-    const alias = aliases[action.idx];
+    const idx = action.idx;
+    const alias = aliases[idx];
     const id = action.id || action.doc.id;
     const hasSignature = action.signature !== undefined;
     const isSignatureNull = hasSignature && action.signature.startsWith('null_');
@@ -39,8 +40,8 @@ module.exports = async (call, versions, actions_) => {
         ] = action.signature.split('_');
       }
     }
-    Object.entries(versions.get(action.idx)).forEach(([version, content]) => {
-      const index = `${action.idx}@${version}`;
+    Object.entries(versions.get(idx)).forEach(([version, content]) => {
+      const index = `${idx}@${version}`;
       const isAlias = index === alias;
       if (isAlias && isSignatureNull && action.action === 'delete') {
         return;
