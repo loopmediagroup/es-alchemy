@@ -40,7 +40,8 @@ describe('Testing synced', { useTmpDir: true }, () => {
       await persistAndLoadVersion(dir);
     };
     updateDocument = async () => {
-      expect(await index.rest.data.update('offer', [{
+      expect(await index.rest.data.update([{
+        idx: 'offer',
         action: 'update',
         doc: index.data.remap('offer', {
           id: offerId,

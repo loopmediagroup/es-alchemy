@@ -2,8 +2,9 @@ const assert = require('assert');
 const Joi = require('joi-strict');
 const aliasGet = require('../alias/get');
 
-module.exports = async (call, idx, versions, actions_) => {
+module.exports = async (call, versions, actions_) => {
   Joi.assert(actions_, Joi.array().items(Joi.object().keys({
+    idx: Joi.string().valid(...versions.list()),
     action: Joi.string().valid('update', 'delete'),
     id: Joi.string().optional(),
     doc: Joi.object().keys({ id: Joi.string() }).unknown(true)
@@ -11,10 +12,15 @@ module.exports = async (call, idx, versions, actions_) => {
     signature: Joi.string().pattern(/^(?:\d+_\d+|null)_[a-zA-Z\d-]+@[a-f\d]{40}$/).optional()
   }).or('id', 'doc')));
 
-  const alias = await aliasGet(call, idx);
+  const aliases = {};
+  const uniqueIndices = [...new Set(actions_.map(({ idx }) => idx))];
+  await Promise.all(uniqueIndices.map((idx) => (async () => {
+    aliases[idx] = await aliasGet(call, idx);
+  })()));
 
   const payload = [];
   actions_.forEach((action) => {
+    const alias = aliases[action.idx];
     const id = action.id || action.doc.id;
     const hasSignature = action.signature !== undefined;
     const isSignatureNull = hasSignature && action.signature.startsWith('null_');
@@ -33,8 +39,8 @@ module.exports = async (call, idx, versions, actions_) => {
         ] = action.signature.split('_');
       }
     }
-    Object.entries(versions).forEach(([version, content]) => {
-      const index = `${idx}@${version}`;
+    Object.entries(versions.get(action.idx)).forEach(([version, content]) => {
+      const index = `${action.idx}@${version}`;
       const isAlias = index === alias;
       if (isAlias && isSignatureNull && action.action === 'delete') {
         return;

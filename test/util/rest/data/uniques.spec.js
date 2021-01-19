@@ -14,7 +14,8 @@ describe('Testing uniques', { useTmpDir: true }, () => {
     expect(await index.index.versions.load(dir)).to.equal(undefined);
     expect(await index.rest.mapping.create('address')).to.equal(true);
     expect(await index.rest.alias.update('address')).to.equal(true);
-    const createAddress = (street) => index.rest.data.update('address', [{
+    const createAddress = (street) => index.rest.data.update([{
+      idx: 'address',
       action: 'update',
       doc: index.data.remap('address', { id: uuid4(), street })
     }]);

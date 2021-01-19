@@ -99,7 +99,7 @@ module.exports = (getFields, getRels, getMapping, versions, options) => {
       stats: () => dataStats(call),
       synced: (idx) => dataSynced(call, versions, idx),
       uniques: (idx, field, opts = {}) => dataUniques(call, idx, getFields(idx), field, opts),
-      update: (idx, opts) => dataUpdate(call, idx, versions.get(idx), opts),
+      update: (opts) => dataUpdate(call, versions, opts),
       version: (idx, id) => dataVersion(call, idx, getMapping(idx), id)
     }
   };
