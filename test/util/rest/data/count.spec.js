@@ -20,7 +20,8 @@ describe('Testing count', { useTmpDir: true }, () => {
     expect(index.index.versions.load(dir)).to.equal(undefined);
     expect(await index.rest.alias.update('offer')).to.equal(true);
     expect(await index.rest.data.count('offer')).to.equal(0);
-    expect(await index.rest.data.update('offer', [{
+    expect(await index.rest.data.update([{
+      idx: 'offer',
       action: 'update',
       doc: index.data.remap('offer', {
         id: offerId,

@@ -45,7 +45,8 @@ describe('Testing lifecycle', { timeout: 10000, useTmpDir: true }, () => {
         size: 20
       }
     });
-    expect(await index.rest.data.update('offer', uuids.map((id) => ({
+    expect(await index.rest.data.update(uuids.map((id) => ({
+      idx: 'offer',
       action: 'update',
       doc: {
         id
@@ -73,7 +74,8 @@ describe('Testing lifecycle', { timeout: 10000, useTmpDir: true }, () => {
         size: 1
       }
     });
-    expect(await index.rest.data.update('offer', uuids.map((id) => ({
+    expect(await index.rest.data.update(uuids.map((id) => ({
+      idx: 'offer',
       action: 'delete',
       id
     })))).to.equal(true);

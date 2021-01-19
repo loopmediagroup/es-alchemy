@@ -32,7 +32,8 @@ describe('Testing rest', { useTmpDir: true }, () => {
 
     expect(await index.rest.mapping.create('offer')).to.equal(true);
     expect(await index.rest.alias.update('offer')).to.equal(true);
-    expect(await index.rest.data.update('offer', [{
+    expect(await index.rest.data.update([{
+      idx: 'offer',
       action: 'update',
       doc: {
         id: offerId
@@ -54,7 +55,8 @@ describe('Testing rest', { useTmpDir: true }, () => {
     const index = await init();
     // index auto creation works by default
     expect(await index.rest.mapping.exists('offer')).to.equal(false);
-    expect(await index.rest.data.update('offer', [{
+    expect(await index.rest.data.update([{
+      idx: 'offer',
       action: 'update',
       doc: {
         id: offerId
@@ -82,7 +84,8 @@ describe('Testing rest', { useTmpDir: true }, () => {
 
     // index auto creation no longer works
     expect(await index.rest.mapping.exists('offer')).to.equal(false);
-    const r = await index.rest.data.update('offer', [{
+    const r = await index.rest.data.update([{
+      idx: 'offer',
       action: 'update',
       doc: {
         id: offerId

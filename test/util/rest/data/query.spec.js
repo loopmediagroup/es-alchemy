@@ -26,7 +26,8 @@ describe('Testing Rest Query', { useTmpDir: true, timeout: 10000 }, () => {
   });
 
   const upsert = async (model, models) => {
-    expect(await index.rest.data.update(model, models.map((o) => ({
+    expect(await index.rest.data.update(models.map((o) => ({
+      idx: model,
       action: 'update',
       doc: index.data.remap(model, o)
     }))), `${model} update failed`).to.equal(true);
