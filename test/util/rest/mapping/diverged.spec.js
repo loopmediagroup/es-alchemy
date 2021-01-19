@@ -32,7 +32,8 @@ describe('Testing diverged', {
       expect(await index.rest.mapping.create('offer')).to.equal(true);
       expect(index.index.versions.persist(dir)).to.equal(true);
       expect(index.index.versions.load(dir)).to.equal(undefined);
-      expect(await index.rest.data.update('offer', [{
+      expect(await index.rest.data.update([{
+        idx: 'offer',
         action: 'update',
         doc: index.data.remap('offer', input)
       }])).to.equal(true);

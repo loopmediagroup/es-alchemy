@@ -20,7 +20,8 @@ describe('Testing signature', { useTmpDir: true }, () => {
   });
 
   it('Test retrieving a signature for a document', async () => {
-    expect(await index.rest.data.update('offer', [{
+    expect(await index.rest.data.update([{
+      idx: 'offer',
       action: 'update',
       doc: index.data.remap('offer', {
         id: offerId,
@@ -30,7 +31,8 @@ describe('Testing signature', { useTmpDir: true }, () => {
     expect(await index.rest.data.refresh('offer')).to.equal(true);
     expect(await index.rest.data.signature('offer', offerId))
       .to.equal('0_1_offer@6a1b8f491e156e356ab57e8df046b9f449acb440');
-    expect(await index.rest.data.update('offer', [{
+    expect(await index.rest.data.update([{
+      idx: 'offer',
       action: 'update',
       doc: index.data.remap('offer', {
         id: offerId,
@@ -44,7 +46,8 @@ describe('Testing signature', { useTmpDir: true }, () => {
   });
 
   it('Test signature does not change if update is identical', async () => {
-    expect(await index.rest.data.update('offer', [{
+    expect(await index.rest.data.update([{
+      idx: 'offer',
       action: 'update',
       doc: index.data.remap('offer', {
         id: offerId,
@@ -54,7 +57,8 @@ describe('Testing signature', { useTmpDir: true }, () => {
     expect(await index.rest.data.refresh('offer')).to.equal(true);
     expect(await index.rest.data.signature('offer', offerId))
       .to.equal('0_1_offer@6a1b8f491e156e356ab57e8df046b9f449acb440');
-    expect(await index.rest.data.update('offer', [{
+    expect(await index.rest.data.update([{
+      idx: 'offer',
       action: 'update',
       doc: index.data.remap('offer', {
         id: offerId,
@@ -68,7 +72,8 @@ describe('Testing signature', { useTmpDir: true }, () => {
   });
 
   it('Test signature mismatch', async () => {
-    expect(await index.rest.data.update('offer', [{
+    expect(await index.rest.data.update([{
+      idx: 'offer',
       action: 'update',
       doc: index.data.remap('offer', {
         id: offerId,
@@ -78,7 +83,8 @@ describe('Testing signature', { useTmpDir: true }, () => {
     expect(await index.rest.data.refresh('offer')).to.equal(true);
     expect(await index.rest.data.signature('offer', offerId))
       .to.equal('0_1_offer@6a1b8f491e156e356ab57e8df046b9f449acb440');
-    const err = await index.rest.data.update('offer', [{
+    const err = await index.rest.data.update([{
+      idx: 'offer',
       action: 'update',
       doc: index.data.remap('offer', {
         id: offerId,

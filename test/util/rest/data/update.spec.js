@@ -50,7 +50,8 @@ describe('Testing data formats', { useTmpDir: true }, () => {
       index.model.register('offer', updatedOfferModel);
       index.index.register('offer', updatedOfferIndex);
       await createIndexVersion(dir);
-      expect(await index.rest.data.update('offer', [{
+      expect(await index.rest.data.update([{
+        idx: 'offer',
         action: 'update',
         doc: index.data.remap('offer', { id: offerId, meta: { k1: 'v1' } })
       }])).to.equal(true);
@@ -73,7 +74,8 @@ describe('Testing data formats', { useTmpDir: true }, () => {
   });
 
   it('Testing delete fails when signature and entity not exists', async () => {
-    const r = await index.rest.data.update('offer', [{
+    const r = await index.rest.data.update([{
+      idx: 'offer',
       action: 'delete',
       id: offerId,
       signature: '0_1_offer@6a1b8f491e156e356ab57e8df046b9f449acb440'
@@ -99,12 +101,14 @@ describe('Testing data formats', { useTmpDir: true }, () => {
   });
 
   it('Testing update fails when signature null and entity exists', async () => {
-    expect(await index.rest.data.update('offer', [{
+    expect(await index.rest.data.update([{
+      idx: 'offer',
       action: 'update',
       doc: index.data.remap('offer', { id: offerId, meta: { k1: 'v1' } }),
       signature: 'null_offer@6a1b8f491e156e356ab57e8df046b9f449acb440'
     }])).to.equal(true);
-    const r = await index.rest.data.update('offer', [{
+    const r = await index.rest.data.update([{
+      idx: 'offer',
       action: 'update',
       doc: index.data.remap('offer', { id: offerId, meta: { k1: 'v1' } }),
       signature: 'null_offer@6a1b8f491e156e356ab57e8df046b9f449acb440'
@@ -130,17 +134,20 @@ describe('Testing data formats', { useTmpDir: true }, () => {
   });
 
   it('Testing update with signature', async () => {
-    expect(await index.rest.data.update('offer', [{
+    expect(await index.rest.data.update([{
+      idx: 'offer',
       action: 'update',
       doc: index.data.remap('offer', { id: offerId, meta: { k1: 'v1' } })
     }])).to.equal(true);
     const signature = await index.rest.data.signature('offer', offerId);
-    expect(await index.rest.data.update('offer', [{
+    expect(await index.rest.data.update([{
+      idx: 'offer',
       action: 'update',
       doc: index.data.remap('offer', { id: offerId, meta: { k1: 'v2' } }),
       signature
     }])).to.equal(true);
-    const r = await index.rest.data.update('offer', [{
+    const r = await index.rest.data.update([{
+      idx: 'offer',
       action: 'update',
       doc: index.data.remap('offer', { id: offerId, meta: { k1: 'v3' } }),
       signature
@@ -166,7 +173,8 @@ describe('Testing data formats', { useTmpDir: true }, () => {
   });
 
   it('Testing "object" data type updating', async () => {
-    expect(await index.rest.data.update('offer', [{
+    expect(await index.rest.data.update([{
+      idx: 'offer',
       action: 'update',
       doc: index.data.remap('offer', {
         id: offerId,
@@ -212,7 +220,8 @@ describe('Testing data formats', { useTmpDir: true }, () => {
         size: 1
       }
     });
-    expect(await index.rest.data.update('offer', [{
+    expect(await index.rest.data.update([{
+      idx: 'offer',
       action: 'update',
       doc: index.data.remap('offer', {
         id: offerId,
@@ -256,7 +265,8 @@ describe('Testing data formats', { useTmpDir: true }, () => {
 
   it('Testing update with signature match', async ({ dir }) => {
     await setupTwoIndices(dir);
-    const r = await index.rest.data.update('offer', [{
+    const r = await index.rest.data.update([{
+      idx: 'offer',
       action: 'update',
       doc: index.data.remap('offer', { id: offerId, meta: { k1: 'v2' } }),
       signature: '0_1_offer@e35ec51a3c35e2d9982e1ac2bbe23957a637a9e0'
@@ -271,7 +281,8 @@ describe('Testing data formats', { useTmpDir: true }, () => {
 
   it('Testing update with signature mismatch', async ({ dir }) => {
     await setupTwoIndices(dir);
-    const r = await index.rest.data.update('offer', [{
+    const r = await index.rest.data.update([{
+      idx: 'offer',
       action: 'update',
       doc: index.data.remap('offer', { id: offerId, meta: { k1: 'v2' } }),
       signature: '1_1_offer@e35ec51a3c35e2d9982e1ac2bbe23957a637a9e0'
@@ -287,7 +298,8 @@ describe('Testing data formats', { useTmpDir: true }, () => {
 
   it('Testing update with signature version mismatch', async ({ dir }) => {
     await setupTwoIndices(dir);
-    const r = await index.rest.data.update('offer', [{
+    const r = await index.rest.data.update([{
+      idx: 'offer',
       action: 'update',
       doc: index.data.remap('offer', { id: offerId, meta: { k1: 'v2' } }),
       signature: '0_1_offer@0123456789012345678901234567890123456789'
@@ -303,7 +315,8 @@ describe('Testing data formats', { useTmpDir: true }, () => {
 
   it('Testing delete with signature match', async ({ dir }) => {
     await setupTwoIndices(dir);
-    const r = await index.rest.data.update('offer', [{
+    const r = await index.rest.data.update([{
+      idx: 'offer',
       action: 'delete',
       doc: index.data.remap('offer', { id: offerId }),
       signature: '0_1_offer@e35ec51a3c35e2d9982e1ac2bbe23957a637a9e0'
@@ -315,7 +328,8 @@ describe('Testing data formats', { useTmpDir: true }, () => {
 
   it('Testing delete with signature mismatch', async ({ dir }) => {
     await setupTwoIndices(dir);
-    const r = await index.rest.data.update('offer', [{
+    const r = await index.rest.data.update([{
+      idx: 'offer',
       action: 'delete',
       doc: index.data.remap('offer', { id: offerId }),
       signature: '1_1_offer@e35ec51a3c35e2d9982e1ac2bbe23957a637a9e0'
@@ -330,7 +344,8 @@ describe('Testing data formats', { useTmpDir: true }, () => {
 
   it('Testing delete with signature version mismatch', async ({ dir }) => {
     await setupTwoIndices(dir);
-    const r = await index.rest.data.update('offer', [{
+    const r = await index.rest.data.update([{
+      idx: 'offer',
       action: 'delete',
       doc: index.data.remap('offer', { id: offerId }),
       signature: '0_1_offer@0123456789012345678901234567890123456789'
@@ -345,7 +360,8 @@ describe('Testing data formats', { useTmpDir: true }, () => {
 
   it('Testing delete with signature null', async ({ dir }) => {
     await setupTwoIndices(dir);
-    const r = await index.rest.data.update('offer', [{
+    const r = await index.rest.data.update([{
+      idx: 'offer',
       action: 'delete',
       doc: index.data.remap('offer', { id: offerId }),
       signature: 'null_offer@e35ec51a3c35e2d9982e1ac2bbe23957a637a9e0'
@@ -360,7 +376,8 @@ describe('Testing data formats', { useTmpDir: true }, () => {
   it('Testing update with field pruning', async ({ dir }) => {
     await setupTwoIndices(dir);
     const signature = await index.rest.data.signature('offer', offerId);
-    const r = await index.rest.data.update('offer', [{
+    const r = await index.rest.data.update([{
+      idx: 'offer',
       action: 'update',
       doc: index.data.remap('offer', { id: offerId, subhead: 'entry' }),
       signature
@@ -378,7 +395,8 @@ describe('Testing data formats', { useTmpDir: true }, () => {
 
   it('Testing update where empty relationship gets nulled', async ({ dir }) => {
     await setupTwoIndices(dir);
-    const r1 = await index.rest.data.update('offer', [{
+    const r1 = await index.rest.data.update([{
+      idx: 'offer',
       action: 'update',
       doc: index.data.remap('offer', { id: offerId, locations: [{ id: 'loc1' }] })
     }]);
@@ -388,7 +406,8 @@ describe('Testing data formats', { useTmpDir: true }, () => {
       { version: 'offer@6a1b8f491e156e356ab57e8df046b9f449acb440', data: { id: offerId, locations: [{ id: 'loc1' }] } },
       { version: 'offer@e35ec51a3c35e2d9982e1ac2bbe23957a637a9e0', data: { id: offerId, locations: [{ id: 'loc1' }] } }
     ]);
-    const r2 = await index.rest.data.update('offer', [{
+    const r2 = await index.rest.data.update([{
+      idx: 'offer',
       action: 'update',
       doc: index.data.remap('offer', { id: offerId, locations: [] })
     }]);
@@ -401,6 +420,6 @@ describe('Testing data formats', { useTmpDir: true }, () => {
   });
 
   it('Testing empty update', async () => {
-    expect(await index.rest.data.update('offer', [])).to.equal(true);
+    expect(await index.rest.data.update([])).to.equal(true);
   });
 });

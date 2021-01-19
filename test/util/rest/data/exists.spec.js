@@ -18,7 +18,8 @@ describe('Testing exists', { useTmpDir: true }, () => {
     const offerId = uuid4();
     expect(await index.rest.mapping.create('offer')).to.equal(true);
     expect(await index.rest.alias.update('offer')).to.equal(true);
-    expect(await index.rest.data.update('offer', [{
+    expect(await index.rest.data.update([{
+      idx: 'offer',
       action: 'update',
       doc: index.data.remap('offer', {
         id: offerId,
