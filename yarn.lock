@@ -316,10 +316,10 @@
   dependencies:
     smart-fs "1.12.4"
 
-"@blackflux/robo-config-plugin@4.0.3":
-  version "4.0.3"
-  resolved "https://registry.yarnpkg.com/@blackflux/robo-config-plugin/-/robo-config-plugin-4.0.3.tgz#6d01f70b0897d8a865e43e3eca363e7a8dde103b"
-  integrity sha512-CQ9jLvOWAtNYpCyO7cplJ5h3+T1Nt6hRwXE4IseHJuQ2xQ4O2hBBq/wrDZG3+vxqenk4psYB+zVaGd+AhkZjIw==
+"@blackflux/robo-config-plugin@4.0.4":
+  version "4.0.4"
+  resolved "https://registry.yarnpkg.com/@blackflux/robo-config-plugin/-/robo-config-plugin-4.0.4.tgz#1c9957f46d0bf04c2a48d1a4a990bccd304059ba"
+  integrity sha512-2z6TNyOtoqo2/wO4EKyAFrOxGfRTkFY+ZR31+2ItJi9L+1mjvybT1GDHS3W4JWPu6j/W92L1o64B2ZvTQJ2P+w==
 
 "@eslint/eslintrc@^0.3.0":
   version "0.3.0"
@@ -6667,10 +6667,10 @@ sax@>=0.6.0, sax@^1.2.4:
   resolved "https://registry.yarnpkg.com/sax/-/sax-1.2.4.tgz#2816234e2378bddc4e5354fab5caa895df7100d9"
   integrity sha512-NqVDv9TpANUjFm0N8uM5GxL36UgKi9/atZw+x7YFnQ8ckwFGKrl4xX4yWtrey3UJm5nP1kUbnYgLopqWNSRhWw==
 
-semantic-release@17.3.6:
-  version "17.3.6"
-  resolved "https://registry.yarnpkg.com/semantic-release/-/semantic-release-17.3.6.tgz#0390eb9c4d13e82dbf0f8e5700f196b599fa2a12"
-  integrity sha512-zPAFxmnMtEVbN1Lzxz+CMXlt5a9txB/PRWaVq+oAC9Mppbax/vWXZ0kisHX92O+BjEBbsaFtISjz82E+2Ro9gQ==
+semantic-release@17.3.7:
+  version "17.3.7"
+  resolved "https://registry.yarnpkg.com/semantic-release/-/semantic-release-17.3.7.tgz#a54a8ccf443c7389706c9e3c52f2a9433e0581f7"
+  integrity sha512-mMWaxykq1+mZu7hvUjEdUhJXb+BvEJhcuy15hog3+8XWZqmxRfcdlW/aTBav8rWUZ16bEevWVc6qHwsq3aPGiQ==
   dependencies:
     "@semantic-release/commit-analyzer" "^8.0.0"
     "@semantic-release/error" "^2.2.0"
@@ -6684,7 +6684,7 @@ semantic-release@17.3.6:
     execa "^5.0.0"
     figures "^3.0.0"
     find-versions "^4.0.0"
-    get-stream "^5.0.0"
+    get-stream "^6.0.0"
     git-log-parser "^1.2.0"
     hook-std "^2.0.0"
     hosted-git-info "^3.0.0"
