@@ -91,7 +91,7 @@ describe('Testing rest', { useTmpDir: true }, () => {
         id: offerId
       }
     }]);
-    expect(r[0].update.error.type).to.equal('index_not_found_exception');
+    expect(r[0].error.type).to.equal('index_not_found_exception');
 
     // restore setting
     const r2 = await index.rest.call('PUT', '', {
