@@ -1,14 +1,6 @@
 const assert = require('assert');
-const objectScan = require('object-scan');
 const Joi = require('joi-strict');
 const aliasGet = require('../alias/get');
-
-const converter = objectScan(['[*].*'], {
-  reverse: false,
-  filterFn: ({ property, value, context }) => {
-    context.push({ action: property, ...value });
-  }
-});
 
 module.exports = async (call, versions, actions_) => {
   Joi.assert(actions_, Joi.array().items(Joi.object().keys({
@@ -60,19 +52,19 @@ module.exports = async (call, versions, actions_) => {
         signature.if_seq_no = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
         signature.if_primary_term = Math.ceil(Math.random() * Number.MAX_SAFE_INTEGER);
       }
-      payload.push({
+      payload.push(JSON.stringify({
         [isAlias && isSignatureNull && action.action === 'update' ? 'create' : action.action]: {
           _index: index,
           _id: id,
           ...(isAlias ? signature : {})
         }
-      });
+      }));
       if (action.action === 'update') {
         // `update` performs no action when exact document already indexed (reduced load)
-        payload.push({
+        payload.push(JSON.stringify({
           doc: content.prepare(action.doc),
           doc_as_upsert: !isAlias || !hasSignature
-        });
+        }));
       }
     });
   });
@@ -82,7 +74,7 @@ module.exports = async (call, versions, actions_) => {
   }
   const r = await call('POST', '', {
     endpoint: '_bulk',
-    body: payload.map((e) => JSON.stringify(e)).concat('').join('\n'),
+    body: payload.concat('').join('\n'),
     headers: { 'content-type': 'application/x-ndjson' },
     json: false
   });
@@ -91,5 +83,5 @@ module.exports = async (call, versions, actions_) => {
   if (body.errors === false) {
     return true;
   }
-  return converter(body.items, []);
+  return body.items;
 };
