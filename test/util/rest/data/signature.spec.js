@@ -92,7 +92,7 @@ describe('Testing signature', { useTmpDir: true }, () => {
       }),
       signature: '1_1_offer@6a1b8f491e156e356ab57e8df046b9f449acb440'
     }]);
-    expect(get(err, [0, 'error', 'type']))
+    expect(get(err, [0, 'update', 'error', 'type']))
       .to.equal('version_conflict_engine_exception');
     expect(await index.rest.data.refresh('offer')).to.equal(true);
     expect(await index.rest.data.signature('offer', offerId))

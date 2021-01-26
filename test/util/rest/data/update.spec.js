@@ -82,17 +82,18 @@ describe('Testing data formats', { useTmpDir: true }, () => {
     }]);
     const schema = Joi.array().ordered(
       Joi.object().keys({
-        action: Joi.string().valid('delete'),
-        _index: Joi.string(),
-        _type: Joi.string().valid('_doc'),
-        _id: Joi.string(),
-        status: Joi.number().valid(409),
-        error: Joi.object().keys({
-          type: Joi.string().valid('version_conflict_engine_exception'),
-          reason: Joi.string(),
-          index_uuid: Joi.string(),
-          shard: Joi.string(),
-          index: Joi.string()
+        delete: Joi.object().keys({
+          _index: Joi.string(),
+          _type: Joi.string().valid('_doc'),
+          _id: Joi.string(),
+          status: Joi.number().valid(409),
+          error: Joi.object().keys({
+            type: Joi.string().valid('version_conflict_engine_exception'),
+            reason: Joi.string(),
+            index_uuid: Joi.string(),
+            shard: Joi.string(),
+            index: Joi.string()
+          })
         })
       })
     );
@@ -114,17 +115,18 @@ describe('Testing data formats', { useTmpDir: true }, () => {
     }]);
     const schema = Joi.array().ordered(
       Joi.object().keys({
-        action: Joi.string().valid('create'),
-        _index: Joi.string(),
-        _type: Joi.string().valid('_doc'),
-        _id: Joi.string(),
-        status: Joi.number().valid(409),
-        error: Joi.object().keys({
-          type: Joi.string().valid('version_conflict_engine_exception'),
-          reason: Joi.string(),
-          index_uuid: Joi.string(),
-          shard: Joi.string(),
-          index: Joi.string()
+        create: Joi.object().keys({
+          _index: Joi.string(),
+          _type: Joi.string().valid('_doc'),
+          _id: Joi.string(),
+          status: Joi.number().valid(409),
+          error: Joi.object().keys({
+            type: Joi.string().valid('version_conflict_engine_exception'),
+            reason: Joi.string(),
+            index_uuid: Joi.string(),
+            shard: Joi.string(),
+            index: Joi.string()
+          })
         })
       })
     );
@@ -152,17 +154,18 @@ describe('Testing data formats', { useTmpDir: true }, () => {
     }]);
     const schema = Joi.array().ordered(
       Joi.object().keys({
-        action: Joi.string().valid('update'),
-        _index: Joi.string(),
-        _type: Joi.string().valid('_doc'),
-        _id: Joi.string(),
-        status: Joi.number().valid(409),
-        error: Joi.object().keys({
-          type: Joi.string().valid('version_conflict_engine_exception'),
-          reason: Joi.string(),
-          index_uuid: Joi.string(),
-          shard: Joi.string(),
-          index: Joi.string()
+        update: Joi.object().keys({
+          _index: Joi.string(),
+          _type: Joi.string().valid('_doc'),
+          _id: Joi.string(),
+          status: Joi.number().valid(409),
+          error: Joi.object().keys({
+            type: Joi.string().valid('version_conflict_engine_exception'),
+            reason: Joi.string(),
+            index_uuid: Joi.string(),
+            shard: Joi.string(),
+            index: Joi.string()
+          })
         })
       })
     );
@@ -284,7 +287,7 @@ describe('Testing data formats', { useTmpDir: true }, () => {
       doc: index.data.remap('offer', { id: offerId, meta: { k1: 'v2' } }),
       signature: '1_1_offer@e35ec51a3c35e2d9982e1ac2bbe23957a637a9e0'
     }]);
-    expect(r.map((e) => get(e, 'error.type')))
+    expect(r.map(({ update }) => get(update, 'error.type')))
       .to.deep.equal(['version_conflict_engine_exception', undefined]);
     expect(await index.rest.data.refresh('offer')).to.equal(true);
     expect(await queryVersions('offer')).to.deep.equal([
@@ -301,7 +304,7 @@ describe('Testing data formats', { useTmpDir: true }, () => {
       doc: index.data.remap('offer', { id: offerId, meta: { k1: 'v2' } }),
       signature: '0_1_offer@0123456789012345678901234567890123456789'
     }]);
-    expect(r.map((e) => get(e, 'error.type')))
+    expect(r.map(({ update }) => get(update, 'error.type')))
       .to.deep.equal(['version_conflict_engine_exception', undefined]);
     expect(await index.rest.data.refresh('offer')).to.equal(true);
     expect(await queryVersions('offer')).to.deep.equal([
@@ -331,7 +334,7 @@ describe('Testing data formats', { useTmpDir: true }, () => {
       doc: index.data.remap('offer', { id: offerId }),
       signature: '1_1_offer@e35ec51a3c35e2d9982e1ac2bbe23957a637a9e0'
     }]);
-    expect(r.map((e) => get(e, 'error.type')))
+    expect(r.map(({ delete: del }) => get(del, 'error.type')))
       .to.deep.equal(['version_conflict_engine_exception', undefined]);
     expect(await index.rest.data.refresh('offer')).to.equal(true);
     expect(await queryVersions('offer')).to.deep.equal([
@@ -347,7 +350,7 @@ describe('Testing data formats', { useTmpDir: true }, () => {
       doc: index.data.remap('offer', { id: offerId }),
       signature: '0_1_offer@0123456789012345678901234567890123456789'
     }]);
-    expect(r.map((e) => get(e, 'error.type')))
+    expect(r.map(({ delete: del }) => get(del, 'error.type')))
       .to.deep.equal(['version_conflict_engine_exception', undefined]);
     expect(await index.rest.data.refresh('offer')).to.equal(true);
     expect(await queryVersions('offer')).to.deep.equal([

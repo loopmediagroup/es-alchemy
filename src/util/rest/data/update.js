@@ -1,14 +1,6 @@
 const assert = require('assert');
-const objectScan = require('object-scan');
 const Joi = require('joi-strict');
 const aliasGet = require('../alias/get');
-
-const converter = objectScan(['[*].*'], {
-  reverse: false,
-  filterFn: ({ property, value, context }) => {
-    context.push({ action: property, ...value });
-  }
-});
 
 module.exports = async (call, versions, actions_) => {
   Joi.assert(actions_, Joi.array().items(Joi.object().keys({
@@ -91,5 +83,5 @@ module.exports = async (call, versions, actions_) => {
   if (body.errors === false) {
     return true;
   }
-  return converter(body.items, []);
+  return body.items;
 };
