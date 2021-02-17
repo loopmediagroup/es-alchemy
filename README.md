@@ -192,7 +192,6 @@ Mappings can be obtained from indices by calling:
 
 To (re)create a mapping in Elasticsearch run:
 
-<!-- eslint-disable no-undef -->
 ```js
 Promise.all(esa.index.list().map((idx) => esa.rest.mapping.recreate(idx)))
   .then(() => {
@@ -222,7 +221,6 @@ Sources are defined relative to their parent sources.
 
 To remap and ingest data run
 
-<!-- eslint-disable no-undef -->
 ```js
 sourceObject = {/* ... */};
 esa.rest.data
@@ -337,7 +335,6 @@ const ESA = require('es-alchemy');
 ESA({
   responseHook: ({ request, response }) => {
     if (response.elapsedTime > 500) {
-      // eslint-disable-next-line no-undef
       logger.warning(`Query time ${request.index}\n${JSON.stringify(request.body)}`);
     }
   }

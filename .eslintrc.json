@@ -2,7 +2,8 @@
   "root": true,
   "extends": [
     "airbnb-base",
-    "plugin:mocha/recommended"
+    "plugin:mocha/recommended",
+    "plugin:markdown/recommended"
   ],
   "rules": {
     "@blackflux/rules/istanbul-prevent-ignore": 1,
@@ -109,7 +110,6 @@
   "plugins": [
     "json",
     "mocha",
-    "markdown",
     "@blackflux/rules"
   ],
   "parser": "babel-eslint"
