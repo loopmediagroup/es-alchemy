@@ -25,6 +25,19 @@ describe('Testing search filter', () => {
       .to.deep.equal([]);
   });
 
+  it('Testing string containing quotes', () => {
+    expect(normalize('Use this "offer" so it’s permanently “Unavailable”'))
+      .to.deep.equal([
+        'Use*',
+        'this*',
+        'offer*',
+        'so*',
+        'it’s*',
+        'permanently*',
+        'Unavailable*'
+      ]);
+  });
+
   it('Testing empty search', () => {
     expect(normalize(''))
       .to.deep.equal([]);
