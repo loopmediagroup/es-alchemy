@@ -1,8 +1,6 @@
-FROM lambci/lambda:build-nodejs12.x
+FROM amazon/aws-sam-cli-build-image-nodejs14.x
 
 WORKDIR /user
-
-RUN yum install git vi -y
 
 # set home folder
 ENV HOME /user
