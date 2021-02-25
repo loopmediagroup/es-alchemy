@@ -669,7 +669,7 @@ describe('Testing Rest Query', { useTmpDir: true, timeout: 10000 }, () => {
         address1 = {
           id: uuid4(),
           centre: [0, 0],
-          street: 'débâcle'
+          street: 'débâcle it\'s'
         };
         address2 = {
           id: uuid4(),
@@ -698,6 +698,7 @@ describe('Testing Rest Query', { useTmpDir: true, timeout: 10000 }, () => {
         };
         expect(await get('Débâcle')).to.deep.equal([address1]);
         expect(await get('debacle')).to.deep.equal([address1]);
+        expect(await get('it\'s')).to.deep.equal([address1]);
         expect(await get('dbcl')).to.deep.equal([]);
       });
 
