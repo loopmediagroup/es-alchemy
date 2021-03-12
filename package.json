@@ -116,7 +116,7 @@
     "object-fields": "2.0.20",
     "object-hash": "2.1.1",
     "object-scan": "14.0.0",
-    "smart-fs": "1.12.5"
+    "smart-fs": "1.12.7"
   },
   "peerDependencies": {
     "request": "^2.88.0",
