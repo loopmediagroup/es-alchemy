@@ -4108,20 +4108,20 @@ joi@17.4.0:
     "@sideway/formula" "^3.0.0"
     "@sideway/pinpoint" "^2.0.0"
 
-js-gardener@2.0.188:
-  version "2.0.188"
-  resolved "https://registry.yarnpkg.com/js-gardener/-/js-gardener-2.0.188.tgz#e5e21822a33cbf0a5a6139546ea425722c70bfbd"
-  integrity sha512-2BhymfqAgvcQjMZmFoVcQfGS0dUKRL8eAyVgz0KimC6lPFgC2Q3AmmqSdkLFztESuI7SMYKQpo8c9Q/9yZaF/Q==
+js-gardener@3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/js-gardener/-/js-gardener-3.0.0.tgz#deb2a58348dd5a0f90532002c4e9c2cb6f4dac7d"
+  integrity sha512-nhT8oCIVnntLDEwLzhNCk57T5yrussbgiqEBSJrIEkbLOgyTEOyRa28wlEvjc64o1A9GxYELxdPp7G7xaXfU+A==
   dependencies:
     chalk "4.1.0"
     fancy-log "1.3.3"
     glob "7.1.6"
-    joi-strict "1.2.10"
+    joi-strict "2.0.0"
     js-yaml "4.0.0"
     lodash.difference "4.5.0"
-    mocha "8.3.1"
+    mocha "8.3.2"
     npm-check "5.9.2"
-    robo-config "3.10.7"
+    robo-config "3.10.8"
 
 js-tokens@^3.0.0:
   version "3.0.2"
@@ -4962,10 +4962,10 @@ mkdirp@^0.5.0, mkdirp@^0.5.1, mkdirp@^0.5.5, mkdirp@~0.5.0:
   dependencies:
     minimist "^1.2.5"
 
-mocha@8.3.1:
-  version "8.3.1"
-  resolved "https://registry.yarnpkg.com/mocha/-/mocha-8.3.1.tgz#b9eda6da1eb8cb8d29860a9c2205de5b8a076560"
-  integrity sha512-5SBMxANWqOv5bw3Hx+HVgaWlcWcFEQDUdaUAr1AUU+qwtx6cowhn7gEDT/DwQP7uYxnvShdUOVLbTYAHOEGfDQ==
+mocha@8.3.2:
+  version "8.3.2"
+  resolved "https://registry.yarnpkg.com/mocha/-/mocha-8.3.2.tgz#53406f195fa86fbdebe71f8b1c6fb23221d69fcc"
+  integrity sha512-UdmISwr/5w+uXLPKspgoV7/RXZwKRTiTjJ2/AC5ZiEztIoOYdfKb19+9jNmEInzx5pBsCyJQzarAxqIGBNYJhg==
   dependencies:
     "@ungap/promise-all-settled" "1.1.2"
     ansi-colors "4.1.1"
@@ -5617,10 +5617,10 @@ object-scan@14.0.0:
   resolved "https://registry.yarnpkg.com/object-scan/-/object-scan-14.0.0.tgz#a09dfefe6a69bcdce87162e5e9fa19d90c4dc1a7"
   integrity sha512-hcs9kSd2NUlpgPb3rN5Q9L5z6oP/b9DjyYOEITvctHfnQ/S0BoXHU8e5zzrMx4MGCedtXhh1ScZT+UqcYUoz0A==
 
-object-treeify@1.1.31:
-  version "1.1.31"
-  resolved "https://registry.yarnpkg.com/object-treeify/-/object-treeify-1.1.31.tgz#eb083c8eb25b512c9feea088e72b03aa13032d5e"
-  integrity sha512-kt2UuyHDTH+J6w0pv2c+3uuEApGuwgfjWogbqPWAvk4nOM/T3No0SzDtp6CuJ/XBUy//nFNuerb8ms7CqjD9Tw==
+object-treeify@2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/object-treeify/-/object-treeify-2.0.0.tgz#4c6c7f016f69b5f84c5f7d882bf41d18bdf03acb"
+  integrity sha512-OGm5j85dYrJ8fqMEZMe59QS4AuQmfM0A/QTiZEGTnEeOSQPjdC8zdmWq2DmhLBAZr/JYL0cd8SQaIboTzg9/EQ==
 
 object-visit@^1.0.0:
   version "1.0.1"
@@ -6795,22 +6795,22 @@ rimraf@^3.0.0, rimraf@^3.0.2:
   dependencies:
     glob "^7.1.3"
 
-robo-config@3.10.7:
-  version "3.10.7"
-  resolved "https://registry.yarnpkg.com/robo-config/-/robo-config-3.10.7.tgz#7118899c8ee14ffba35948ec453b6b9a0f09af3b"
-  integrity sha512-NpQ8TziyRm+LQ0e5yK0iTNgNkKQCVqUz/mqxx2rgqsK8eysxD2IhPN0hIjr1bDV1CDY1FRPzjMe8nKmFlnMcdw==
+robo-config@3.10.8:
+  version "3.10.8"
+  resolved "https://registry.yarnpkg.com/robo-config/-/robo-config-3.10.8.tgz#c14340f380a87ef849409b0b39cec578c69e038a"
+  integrity sha512-Y+UpJS41OrqbfBxPOb4k9WPeNzunE9/qSkUHkm55pJ/cHepBVH7RvqLtRRnOf8A2RtCEKb5UhOFwHrGsEXkwVQ==
   dependencies:
     app-root-path "3.0.0"
     deepmerge "4.2.2"
-    joi-strict "1.2.9"
+    joi-strict "1.2.10"
     lodash.clonedeep "4.5.0"
     lodash.difference "4.5.0"
     lodash.get "4.4.2"
     mustache "4.1.0"
-    object-lib "2.1.0"
-    object-scan "13.9.1"
-    object-treeify "1.1.31"
-    smart-fs "1.12.5"
+    object-lib "2.1.1"
+    object-scan "14.0.0"
+    object-treeify "2.0.0"
+    smart-fs "1.12.6"
 
 run-async@^0.1.0:
   version "0.1.0"
@@ -7047,6 +7047,20 @@ smart-fs@1.12.5:
     lodash.clonedeep "4.5.0"
     lodash.isequal "4.5.0"
     object-lib "1.3.0"
+    xml-js "1.6.11"
+    yaml-boost "1.10.5"
+
+smart-fs@1.12.6:
+  version "1.12.6"
+  resolved "https://registry.yarnpkg.com/smart-fs/-/smart-fs-1.12.6.tgz#38339e37ab5b862e6696dbf4c7cae7abcc4386f1"
+  integrity sha512-7NZ3GbGWvTkGlWUAU1utxPnZFt6zXHW72L0AC/rgbFjvjrWcvhizhQFJBCPP5CB0Qu9ymU97QAKY8Ey7Ml54PQ==
+  dependencies:
+    fs-extra "9.1.0"
+    js-yaml "4.0.0"
+    json-stringify-pretty-compact "3.0.0"
+    lodash.clonedeep "4.5.0"
+    lodash.isequal "4.5.0"
+    object-lib "2.1.0"
     xml-js "1.6.11"
     yaml-boost "1.10.5"
 
