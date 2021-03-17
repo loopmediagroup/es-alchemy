@@ -57,7 +57,7 @@
     "eslint-plugin-markdown": "2.0.0",
     "eslint-plugin-mocha": "8.1.0",
     "js-gardener": "3.0.1",
-    "node-tdd": "3.0.0",
+    "node-tdd": "3.0.3",
     "nyc": "15.1.0",
     "request": "2.88.2",
     "request-promise-native": "1.0.9",
