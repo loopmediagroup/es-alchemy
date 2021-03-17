@@ -4066,10 +4066,10 @@ joi@17.4.0:
     "@sideway/formula" "^3.0.0"
     "@sideway/pinpoint" "^2.0.0"
 
-js-gardener@3.0.1:
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/js-gardener/-/js-gardener-3.0.1.tgz#4607816ff95cce0d4681a075c4f1374cc429a26b"
-  integrity sha512-4sJMzdNp0n2osRBvzHOgzwa5kG6ZfqfkpO3lQgSAx934Qdo+7bU4Si0aoEb+bESTg8KSD03mmqVYPFnc4MJ12A==
+js-gardener@3.0.3:
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/js-gardener/-/js-gardener-3.0.3.tgz#4f4b271e0c71faabe3707049b849e2fc0d402fc6"
+  integrity sha512-aDnPRmMpL19hL/ug50KaWi0efqftFzn/nqhQIUtYMlGPUa9EbKVOPwX77FCfpe0dxwk4y1Ztku/Jk4KcL+zoqQ==
   dependencies:
     chalk "4.1.0"
     fancy-log "1.3.3"
@@ -4079,7 +4079,7 @@ js-gardener@3.0.1:
     lodash.difference "4.5.0"
     mocha "8.3.2"
     npm-check "5.9.2"
-    robo-config "4.0.1"
+    robo-config "4.0.4"
 
 js-tokens@^3.0.0:
   version "3.0.2"
@@ -5534,13 +5534,6 @@ object-keys@^1.0.12, object-keys@^1.1.1:
   resolved "https://registry.yarnpkg.com/object-keys/-/object-keys-1.1.1.tgz#1c47f272df277f3b1daf061677d9c82e2322c60e"
   integrity sha512-NuAESUOUMrlIXOfHKzD6bpPu3tYt3xvjNdRIQ+FeT0lNb4K8WR70CaDxhuNguS2XG+GjkyMwOzsN5ZktImfhLA==
 
-object-lib@2.1.2:
-  version "2.1.2"
-  resolved "https://registry.yarnpkg.com/object-lib/-/object-lib-2.1.2.tgz#d427c0b594825ef996c2975546f46a921e73e119"
-  integrity sha512-3ont7R1yb+HxwCENdllpuIVTOul6OpK/Z5cxFImVkrBigQmDLG9ltTjmjnpBQUJkO2b4cBV06JyzfnQHYud2Jg==
-  dependencies:
-    object-scan "14.0.0"
-
 object-lib@3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/object-lib/-/object-lib-3.0.0.tgz#630e437ef876f57d0483e54b485894ab37aca23e"
@@ -6731,10 +6724,10 @@ rimraf@^3.0.0, rimraf@^3.0.2:
   dependencies:
     glob "^7.1.3"
 
-robo-config@4.0.1:
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/robo-config/-/robo-config-4.0.1.tgz#a48b2ee0ddf2ac99773edff6f8a64191192e5dd5"
-  integrity sha512-Dx3cuN4jjXrTobkefDAyFid491eUAydGcgvQ5KUwHH9DLO+VjCQuBrcJkQde+MLCHZUtSQTQTrxYUHrYr58R4g==
+robo-config@4.0.4:
+  version "4.0.4"
+  resolved "https://registry.yarnpkg.com/robo-config/-/robo-config-4.0.4.tgz#b226bcd3a92ac2b832db594c07ca997295a92299"
+  integrity sha512-7PdNfGUJCwXHlQW4Eo1JaxuP58Uxo3hPV9mSXWwd+JIp9Zr+4geiakJ02wjdfZRQRDVsxsxbXadOuR22HPcm6Q==
   dependencies:
     app-root-path "3.0.0"
     deepmerge "4.2.2"
@@ -6743,10 +6736,10 @@ robo-config@4.0.1:
     lodash.difference "4.5.0"
     lodash.get "4.4.2"
     mustache "4.1.0"
-    object-lib "2.1.2"
+    object-lib "3.0.0"
     object-scan "14.0.0"
     object-treeify "2.0.0"
-    smart-fs "2.0.0"
+    smart-fs "2.0.2"
 
 run-async@^0.1.0:
   version "0.1.0"
@@ -6971,20 +6964,6 @@ smart-buffer@^4.1.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/smart-buffer/-/smart-buffer-4.1.0.tgz#91605c25d91652f4661ea69ccf45f1b331ca21ba"
   integrity sha512-iVICrxOzCynf/SNaBQCw34eM9jROU/s5rzIhpOvzhzuYHfJR/DhZfDkXiZSgKXfgv26HT3Yni3AV/DGw0cGnnw==
-
-smart-fs@2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/smart-fs/-/smart-fs-2.0.0.tgz#10a2136594d593e7b683ccbe8e2ec120434701dd"
-  integrity sha512-QdXwIvNL9igSKThXvf5b4UMJVAfv9zrbJALDwjO1ATidaW+wvAVo/MNk2EQ3uSNATuhqaRnjgKB+diA1wnZgGQ==
-  dependencies:
-    fs-extra "9.1.0"
-    js-yaml "4.0.0"
-    json-stringify-pretty-compact "3.0.0"
-    lodash.clonedeep "4.5.0"
-    lodash.isequal "4.5.0"
-    object-lib "2.1.2"
-    xml-js "1.6.11"
-    yaml-boost "1.10.7"
 
 smart-fs@2.0.2:
   version "2.0.2"
@@ -8267,16 +8246,6 @@ yallist@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/yallist/-/yallist-4.0.0.tgz#9bb92790d9c0effec63be73519e11a35019a3a72"
   integrity sha512-3wdGidZyq5PB084XLES5TpOSRA3wjXAlIWMhum2kRcv/41Sn2emQ0dycQW4uZXLejwKvg6EsvbdlVL+FYEct7A==
-
-yaml-boost@1.10.7:
-  version "1.10.7"
-  resolved "https://registry.yarnpkg.com/yaml-boost/-/yaml-boost-1.10.7.tgz#121e32ad386e4d4561bb2a9a8500e0b0d7ca8265"
-  integrity sha512-X/NooMiFNKvVYDLwJY26YohPdDHyoiNHLd9H9TM1BMxwCrznnQy1HMXLEB7DLXNDe95KduBEAqC0jVqSabvrEA==
-  dependencies:
-    js-yaml "4.0.0"
-    lodash.get "4.4.2"
-    lodash.mergewith "4.6.2"
-    lodash.set "4.3.2"
 
 yaml-boost@2.0.0:
   version "2.0.0"
