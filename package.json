@@ -41,7 +41,7 @@
   "homepage": "https://github.com/loopmediagroup/es-alchemy#readme",
   "devDependencies": {
     "@babel/cli": "7.13.10",
-    "@babel/core": "7.13.10",
+    "@babel/core": "7.13.13",
     "@babel/register": "7.13.8",
     "@blackflux/eslint-plugin-rules": "2.0.3",
     "@blackflux/robo-config-plugin": "5.0.1",
@@ -50,7 +50,7 @@
     "chai": "4.3.4",
     "coveralls": "3.1.0",
     "deep-equal-in-any-order": "1.0.28",
-    "eslint": "7.22.0",
+    "eslint": "7.23.0",
     "eslint-config-airbnb-base": "14.2.1",
     "eslint-plugin-import": "2.22.1",
     "eslint-plugin-json": "2.1.2",
