@@ -1978,13 +1978,13 @@ deep-eql@^3.0.1:
   dependencies:
     type-detect "^4.0.0"
 
-deep-equal-in-any-order@1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/deep-equal-in-any-order/-/deep-equal-in-any-order-1.1.1.tgz#0b6d5bb3e820da724f1990d715cfcd2cec2978aa"
-  integrity sha512-stnxJHSNUBTBw5UIE+fCL7zz79iO3hlaQDSyYmAYiQVeAHP4/dwk0QtWYemnJ5Uh+Q8xN95bLxbMDpz6gKCmbg==
+deep-equal-in-any-order@1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/deep-equal-in-any-order/-/deep-equal-in-any-order-1.1.2.tgz#c12975e2e41d9b2e6f1cce1311f117ddc15a052b"
+  integrity sha512-N6HxTByJvC6Io+Ut8Yuf08azI+z+blVKJVacDhKM6pOxCLjeTL2izacaDoY/njjQ29zZ9d+0TYngyQySkU4x1g==
   dependencies:
     lodash.mapvalues "^4.6.0"
-    sort-any "^1.1.21"
+    sort-any "^1.2.1"
 
 deep-extend@^0.6.0:
   version "0.6.0"
@@ -7029,10 +7029,10 @@ socks@~2.3.2:
     ip "1.1.5"
     smart-buffer "^4.1.0"
 
-sort-any@^1.1.21:
-  version "1.1.23"
-  resolved "https://registry.yarnpkg.com/sort-any/-/sort-any-1.1.23.tgz#d16c0e6d69de03a1ef6a9d4064d14ee1c42ac210"
-  integrity sha512-aY92w1RkjIyJd1l+O4btCwfAIfZm2r+zA6+cfKbKUO5D5MEZlqY27B7QyHHIsEShBsvx+Ur1Oq3v/gfR6wxD/w==
+sort-any@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/sort-any/-/sort-any-1.2.1.tgz#5cde05b406ef92153e6b564c5ee916ea61939cc6"
+  integrity sha512-sC7Rs90EtNdpCv3cl0FDn5uEmx/t+IOYrBglE99bFWRs6wSBW02Gz4m75P3x81MgZoDbq1X/hzHIKGXBv1mT4w==
   dependencies:
     lodash "^4.17.15"
 
