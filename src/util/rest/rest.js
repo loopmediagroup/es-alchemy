@@ -41,6 +41,7 @@ module.exports = (getFields, getRels, getMapping, versions, options) => {
     ].filter((e) => e !== '').join('/'),
     body,
     headers,
+    gzip: true,
     aws: {
       key: get(options, 'aws.accessKeyId'),
       secret: get(options, 'aws.secretAccessKey'),
