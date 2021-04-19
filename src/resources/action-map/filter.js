@@ -126,9 +126,12 @@ module.exports = {
       filter: {
         geo_shape: {
           [l]: {
-            shape: r.length === 2 && r.every((p) => typeof p === 'number')
-              ? { type: 'point', coordinates: r }
-              : { type: 'polygon', coordinates: [r] },
+            shape: {
+              type: r.length === 2 && r.every((p) => typeof p === 'number')
+                ? 'point'
+                : 'polygon',
+              coordinates: r
+            },
             relation: 'intersects'
           }
         }

@@ -10,7 +10,7 @@ module.exports = {
   point: (v) => (v ? [v[0], v[1]] : null),
   shape: (v) => (v ? {
     type: 'Polygon',
-    coordinates: [v]
+    coordinates: v
   } : null),
   datetime: identity,
   string: identity,

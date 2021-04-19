@@ -153,7 +153,7 @@ describe('Testing Rest Query', { useTmpDir: true, timeout: 10000 }, () => {
       const offer = {
         id: uuid4(),
         locations: [
-          { address: { area: [[0, 0], [1, 0], [1, 1], [0, 1], [0, 0]] } },
+          { address: { area: [[[0, 0], [1, 0], [1, 1], [0, 1], [0, 0]]] } },
           { address: { area: null } }
         ]
       };
