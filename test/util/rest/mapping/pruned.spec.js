@@ -46,7 +46,7 @@ describe('Testing pruned', {
   });
 
   it('Test all remote versions exist locally', async () => {
-    expect(await index.rest.mapping.apply('offer')).to.deep.equal(['offer@6a1b8f491e156e356ab57e8df046b9f449acb440']);
+    expect(await index.rest.mapping.apply('offer')).to.deep.equal(['offer@c1d54c12486d569d308e2c6f3554b6146b35a60a']);
     expect(await index.rest.mapping.pruned('offer')).to.equal(true);
   });
 
@@ -57,11 +57,11 @@ describe('Testing pruned', {
   it('Test remote versions missing locally', async ({ dir }) => {
     await setupNewVersion();
     expect(await index.rest.mapping.apply('offer')).to.deep.equal([
-      'offer@e35ec51a3c35e2d9982e1ac2bbe23957a637a9e0',
-      'offer@6a1b8f491e156e356ab57e8df046b9f449acb440'
+      'offer@c1d54c12486d569d308e2c6f3554b6146b35a60a',
+      'offer@a61d200f03686939f0e9b2b924a6d8d7f5acf468'
     ]);
     instantiateIndex();
-    sfs.unlinkSync(path.join(dir, 'offer@6a1b8f491e156e356ab57e8df046b9f449acb440.json'));
+    sfs.unlinkSync(path.join(dir, 'offer@c1d54c12486d569d308e2c6f3554b6146b35a60a.json'));
     expect(index.index.versions.load(dir)).to.equal(undefined);
     expect(await index.rest.mapping.pruned('offer')).to.equal(false);
   });

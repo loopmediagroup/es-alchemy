@@ -57,7 +57,7 @@ describe('Testing version', { useTmpDir: true }, () => {
     expect(await index.rest.data.refresh('offer')).to.equal(true);
     expect(await index.rest.data.version('offer', offerId)).to.equal(1);
     expect(await index.rest.data.signature('offer', offerId))
-      .to.equal('0_1_offer@6a1b8f491e156e356ab57e8df046b9f449acb440');
+      .to.equal('0_1_offer@c1d54c12486d569d308e2c6f3554b6146b35a60a');
     expect(await index.rest.data.update([{
       idx: 'offer',
       action: 'update',
@@ -69,7 +69,7 @@ describe('Testing version', { useTmpDir: true }, () => {
     expect(await index.rest.data.refresh('offer')).to.equal(true);
     expect(await index.rest.data.version('offer', offerId)).to.equal(1);
     expect(await index.rest.data.signature('offer', offerId))
-      .to.equal('0_1_offer@6a1b8f491e156e356ab57e8df046b9f449acb440');
+      .to.equal('0_1_offer@c1d54c12486d569d308e2c6f3554b6146b35a60a');
   });
 
   it('Test version and signature do not increase if update is identical (with signature)', async () => {
@@ -85,20 +85,20 @@ describe('Testing version', { useTmpDir: true }, () => {
     expect(await index.rest.data.refresh('offer')).to.equal(true);
     expect(await index.rest.data.version('offer', offerId)).to.equal(1);
     expect(await index.rest.data.signature('offer', offerId))
-      .to.equal('0_1_offer@6a1b8f491e156e356ab57e8df046b9f449acb440');
+      .to.equal('0_1_offer@c1d54c12486d569d308e2c6f3554b6146b35a60a');
     expect(await index.rest.data.update([{
       idx: 'offer',
       action: 'update',
       doc: index.data.remap('offer', {
         id: offerId,
         meta: { k1: 'v1' },
-        signature: '0_1_6a1b8f491e156e356ab57e8df046b9f449acb440'
+        signature: '0_1_c1d54c12486d569d308e2c6f3554b6146b35a60a'
       })
     }])).to.equal(true);
     expect(await index.rest.data.refresh('offer')).to.equal(true);
     expect(await index.rest.data.version('offer', offerId)).to.equal(1);
     expect(await index.rest.data.signature('offer', offerId))
-      .to.equal('0_1_offer@6a1b8f491e156e356ab57e8df046b9f449acb440');
+      .to.equal('0_1_offer@c1d54c12486d569d308e2c6f3554b6146b35a60a');
   });
 
   it('Test throws an error if index does not exist', async ({ capture }) => {

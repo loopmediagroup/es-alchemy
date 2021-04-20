@@ -29,6 +29,8 @@
             "country",
             "centre",
             "area",
+            "poly",
+            "polys",
             "timezone",
             "keywords",
             "created"

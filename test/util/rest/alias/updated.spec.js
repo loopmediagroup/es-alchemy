@@ -39,7 +39,7 @@ describe('Testing alias updated', {
     };
     instantiateIndex();
     await persistAndLoadVersion(dir);
-    expect(await index.rest.mapping.apply('offer')).to.deep.equal(['offer@6a1b8f491e156e356ab57e8df046b9f449acb440']);
+    expect(await index.rest.mapping.apply('offer')).to.deep.equal(['offer@c1d54c12486d569d308e2c6f3554b6146b35a60a']);
   });
 
   afterEach(async () => {
