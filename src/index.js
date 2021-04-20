@@ -63,6 +63,8 @@ module.exports = (options) => {
       (idx) => get(indices[idx], 'fields', null),
       (idx) => get(indices[idx], 'rels', null),
       (idx) => get(indices[idx], 'mapping', null),
+      (idx) => get(indices[idx], 'specs', null),
+      models,
       versions,
       options
     )

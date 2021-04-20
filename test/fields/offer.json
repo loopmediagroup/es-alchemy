@@ -11,6 +11,8 @@
   "locations.address.country",
   "locations.address.centre",
   "locations.address.area",
+  "locations.address.poly",
+  "locations.address.polys",
   "locations.address.timezone",
   "locations.address.keywords",
   "locations.address.created",

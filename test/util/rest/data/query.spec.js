@@ -153,13 +153,30 @@ describe('Testing Rest Query', { useTmpDir: true, timeout: 10000 }, () => {
       const offer = {
         id: uuid4(),
         locations: [
-          { address: { area: [[0, 0], [1, 0], [1, 1], [0, 1], [0, 0]] } },
-          { address: { area: null } }
+          {
+            address: {
+              area: [[0, 0], [1, 0], [1, 1], [0, 1], [0, 0]],
+              poly: [[[0, 0], [1, 0], [1, 1], [0, 1], [0, 0]]],
+              polys: [[[[0, 0], [1, 0], [1, 1], [0, 1], [0, 0]]]]
+            }
+          },
+          {
+            address: {
+              area: null,
+              poly: null,
+              polys: null
+            }
+          }
         ]
       };
       await upsert('offer', [offer]);
       expect(await query('offer', {
-        toReturn: ['id', 'locations.address.area'],
+        toReturn: [
+          'id',
+          'locations.address.area',
+          'locations.address.poly',
+          'locations.address.polys'
+        ],
         filterBy: { and: [['id', '==', offer.id]] }
       })).to.deep.equal([offer]);
     });
@@ -243,7 +260,7 @@ describe('Testing Rest Query', { useTmpDir: true, timeout: 10000 }, () => {
         toReturn: ['headline']
       }, { raw: true })).hits.hits).to.deep.equal([
         {
-          _index: 'offer@6a1b8f491e156e356ab57e8df046b9f449acb440',
+          _index: 'offer@c1d54c12486d569d308e2c6f3554b6146b35a60a',
           _type: '_doc',
           _id: offer1.id,
           _score: null,
@@ -251,7 +268,7 @@ describe('Testing Rest Query', { useTmpDir: true, timeout: 10000 }, () => {
           sort: ['1', '1', offer1.id]
         },
         {
-          _index: 'offer@6a1b8f491e156e356ab57e8df046b9f449acb440',
+          _index: 'offer@c1d54c12486d569d308e2c6f3554b6146b35a60a',
           _type: '_doc',
           _id: offer2.id,
           _score: null,
@@ -259,7 +276,7 @@ describe('Testing Rest Query', { useTmpDir: true, timeout: 10000 }, () => {
           sort: ['1', '2', offer2.id]
         },
         {
-          _index: 'offer@6a1b8f491e156e356ab57e8df046b9f449acb440',
+          _index: 'offer@c1d54c12486d569d308e2c6f3554b6146b35a60a',
           _type: '_doc',
           _id: offer3.id,
           _score: null,
@@ -267,7 +284,7 @@ describe('Testing Rest Query', { useTmpDir: true, timeout: 10000 }, () => {
           sort: ['2', '1', offer3.id]
         },
         {
-          _index: 'offer@6a1b8f491e156e356ab57e8df046b9f449acb440',
+          _index: 'offer@c1d54c12486d569d308e2c6f3554b6146b35a60a',
           _type: '_doc',
           _id: offer4.id,
           _score: null,

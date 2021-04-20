@@ -29,7 +29,7 @@ describe('Testing Versions', {
     loadOfferIndex();
     const result = versions.get('offer');
     const schema = Joi.object().pattern(
-      Joi.string().valid('6a1b8f491e156e356ab57e8df046b9f449acb440'),
+      Joi.string().valid('c1d54c12486d569d308e2c6f3554b6146b35a60a'),
       Joi.object().keys({
         timestamp: Joi.number().integer(),
         specs: Joi.object(),

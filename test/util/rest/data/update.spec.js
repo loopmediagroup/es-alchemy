@@ -57,8 +57,8 @@ describe('Testing data formats', { useTmpDir: true }, () => {
       }])).to.equal(true);
       expect(await index.rest.data.refresh('offer')).to.equal(true);
       expect(await queryVersions('offer')).to.deep.equal([
-        { version: 'offer@6a1b8f491e156e356ab57e8df046b9f449acb440', data: { meta: [{ k1: 'v1' }], id: offerId } },
-        { version: 'offer@e35ec51a3c35e2d9982e1ac2bbe23957a637a9e0', data: { meta: [{ k1: 'v1' }], id: offerId } }
+        { version: 'offer@a61d200f03686939f0e9b2b924a6d8d7f5acf468', data: { meta: [{ k1: 'v1' }], id: offerId } },
+        { version: 'offer@c1d54c12486d569d308e2c6f3554b6146b35a60a', data: { meta: [{ k1: 'v1' }], id: offerId } }
       ]);
     };
   });
@@ -78,7 +78,7 @@ describe('Testing data formats', { useTmpDir: true }, () => {
       idx: 'offer',
       action: 'delete',
       id: offerId,
-      signature: '0_1_offer@6a1b8f491e156e356ab57e8df046b9f449acb440'
+      signature: '0_1_offer@c1d54c12486d569d308e2c6f3554b6146b35a60a'
     }]);
     const schema = Joi.array().ordered(
       Joi.object().keys({
@@ -105,13 +105,13 @@ describe('Testing data formats', { useTmpDir: true }, () => {
       idx: 'offer',
       action: 'update',
       doc: index.data.remap('offer', { id: offerId, meta: { k1: 'v1' } }),
-      signature: 'null_offer@6a1b8f491e156e356ab57e8df046b9f449acb440'
+      signature: 'null_offer@c1d54c12486d569d308e2c6f3554b6146b35a60a'
     }])).to.equal(true);
     const r = await index.rest.data.update([{
       idx: 'offer',
       action: 'update',
       doc: index.data.remap('offer', { id: offerId, meta: { k1: 'v1' } }),
-      signature: 'null_offer@6a1b8f491e156e356ab57e8df046b9f449acb440'
+      signature: 'null_offer@c1d54c12486d569d308e2c6f3554b6146b35a60a'
     }]);
     const schema = Joi.array().ordered(
       Joi.object().keys({
@@ -269,13 +269,13 @@ describe('Testing data formats', { useTmpDir: true }, () => {
       idx: 'offer',
       action: 'update',
       doc: index.data.remap('offer', { id: offerId, meta: { k1: 'v2' } }),
-      signature: '0_1_offer@e35ec51a3c35e2d9982e1ac2bbe23957a637a9e0'
+      signature: '0_1_offer@a61d200f03686939f0e9b2b924a6d8d7f5acf468'
     }]);
     expect(r).to.equal(true);
     expect(await index.rest.data.refresh('offer')).to.equal(true);
     expect(await queryVersions('offer')).to.deep.equal([
-      { version: 'offer@6a1b8f491e156e356ab57e8df046b9f449acb440', data: { meta: [{ k1: 'v2' }], id: offerId } },
-      { version: 'offer@e35ec51a3c35e2d9982e1ac2bbe23957a637a9e0', data: { meta: [{ k1: 'v2' }], id: offerId } }
+      { version: 'offer@a61d200f03686939f0e9b2b924a6d8d7f5acf468', data: { meta: [{ k1: 'v2' }], id: offerId } },
+      { version: 'offer@c1d54c12486d569d308e2c6f3554b6146b35a60a', data: { meta: [{ k1: 'v2' }], id: offerId } }
     ]);
   });
 
@@ -285,14 +285,14 @@ describe('Testing data formats', { useTmpDir: true }, () => {
       idx: 'offer',
       action: 'update',
       doc: index.data.remap('offer', { id: offerId, meta: { k1: 'v2' } }),
-      signature: '1_1_offer@e35ec51a3c35e2d9982e1ac2bbe23957a637a9e0'
+      signature: '1_1_offer@a61d200f03686939f0e9b2b924a6d8d7f5acf468'
     }]);
     expect(r.map(({ update }) => get(update, 'error.type')))
-      .to.deep.equal(['version_conflict_engine_exception', undefined]);
+      .to.deep.equal([undefined, 'version_conflict_engine_exception']);
     expect(await index.rest.data.refresh('offer')).to.equal(true);
     expect(await queryVersions('offer')).to.deep.equal([
-      { version: 'offer@6a1b8f491e156e356ab57e8df046b9f449acb440', data: { meta: [{ k1: 'v2' }], id: offerId } },
-      { version: 'offer@e35ec51a3c35e2d9982e1ac2bbe23957a637a9e0', data: { meta: [{ k1: 'v1' }], id: offerId } }
+      { version: 'offer@a61d200f03686939f0e9b2b924a6d8d7f5acf468', data: { meta: [{ k1: 'v1' }], id: offerId } },
+      { version: 'offer@c1d54c12486d569d308e2c6f3554b6146b35a60a', data: { meta: [{ k1: 'v2' }], id: offerId } }
     ]);
   });
 
@@ -305,11 +305,11 @@ describe('Testing data formats', { useTmpDir: true }, () => {
       signature: '0_1_offer@0123456789012345678901234567890123456789'
     }]);
     expect(r.map(({ update }) => get(update, 'error.type')))
-      .to.deep.equal(['version_conflict_engine_exception', undefined]);
+      .to.deep.equal([undefined, 'version_conflict_engine_exception']);
     expect(await index.rest.data.refresh('offer')).to.equal(true);
     expect(await queryVersions('offer')).to.deep.equal([
-      { version: 'offer@6a1b8f491e156e356ab57e8df046b9f449acb440', data: { meta: [{ k1: 'v2' }], id: offerId } },
-      { version: 'offer@e35ec51a3c35e2d9982e1ac2bbe23957a637a9e0', data: { meta: [{ k1: 'v1' }], id: offerId } }
+      { version: 'offer@a61d200f03686939f0e9b2b924a6d8d7f5acf468', data: { meta: [{ k1: 'v1' }], id: offerId } },
+      { version: 'offer@c1d54c12486d569d308e2c6f3554b6146b35a60a', data: { meta: [{ k1: 'v2' }], id: offerId } }
     ]);
   });
 
@@ -319,7 +319,7 @@ describe('Testing data formats', { useTmpDir: true }, () => {
       idx: 'offer',
       action: 'delete',
       doc: index.data.remap('offer', { id: offerId }),
-      signature: '0_1_offer@e35ec51a3c35e2d9982e1ac2bbe23957a637a9e0'
+      signature: '0_1_offer@a61d200f03686939f0e9b2b924a6d8d7f5acf468'
     }]);
     expect(r).to.equal(true);
     expect(await index.rest.data.refresh('offer')).to.equal(true);
@@ -332,13 +332,13 @@ describe('Testing data formats', { useTmpDir: true }, () => {
       idx: 'offer',
       action: 'delete',
       doc: index.data.remap('offer', { id: offerId }),
-      signature: '1_1_offer@e35ec51a3c35e2d9982e1ac2bbe23957a637a9e0'
+      signature: '1_1_offer@a61d200f03686939f0e9b2b924a6d8d7f5acf468'
     }]);
     expect(r.map(({ delete: del }) => get(del, 'error.type')))
-      .to.deep.equal(['version_conflict_engine_exception', undefined]);
+      .to.deep.equal([undefined, 'version_conflict_engine_exception']);
     expect(await index.rest.data.refresh('offer')).to.equal(true);
     expect(await queryVersions('offer')).to.deep.equal([
-      { version: 'offer@e35ec51a3c35e2d9982e1ac2bbe23957a637a9e0', data: { meta: [{ k1: 'v1' }], id: offerId } }
+      { version: 'offer@a61d200f03686939f0e9b2b924a6d8d7f5acf468', data: { meta: [{ k1: 'v1' }], id: offerId } }
     ]);
   });
 
@@ -351,10 +351,10 @@ describe('Testing data formats', { useTmpDir: true }, () => {
       signature: '0_1_offer@0123456789012345678901234567890123456789'
     }]);
     expect(r.map(({ delete: del }) => get(del, 'error.type')))
-      .to.deep.equal(['version_conflict_engine_exception', undefined]);
+      .to.deep.equal([undefined, 'version_conflict_engine_exception']);
     expect(await index.rest.data.refresh('offer')).to.equal(true);
     expect(await queryVersions('offer')).to.deep.equal([
-      { version: 'offer@e35ec51a3c35e2d9982e1ac2bbe23957a637a9e0', data: { meta: [{ k1: 'v1' }], id: offerId } }
+      { version: 'offer@a61d200f03686939f0e9b2b924a6d8d7f5acf468', data: { meta: [{ k1: 'v1' }], id: offerId } }
     ]);
   });
 
@@ -364,12 +364,12 @@ describe('Testing data formats', { useTmpDir: true }, () => {
       idx: 'offer',
       action: 'delete',
       doc: index.data.remap('offer', { id: offerId }),
-      signature: 'null_offer@e35ec51a3c35e2d9982e1ac2bbe23957a637a9e0'
+      signature: 'null_offer@a61d200f03686939f0e9b2b924a6d8d7f5acf468'
     }]);
     expect(r).to.equal(true);
     expect(await index.rest.data.refresh('offer')).to.equal(true);
     expect(await queryVersions('offer')).to.deep.equal([
-      { version: 'offer@e35ec51a3c35e2d9982e1ac2bbe23957a637a9e0', data: { meta: [{ k1: 'v1' }], id: offerId } }
+      { version: 'offer@a61d200f03686939f0e9b2b924a6d8d7f5acf468', data: { meta: [{ k1: 'v1' }], id: offerId } }
     ]);
   });
 
@@ -385,11 +385,11 @@ describe('Testing data formats', { useTmpDir: true }, () => {
     expect(r).to.equal(true);
     expect(await index.rest.data.refresh('offer')).to.equal(true);
     expect(await queryVersions('offer')).to.deep.equal([{
-      version: 'offer@6a1b8f491e156e356ab57e8df046b9f449acb440',
-      data: { meta: [{ k1: 'v1' }], id: offerId }
-    }, {
-      version: 'offer@e35ec51a3c35e2d9982e1ac2bbe23957a637a9e0',
+      version: 'offer@a61d200f03686939f0e9b2b924a6d8d7f5acf468',
       data: { meta: [{ k1: 'v1' }], subhead: 'entry', id: offerId }
+    }, {
+      version: 'offer@c1d54c12486d569d308e2c6f3554b6146b35a60a',
+      data: { meta: [{ k1: 'v1' }], id: offerId }
     }]);
   });
 
@@ -403,8 +403,8 @@ describe('Testing data formats', { useTmpDir: true }, () => {
     expect(r1).to.equal(true);
     expect(await index.rest.data.refresh('offer')).to.equal(true);
     expect(await queryVersions('offer', ['id', 'locations.id'])).to.deep.equal([
-      { version: 'offer@6a1b8f491e156e356ab57e8df046b9f449acb440', data: { id: offerId, locations: [{ id: 'loc1' }] } },
-      { version: 'offer@e35ec51a3c35e2d9982e1ac2bbe23957a637a9e0', data: { id: offerId, locations: [{ id: 'loc1' }] } }
+      { version: 'offer@a61d200f03686939f0e9b2b924a6d8d7f5acf468', data: { id: offerId, locations: [{ id: 'loc1' }] } },
+      { version: 'offer@c1d54c12486d569d308e2c6f3554b6146b35a60a', data: { id: offerId, locations: [{ id: 'loc1' }] } }
     ]);
     const r2 = await index.rest.data.update([{
       idx: 'offer',
@@ -414,8 +414,8 @@ describe('Testing data formats', { useTmpDir: true }, () => {
     expect(r2).to.equal(true);
     expect(await index.rest.data.refresh('offer')).to.equal(true);
     expect(await queryVersions('offer', ['id', 'locations.id'])).to.deep.equal([
-      { version: 'offer@6a1b8f491e156e356ab57e8df046b9f449acb440', data: { id: offerId } },
-      { version: 'offer@e35ec51a3c35e2d9982e1ac2bbe23957a637a9e0', data: { id: offerId } }
+      { version: 'offer@a61d200f03686939f0e9b2b924a6d8d7f5acf468', data: { id: offerId } },
+      { version: 'offer@c1d54c12486d569d308e2c6f3554b6146b35a60a', data: { id: offerId } }
     ]);
   });
 

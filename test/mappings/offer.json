@@ -1,7 +1,7 @@
 {
   "mappings": {
     "_meta": {
-      "hash": "6a1b8f491e156e356ab57e8df046b9f449acb440"
+      "hash": "c1d54c12486d569d308e2c6f3554b6146b35a60a"
     },
     "dynamic": "false",
     "properties": {
@@ -45,6 +45,12 @@
                 "type": "geo_point"
               },
               "area": {
+                "type": "geo_shape"
+              },
+              "poly": {
+                "type": "geo_shape"
+              },
+              "polys": {
                 "type": "geo_shape"
               },
               "timezone": {

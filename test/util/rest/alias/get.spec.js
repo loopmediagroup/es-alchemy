@@ -15,7 +15,7 @@ describe('Testing alias get', () => {
     expect(await index.rest.alias.get('offer')).to.equal(null);
     expect(await index.rest.mapping.create('offer')).to.equal(true);
     expect(await index.rest.alias.update('offer')).to.equal(true);
-    expect(await index.rest.alias.get('offer')).to.deep.equal('offer@6a1b8f491e156e356ab57e8df046b9f449acb440');
+    expect(await index.rest.alias.get('offer')).to.deep.equal('offer@c1d54c12486d569d308e2c6f3554b6146b35a60a');
     expect(await index.rest.mapping.delete('offer')).to.equal(true);
     expect(await index.rest.alias.get('offer')).to.equal(null);
   });

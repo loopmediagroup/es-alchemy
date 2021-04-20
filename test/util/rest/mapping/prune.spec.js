@@ -41,19 +41,19 @@ describe('Testing prune', {
     index.index.register('offer', updatedOfferIndex);
     expect(index.index.versions.persist(dir)).to.equal(true);
     index.index.versions.load(dir);
-    expect(await index.rest.mapping.apply('offer')).to.deep.equal([
-      'offer@e35ec51a3c35e2d9982e1ac2bbe23957a637a9e0',
-      'offer@6a1b8f491e156e356ab57e8df046b9f449acb440'
+    expect((await index.rest.mapping.apply('offer')).sort()).to.deep.equal([
+      'offer@a61d200f03686939f0e9b2b924a6d8d7f5acf468',
+      'offer@c1d54c12486d569d308e2c6f3554b6146b35a60a'
     ]);
-    expect(await getIndices()).to.deep.equal([
-      'offer@e35ec51a3c35e2d9982e1ac2bbe23957a637a9e0',
-      'offer@6a1b8f491e156e356ab57e8df046b9f449acb440'
+    expect((await getIndices()).sort()).to.deep.equal([
+      'offer@a61d200f03686939f0e9b2b924a6d8d7f5acf468',
+      'offer@c1d54c12486d569d308e2c6f3554b6146b35a60a'
     ]);
     instantiateIndex();
-    sfs.unlinkSync(path.join(dir, 'offer@6a1b8f491e156e356ab57e8df046b9f449acb440.json'));
+    sfs.unlinkSync(path.join(dir, 'offer@a61d200f03686939f0e9b2b924a6d8d7f5acf468.json'));
     index.index.versions.load(dir);
-    expect(await index.rest.mapping.prune('offer')).to.deep.equal(['offer@6a1b8f491e156e356ab57e8df046b9f449acb440']);
-    expect(await getIndices()).to.deep.equal(['offer@e35ec51a3c35e2d9982e1ac2bbe23957a637a9e0']);
+    expect(await index.rest.mapping.prune('offer')).to.deep.equal(['offer@a61d200f03686939f0e9b2b924a6d8d7f5acf468']);
+    expect(await getIndices()).to.deep.equal(['offer@c1d54c12486d569d308e2c6f3554b6146b35a60a']);
     expect(await index.rest.mapping.delete('offer')).to.equal(true);
   });
 });

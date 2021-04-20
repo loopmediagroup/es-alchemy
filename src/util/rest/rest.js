@@ -25,7 +25,7 @@ const dataUniques = require('./data/uniques');
 const dataUpdate = require('./data/update');
 const dataVersion = require('./data/version');
 
-module.exports = (getFields, getRels, getMapping, versions, options) => {
+module.exports = (getFields, getRels, getMapping, getSpecs, models, versions, options) => {
   const call = (method, idx, {
     endpoint = '',
     body = {},
@@ -94,7 +94,7 @@ module.exports = (getFields, getRels, getMapping, versions, options) => {
     data: {
       count: (idx) => dataCount(call, idx),
       exists: (idx, id) => dataExists(call, idx, id),
-      query: (idx, filter) => dataQuery(call, idx, getRels(idx), getMapping(idx), filter),
+      query: (idx, filter) => dataQuery(call, idx, getRels(idx), getSpecs(idx), models, filter),
       refresh: (idx) => dataRefresh(call, idx),
       signature: (idx, id) => dataSignature(call, idx, getMapping(idx), id),
       stats: () => dataStats(call),

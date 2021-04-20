@@ -6,6 +6,8 @@
     "country": "string",
     "centre": "point",
     "area": "shape",
+    "poly": "polygon",
+    "polys": "polygons",
     "timezone": "string",
     "keywords": "keyword[]",
     "created": "datetime"

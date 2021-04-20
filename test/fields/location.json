@@ -7,6 +7,8 @@
   "address.country",
   "address.centre",
   "address.area",
+  "address.poly",
+  "address.polys",
   "address.timezone",
   "address.keywords"
 ]
