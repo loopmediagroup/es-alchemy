@@ -57,7 +57,7 @@ describe('Testing diverged', {
     });
     expect(await index.rest.mapping.diverged('offer')).to.deep.equal({
       result: [],
-      cursor: { 'offer@6a1b8f491e156e356ab57e8df046b9f449acb440': offerId1 }
+      cursor: { 'offer@c1d54c12486d569d308e2c6f3554b6146b35a60a': offerId1 }
     });
   });
 
@@ -69,7 +69,7 @@ describe('Testing diverged', {
     const result = await index.rest.mapping.diverged('offer');
     expect(result).to.deep.equal({
       result: [],
-      cursor: { 'offer@6a1b8f491e156e356ab57e8df046b9f449acb440': offerId1 }
+      cursor: { 'offer@c1d54c12486d569d308e2c6f3554b6146b35a60a': offerId1 }
     });
     expect(await index.rest.mapping.diverged('offer', result.cursor)).to.deep.equal({
       result: [],
@@ -105,8 +105,8 @@ describe('Testing diverged', {
     expect(result1).to.deep.equal({
       result: [offerId1],
       cursor: {
-        'offer@e35ec51a3c35e2d9982e1ac2bbe23957a637a9e0': offerId2,
-        'offer@6a1b8f491e156e356ab57e8df046b9f449acb440': offerId2
+        'offer@c1d54c12486d569d308e2c6f3554b6146b35a60a': offerId2,
+        'offer@a61d200f03686939f0e9b2b924a6d8d7f5acf468': offerId2
       }
     });
     const result2 = await index.rest.mapping.diverged('offer', result1.cursor);
@@ -123,7 +123,7 @@ describe('Testing diverged', {
     });
     expect(await index.rest.mapping.diverged(
       'offer',
-      { 'offer@6a1b8f491e156e356ab57e8df046b9f449acb440': null }
+      { 'offer@c1d54c12486d569d308e2c6f3554b6146b35a60a': null }
     )).to.deep.equal({
       result: [],
       cursor: null
