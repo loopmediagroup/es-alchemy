@@ -46,8 +46,8 @@ describe('Testing prune', {
       'offer@a61d200f03686939f0e9b2b924a6d8d7f5acf468'
     ]);
     expect(await getIndices()).to.deep.equal([
-      'offer@a61d200f03686939f0e9b2b924a6d8d7f5acf468',
-      'offer@c1d54c12486d569d308e2c6f3554b6146b35a60a'
+      'offer@c1d54c12486d569d308e2c6f3554b6146b35a60a',
+      'offer@a61d200f03686939f0e9b2b924a6d8d7f5acf468'
     ]);
     instantiateIndex();
     sfs.unlinkSync(path.join(dir, 'offer@a61d200f03686939f0e9b2b924a6d8d7f5acf468.json'));
