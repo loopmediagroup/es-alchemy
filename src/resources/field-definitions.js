@@ -1,5 +1,16 @@
-const mkFn = (result) => (...args) => args
-  .reduce((prev, arg) => ({ ...prev, ...arg }), result);
+const identity = (v) => v;
+
+const mkFn = (
+  def,
+  meta = {
+    marshall: identity,
+    unmarshall: identity
+  }
+) => {
+  const r = (...args) => args.reduce((prev, arg) => ({ ...prev, ...arg }), def);
+  r.meta = meta;
+  return r;
+};
 
 module.exports = {
   date: mkFn({
@@ -23,9 +34,18 @@ module.exports = {
   }),
   point: mkFn({
     type: 'geo_point'
+  }, {
+    marshall: (v) => (v ? [v[0], v[1]] : null),
+    unmarshall: identity
   }),
   shape: mkFn({
     type: 'geo_shape'
+  }, {
+    marshall: (v) => (v ? {
+      type: 'Polygon',
+      coordinates: [v]
+    } : null),
+    unmarshall: (v) => (v !== null ? v.coordinates[0] : null)
   }),
   datetime: mkFn({
     type: 'date',
@@ -40,5 +60,8 @@ module.exports = {
   object: mkFn({
     type: 'object',
     enabled: false
+  }, {
+    marshall: (v) => [v],
+    unmarshall: (v) => v[0]
   })
 };

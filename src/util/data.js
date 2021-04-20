@@ -1,6 +1,6 @@
 // Convert raw data into index ready data
 const assert = require('assert');
-const fieldRemap = require('../resources/field-remap');
+const fieldDefinitions = require('../resources/field-definitions');
 const { buildPageObject } = require('./paging');
 
 const remapRec = (specs, input, models) => {
@@ -31,7 +31,9 @@ const remapRec = (specs, input, models) => {
         .map((field) => [field, origin[field]])
         .filter((kv) => kv[1] !== undefined)
         .reduce((prev, [key, value]) => Object.assign(prev, {
-          [key]: fieldRemap[fieldTypes[key].endsWith('[]') ? fieldTypes[key].slice(0, -2) : fieldTypes[key]](value)
+          [key]: fieldDefinitions[
+            fieldTypes[key].endsWith('[]') ? fieldTypes[key].slice(0, -2) : fieldTypes[key]
+          ].meta.marshall(value)
         }), entry);
       Object.entries(specs.nested || {}) // handle nested
         .map(([key, value]) => [key, remapRec(value, origin, models)])
