@@ -3,9 +3,9 @@ const get = require('lodash.get');
 const cloneDeep = require('lodash.clonedeep');
 const objectScan = require('object-scan');
 const objectFields = require('object-fields');
-const resultRemap = require('../../../resources/result-remap');
+const fieldDefinitions = require('../../../resources/field-definitions');
 
-module.exports = (call, idx, rels, mapping, filter) => call('GET', idx, {
+module.exports = (call, idx, rels, specs, models, filter) => call('GET', idx, {
   body: (() => {
     // PART 1: workaround for https://github.com/elastic/elasticsearch/issues/23796
     // inject id requests for all entries
@@ -24,10 +24,20 @@ module.exports = (call, idx, rels, mapping, filter) => call('GET', idx, {
     const rewriterRemap = (() => {
       // eslint-disable-next-line no-underscore-dangle
       const resultRemaps = filter._source
-        .map((f) => [f, get(mapping, `mappings.properties.${f.split('.').join('.properties.')}.type`)])
+        .map((f) => {
+          if (specs === null || f === '_id' || f === '') {
+            return [f, undefined];
+          }
+          const pth = f.split('.');
+          const name = pth.pop();
+          const model = pth.length === 0 ? specs.model : get(specs, `nested.${pth.join('.nested.')}`).model;
+          const type = models[model.endsWith('[]') ? model.slice(0, -2) : model].specs.fields[name];
+          const { meta } = fieldDefinitions[type.endsWith('[]') ? type.slice(0, -2) : type];
+          return [f, meta];
+        })
         .filter((f) => f[1] !== undefined)
-        .reduce((p, [field, fieldMapping]) => Object.assign(p, {
-          [field]: (e) => resultRemap[fieldMapping](e)
+        .reduce((p, [field, meta]) => Object.assign(p, {
+          [field]: (e) => meta.unmarshall(e)
         }), {});
       const scanner = objectScan(Object.keys(resultRemaps), {
         useArraySelector: false,
