@@ -43,7 +43,11 @@ module.exports = {
   polygons: mkFn(
     { type: 'geo_shape' },
     {
-      marshall: (vs) => (vs ? vs.map((v) => ({ type: 'Polygon', coordinates: v })) : null),
+      marshall: (vs) => (
+        Array.isArray(vs) && vs.length !== 0
+          ? vs.map((v) => ({ type: 'Polygon', coordinates: v }))
+          : null
+      ),
       unmarshall: (vs) => (vs !== null ? vs.map(({ coordinates }) => coordinates) : null)
     }
   ),
