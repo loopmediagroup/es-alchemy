@@ -39,6 +39,7 @@ module.exports = (options) => {
         getModel: (idx) => versions.getModel(idx),
         getFields: (idx) => versions.getFields(idx),
         getRels: (idx) => versions.getRels(idx),
+        list: (idx) => versions.list(idx).sort(),
         persist: (folder) => versions.persist(indices, folder),
         load: (folder) => versions.load(folder)
       },

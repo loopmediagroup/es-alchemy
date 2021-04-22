@@ -74,4 +74,11 @@ describe('Testing Versions', {
     const result = versions.getRels('offer');
     expect(result).to.deep.equal(fixture('get-rels'));
   });
+
+  it('Testing versions.list', () => {
+    loadOfferIndex();
+    expect(versions.list()).to.deep.equal(['offer']);
+    expect(versions.list('offer'))
+      .to.deep.equal(['offer@c1d54c12486d569d308e2c6f3554b6146b35a60a']);
+  });
 });

@@ -70,6 +70,19 @@ describe('Testing index', {
     });
   });
 
+  it('Testing versions.list', ({ dir }) => {
+    expect(index.index.versions.persist(dir)).to.equal(true);
+    expect(index.index.versions.load(dir)).to.equal(undefined);
+    expect(index.index.list()).to.deep.equal(Object.keys(rels).sort());
+    Object.entries(rels).forEach(([k, v], idx) => {
+      expect(index.index.versions.list(k)).to.deep.equal([[
+        'address@3e737db4f9999f34316b4683e981500b9ec0eeba',
+        'location@7a6186ede8ebd095c25a03dc18438d43d7f7bf15',
+        'offer@c1d54c12486d569d308e2c6f3554b6146b35a60a'
+      ][idx]]);
+    });
+  });
+
   it('Testing persist', ({ dir }) => {
     expect(index.index.versions.persist(dir)).to.equal(true);
     expect(sfs.walkDir(dir).sort()).to.deep.equal(
