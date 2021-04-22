@@ -45,6 +45,13 @@ const validate = (() => {
 
 module.exports = () => {
   const indexVersions = {};
+  const getVersions = (index) => {
+    const result = indexVersions[index];
+    if (result === undefined) {
+      throw new Error('Index must be loaded');
+    }
+    return result;
+  };
   return {
     getModel: (idx) => Object.values(indexVersions[idx])[0].specs.model,
     getFields: (idx) => {
@@ -122,13 +129,9 @@ module.exports = () => {
       });
       validate(indexVersions);
     },
-    list: () => Object.keys(indexVersions),
-    get: (index) => {
-      const result = indexVersions[index];
-      if (result === undefined) {
-        throw new Error('Index must be loaded');
-      }
-      return result;
-    }
+    list: (index = null) => (index === null
+      ? Object.keys(indexVersions)
+      : Object.keys(getVersions(index)).map((v) => `${index}@${v}`)),
+    get: getVersions
   };
 };
