@@ -44,6 +44,7 @@ module.exports = (getFields, getRels, getMapping, getSpecs, models, versions, op
     aws: {
       key: get(options, 'aws.accessKeyId'),
       secret: get(options, 'aws.secretAccessKey'),
+      session: get(options, 'aws.sessionToken'),
       sign_version: '4'
     },
     simple: false,
