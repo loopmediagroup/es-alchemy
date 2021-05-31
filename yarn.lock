@@ -1987,10 +1987,10 @@ deep-eql@^3.0.1:
   dependencies:
     type-detect "^4.0.0"
 
-deep-equal-in-any-order@1.1.6:
-  version "1.1.6"
-  resolved "https://registry.yarnpkg.com/deep-equal-in-any-order/-/deep-equal-in-any-order-1.1.6.tgz#0ba1cd989e981ca2d8184172e9b91a5bbb56ea01"
-  integrity sha512-8/mJXBxWouNzoEUxwHt27tf0UpldfV6TSmcVJqwxcyg6HsO6m68TzoRON53dQSvp4HrjrRF3N8Sot7ZJG9a7Ug==
+deep-equal-in-any-order@1.1.7:
+  version "1.1.7"
+  resolved "https://registry.yarnpkg.com/deep-equal-in-any-order/-/deep-equal-in-any-order-1.1.7.tgz#23a684e4632a57ec60ba996794abf25a64452a14"
+  integrity sha512-qbWkmAQe1PyoajHuAVw7JfgEZP/ls2GG+9qxoHSvJHxV/dF/GAtb95QzLnHQUFt8O5RKEFwWLGPIeYMht7Ov7Q==
   dependencies:
     lodash.mapvalues "^4.6.0"
     sort-any "^1.2.3"
