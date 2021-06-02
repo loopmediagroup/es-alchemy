@@ -1987,13 +1987,13 @@ deep-eql@^3.0.1:
   dependencies:
     type-detect "^4.0.0"
 
-deep-equal-in-any-order@1.1.4:
-  version "1.1.4"
-  resolved "https://registry.yarnpkg.com/deep-equal-in-any-order/-/deep-equal-in-any-order-1.1.4.tgz#fed84839ebd6bfa53298142db35b0d8293677b92"
-  integrity sha512-yigFzn8ynCxq7ECTXiH/sS3as0QZaXDeSY6QmXPA67C+TwfilSh2AkNMrmmCYp+dh/UcA7UHTmpC7qwT4zEOLA==
+deep-equal-in-any-order@1.1.7:
+  version "1.1.7"
+  resolved "https://registry.yarnpkg.com/deep-equal-in-any-order/-/deep-equal-in-any-order-1.1.7.tgz#23a684e4632a57ec60ba996794abf25a64452a14"
+  integrity sha512-qbWkmAQe1PyoajHuAVw7JfgEZP/ls2GG+9qxoHSvJHxV/dF/GAtb95QzLnHQUFt8O5RKEFwWLGPIeYMht7Ov7Q==
   dependencies:
     lodash.mapvalues "^4.6.0"
-    sort-any "^1.2.2"
+    sort-any "^1.2.3"
 
 deep-extend@^0.6.0:
   version "0.6.0"
@@ -2374,10 +2374,10 @@ eslint-module-utils@^2.6.1:
     debug "^3.2.7"
     pkg-dir "^2.0.0"
 
-eslint-plugin-import@2.23.3:
-  version "2.23.3"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-import/-/eslint-plugin-import-2.23.3.tgz#8a1b073289fff03c4af0f04b6df956b7d463e191"
-  integrity sha512-wDxdYbSB55F7T5CC7ucDjY641VvKmlRwT0Vxh7PkY1mI4rclVRFWYfsrjDgZvwYYDZ5ee0ZtfFKXowWjqvEoRQ==
+eslint-plugin-import@2.23.4:
+  version "2.23.4"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-import/-/eslint-plugin-import-2.23.4.tgz#8dceb1ed6b73e46e50ec9a5bb2411b645e7d3d97"
+  integrity sha512-6/wP8zZRsnQFiR3iaPFgh5ImVRM1WN5NUWfTIRqwOdeiGJlBcSk82o1FEVq8yXmy4lkIzTo7YhHCIxlU/2HyEQ==
   dependencies:
     array-includes "^3.1.3"
     array.prototype.flat "^1.2.4"
@@ -7083,10 +7083,10 @@ socks@~2.3.2:
     ip "1.1.5"
     smart-buffer "^4.1.0"
 
-sort-any@^1.2.2:
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/sort-any/-/sort-any-1.2.2.tgz#ba86f34d14b494fcee039e4eb74aeeadff1b6d11"
-  integrity sha512-M1oVI6hRzhmVAw/44B9irT6icjad4UPGQTOkgpgwecxruR67XtNvGDzNV62vjoKBU7eE/ni5ad2bCIC0K7SvBA==
+sort-any@^1.2.3:
+  version "1.2.5"
+  resolved "https://registry.yarnpkg.com/sort-any/-/sort-any-1.2.5.tgz#fd2ae249b47d2b8339137ae3e0f5d03d88e4a39e"
+  integrity sha512-Dac7ma4LV1oS3vefzbaqxVVae7n4LcOP4SDY2tECBOJT2BoQFB9XC7IgC33P+gYsJH6HUhRNyQGdB/f2KNKW+g==
   dependencies:
     lodash "^4.17.21"
 
