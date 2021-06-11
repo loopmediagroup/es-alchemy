@@ -771,4 +771,33 @@ describe('Testing Rest Query', { useTmpDir: true, timeout: 10000 }, () => {
     const delResult = await index.rest.call('DELETE', `${indexName}@*`);
     expect(delResult.statusCode).to.equal(200);
   });
+
+  it('Testing prefix', async () => {
+    const offer1 = { id: `@${uuid4()}` };
+    const offer2 = { id: `#${uuid4()}` };
+    await upsert('offer', [offer1, offer2]);
+    await Promise.all([
+      {
+        filterBy: ['id', 'prefix', '@'],
+        result: [offer1]
+      },
+      {
+        filterBy: ['id', 'prefix', '#'],
+        result: [offer2]
+      },
+      {
+        filterBy: ['id', 'notprefix', '@'],
+        result: [offer2]
+      },
+      {
+        filterBy: ['id', 'notprefix', '#'],
+        result: [offer1]
+      }
+    ].map(async ({ filterBy, result }) => {
+      expect(await query('offer', {
+        toReturn: ['id'],
+        filterBy
+      }), `${filterBy}`).to.deep.equal(result);
+    }));
+  });
 });
