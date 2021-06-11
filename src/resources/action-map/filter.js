@@ -109,6 +109,24 @@ module.exports = {
       }
     }
   }),
+  prefix: (l, r) => ({
+    prefix: {
+      [l]: {
+        value: r
+      }
+    }
+  }),
+  notprefix: (l, r) => ({
+    bool: {
+      must_not: {
+        prefix: {
+          [l]: {
+            value: r
+          }
+        }
+      }
+    }
+  }),
   search: (l, r) => ({
     bool: {
       filter: (r.match(/(?:[a-zA-Z0-9À-ÖØ-öø-ÿ]|\b[-'’]\b)+/g) || [])
