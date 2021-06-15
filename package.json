@@ -41,7 +41,7 @@
   "homepage": "https://github.com/loopmediagroup/es-alchemy#readme",
   "devDependencies": {
     "@babel/cli": "7.14.5",
-    "@babel/core": "7.14.5",
+    "@babel/core": "7.14.6",
     "@babel/register": "7.14.5",
     "@blackflux/eslint-plugin-rules": "2.0.3",
     "@blackflux/robo-config-plugin": "5.1.0",
@@ -61,7 +61,7 @@
     "nyc": "15.1.0",
     "request": "2.88.2",
     "request-promise-native": "1.0.9",
-    "semantic-release": "17.4.3",
+    "semantic-release": "17.4.4",
     "uuid": "8.3.2"
   },
   "nyc": {
