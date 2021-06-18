@@ -117,6 +117,8 @@ describe('Testing Rest Query', { useTmpDir: true, timeout: 10000 }, () => {
           ...opts
         });
         const queryResult = await index.rest.data.query('offer', filter);
+        // eslint-disable-next-line no-underscore-dangle
+        expect(queryResult.hits.hits.every((hit) => typeof hit._source._id === 'string')).to.equal(true);
         const { next, previous } = index.data.page(queryResult, filter).page;
         return { next, previous };
       };
