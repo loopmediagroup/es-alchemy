@@ -83,6 +83,8 @@ module.exports = (call, idx, rels, specs, models, filter) => call('GET', idx, {
     // eslint-disable-next-line no-underscore-dangle
     const retainResult = objectFields.Retainer(filter._source);
     esResult.body.hits.hits.forEach((r) => {
+      // eslint-disable-next-line no-underscore-dangle,no-param-reassign
+      r._source._id = get(r, ['_source', '_id'], r._id);
       // eslint-disable-next-line no-underscore-dangle
       rewriterRemap(r._source);
       // eslint-disable-next-line no-underscore-dangle
