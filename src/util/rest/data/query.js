@@ -14,6 +14,8 @@ module.exports = (call, idx, rels, specs, models, filter) => call('GET', idx, {
     filterNew._source.push(...objectFields.getParents(filterNew._source).map((p) => `${p}.id`));
     // eslint-disable-next-line no-underscore-dangle
     filterNew._source = [...new Set(filterNew._source)].sort();
+    // eslint-disable-next-line no-underscore-dangle
+    filterNew._source = filterNew._source.filter((f) => f !== '_id');
     return filterNew;
   })(),
   endpoint: '_search'
@@ -84,7 +86,7 @@ module.exports = (call, idx, rels, specs, models, filter) => call('GET', idx, {
     const retainResult = objectFields.Retainer(filter._source);
     esResult.body.hits.hits.forEach((r) => {
       // eslint-disable-next-line no-underscore-dangle,no-param-reassign
-      r._source._id = get(r, ['_source', '_id'], r._id);
+      r._source._id = r._id;
       // eslint-disable-next-line no-underscore-dangle
       rewriterRemap(r._source);
       // eslint-disable-next-line no-underscore-dangle
