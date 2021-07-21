@@ -1,0 +1,7 @@
+{
+  "offer": {
+    "fields": {
+      "id": "uuid"
+    }
+  }
+}

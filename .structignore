@@ -1,2 +1,3 @@
 test/util/batch.spec.js
 test/util/lifecycle.spec.js
+test/resources/action-map/filter/prefix.spec.js

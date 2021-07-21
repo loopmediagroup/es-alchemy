@@ -1,0 +1,9 @@
+{
+  "model": "offer",
+  "fields": [
+    "id"
+  ],
+  "sources": [
+    ""
+  ]
+}
