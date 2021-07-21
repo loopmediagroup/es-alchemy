@@ -2,11 +2,10 @@ const path = require('path');
 const expect = require('chai').expect;
 const { v4: uuid4 } = require('uuid');
 const { describe } = require('node-tdd');
-const Index = require('../../../../src/index');
 const {
-  readDir,
-  registerAndCreateEntity,
-  removeEntity,
+  before: prefixBefore,
+  beforeEach: prefixBeforeEach,
+  afterEach: prefixAfterEach,
   upsert,
   query
 } = require('../../../helper-filter');
@@ -14,29 +13,20 @@ const {
 describe('Testing filter prefix', {
   useTmpDir: true
 }, () => {
-  let index;
-  let idx;
-  let mdl;
-
   before(() => {
-    const dir = readDir(path.join(__dirname, 'prefix'));
-    idx = dir.index;
-    mdl = dir.models;
+    prefixBefore(path.join(__dirname, 'prefix'));
   });
-
   beforeEach(async ({ dir }) => {
-    index = Index({ endpoint: process.env.elasticsearchEndpoint });
-    await registerAndCreateEntity(index, mdl, idx, dir);
+    await prefixBeforeEach({ dir });
   });
-
-  afterEach(async () => {
-    await removeEntity(index);
+  afterEach(() => {
+    prefixAfterEach();
   });
 
   it('Testing prefix', async () => {
     const entity1 = { id: `@${uuid4()}` };
     const entity2 = { id: `#${uuid4()}` };
-    await upsert(index, 'entity', [entity1, entity2]);
+    await upsert('entity', [entity1, entity2]);
     await Promise.all([
       {
         filterBy: ['id', 'prefix', '@'],
@@ -55,7 +45,7 @@ describe('Testing filter prefix', {
         result: [entity1]
       }
     ].map(async ({ filterBy, result }) => {
-      expect(await query(index, 'entity', {
+      expect(await query('entity', {
         toReturn: ['id'],
         filterBy
       }), `${filterBy}`).to.deep.equal(result);
