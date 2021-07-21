@@ -1,24 +1,8 @@
-const path = require('path');
 const expect = require('chai').expect;
 const { v4: uuid4 } = require('uuid');
-const { describe } = require('node-tdd');
-const {
-  beforeEach: prefixBeforeEach,
-  afterEach: prefixAfterEach,
-  upsert,
-  query
-} = require('../../../helper-filter');
+const { describe, upsert, query } = require('../../../helper-filter');
 
-describe('Testing filter prefix', {
-  useTmpDir: true
-}, () => {
-  beforeEach(async ({ dir }) => {
-    await prefixBeforeEach(path.join(__dirname, 'prefix'), dir);
-  });
-  afterEach(() => {
-    prefixAfterEach();
-  });
-
+describe('Testing filter prefix', () => {
   it('Testing prefix', async () => {
     const entity1 = { id: `@${uuid4()}` };
     const entity2 = { id: `#${uuid4()}` };

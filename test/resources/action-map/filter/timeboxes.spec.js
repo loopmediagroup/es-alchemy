@@ -1,24 +1,8 @@
-const path = require('path');
 const expect = require('chai').expect;
 const { v4: uuid4 } = require('uuid');
-const { describe } = require('node-tdd');
-const {
-  beforeEach: timeboxesBeforeEach,
-  afterEach: timeboxesAfterEach,
-  upsert,
-  query
-} = require('../../../helper-filter');
+const { describe, upsert, query } = require('../../../helper-filter');
 
-describe('Testing filter timeboxes', {
-  useTmpDir: true
-}, () => {
-  beforeEach(async ({ dir }) => {
-    await timeboxesBeforeEach(path.join(__dirname, 'timeboxes'), dir);
-  });
-  afterEach(() => {
-    timeboxesAfterEach();
-  });
-
+describe('Testing filter timeboxes', () => {
   it('Testing timeboxes', async () => {
     const entity1 = {
       id: `@${uuid4()}`,
