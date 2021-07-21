@@ -8,19 +8,16 @@ let index;
 let idx;
 let mdls;
 
-module.exports.before = (dir) => {
+module.exports.beforeEach = async (dir, tmpDir) => {
   idx = sfs.smartRead(path.join(dir, 'index.json'));
   mdls = sfs.smartRead(path.join(dir, 'models.json'));
-};
-
-module.exports.beforeEach = async ({ dir }) => {
   index = Index({ endpoint: process.env.elasticsearchEndpoint });
   index.model.register('entity', mdls.entity);
   index.index.register('entity', idx);
   assert(await index.rest.mapping.create('entity') === true, 'Entity index exists');
   assert(await index.rest.alias.update('entity') === true, 'Entity alias exists');
-  expect(await index.index.versions.persist(dir)).to.equal(true);
-  expect(await index.index.versions.load(dir)).to.equal(undefined);
+  expect(await index.index.versions.persist(tmpDir)).to.equal(true);
+  expect(await index.index.versions.load(tmpDir)).to.equal(undefined);
 };
 
 module.exports.afterEach = async () => {

@@ -1,0 +1,10 @@
+{
+  "model": "entity",
+  "fields": [
+    "id",
+    "timeboxes"
+  ],
+  "sources": [
+    ""
+  ]
+}

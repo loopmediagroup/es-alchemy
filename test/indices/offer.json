@@ -4,8 +4,7 @@
     "id",
     "headline",
     "meta",
-    "flags",
-    "timeboxes"
+    "flags"
   ],
   "sources": [
     ""

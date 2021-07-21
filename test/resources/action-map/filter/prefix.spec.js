@@ -3,7 +3,6 @@ const expect = require('chai').expect;
 const { v4: uuid4 } = require('uuid');
 const { describe } = require('node-tdd');
 const {
-  before: prefixBefore,
   beforeEach: prefixBeforeEach,
   afterEach: prefixAfterEach,
   upsert,
@@ -13,11 +12,8 @@ const {
 describe('Testing filter prefix', {
   useTmpDir: true
 }, () => {
-  before(() => {
-    prefixBefore(path.join(__dirname, 'prefix'));
-  });
   beforeEach(async ({ dir }) => {
-    await prefixBeforeEach({ dir });
+    await prefixBeforeEach(path.join(__dirname, 'prefix'), dir);
   });
   afterEach(() => {
     prefixAfterEach();
