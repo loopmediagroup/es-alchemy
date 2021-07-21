@@ -3,6 +3,7 @@
     "id": "uuid",
     "headline": "string",
     "meta": "object",
-    "flags": "keyword[]"
+    "flags": "keyword[]",
+    "timeboxes": "keyword[]"
   }
 }

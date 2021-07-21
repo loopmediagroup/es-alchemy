@@ -26,11 +26,12 @@ describe('Testing Rest Query', { useTmpDir: true, timeout: 10000 }, () => {
   });
 
   const upsert = async (model, models) => {
-    expect(await index.rest.data.update(models.map((o) => ({
+    const r = await index.rest.data.update(models.map((o) => ({
       idx: model,
       action: 'update',
       doc: index.data.remap(model, o)
-    }))), `${model} update failed`).to.equal(true);
+    })));
+    expect(r, `${model} update failed`).to.equal(true);
     expect(await index.rest.data.refresh(model), `${model} refresh failed`).to.equal(true);
   };
 
@@ -800,6 +801,37 @@ describe('Testing Rest Query', { useTmpDir: true, timeout: 10000 }, () => {
         toReturn: ['id'],
         filterBy
       }), `${filterBy}`).to.deep.equal(result);
+    }));
+  });
+
+  it('Testing timeboxes', async () => {
+    const offer1 = {
+      id: `@${uuid4()}`,
+      timeboxes: ['live|2021-07-20T17:53:39.700Z|2021-07-27T17:53:39.700Z|America/Vancouver|012']
+    };
+    const offer2 = {
+      id: `#${uuid4()}`,
+      timeboxes: ['discoverable|2021-07-20T17:53:39.700Z|2021-07-27T17:53:39.700Z|America/Vancouver|012']
+    };
+    await upsert('offer', [offer1, offer2]);
+    await Promise.all([
+      {
+        filterBy: ['timeboxes', 'timeboxes', 'live', '2021-07-21T18:25:10.025Z'],
+        result: [offer1]
+      },
+      {
+        filterBy: ['timeboxes', 'timeboxes', 'discoverable', '2021-07-21T18:25:10.025Z'],
+        result: [offer2]
+      }
+    ].map(async ({ filterBy, result }) => {
+      const r = await query('offer', {
+        toReturn: [
+          'id',
+          'timeboxes'
+        ],
+        filterBy
+      });
+      expect(r, `${filterBy}`).to.deep.equal(result);
     }));
   });
 });
