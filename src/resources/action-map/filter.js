@@ -179,8 +179,8 @@ for (int i = 0; i < doc[params.field].length; i++) {
   String[] meta = timebox.splitOnToken('|');
   if (
     (meta[0] == params.type)
-    && (meta[1].compareTo(params.nowIso) < 0)
-    && (meta[2].compareTo(params.nowIso) > 0)
+    && (meta[1].compareTo(params.nowIso) <= 0)
+    && (meta[2].compareTo(params.nowIso) >= 0)
     && meta[4].indexOf(
       Integer.toString(Instant.ofEpochMilli(params.nowMs).atZone(ZoneId.of(meta[3])).dayOfWeek.getValue() % 7)
     ) !== -1
