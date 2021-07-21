@@ -807,11 +807,11 @@ describe('Testing Rest Query', { useTmpDir: true, timeout: 10000 }, () => {
   it('Testing timeboxes', async () => {
     const offer1 = {
       id: `@${uuid4()}`,
-      timeboxes: ['live|2021-07-20T17:53:39.700Z|2021-07-27T17:53:39.700Z|America/Vancouver|012']
+      timeboxes: ['live|2021-07-20T17:53:39.700Z|2021-07-27T17:53:39.700Z|America/Vancouver|0123']
     };
     const offer2 = {
       id: `#${uuid4()}`,
-      timeboxes: ['discoverable|2021-07-20T17:53:39.700Z|2021-07-27T17:53:39.700Z|America/Vancouver|012']
+      timeboxes: ['discoverable|2021-07-20T17:53:39.700Z|2021-07-27T17:53:39.700Z|America/Vancouver|0123']
     };
     await upsert('offer', [offer1, offer2]);
     await Promise.all([

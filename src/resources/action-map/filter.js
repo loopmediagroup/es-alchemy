@@ -182,7 +182,7 @@ for (int i = 0; i < doc[params.field].length; i++) {
     && (meta[1].compareTo(params.nowIso) < 0)
     && (meta[2].compareTo(params.nowIso) > 0)
     && meta[4].indexOf(
-      Integer.toString(Instant.ofEpochMilli(params.nowMs).atZone(ZoneId.of(meta[3])).dayOfWeek.getValue() - 1)
+      Integer.toString(Instant.ofEpochMilli(params.nowMs).atZone(ZoneId.of(meta[3])).dayOfWeek.getValue() % 7)
     ) !== -1
   ) {
     return true;
