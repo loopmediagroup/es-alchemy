@@ -1,0 +1,9 @@
+{
+  "model": "entity",
+  "fields": [
+    "id"
+  ],
+  "sources": [
+    ""
+  ]
+}
