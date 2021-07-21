@@ -1,5 +1,5 @@
 {
-  "offer": {
+  "entity": {
     "fields": {
       "id": "uuid"
     }
