@@ -6,8 +6,6 @@ const { describe } = require('node-tdd');
 const Index = require('../src/index');
 
 let index;
-let idx;
-let mdls;
 
 const getCallerFile = () => {
   const originalFunc = Error.prepareStackTrace;
@@ -29,8 +27,8 @@ const getCallerFile = () => {
 
 module.exports.describe = (name, fn) => {
   const testDir = getCallerFile().replace(/\.spec\.js$/, '');
-  idx = sfs.smartRead(path.join(testDir, 'index.json'));
-  mdls = sfs.smartRead(path.join(testDir, 'models.json'));
+  const idx = sfs.smartRead(path.join(testDir, 'index.json'));
+  const mdls = sfs.smartRead(path.join(testDir, 'models.json'));
   const idxName = idx.model;
 
   describe(name, {
@@ -38,7 +36,9 @@ module.exports.describe = (name, fn) => {
   }, () => {
     beforeEach(async ({ dir }) => {
       index = Index({ endpoint: process.env.elasticsearchEndpoint });
-      index.model.register(idxName, mdls.entity);
+      Object.entries(mdls).forEach(([k, v]) => {
+        index.model.register(k, v);
+      });
       index.index.register(idxName, idx);
       assert(await index.rest.mapping.create(idxName) === true, `${idxName} index exists`);
       assert(await index.rest.alias.update(idxName) === true, `${idxName} alias exists`);
