@@ -167,5 +167,12 @@ module.exports = {
         }
       }
     }
+  }),
+  script: (field, script) => ({
+    bool: {
+      filter: {
+        script: { script }
+      }
+    }
   })
 };

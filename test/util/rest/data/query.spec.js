@@ -26,11 +26,12 @@ describe('Testing Rest Query', { useTmpDir: true, timeout: 10000 }, () => {
   });
 
   const upsert = async (model, models) => {
-    expect(await index.rest.data.update(models.map((o) => ({
+    const r = await index.rest.data.update(models.map((o) => ({
       idx: model,
       action: 'update',
       doc: index.data.remap(model, o)
-    }))), `${model} update failed`).to.equal(true);
+    })));
+    expect(r, `${model} update failed`).to.equal(true);
     expect(await index.rest.data.refresh(model), `${model} refresh failed`).to.equal(true);
   };
 
@@ -772,34 +773,5 @@ describe('Testing Rest Query', { useTmpDir: true, timeout: 10000 }, () => {
     // cleanup
     const delResult = await index.rest.call('DELETE', `${indexName}@*`);
     expect(delResult.statusCode).to.equal(200);
-  });
-
-  it('Testing prefix', async () => {
-    const offer1 = { id: `@${uuid4()}` };
-    const offer2 = { id: `#${uuid4()}` };
-    await upsert('offer', [offer1, offer2]);
-    await Promise.all([
-      {
-        filterBy: ['id', 'prefix', '@'],
-        result: [offer1]
-      },
-      {
-        filterBy: ['id', 'prefix', '#'],
-        result: [offer2]
-      },
-      {
-        filterBy: ['id', 'notprefix', '@'],
-        result: [offer2]
-      },
-      {
-        filterBy: ['id', 'notprefix', '#'],
-        result: [offer1]
-      }
-    ].map(async ({ filterBy, result }) => {
-      expect(await query('offer', {
-        toReturn: ['id'],
-        filterBy
-      }), `${filterBy}`).to.deep.equal(result);
-    }));
   });
 });
