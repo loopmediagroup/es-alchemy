@@ -2,13 +2,12 @@ const expect = require('chai').expect;
 const { v4: uuid4 } = require('uuid');
 const { describe, upsert, query } = require('../../../helper-filter');
 
-const getTimeline = ({
-  type = 'live',
+const getTimeline = (type, {
   startDate = '2021-07-20T00:00:00.000Z',
   endDate = '2021-07-27T00:00:00.000Z',
   timezones = ['UTC'],
   weekDays = [0, 1, 2, 3, 4, 5, 6]
-}) => ({
+} = {}) => ({
   id: uuid4(),
   type,
   startDate,
@@ -41,7 +40,7 @@ const exec = async (entity, filterBy, rtn) => {
 
 describe('Testing script', () => {
   it('Testing filter by live (script)', async () => {
-    const entity = await genEntity([getTimeline({ type: 'live' })]);
+    const entity = await genEntity([getTimeline('live')]);
     const filterBy = {
       and: [
         ['timelines.id', 'script', {
@@ -55,8 +54,8 @@ describe('Testing script', () => {
 
   it('Testing filter by live (script) and discoverable (non script)', async () => {
     const entity = await genEntity([
-      getTimeline({ type: 'live' }),
-      getTimeline({ type: 'discoverable' })
+      getTimeline('live'),
+      getTimeline('discoverable')
     ]);
     const filterBy = {
       and: [
@@ -72,8 +71,8 @@ describe('Testing script', () => {
 
   it('Testing complex script', async () => {
     const entity = await genEntity([
-      getTimeline({ type: 't1', weekDays: [5] }),
-      getTimeline({ type: 't2', weekDays: [0, 1, 2, 3, 4, 6] })
+      getTimeline('t1', { weekDays: [5] }),
+      getTimeline('t2', { weekDays: [0, 1, 2, 3, 4, 6] })
     ]);
     const now = '2021-07-23T12:00:00.000Z';
     const genFilterBy = (type) => ({
