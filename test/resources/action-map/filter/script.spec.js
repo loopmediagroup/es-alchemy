@@ -69,4 +69,38 @@ describe('Testing script', () => {
     };
     await exec(entity, filterBy, false);
   });
+
+  it('Testing complex script', async () => {
+    const entity = await genEntity([
+      getTimeline({ type: 't1', weekDays: [5] }),
+      getTimeline({ type: 't2', weekDays: [0, 1, 2, 3, 4, 6] })
+    ]);
+    const now = '2021-07-23T12:00:00.000Z';
+    const genFilterBy = (type) => ({
+      and: [
+        ['timelines.type', '==', type],
+        ['timelines.startDate', '<=', now],
+        ['timelines.endDate', '>=', now],
+        ['timelines.id', 'script', {
+          source: `
+for (int i = 0; i < doc['timelines.timezones'].length; i++) {
+  String timezone = doc['timelines.timezones'][i];
+  if (doc['timelines.weekDays'].contains(
+    Instant.ofEpochMilli(params.nowMs).atZone(ZoneId.of(timezone)).dayOfWeek.getValue() % 7L
+  )) {
+    return true;
+  }
+}
+return false;
+`,
+          params: {
+            nowMs: new Date(now) / 1
+          },
+          lang: 'painless'
+        }]
+      ]
+    });
+    await exec(entity, genFilterBy('t1'), true);
+    await exec(entity, genFilterBy('t2'), false);
+  });
 });
