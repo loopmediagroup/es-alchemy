@@ -168,37 +168,10 @@ module.exports = {
       }
     }
   }),
-  timeboxes: (l, type, ts) => ({
+  script: (field, script) => ({
     bool: {
       filter: {
-        script: {
-          script: {
-            source: `
-for (int i = 0; i < doc[params.field].length; i++) {
-  String timebox = doc[params.field][i];
-  String[] meta = timebox.splitOnToken('|');
-  if (
-    (meta[0] == params.type)
-    && (meta[1].compareTo(params.nowIso) <= 0)
-    && (meta[2].compareTo(params.nowIso) >= 0)
-    && meta[4].indexOf(
-      Integer.toString(Instant.ofEpochMilli(params.nowMs).atZone(ZoneId.of(meta[3])).dayOfWeek.getValue() % 7)
-    ) !== -1
-  ) {
-    return true;
-  }
-}
-return false;
-`,
-            lang: 'painless',
-            params: {
-              field: l,
-              type,
-              nowMs: new Date(ts) / 1,
-              nowIso: ts
-            }
-          }
-        }
+        script: { script }
       }
     }
   })

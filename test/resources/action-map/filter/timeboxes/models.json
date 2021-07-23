@@ -1,8 +1,0 @@
-{
-  "entity": {
-    "fields": {
-      "id": "uuid",
-      "timeboxes": "keyword[]"
-    }
-  }
-}
