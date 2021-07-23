@@ -1,0 +1,25 @@
+{
+  "model": "entity",
+  "fields": [
+    "id"
+  ],
+  "sources": [
+    ""
+  ],
+  "nested": {
+    "timelines": {
+      "model": "timeline[]",
+      "fields": [
+        "id",
+        "type",
+        "startDate",
+        "endDate",
+        "timezones",
+        "weekDays"
+      ],
+      "sources": [
+        "timelines"
+      ]
+    }
+  }
+}

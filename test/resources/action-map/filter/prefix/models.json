@@ -1,0 +1,7 @@
+{
+  "entity": {
+    "fields": {
+      "id": "uuid"
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "entity": {
+    "fields": {
+      "id": "uuid"
+    }
+  },
+  "timeline": {
+    "fields": {
+      "id": "uuid",
+      "type": "keyword",
+      "startDate": "keyword",
+      "endDate": "keyword",
+      "timezones": "keyword[]",
+      "weekDays": "integer[]"
+    }
+  }
+}
