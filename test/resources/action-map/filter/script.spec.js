@@ -82,10 +82,9 @@ describe('Testing script', () => {
         ['timelines.endDate', '>=', now],
         ['timelines.id', 'script', {
           source: `
-for (int i = 0; i < doc['timelines.timezones'].length; i++) {
-  String timezone = doc['timelines.timezones'][i];
-  if (doc['timelines.weekDays'].contains(
-    Instant.ofEpochMilli(params.nowMs).atZone(ZoneId.of(timezone)).dayOfWeek.getValue() % 7L
+for (tz in doc[params.timezones]) {
+  if (doc[params.weekDays].contains(
+    Instant.ofEpochMilli(params.nowMs).atZone(ZoneId.of(tz)).dayOfWeek.getValue() % 7L
   )) {
     return true;
   }
@@ -93,7 +92,9 @@ for (int i = 0; i < doc['timelines.timezones'].length; i++) {
 return false;
 `,
           params: {
-            nowMs: new Date(now) / 1
+            nowMs: new Date(now) / 1,
+            timezones: 'timelines.timezones',
+            weekDays: 'timelines.weekDays'
           },
           lang: 'painless'
         }]
