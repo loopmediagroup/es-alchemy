@@ -36,8 +36,6 @@ module.exports = (call, idx, allowedFields, fields, opts) => {
       if (r.statusCode !== 200) {
         throw r.body;
       }
-      console.log(body.aggs.uniques.composite);
-      console.log(r.body);
       const { uniques } = r.body.aggregations;
       const result = {
         uniques: uniques.buckets.map((e) => (

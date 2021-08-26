@@ -42,6 +42,8 @@ describe('Testing uniques', { useTmpDir: true }, () => {
     ]);
     expect(r1.uniques).to.deep.equal([
       ['Brisbane', 'a'],
+      ['Brisbane', 'b'],
+      ['Brisbane', 'c'],
       ['Sydney', 'a']
     ]);
   });
