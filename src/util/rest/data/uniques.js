@@ -7,11 +7,13 @@ module.exports = (call, idx, allowedFields, fields, opts) => {
   Joi.assert(opts, Joi.object().keys({
     filterBy: Joi.object().optional(),
     limit: Joi.number().integer().min(1).optional(),
-    cursor: Joi.string().optional()
+    cursor: Joi.string().optional(),
+    count: Joi.boolean().optional()
   }).nand('limit', 'cursor'));
   const cursorPayload = opts.cursor === undefined ? null : fromCursor(opts.cursor);
   const after = get(cursorPayload, 'searchAfter', null);
   const limit = get(cursorPayload, 'limit', get(opts, 'limit', 20));
+  const count = opts.count === undefined ? false : opts.count;
   const body = {
     size: 0,
     aggs: {
@@ -38,11 +40,12 @@ module.exports = (call, idx, allowedFields, fields, opts) => {
       }
       const { uniques } = r.body.aggregations;
       const result = {
-        uniques: uniques.buckets.map((e) => (
-          Array.isArray(fields)
+        uniques: uniques.buckets.map((e) => {
+          const value = Array.isArray(fields)
             ? fields.map((field) => e.key[field])
-            : e.key[fields]
-        ))
+            : e.key[fields];
+          return count ? [value, e.doc_count] : value;
+        })
       };
       if (uniques.buckets.length === limit) {
         result.cursor = toCursor({
