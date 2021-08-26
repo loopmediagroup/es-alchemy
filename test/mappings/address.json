@@ -14,7 +14,7 @@
   },
   "mappings": {
     "_meta": {
-      "hash": "3e737db4f9999f34316b4683e981500b9ec0eeba"
+      "hash": "1e828e9acf686cccdcf433488398ca26e8ba43e8"
     },
     "dynamic": "false",
     "properties": {
@@ -29,6 +29,15 @@
         "type": "date"
       },
       "street": {
+        "analyzer": "folding",
+        "fields": {
+          "raw": {
+            "type": "keyword"
+          }
+        },
+        "type": "text"
+      },
+      "city": {
         "analyzer": "folding",
         "fields": {
           "raw": {

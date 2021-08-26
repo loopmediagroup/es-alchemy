@@ -6,6 +6,7 @@ const { registerEntitiesForIndex } = require('../../../helper');
 
 describe('Testing uniques', { useTmpDir: true }, () => {
   let index;
+  let createAddress;
 
   beforeEach(async ({ dir }) => {
     index = Index({ endpoint: process.env.elasticsearchEndpoint });
@@ -14,10 +15,10 @@ describe('Testing uniques', { useTmpDir: true }, () => {
     expect(await index.index.versions.load(dir)).to.equal(undefined);
     expect(await index.rest.mapping.create('address')).to.equal(true);
     expect(await index.rest.alias.update('address')).to.equal(true);
-    const createAddress = (street) => index.rest.data.update([{
+    createAddress = (street, city = 'Brisbane') => index.rest.data.update([{
       idx: 'address',
       action: 'update',
-      doc: index.data.remap('address', { id: uuid4(), street })
+      doc: index.data.remap('address', { id: uuid4(), street, city })
     }]);
     expect(await createAddress('a')).to.equal(true);
     expect(await createAddress('a')).to.equal(true);
@@ -30,6 +31,21 @@ describe('Testing uniques', { useTmpDir: true }, () => {
 
   afterEach(async () => {
     expect(await index.rest.mapping.delete('address')).to.equal(true);
+  });
+
+  it('Testing multiple uniques', async () => {
+    expect(await createAddress('a', 'Sydney')).to.equal(true);
+    expect(await index.rest.data.refresh('address')).to.equal(true);
+    const r1 = await index.rest.data.uniques('address', [
+      'city.raw',
+      'street.raw'
+    ]);
+    expect(r1.uniques).to.deep.equal([
+      ['Brisbane', 'a'],
+      ['Brisbane', 'b'],
+      ['Brisbane', 'c'],
+      ['Sydney', 'a']
+    ]);
   });
 
   it('Test single item paging', async () => {
