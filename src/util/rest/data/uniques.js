@@ -3,15 +3,17 @@ const Joi = require('joi-strict');
 const { fromCursor, toCursor } = require('../../paging');
 const { buildQuery } = require('../../filter');
 
-module.exports = (call, idx, allowedFields, field, opts) => {
+module.exports = (call, idx, allowedFields, fields, opts) => {
   Joi.assert(opts, Joi.object().keys({
     filterBy: Joi.object().optional(),
     limit: Joi.number().integer().min(1).optional(),
-    cursor: Joi.string().optional()
+    cursor: Joi.string().optional(),
+    count: Joi.boolean().optional()
   }).nand('limit', 'cursor'));
   const cursorPayload = opts.cursor === undefined ? null : fromCursor(opts.cursor);
   const after = get(cursorPayload, 'searchAfter', null);
   const limit = get(cursorPayload, 'limit', get(opts, 'limit', 20));
+  const count = opts.count === undefined ? false : opts.count;
   const body = {
     size: 0,
     aggs: {
@@ -19,9 +21,8 @@ module.exports = (call, idx, allowedFields, field, opts) => {
         composite: {
           ...(after === null ? {} : { after }),
           size: limit,
-          sources: [
-            { [field]: { terms: { field } } }
-          ]
+          sources: (Array.isArray(fields) ? fields : [fields])
+            .map((field) => ({ [field]: { terms: { field } } }))
         }
       }
     }
@@ -39,7 +40,12 @@ module.exports = (call, idx, allowedFields, field, opts) => {
       }
       const { uniques } = r.body.aggregations;
       const result = {
-        uniques: uniques.buckets.map((e) => e.key[field])
+        uniques: uniques.buckets.map((e) => {
+          const value = Array.isArray(fields)
+            ? fields.map((field) => e.key[field])
+            : e.key[fields];
+          return count ? [value, e.doc_count] : value;
+        })
       };
       if (uniques.buckets.length === limit) {
         result.cursor = toCursor({

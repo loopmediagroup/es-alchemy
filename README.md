@@ -409,7 +409,7 @@ Interacting with the rest api of Elasticsearch
 - `data.signature(index: String, id: String)` - get signature as `${_seq_no}_${_primary_term}_${idx}@${version}` in alias for document or `null_${idx}@${version}` if document does not exist
 - `data.stats()` - returns all the statistics for the nodes in a cluster like: indices, cpu usage and other meta
 - `data.synced(index: String)` - returns true if all local index version exists on remote and have the same document count
-- `data.uniques(index: String, field: String, opts = { filterBy = {}, limit = 20, cursor = null })` - get unique values from index for field, using filter
+- `data.uniques(index: String, fields: String[] || String, opts = { filterBy = {}, limit = 20, cursor = null, count = boolean })` - get unique values from index for field, using filter. When count true, the counts per unique are returned
 - `data.update(options: Object)` - update or delete documents in Elasticsearch (all index versions)
 - `data.version(index: String, id: String)` - get version number in alias for document or null if document does not exist
 

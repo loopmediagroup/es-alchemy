@@ -27,6 +27,17 @@
         }
       }
     },
+    {
+      "name": "city",
+      "overwrite": {
+        "analyzer": "folding",
+        "fields": {
+          "raw": {
+            "type": "keyword"
+          }
+        }
+      }
+    },
     "created"
   ]
 }
