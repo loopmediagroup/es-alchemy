@@ -48,6 +48,27 @@ describe('Testing uniques', { useTmpDir: true }, () => {
     ]);
   });
 
+  it('Testing multiple uniques with count', async () => {
+    expect(await createAddress('a', 'Sydney')).to.equal(true);
+    expect(await index.rest.data.refresh('address')).to.equal(true);
+    const r1 = await index.rest.data.uniques('address', [
+      'city.raw',
+      'street.raw'
+    ], { count: true });
+    expect(r1.uniques).to.deep.equal([
+      [['Brisbane', 'a'], 3],
+      [['Brisbane', 'b'], 2],
+      [['Brisbane', 'c'], 1],
+      [['Sydney', 'a'], 1]
+    ]);
+  });
+
+  it('Test single page with count', async () => {
+    const r1 = await index.rest.data.uniques('address', 'street.raw', { count: true });
+    expect(r1.uniques).to.deep.equal([['a', 3], ['b', 2], ['c', 1]]);
+    expect('cursor' in r1).to.equal(false);
+  });
+
   it('Test single item paging', async () => {
     const r1 = await index.rest.data.uniques('address', 'street.raw', { limit: 1 });
     expect(r1.uniques).to.deep.equal(['a']);
