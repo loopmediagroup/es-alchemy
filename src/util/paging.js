@@ -15,17 +15,19 @@ const toCursor = ({
 } = {}) => objectEncode({ limit, offset, searchAfter });
 module.exports.toCursor = toCursor;
 
-module.exports.buildPageObject = (hits, filter) => {
-  const countReturned = hits.hits.length;
-  const countTotal = hits.total.value;
-  const searchAfter = filter.search_after;
-  const limit = filter.size;
-  const offset = filter.from;
+const generatePage = ({
+  hits = null,
+  countReturned,
+  countTotal,
+  searchAfter,
+  limit,
+  offset
+}) => {
   const noSearchAfter = !Array.isArray(searchAfter) || searchAfter.length === 0;
   const scroll = offset === 0 && countReturned === limit ? {
     limit,
     offset,
-    searchAfter: hits.hits[hits.hits.length - 1].sort
+    ...(hits === null ? {} : { searchAfter: hits.hits[hits.hits.length - 1].sort })
   } : null;
   if (scroll !== null) {
     scroll.cursor = toCursor(scroll);
@@ -55,3 +57,13 @@ module.exports.buildPageObject = (hits, filter) => {
     size: limit
   };
 };
+module.exports.generatePage = generatePage;
+
+module.exports.buildPageObject = (hits, filter) => generatePage({
+  hits,
+  countReturned: hits.hits.length,
+  countTotal: hits.total.value,
+  searchAfter: filter.search_after,
+  limit: filter.size,
+  offset: filter.from
+});
