@@ -27,7 +27,7 @@ const generatePage = ({
   const scroll = offset === 0 && countReturned === limit ? {
     limit,
     offset,
-    searchAfter: hits.hits[hits.hits.length - 1].sort
+    ...(hits === null ? {} : { searchAfter: hits.hits[hits.hits.length - 1].sort })
   } : null;
   if (scroll !== null) {
     scroll.cursor = toCursor(scroll);
