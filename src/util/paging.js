@@ -59,18 +59,11 @@ const generatePage = ({
 };
 module.exports.generatePage = generatePage;
 
-module.exports.buildPageObject = (hits, filter) => {
-  const countReturned = hits.hits.length;
-  const countTotal = hits.total.value;
-  const searchAfter = filter.search_after;
-  const limit = filter.size;
-  const offset = filter.from;
-  return generatePage({
-    hits,
-    countReturned,
-    countTotal,
-    searchAfter,
-    limit,
-    offset
-  });
-};
+module.exports.buildPageObject = (hits, filter) => generatePage({
+  hits,
+  countReturned: hits.hits.length,
+  countTotal: hits.total.value,
+  searchAfter: filter.search_after,
+  limit: filter.size,
+  offset: filter.from
+});
