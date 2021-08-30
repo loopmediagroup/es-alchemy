@@ -16,7 +16,7 @@ const toCursor = ({
 module.exports.toCursor = toCursor;
 
 const generatePage = ({
-  hits,
+  hits = null,
   countReturned,
   countTotal,
   searchAfter,
