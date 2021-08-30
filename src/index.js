@@ -7,6 +7,7 @@ const data = require('./util/data');
 const query = require('./util/query');
 const Versions = require('./util/versions');
 const rest = require('./util/rest/rest');
+const { generatePage } = require('./util/paging');
 const loadJsonInDir = require('./util/load-json-in-dir');
 
 module.exports = (options) => {
@@ -31,6 +32,9 @@ module.exports = (options) => {
   };
 
   return {
+    paging: {
+      generatePage
+    },
     model: {
       register: (name, specs) => registerModel(name, specs)
     },
