@@ -15,12 +15,14 @@ const toCursor = ({
 } = {}) => objectEncode({ limit, offset, searchAfter });
 module.exports.toCursor = toCursor;
 
-module.exports.buildPageObject = (hits, filter) => {
-  const countReturned = hits.hits.length;
-  const countTotal = hits.total.value;
-  const searchAfter = filter.search_after;
-  const limit = filter.size;
-  const offset = filter.from;
+const generatePage = ({
+  hits,
+  countReturned,
+  countTotal,
+  searchAfter,
+  limit,
+  offset
+}) => {
   const noSearchAfter = !Array.isArray(searchAfter) || searchAfter.length === 0;
   const scroll = offset === 0 && countReturned === limit ? {
     limit,
@@ -54,4 +56,21 @@ module.exports.buildPageObject = (hits, filter) => {
     } : null,
     size: limit
   };
+};
+module.exports.generatePage = generatePage;
+
+module.exports.buildPageObject = (hits, filter) => {
+  const countReturned = hits.hits.length;
+  const countTotal = hits.total.value;
+  const searchAfter = filter.search_after;
+  const limit = filter.size;
+  const offset = filter.from;
+  return generatePage({
+    hits,
+    countReturned,
+    countTotal,
+    searchAfter,
+    limit,
+    offset
+  });
 };
