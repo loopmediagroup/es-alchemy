@@ -402,7 +402,7 @@ Interacting with the rest api of Elasticsearch
 - `mapping.prune(index: String)` - Removes index versions from Elasticsearch that are not tracked (unknown)
 - `mapping.pruned(index: String)` - returns true if all remote versions exist locally
 - `mapping.recreate(name: String)` - recreate mapping on Elasticsearch (deletes _all_ versions and recreates current version)
-- `data.count(name: String)` - get number of indexed elements from alias
+- `data.count(name: String, filter: Object = null)` - get number of indexed elements from alias
 - `data.exists(index: String, id: String)` - check if document exists in any index version
 - `data.query(name: String, filter: Object, options: Object)` - query for data in Elasticsearch against alias. Returns raw result body from elasticsearch.
 - `data.refresh(name: String)` - refresh Elasticsearch index, useful e.g. when testing (all versions)
