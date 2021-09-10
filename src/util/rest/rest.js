@@ -92,7 +92,7 @@ module.exports = (getFields, getRels, getMapping, getSpecs, models, versions, op
       recreate: (idx) => mappingRecreate(call, idx, getMapping(idx))
     },
     data: {
-      count: (idx) => dataCount(call, idx),
+      count: (idx, filter) => dataCount(call, idx, filter),
       exists: (idx, id) => dataExists(call, idx, id),
       query: (idx, filter) => dataQuery(call, idx, getRels(idx), getSpecs(idx), models, filter),
       refresh: (idx) => dataRefresh(call, idx),
