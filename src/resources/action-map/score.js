@@ -1,5 +1,6 @@
 const assert = require('assert');
 const { buildQuery } = require('../../util/filter');
+const extractPrefix = require('../../util/extract-prefix');
 
 const remap = `
 double remap(def value, def map) {
@@ -22,7 +23,7 @@ const scoreMapper = (map) => {
 
 const buildNestedQuery = (filter, ctx, target) => (filter === null
   ? { match_all: {} }
-  : buildQuery(filter, ctx.allowedFields, target.substring(0, target.lastIndexOf('.'))));
+  : buildQuery(filter, ctx.allowedFields, extractPrefix(target, ctx.allowedFields)));
 
 module.exports = {
   random: ([target, seed, map, filter = null], ctx) => ({
