@@ -1,0 +1,9 @@
+{
+  "person": {
+    "fields": {
+      "id": "uuid",
+      "name": "string",
+      "surname": "string"
+    }
+  }
+}
