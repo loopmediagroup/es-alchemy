@@ -1,123 +1,172 @@
-const { expect } = require('chai');
-const { describe } = require('node-tdd');
+const expect = require('chai').expect;
 const { v4: uuid4 } = require('uuid');
-const Index = require('../../../../src/index');
-const { registerEntitiesForIndex } = require('../../../helper');
+const { describe, upsert } = require('../../../helper-filter');
 
-describe('Testing uniques', { useTmpDir: true }, () => {
-  let index;
-  let createAddress;
+const setupData = async () => {
+  await upsert('person', [
+    { id: uuid4(), name: 'a', surname: 'x' },
+    { id: uuid4(), name: 'a', surname: 'x' },
+    { id: uuid4(), name: 'b', surname: 'x' },
+    { id: uuid4(), name: 'c', surname: 'x' },
+    { id: uuid4(), name: 'b', surname: 'x' },
+    { id: uuid4(), name: 'a', surname: 'x' },
+    { id: uuid4(), name: 'a', surname: 'y' }
+  ]);
+};
 
-  beforeEach(async ({ dir }) => {
-    index = Index({ endpoint: process.env.elasticsearchEndpoint });
-    registerEntitiesForIndex(index);
-    expect(await index.index.versions.persist(dir)).to.equal(true);
-    expect(await index.index.versions.load(dir)).to.equal(undefined);
-    expect(await index.rest.mapping.create('address')).to.equal(true);
-    expect(await index.rest.alias.update('address')).to.equal(true);
-    createAddress = (street, city = 'Brisbane') => index.rest.data.update([{
-      idx: 'address',
-      action: 'update',
-      doc: index.data.remap('address', { id: uuid4(), street, city })
-    }]);
-    expect(await createAddress('a')).to.equal(true);
-    expect(await createAddress('a')).to.equal(true);
-    expect(await createAddress('b')).to.equal(true);
-    expect(await createAddress('c')).to.equal(true);
-    expect(await createAddress('b')).to.equal(true);
-    expect(await createAddress('a')).to.equal(true);
-    expect(await index.rest.data.refresh('address')).to.equal(true);
+describe('Testing uniques()', (index) => {
+  it('Testing simple base case', async () => {
+    const person1 = { id: uuid4(), name: 'Lars' };
+    const person2 = { id: uuid4(), name: 'Lars' };
+    await upsert('person', [person1, person2]);
+    const r1 = await index().rest.data.uniques('person', 'name.raw');
+    expect(r1.uniques).to.deep.equal(['Lars']);
   });
 
-  afterEach(async () => {
-    expect(await index.rest.mapping.delete('address')).to.equal(true);
+  it('Testing nested', async () => {
+    const person1 = {
+      id: uuid4(),
+      name: 'Lars',
+      children: [
+        { id: uuid4(), name: 'John' },
+        { id: uuid4(), name: 'David' }
+      ]
+    };
+    const person2 = { id: uuid4(), name: 'Lars', children: [{ id: uuid4(), name: 'John' }] };
+    await upsert('person', [person1, person2]);
+    const r1 = await index().rest.data.uniques('person', 'children.name.raw');
+    expect(r1.uniques).to.deep.equal(['David', 'John']);
+  });
+
+  it('Testing multiple nested with top level', async () => {
+    const person1 = {
+      id: '7339941e-465e-46e1-bf53-1bce23d69bbe',
+      name: 'Lars',
+      children: [
+        {
+          id: 'abfe6701-f181-4a4b-b6a5-2ba16fb9d2a3',
+          name: 'John'
+        },
+        {
+          id: '028ea4b3-e420-4ed7-ba9d-c416ada2e796',
+          name: 'Jane'
+        }
+      ]
+    };
+    const person2 = {
+      id: 'fe034213-dfbb-4411-8735-ee193a5209ce',
+      name: 'Lars',
+      children: [
+        {
+          id: '0692008d-1c99-415f-9aa5-574cbca3c852',
+          name: 'David'
+        },
+        {
+          id: 'e6ee14ef-a0d0-4ed4-9bf6-3149e48dc1dc',
+          name: 'Mary'
+        }
+      ]
+    };
+    await upsert('person', [person1, person2]);
+    const r1 = await index().rest.data.uniques('person', ['children.name.raw', 'children.id']);
+    expect(r1.uniques).to.deep.equal([
+      ['David', '0692008d-1c99-415f-9aa5-574cbca3c852'],
+      ['Jane', '028ea4b3-e420-4ed7-ba9d-c416ada2e796'],
+      ['John', 'abfe6701-f181-4a4b-b6a5-2ba16fb9d2a3'],
+      ['Mary', 'e6ee14ef-a0d0-4ed4-9bf6-3149e48dc1dc']
+    ]);
   });
 
   it('Testing multiple uniques', async () => {
-    expect(await createAddress('a', 'Sydney')).to.equal(true);
-    expect(await index.rest.data.refresh('address')).to.equal(true);
-    const r1 = await index.rest.data.uniques('address', [
-      'city.raw',
-      'street.raw'
+    await setupData();
+    const r1 = await index().rest.data.uniques('person', [
+      'surname.raw',
+      'name.raw'
     ]);
     expect(r1.uniques).to.deep.equal([
-      ['Brisbane', 'a'],
-      ['Brisbane', 'b'],
-      ['Brisbane', 'c'],
-      ['Sydney', 'a']
+      ['x', 'a'],
+      ['x', 'b'],
+      ['x', 'c'],
+      ['y', 'a']
     ]);
   });
 
   it('Testing multiple uniques with count', async () => {
-    expect(await createAddress('a', 'Sydney')).to.equal(true);
-    expect(await index.rest.data.refresh('address')).to.equal(true);
-    const r1 = await index.rest.data.uniques('address', [
-      'city.raw',
-      'street.raw'
+    await setupData();
+    const r1 = await index().rest.data.uniques('person', [
+      'surname.raw',
+      'name.raw'
     ], { count: true });
     expect(r1.uniques).to.deep.equal([
-      [['Brisbane', 'a'], 3],
-      [['Brisbane', 'b'], 2],
-      [['Brisbane', 'c'], 1],
-      [['Sydney', 'a'], 1]
+      [['x', 'a'], 3],
+      [['x', 'b'], 2],
+      [['x', 'c'], 1],
+      [['y', 'a'], 1]
     ]);
   });
 
   it('Test single page with count', async () => {
-    const r1 = await index.rest.data.uniques('address', 'street.raw', { count: true });
-    expect(r1.uniques).to.deep.equal([['a', 3], ['b', 2], ['c', 1]]);
+    await setupData();
+    const r1 = await index().rest.data.uniques('person', 'name.raw', { count: true });
+    expect(r1.uniques).to.deep.equal([['a', 4], ['b', 2], ['c', 1]]);
     expect('cursor' in r1).to.equal(false);
   });
 
   it('Test single item paging', async () => {
-    const r1 = await index.rest.data.uniques('address', 'street.raw', { limit: 1 });
+    await setupData();
+    const r1 = await index().rest.data.uniques('person', 'name.raw', { limit: 1 });
     expect(r1.uniques).to.deep.equal(['a']);
     expect('cursor' in r1).to.equal(true);
 
-    const r2 = await index.rest.data.uniques('address', 'street.raw', { cursor: r1.cursor });
+    const r2 = await index().rest.data.uniques('person', 'name.raw', { cursor: r1.cursor });
     expect(r2.uniques).to.deep.equal(['b']);
     expect('cursor' in r2).to.equal(true);
 
-    const r3 = await index.rest.data.uniques('address', 'street.raw', { cursor: r2.cursor });
+    const r3 = await index().rest.data.uniques('person', 'name.raw', { cursor: r2.cursor });
     expect(r3.uniques).to.deep.equal(['c']);
     expect('cursor' in r3).to.equal(true);
 
-    const r4 = await index.rest.data.uniques('address', 'street.raw', { cursor: r3.cursor });
+    const r4 = await index().rest.data.uniques('person', 'name.raw', { cursor: r3.cursor });
     expect(r4.uniques).to.deep.equal([]);
     expect('cursor' in r4).to.equal(false);
   });
 
   it('Test two item paging', async () => {
-    const r1 = await index.rest.data.uniques('address', 'street.raw', { limit: 2 });
+    await setupData();
+    const r1 = await index().rest.data.uniques('person', 'name.raw', { limit: 2 });
     expect(r1.uniques).to.deep.equal(['a', 'b']);
     expect('cursor' in r1).to.equal(true);
 
-    const r2 = await index.rest.data.uniques('address', 'street.raw', { cursor: r1.cursor });
+    const r2 = await index().rest.data.uniques('person', 'name.raw', { cursor: r1.cursor });
     expect(r2.uniques).to.deep.equal(['c']);
     expect('cursor' in r2).to.equal(false);
   });
 
   it('Test single page', async () => {
-    const r1 = await index.rest.data.uniques('address', 'street.raw');
+    await setupData();
+    const r1 = await index().rest.data.uniques('person', 'name.raw');
     expect(r1.uniques).to.deep.equal(['a', 'b', 'c']);
     expect('cursor' in r1).to.equal(false);
   });
 
   it('Test filter option', async () => {
-    const r1 = await index.rest.data.uniques('address', 'street.raw', {
-      filterBy: { and: [['street', 'in', ['a', 'b']]] }
+    await setupData();
+    const r1 = await index().rest.data.uniques('person', 'name.raw', {
+      filterBy: { and: [['name', 'in', ['a', 'b']]] }
     });
     expect(r1.uniques).to.deep.equal(['a', 'b']);
     expect('cursor' in r1).to.equal(false);
   });
 
   it('Test bad unique field', async ({ capture }) => {
-    const err = await capture(() => index.rest.data.uniques('address', 'street'));
+    await setupData();
+    const err = await capture(() => index().rest.data.uniques('person', 'name'));
     expect(JSON.stringify(err)).to.include('Fielddata is disabled on text fields by default');
   });
 
   it('Test limit and cursor provided', async ({ capture }) => {
-    const err = await capture(() => index.rest.data.uniques('address', 'street.raw', { limit: 1, cursor: '123' }));
+    await setupData();
+    const err = await capture(() => index().rest.data.uniques('person', 'name.raw', { limit: 1, cursor: '123' }));
     expect(err.message).to.include('"limit" must not exist simultaneously with [cursor]');
   });
 });

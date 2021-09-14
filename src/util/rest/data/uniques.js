@@ -1,7 +1,9 @@
+const assert = require('assert');
 const get = require('lodash.get');
 const Joi = require('joi-strict');
 const { fromCursor, toCursor } = require('../../paging');
 const { buildQuery } = require('../../filter');
+const extractPrefix = require('../../extract-prefix');
 
 module.exports = (call, idx, allowedFields, fields, opts) => {
   Joi.assert(opts, Joi.object().keys({
@@ -14,6 +16,10 @@ module.exports = (call, idx, allowedFields, fields, opts) => {
   const after = get(cursorPayload, 'searchAfter', null);
   const limit = get(cursorPayload, 'limit', get(opts, 'limit', 20));
   const count = opts.count === undefined ? false : opts.count;
+  const prefixes = new Set((Array.isArray(fields) ? fields : [fields])
+    .map((field) => extractPrefix(field, allowedFields)));
+  assert(prefixes.size === 1, `Multiple prefix provided: ${prefixes}`);
+  const prefix = prefixes.values().next().value;
   const body = {
     size: 0,
     aggs: {
@@ -27,6 +33,9 @@ module.exports = (call, idx, allowedFields, fields, opts) => {
       }
     }
   };
+  if (prefix !== '') {
+    body.aggs = { sub: { nested: { path: prefix }, aggs: body.aggs } };
+  }
   if (opts.filterBy !== undefined) {
     body.query = buildQuery(opts.filterBy, allowedFields);
   }
@@ -38,7 +47,7 @@ module.exports = (call, idx, allowedFields, fields, opts) => {
       if (r.statusCode !== 200) {
         throw r.body;
       }
-      const { uniques } = r.body.aggregations;
+      const { uniques } = prefix === '' ? r.body.aggregations : r.body.aggregations.sub;
       const result = {
         uniques: uniques.buckets.map((e) => {
           const value = Array.isArray(fields)

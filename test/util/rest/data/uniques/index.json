@@ -1,0 +1,77 @@
+{
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "folding": {
+          "tokenizer": "standard",
+          "filter": [
+            "lowercase",
+            "asciifolding"
+          ]
+        }
+      }
+    }
+  },
+  "model": "person",
+  "fields": [
+    "id",
+    {
+      "name": "name",
+      "overwrite": {
+        "analyzer": "folding",
+        "fields": {
+          "raw": {
+            "type": "keyword"
+          }
+        }
+      }
+    },
+    {
+      "name": "surname",
+      "overwrite": {
+        "analyzer": "folding",
+        "fields": {
+          "raw": {
+            "type": "keyword"
+          }
+        }
+      }
+    }
+  ],
+  "sources": [
+    ""
+  ],
+  "nested": {
+    "children": {
+      "model": "person[]",
+      "fields": [
+        "id",
+        {
+          "name": "name",
+          "overwrite": {
+            "analyzer": "folding",
+            "fields": {
+              "raw": {
+                "type": "keyword"
+              }
+            }
+          }
+        },
+        {
+          "name": "surname",
+          "overwrite": {
+            "analyzer": "folding",
+            "fields": {
+              "raw": {
+                "type": "keyword"
+              }
+            }
+          }
+        }
+      ],
+      "sources": [
+        "children"
+      ]
+    }
+  }
+}
