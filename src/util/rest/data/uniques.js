@@ -16,11 +16,10 @@ module.exports = (call, idx, allowedFields, fields, opts) => {
   const after = get(cursorPayload, 'searchAfter', null);
   const limit = get(cursorPayload, 'limit', get(opts, 'limit', 20));
   const count = opts.count === undefined ? false : opts.count;
-  const prefix = (Array.isArray(fields) ? fields : [fields]).reduce((prev, field) => {
-    const prefixForField = extractPrefix(field, allowedFields);
-    assert(prev === undefined || prefixForField === prev, `Multiple prefix provided: ${prev} vs ${prefixForField}`);
-    return prefixForField;
-  }, undefined);
+  const prefixes = new Set((Array.isArray(fields) ? fields : [fields])
+    .map((field) => extractPrefix(field, allowedFields)));
+  assert(prefixes.size === 1, `Multiple prefix provided: ${prefixes}`);
+  const prefix = prefixes.values().next().value;
   const body = {
     size: 0,
     aggs: {
