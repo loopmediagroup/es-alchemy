@@ -51,7 +51,7 @@ module.exports.describe = (name, fn) => {
     });
 
     // eslint-disable-next-line mocha/no-setup-in-describe
-    fn();
+    fn(() => index);
   });
 };
 

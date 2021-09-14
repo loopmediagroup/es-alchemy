@@ -1,6 +1,7 @@
 const assert = require('assert');
 const actionMapFilter = require('../resources/action-map/filter');
 const actionMapBool = require('../resources/action-map/bool');
+const extractPrefix = require('./extract-prefix');
 
 const buildRec = (filterBy, allowedFields, root) => {
   // handle actual filter clause
@@ -9,7 +10,7 @@ const buildRec = (filterBy, allowedFields, root) => {
       allowedFields === null || allowedFields.includes(filterBy[0]),
       `Unexpected field in filter: ${filterBy[0]}`
     );
-    const prefix = filterBy[0].substring(0, filterBy[0].lastIndexOf('.'));
+    const prefix = extractPrefix(filterBy[0], allowedFields);
     assert(root === null || prefix.startsWith(root), 'Can only reference relative paths in sort filters.');
     return [prefix === root ? '' : prefix, actionMapFilter[filterBy[1]](filterBy[0], ...filterBy.slice(2))];
   }

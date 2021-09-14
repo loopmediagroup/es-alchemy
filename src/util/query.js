@@ -5,13 +5,14 @@ const isEqual = require('lodash.isequal');
 const actionMap = require('../resources/action-map');
 const { fromCursor } = require('./paging');
 const { buildQuery } = require('./filter');
+const extractPrefix = require('./extract-prefix');
 
-const splitPath = (fullPath, mapping) => {
+const splitPath = (fullPath, mapping, allowedFields) => {
   if (typeof fullPath !== 'string' || !fullPath.includes('.')) {
     return [fullPath, null];
   }
   if (mapping === null) {
-    return [fullPath, fullPath.slice(0, fullPath.lastIndexOf('.'))];
+    return [fullPath, extractPrefix(fullPath, allowedFields)];
   }
   let idx = 0;
   let cur = mapping.mappings;
@@ -63,7 +64,7 @@ module.exports.build = (allowedFields, mapping, {
       { function_score: { script_score: { script: { source: '0' } }, query: { match_all: {} }, score_mode: 'max' } },
       ...scoreBy
         .map((s) => [
-          s[1].substring(0, s[1].lastIndexOf('.')),
+          extractPrefix(s[1], allowedFields),
           { function_score: actionMap.score[s[0]](s.slice(1), { allowedFields }) }
         ])
         .map(([path, query]) => (path !== '' ? ({ nested: { path, query, score_mode: 'max' } }) : query))
@@ -76,7 +77,7 @@ module.exports.build = (allowedFields, mapping, {
       ? []
       : [['_id', 'asc']])
   ]
-    .map((e) => actionMap.order[e[1]]([...splitPath(e[0], mapping), ...e.slice(2)], { allowedFields }));
+    .map((e) => actionMap.order[e[1]]([...splitPath(e[0], mapping, allowedFields), ...e.slice(2)], { allowedFields }));
   if (result.search_after.length === 0) {
     delete result.search_after;
   }
