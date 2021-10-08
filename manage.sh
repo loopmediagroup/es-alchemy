@@ -5,7 +5,11 @@ docker run \
   -e "discovery.type=single-node" \
   -d docker.elastic.co/elasticsearch/elasticsearch:7.4.0
 
-docker build -t lambda-environment-node -f docker/Dockerfile . &&
+docker build \
+  -t lambda-environment-node \
+  --network="host" \
+  -f docker/Dockerfile \
+  . &&
 docker run \
   --link es74:elasticsearch \
   -u`id -u`:`id -g` \
