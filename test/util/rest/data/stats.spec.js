@@ -31,6 +31,6 @@ describe('Testing stats', () => {
           }).unknown())
     });
     const result = await index.rest.data.stats();
-    expect(Joi.test(result.body, schema)).to.equal(true);
+    expect(Joi.test(result, schema)).to.equal(true);
   });
 });
