@@ -161,7 +161,11 @@ describe('Testing uniques()', (index) => {
   it('Test bad unique field', async ({ capture }) => {
     await setupData();
     const err = await capture(() => index().rest.data.uniques('person', 'name'));
-    expect(JSON.stringify(err)).to.include('Fielddata is disabled on text fields by default');
+    expect(JSON.stringify(err)).to.include(
+      'Text fields are not optimised for operations that require per-document field data '
+      + 'like aggregations and sorting, so these operations are disabled by default. Please '
+      + 'use a keyword field instead.'
+    );
   });
 
   it('Test limit and cursor provided', async ({ capture }) => {
