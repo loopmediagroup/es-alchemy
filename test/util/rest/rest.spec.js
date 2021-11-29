@@ -1,6 +1,7 @@
 const { expect } = require('chai');
 const { describe } = require('node-tdd');
 const { v4: uuid4 } = require('uuid');
+const get = require('lodash.get');
 const Index = require('../../../src/index');
 const { registerEntitiesForIndex } = require('../../helper');
 
@@ -9,11 +10,11 @@ describe('Testing rest', { useTmpDir: true }, () => {
   let offerId;
 
   beforeEach(({ dir }) => {
-    init = async (responseHook) => {
+    init = async (opts = {}) => {
       // setup
       const index = Index({
         endpoint: process.env.elasticsearchEndpoint,
-        responseHook
+        ...opts
       });
       registerEntitiesForIndex(index);
       expect(await index.index.versions.persist(dir)).to.equal(true);
@@ -24,10 +25,12 @@ describe('Testing rest', { useTmpDir: true }, () => {
   });
 
   it('Testing responseHook.', async () => {
-    const index = await init(({ request, response }) => {
-      expect(Object.keys(request)).to.deep.equal(['headers', 'method', 'endpoint', 'index', 'body']);
-      expect(Object.keys(response)).to.include.members(['statusCode', 'body', 'headers', 'timings']);
-      expect(response.statusCode).to.equal(200);
+    const index = await init({
+      responseHook: ({ request, response }) => {
+        expect(Object.keys(request)).to.deep.equal(['headers', 'method', 'endpoint', 'index', 'body']);
+        expect(Object.keys(response)).to.include.members(['statusCode', 'body', 'headers', 'timings']);
+        expect(response.statusCode).to.equal(200);
+      }
     });
 
     expect(await index.rest.mapping.create('offer')).to.equal(true);
@@ -114,6 +117,23 @@ describe('Testing rest', { useTmpDir: true }, () => {
 
   it('Testing call without options', async () => {
     const index = await init();
+    registerEntitiesForIndex(index);
+    expect((await index.rest.call('GET', uuid4())).statusCode).to.equal(404);
+  });
+
+  it('Testing aws credentials', async () => {
+    const index = await init({
+      aws: {
+        region: 'us-west-2',
+        sessionToken: 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
+          + 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
+          + 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
+          + 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
+          + 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+        accessKeyId: 'XXXXXXXXXXXXXXXXXXXX',
+        secretAccessKey: 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
+      }
+    });
     registerEntitiesForIndex(index);
     expect((await index.rest.call('GET', uuid4())).statusCode).to.equal(404);
   });

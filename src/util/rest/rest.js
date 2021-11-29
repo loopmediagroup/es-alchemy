@@ -1,5 +1,6 @@
 const get = require('lodash.get');
-const request = require('request-promise-native');
+const axios = require('axios');
+const { aws4Interceptor } = require('aws4-axios');
 const mappingApplied = require('./mapping/applied');
 const mappingApply = require('./mapping/apply');
 const mappingCreate = require('./mapping/create');
@@ -26,33 +27,41 @@ const dataUpdate = require('./data/update');
 const dataVersion = require('./data/version');
 
 module.exports = (getFields, getRels, getMapping, getSpecs, models, versions, options) => {
-  const call = (method, idx, {
+  const region = get(options, 'aws.region');
+  const sessionToken = get(options, 'aws.sessionToken');
+  const accessKeyId = get(options, 'aws.accessKeyId');
+  const secretAccessKey = get(options, 'aws.secretAccessKey');
+  const interceptor = [accessKeyId, secretAccessKey].includes(undefined)
+    ? undefined
+    : aws4Interceptor({ region, service: 'execute-api' }, { accessKeyId, secretAccessKey });
+  const call = async (method, idx, {
     endpoint = '',
     body = {},
     headers = {},
     json = true
-  } = {}) => request({
-    method,
-    uri: [
-      `${get(options, 'protocol', 'http')}:/`,
-      get(options, 'endpoint', 'elasticsearch:9200'),
-      idx.replace(/@/g, '%40').replace(/,/g, '%2C'),
-      endpoint
-    ].filter((e) => e !== '').join('/'),
-    body,
-    headers,
-    aws: {
-      key: get(options, 'aws.accessKeyId'),
-      secret: get(options, 'aws.secretAccessKey'),
-      session: get(options, 'aws.sessionToken'),
-      sign_version: '4'
-    },
-    simple: false,
-    resolveWithFullResponse: true,
-    json,
-    time: true
-  })
-    .then(async (response) => {
+  } = {}) => {
+    const interceptorId = axios.interceptors.request.use(interceptor);
+    try {
+      const r = await axios({
+        method,
+        transformRequest: [(d, _) => (json === true ? JSON.stringify(d) : d)],
+        ...(json === true ? { responseType: 'json' } : {}),
+        url: [
+          `${get(options, 'protocol', 'http')}:/`,
+          get(options, 'endpoint', 'elasticsearch:9200'),
+          idx.replace(/@/g, '%40').replace(/,/g, '%2C'),
+          endpoint
+        ].filter((e) => e !== '').join('/'),
+        data: body,
+        headers: {
+          'user-agent': 'es-alchemy/0.0.1',
+          ...(json === true ? { 'content-type': 'application/json' } : {}),
+          accept: 'application/json',
+          ...(typeof sessionToken === 'string' ? { 'x-amz-security-token': sessionToken } : {}),
+          ...headers
+        }
+      });
+
       if (options.responseHook !== undefined) {
         await options.responseHook({
           request: {
@@ -63,13 +72,27 @@ module.exports = (getFields, getRels, getMapping, getSpecs, models, versions, op
             body
           },
           response: {
-            ...response,
-            headers: get(response, 'headers', response.rawHeaders)
+            statusCode: r.status,
+            body: r.data,
+            headers: r.headers,
+            // todo: fill these in
+            timings: {}
           }
         });
       }
-      return response;
-    });
+      return {
+        statusCode: r.status,
+        body: r.data
+      };
+    } catch (e) {
+      return {
+        statusCode: e.response.status,
+        body: e.response.data
+      };
+    } finally {
+      axios.interceptors.request.eject(interceptorId);
+    }
+  };
 
   return {
     call: (method, idx, opts = {}) => call(method, idx, opts),
