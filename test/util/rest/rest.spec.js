@@ -1,7 +1,6 @@
 const { expect } = require('chai');
 const { describe } = require('node-tdd');
 const { v4: uuid4 } = require('uuid');
-const get = require('lodash.get');
 const Index = require('../../../src/index');
 const { registerEntitiesForIndex } = require('../../helper');
 

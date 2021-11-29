@@ -42,6 +42,13 @@ module.exports = (getFields, getRels, getMapping, getSpecs, models, versions, op
   } = {}) => {
     const interceptorId = axios.interceptors.request.use(interceptor);
     try {
+      const requestHeaders = {
+        'user-agent': 'es-alchemy/0.0.1',
+        ...(json === true ? { 'content-type': 'application/json' } : {}),
+        accept: 'application/json',
+        ...(typeof sessionToken === 'string' ? { 'x-amz-security-token': sessionToken } : {}),
+        ...headers
+      };
       const r = await axios({
         method,
         transformRequest: [(d, _) => (json === true ? JSON.stringify(d) : d)],
@@ -53,19 +60,13 @@ module.exports = (getFields, getRels, getMapping, getSpecs, models, versions, op
           endpoint
         ].filter((e) => e !== '').join('/'),
         data: body,
-        headers: {
-          'user-agent': 'es-alchemy/0.0.1',
-          ...(json === true ? { 'content-type': 'application/json' } : {}),
-          accept: 'application/json',
-          ...(typeof sessionToken === 'string' ? { 'x-amz-security-token': sessionToken } : {}),
-          ...headers
-        }
+        headers: requestHeaders
       });
 
       if (options.responseHook !== undefined) {
         await options.responseHook({
           request: {
-            headers,
+            headers: requestHeaders,
             method,
             endpoint,
             index: idx,
