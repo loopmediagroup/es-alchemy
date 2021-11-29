@@ -53,6 +53,7 @@ module.exports = (getFields, getRels, getMapping, getSpecs, models, versions, op
       const r = await axios({
         method,
         transformRequest: [(d, _) => (json === true ? JSON.stringify(d) : d)],
+        validateStatus: () => true,
         ...(json === true ? { responseType: 'json' } : {}),
         url: [
           `${get(options, 'protocol', 'http')}:/`,
@@ -86,11 +87,6 @@ module.exports = (getFields, getRels, getMapping, getSpecs, models, versions, op
       return {
         statusCode: r.status,
         body: r.data
-      };
-    } catch (e) {
-      return {
-        statusCode: e?.response?.status,
-        body: e?.response?.data
       };
     } finally {
       axios.interceptors.request.eject(interceptorId);
