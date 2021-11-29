@@ -49,6 +49,7 @@ module.exports = (getFields, getRels, getMapping, getSpecs, models, versions, op
         ...(typeof sessionToken === 'string' ? { 'x-amz-security-token': sessionToken } : {}),
         ...headers
       };
+      const start = new Date() / 1;
       const r = await axios({
         method,
         transformRequest: [(d, _) => (json === true ? JSON.stringify(d) : d)],
@@ -76,8 +77,9 @@ module.exports = (getFields, getRels, getMapping, getSpecs, models, versions, op
             statusCode: r.status,
             body: r.data,
             headers: r.headers,
-            // todo: fill these in
-            timings: {}
+            timings: {
+              duration: (new Date() / 1) - start
+            }
           }
         });
       }
@@ -87,8 +89,8 @@ module.exports = (getFields, getRels, getMapping, getSpecs, models, versions, op
       };
     } catch (e) {
       return {
-        statusCode: e.response.status,
-        body: e.response.data
+        statusCode: e?.response?.status,
+        body: e?.response?.data
       };
     } finally {
       axios.interceptors.request.eject(interceptorId);
