@@ -65,6 +65,14 @@ module.exports = (getFields, getRels, getMapping, getSpecs, models, versions, op
         headers: requestHeaders
       });
 
+      const response = {
+        statusCode: r.status,
+        body: r.data,
+        headers: r.headers,
+        timings: {
+          duration: (new Date() / 1) - start
+        }
+      };
       if (options.responseHook !== undefined) {
         await options.responseHook({
           request: {
@@ -74,20 +82,10 @@ module.exports = (getFields, getRels, getMapping, getSpecs, models, versions, op
             index: idx,
             body
           },
-          response: {
-            statusCode: r.status,
-            body: r.data,
-            headers: r.headers,
-            timings: {
-              duration: (new Date() / 1) - start
-            }
-          }
+          response
         });
       }
-      return {
-        statusCode: r.status,
-        body: r.data
-      };
+      return response;
     } finally {
       axios.interceptors.request.eject(interceptorId);
     }
