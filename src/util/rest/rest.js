@@ -49,10 +49,10 @@ module.exports = (getFields, getRels, getMapping, getSpecs, models, versions, op
         ...(typeof sessionToken === 'string' ? { 'x-amz-security-token': sessionToken } : {}),
         ...headers
       };
-      const start = new Date() / 1;
+      const startTime = new Date() / 1;
       const r = await axios({
         method,
-        transformRequest: [(d, _) => (json === true ? JSON.stringify(d) : d)],
+        ...(json === true ? { transformRequest: [(d, _) => JSON.stringify(d)] } : {}),
         validateStatus: () => true,
         url: [
           `${get(options, 'protocol', 'http')}:/`,
@@ -69,7 +69,7 @@ module.exports = (getFields, getRels, getMapping, getSpecs, models, versions, op
         body: r.data,
         headers: r.headers,
         timings: {
-          duration: (new Date() / 1) - start
+          duration: (new Date() / 1) - startTime
         }
       };
       if (options.responseHook !== undefined) {
