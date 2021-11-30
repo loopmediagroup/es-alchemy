@@ -79,9 +79,8 @@ module.exports = async (call, versions, actions_) => {
     json: false
   });
   assert(r.statusCode === 200, r.body);
-  const body = JSON.parse(r.body);
-  if (body.errors === false) {
+  if (r.body.errors === false) {
     return true;
   }
-  return body.items;
+  return r.body.items;
 };
