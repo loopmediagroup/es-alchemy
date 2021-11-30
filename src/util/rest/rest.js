@@ -54,7 +54,6 @@ module.exports = (getFields, getRels, getMapping, getSpecs, models, versions, op
         method,
         transformRequest: [(d, _) => (json === true ? JSON.stringify(d) : d)],
         validateStatus: () => true,
-        ...(json === true ? { responseType: 'json' } : {}),
         url: [
           `${get(options, 'protocol', 'http')}:/`,
           get(options, 'endpoint', 'elasticsearch:9200'),
