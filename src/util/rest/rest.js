@@ -34,13 +34,15 @@ module.exports = (getFields, getRels, getMapping, getSpecs, models, versions, op
   const interceptor = [accessKeyId, secretAccessKey].includes(undefined)
     ? undefined
     : aws4Interceptor({ region, service: 'execute-api' }, { accessKeyId, secretAccessKey });
+  const ax = axios.create({});
+  ax.defaults.headers = {};
   const call = async (method, idx, {
     endpoint = '',
     body = {},
     headers = {},
     json = true
   } = {}) => {
-    const interceptorId = axios.interceptors.request.use(interceptor);
+    const interceptorId = ax.interceptors.request.use(interceptor);
     try {
       const requestHeaders = {
         'user-agent': 'es-alchemy/0.0.1',
@@ -50,9 +52,21 @@ module.exports = (getFields, getRels, getMapping, getSpecs, models, versions, op
         ...headers
       };
       const startTime = new Date() / 1;
-      const r = await axios({
+      const r = await ax({
         method,
-        ...(json === true ? { transformRequest: [(d, _) => JSON.stringify(d)] } : {}),
+        transformRequest: [(d, h) => {
+          const entries = Object.entries(h);
+          entries.forEach(([k, v]) => {
+            const kLower = k.toLowerCase();
+            if (k !== kLower) {
+              // eslint-disable-next-line no-param-reassign
+              delete h[k];
+              // eslint-disable-next-line no-param-reassign
+              h[kLower] = v;
+            }
+          });
+          return json === true ? JSON.stringify(d) : d;
+        }],
         validateStatus: () => true,
         url: [
           `${get(options, 'protocol', 'http')}:/`,
@@ -86,7 +100,7 @@ module.exports = (getFields, getRels, getMapping, getSpecs, models, versions, op
       }
       return response;
     } finally {
-      axios.interceptors.request.eject(interceptorId);
+      ax.interceptors.request.eject(interceptorId);
     }
   };
 
