@@ -33,7 +33,7 @@ module.exports = (getFields, getRels, getMapping, getSpecs, models, versions, op
   const secretAccessKey = get(options, 'aws.secretAccessKey');
   const interceptor = [accessKeyId, secretAccessKey].includes(undefined)
     ? undefined
-    : aws4Interceptor({ region, service: 'execute-api' }, { accessKeyId, secretAccessKey });
+    : aws4Interceptor({ region, service: 'es' }, { accessKeyId, secretAccessKey });
   const ax = axios.create({});
   ax.defaults.headers = {};
   const call = async (method, idx, {
