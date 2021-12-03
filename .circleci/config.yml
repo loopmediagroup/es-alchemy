@@ -73,13 +73,10 @@ jobs:
       - image: circleci/node:12
         environment:
           elasticsearchEndpoint: localhost:9200
-      - image: docker.elastic.co/elasticsearch/elasticsearch:7.10.0
+      - image: opensearchproject/opensearch:1.0.1
         environment:
           - discovery.type=single-node
-          - http.host=0.0.0.0
-          - transport.host=127.0.0.1
-          - xpack.security.enabled=false
-          - ES_JAVA_OPTS=-Xms750m -Xmx750m
+          - plugins.security.disabled=true
     steps:
       - run:
           command: >
@@ -139,13 +136,10 @@ jobs:
       - image: circleci/node:14
         environment:
           elasticsearchEndpoint: localhost:9200
-      - image: docker.elastic.co/elasticsearch/elasticsearch:7.10.0
+      - image: opensearchproject/opensearch:1.0.1
         environment:
           - discovery.type=single-node
-          - http.host=0.0.0.0
-          - transport.host=127.0.0.1
-          - xpack.security.enabled=false
-          - ES_JAVA_OPTS=-Xms750m -Xmx750m
+          - plugins.security.disabled=true
     steps:
       - run:
           command: >
@@ -191,13 +185,10 @@ jobs:
       - image: circleci/node:16
         environment:
           elasticsearchEndpoint: localhost:9200
-      - image: docker.elastic.co/elasticsearch/elasticsearch:7.10.0
+      - image: opensearchproject/opensearch:1.0.1
         environment:
           - discovery.type=single-node
-          - http.host=0.0.0.0
-          - transport.host=127.0.0.1
-          - xpack.security.enabled=false
-          - ES_JAVA_OPTS=-Xms750m -Xmx750m
+          - plugins.security.disabled=true
     steps:
       - run:
           command: >

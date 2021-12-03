@@ -1,9 +1,10 @@
 #!/bin/sh
 
 docker run \
-  --name es710 \
+  --name os1 \
   -e "discovery.type=single-node" \
-  -d docker.elastic.co/elasticsearch/elasticsearch:7.10.0
+  -e "plugins.security.disabled=true" \
+  -d opensearchproject/opensearch:1.0.1
 
 docker build \
   -t lambda-environment-node \
@@ -11,12 +12,12 @@ docker build \
   -f docker/Dockerfile \
   . &&
 docker run \
-  --link es710:elasticsearch \
+  --link os1:elasticsearch \
   -u`id -u`:`id -g` \
   -v $(pwd):/user/project \
   -v ~/.aws:/user/.aws \
   -v ~/.npmrc:/user/.npmrc \
   -it lambda-environment-node
 
-docker stop es710 -t 0
-docker rm -f es710
+docker stop os1 -t 0
+docker rm -f os1

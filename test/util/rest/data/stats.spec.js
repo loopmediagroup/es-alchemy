@@ -17,7 +17,6 @@ describe('Testing stats', () => {
       nodes: Joi.object()
         .pattern(Joi.string(), Joi.object()
           .keys({
-            attributes: Joi.object(),
             indices: Joi.object(),
             os: Joi.object().keys({
               cpu: Joi.object().keys({
