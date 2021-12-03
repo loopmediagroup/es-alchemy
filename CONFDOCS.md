@@ -4,7 +4,7 @@ Documents configuration tasks managed by [robo-config](https://github.com/blackf
 
 ## Plugin [@blackflux/robo-config-plugin](https://www.npmjs.com/package/@blackflux/robo-config-plugin)
 
-- <a name="blackfluxrobo-config-plugin-task-idx-ref-assortednpm-opensource-es">:open_file_folder:</a> <a href="#blackfluxrobo-config-plugin-task-ref-assortednpm-opensource-es">`assorted/@npm-opensource-es`</a>
+- <a name="blackfluxrobo-config-plugin-task-idx-ref-assortednpm-opensource-os">:open_file_folder:</a> <a href="#blackfluxrobo-config-plugin-task-ref-assortednpm-opensource-os">`assorted/@npm-opensource-os`</a>
   - <a name="blackfluxrobo-config-plugin-task-idx-ref-structnpm-dockerized">:open_file_folder:</a> <a href="#blackfluxrobo-config-plugin-task-ref-structnpm-dockerized">`struct/#npm-dockerized`</a>
     - <a name="blackfluxrobo-config-plugin-task-idx-ref-structforce-gardener-dockerized">:clipboard:</a> <a href="#blackfluxrobo-config-plugin-task-ref-structforce-gardener-dockerized">`struct/force-gardener-dockerized`</a>
     - <a name="blackfluxrobo-config-plugin-task-idx-ref-structnpm-base">:open_file_folder:</a> <a href="#blackfluxrobo-config-plugin-task-ref-structnpm-base">`struct/#npm-base`</a>
@@ -34,13 +34,13 @@ Documents configuration tasks managed by [robo-config](https://github.com/blackf
     - <a name="blackfluxrobo-config-plugin-task-idx-ref-gallytwo-branch">:clipboard:</a> <a href="#blackfluxrobo-config-plugin-task-ref-gallytwo-branch">`gally/two-branch`</a>
   - <a name="blackfluxrobo-config-plugin-task-idx-ref-editordefault">:open_file_folder:</a> <a href="#blackfluxrobo-config-plugin-task-ref-editordefault">`editor/#default`</a>
     - <a name="blackfluxrobo-config-plugin-task-idx-ref-editortwo-space">:clipboard:</a> <a href="#blackfluxrobo-config-plugin-task-ref-editortwo-space">`editor/two-space`</a>
-  - <a name="blackfluxrobo-config-plugin-task-idx-ref-dockernpm-elasticsearch">:open_file_folder:</a> <a href="#blackfluxrobo-config-plugin-task-ref-dockernpm-elasticsearch">`docker/#npm-elasticsearch`</a>
-    - <a name="blackfluxrobo-config-plugin-task-idx-ref-dockeres-manage">:clipboard:</a> <a href="#blackfluxrobo-config-plugin-task-ref-dockeres-manage">`docker/es-manage`</a>
-    - <a name="blackfluxrobo-config-plugin-task-idx-ref-dockeres-docker">:clipboard:</a> <a href="#blackfluxrobo-config-plugin-task-ref-dockeres-docker">`docker/es-docker`</a>
+  - <a name="blackfluxrobo-config-plugin-task-idx-ref-dockernpm-opensearch">:open_file_folder:</a> <a href="#blackfluxrobo-config-plugin-task-ref-dockernpm-opensearch">`docker/#npm-opensearch`</a>
+    - <a name="blackfluxrobo-config-plugin-task-idx-ref-dockeros-manage">:clipboard:</a> <a href="#blackfluxrobo-config-plugin-task-ref-dockeros-manage">`docker/os-manage`</a>
+    - <a name="blackfluxrobo-config-plugin-task-idx-ref-dockeros-docker">:clipboard:</a> <a href="#blackfluxrobo-config-plugin-task-ref-dockeros-docker">`docker/os-docker`</a>
   - <a name="blackfluxrobo-config-plugin-task-idx-ref-dependabotnpm-default">:open_file_folder:</a> <a href="#blackfluxrobo-config-plugin-task-ref-dependabotnpm-default">`dependabot/#npm-default`</a>
     - <a name="blackfluxrobo-config-plugin-task-idx-ref-dependabotjs-instant">:clipboard:</a> <a href="#blackfluxrobo-config-plugin-task-ref-dependabotjs-instant">`dependabot/js-instant`</a>
-  - <a name="blackfluxrobo-config-plugin-task-idx-ref-circlecinpm-default-coveralls-es">:open_file_folder:</a> <a href="#blackfluxrobo-config-plugin-task-ref-circlecinpm-default-coveralls-es">`circleci/#npm-default-coveralls-es`</a>
-    - <a name="blackfluxrobo-config-plugin-task-idx-ref-circlecitwo-branch-coveralls-es">:clipboard:</a> <a href="#blackfluxrobo-config-plugin-task-ref-circlecitwo-branch-coveralls-es">`circleci/two-branch-coveralls-es`</a>
+  - <a name="blackfluxrobo-config-plugin-task-idx-ref-circlecinpm-default-coveralls-os">:open_file_folder:</a> <a href="#blackfluxrobo-config-plugin-task-ref-circlecinpm-default-coveralls-os">`circleci/#npm-default-coveralls-os`</a>
+    - <a name="blackfluxrobo-config-plugin-task-idx-ref-circlecitwo-branch-coveralls-os">:clipboard:</a> <a href="#blackfluxrobo-config-plugin-task-ref-circlecitwo-branch-coveralls-os">`circleci/two-branch-coveralls-os`</a>
   - <a name="blackfluxrobo-config-plugin-task-idx-ref-badgesnpm-opensource">:open_file_folder:</a> <a href="#blackfluxrobo-config-plugin-task-ref-badgesnpm-opensource">`badges/#npm-opensource`</a>
     - <a name="blackfluxrobo-config-plugin-task-idx-ref-badgessemantic-release">:clipboard:</a> <a href="#blackfluxrobo-config-plugin-task-ref-badgessemantic-release">`badges/semantic-release`</a>
     - <a name="blackfluxrobo-config-plugin-task-idx-ref-badgesnpm-status">:clipboard:</a> <a href="#blackfluxrobo-config-plugin-task-ref-badgesnpm-status">`badges/npm-status`</a>
@@ -51,9 +51,9 @@ Documents configuration tasks managed by [robo-config](https://github.com/blackf
     - <a name="blackfluxrobo-config-plugin-task-idx-ref-badgescoveralls">:clipboard:</a> <a href="#blackfluxrobo-config-plugin-task-ref-badgescoveralls">`badges/coveralls`</a>
     - <a name="blackfluxrobo-config-plugin-task-idx-ref-badgescircleci">:clipboard:</a> <a href="#blackfluxrobo-config-plugin-task-ref-badgescircleci">`badges/circleci`</a>
 
-### :open_file_folder: <a name="blackfluxrobo-config-plugin-task-ref-assortednpm-opensource-es">assorted/@npm-opensource-es</a> (<a href="#blackfluxrobo-config-plugin-task-idx-ref-assortednpm-opensource-es">`index`</a>)
+### :open_file_folder: <a name="blackfluxrobo-config-plugin-task-ref-assortednpm-opensource-os">assorted/@npm-opensource-os</a> (<a href="#blackfluxrobo-config-plugin-task-idx-ref-assortednpm-opensource-os">`index`</a>)
 
-Manage various configuration files for an elasticsearch open source npm package on github.
+Manage various configuration files for an opensearch open source npm package on github.
 
 <table>
   <tbody>
@@ -114,7 +114,7 @@ Manage various configuration files for an elasticsearch open source npm package 
           <li><a href="#blackfluxrobo-config-plugin-req-ref-dependabot">dependabot</a></li>
           <li><a href="#blackfluxrobo-config-plugin-req-ref-yarn">yarn</a></li>
           <li><a href="#blackfluxrobo-config-plugin-req-ref-coveralls">coveralls</a></li>
-          <li><a href="#blackfluxrobo-config-plugin-req-ref-elasticsearch">elasticsearch</a></li>
+          <li><a href="#blackfluxrobo-config-plugin-req-ref-opensearch">opensearch</a></li>
           <li><a href="#blackfluxrobo-config-plugin-req-ref-david-dm">david-dm</a></li>
         </ul>
       </td>
@@ -1039,9 +1039,9 @@ _Updating <a href="#blackfluxrobo-config-plugin-target-ref-editorconfig">.editor
   </tbody>
 </table>
 
-#### :open_file_folder: <a name="blackfluxrobo-config-plugin-task-ref-dockernpm-elasticsearch">docker/#npm-elasticsearch</a> (<a href="#blackfluxrobo-config-plugin-task-idx-ref-dockernpm-elasticsearch">`index`</a>)
+#### :open_file_folder: <a name="blackfluxrobo-config-plugin-task-ref-dockernpm-opensearch">docker/#npm-opensearch</a> (<a href="#blackfluxrobo-config-plugin-task-idx-ref-dockernpm-opensearch">`index`</a>)
 
-Manage docker test configuration for npm package on github using elasticsearch.
+Manage docker test configuration for npm package on github using opensearch.
 
 <table>
   <tbody>
@@ -1067,11 +1067,11 @@ Manage docker test configuration for npm package on github using elasticsearch.
   </tbody>
 </table>
 
-##### :clipboard: <a name="blackfluxrobo-config-plugin-task-ref-dockeres-manage">docker/es-manage</a> (<a href="#blackfluxrobo-config-plugin-task-idx-ref-dockeres-manage">`index`</a>)
+##### :clipboard: <a name="blackfluxrobo-config-plugin-task-ref-dockeros-manage">docker/os-manage</a> (<a href="#blackfluxrobo-config-plugin-task-idx-ref-dockeros-manage">`index`</a>)
 
 _Updating <a href="#blackfluxrobo-config-plugin-target-ref-managesh">manage.sh</a> using <a href="#blackfluxrobo-config-plugin-strat-ref-overwrite">overwrite</a>._
 
-- Spawn docker container with joined elasticsearch container.
+- Spawn docker container with joined opensearch container.
 
 <table>
   <tbody>
@@ -1095,7 +1095,7 @@ _Updating <a href="#blackfluxrobo-config-plugin-target-ref-managesh">manage.sh</
   </tbody>
 </table>
 
-##### :clipboard: <a name="blackfluxrobo-config-plugin-task-ref-dockeres-docker">docker/es-docker</a> (<a href="#blackfluxrobo-config-plugin-task-idx-ref-dockeres-docker">`index`</a>)
+##### :clipboard: <a name="blackfluxrobo-config-plugin-task-ref-dockeros-docker">docker/os-docker</a> (<a href="#blackfluxrobo-config-plugin-task-idx-ref-dockeros-docker">`index`</a>)
 
 _Updating <a href="#blackfluxrobo-config-plugin-target-ref-dockerdockerfile">docker/Dockerfile</a> using <a href="#blackfluxrobo-config-plugin-strat-ref-overwrite">overwrite</a>._
 
@@ -1184,9 +1184,9 @@ _Updating <a href="#blackfluxrobo-config-plugin-target-ref-dependabotconfigyml">
   </tbody>
 </table>
 
-#### :open_file_folder: <a name="blackfluxrobo-config-plugin-task-ref-circlecinpm-default-coveralls-es">circleci/#npm-default-coveralls-es</a> (<a href="#blackfluxrobo-config-plugin-task-idx-ref-circlecinpm-default-coveralls-es">`index`</a>)
+#### :open_file_folder: <a name="blackfluxrobo-config-plugin-task-ref-circlecinpm-default-coveralls-os">circleci/#npm-default-coveralls-os</a> (<a href="#blackfluxrobo-config-plugin-task-idx-ref-circlecinpm-default-coveralls-os">`index`</a>)
 
-Manage circleci configuration for npm package on github with coveralls and elasticsearch.
+Manage circleci configuration for npm package on github with coveralls and opensearch.
 
 <table>
   <tbody>
@@ -1210,7 +1210,7 @@ Manage circleci configuration for npm package on github with coveralls and elast
           <li><a href="#blackfluxrobo-config-plugin-req-ref-github">github</a></li>
           <li><a href="#blackfluxrobo-config-plugin-req-ref-circleci">circleci</a></li>
           <li><a href="#blackfluxrobo-config-plugin-req-ref-coveralls">coveralls</a></li>
-          <li><a href="#blackfluxrobo-config-plugin-req-ref-elasticsearch">elasticsearch</a></li>
+          <li><a href="#blackfluxrobo-config-plugin-req-ref-opensearch">opensearch</a></li>
           <li><a href="#blackfluxrobo-config-plugin-req-ref-dependabot">dependabot</a></li>
           <li><a href="#blackfluxrobo-config-plugin-req-ref-semantic-release">semantic-release</a></li>
         </ul>
@@ -1219,7 +1219,7 @@ Manage circleci configuration for npm package on github with coveralls and elast
   </tbody>
 </table>
 
-##### :clipboard: <a name="blackfluxrobo-config-plugin-task-ref-circlecitwo-branch-coveralls-es">circleci/two-branch-coveralls-es</a> (<a href="#blackfluxrobo-config-plugin-task-idx-ref-circlecitwo-branch-coveralls-es">`index`</a>)
+##### :clipboard: <a name="blackfluxrobo-config-plugin-task-ref-circlecitwo-branch-coveralls-os">circleci/two-branch-coveralls-os</a> (<a href="#blackfluxrobo-config-plugin-task-idx-ref-circlecitwo-branch-coveralls-os">`index`</a>)
 
 _Updating <a href="#blackfluxrobo-config-plugin-target-ref-circleciconfigyml">.circleci/config.yml</a> using <a href="#blackfluxrobo-config-plugin-strat-ref-overwrite">overwrite</a>._
 
@@ -1247,7 +1247,7 @@ _Updating <a href="#blackfluxrobo-config-plugin-target-ref-circleciconfigyml">.c
           <li><a href="#blackfluxrobo-config-plugin-req-ref-github">github</a></li>
           <li><a href="#blackfluxrobo-config-plugin-req-ref-circleci">circleci</a></li>
           <li><a href="#blackfluxrobo-config-plugin-req-ref-coveralls">coveralls</a></li>
-          <li><a href="#blackfluxrobo-config-plugin-req-ref-elasticsearch">elasticsearch</a></li>
+          <li><a href="#blackfluxrobo-config-plugin-req-ref-opensearch">opensearch</a></li>
           <li><a href="#blackfluxrobo-config-plugin-req-ref-dependabot">dependabot</a></li>
           <li><a href="#blackfluxrobo-config-plugin-req-ref-semantic-release">semantic-release</a></li>
         </ul>
@@ -1690,11 +1690,11 @@ Very similar functionality to npm cli.
 Enables displaying of a status badge indicated code coverage percent of the project.
 Furthermore allows anyone to easily drill down into missing coverage or coverage changes.
 
-### <a name="blackfluxrobo-config-plugin-req-ref-elasticsearch">elasticsearch</a> ([`link`](https://www.elastic.co/products/elasticsearch)) 
+### <a name="blackfluxrobo-config-plugin-req-ref-opensearch">opensearch</a> ([`link`](https://opensearch.org/)) 
 
 *Data store.*
 
-Elasticsearch is a search engine based on the Lucene library.
+Opensearch is a search engine based on the Lucene library.
 
 ### <a name="blackfluxrobo-config-plugin-req-ref-david-dm">david-dm</a> ([`link`](https://david-dm.org/)) 
 
