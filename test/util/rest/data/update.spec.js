@@ -21,7 +21,7 @@ describe('Testing data formats', { useTmpDir: true }, () => {
 
   before(() => {
     instantiateIndex = () => {
-      index = Index({ endpoint: process.env.elasticsearchEndpoint });
+      index = Index({ endpoint: process.env.opensearchEndpoint });
       registerEntitiesForIndex(index);
     };
     createIndexVersion = async (dir) => {

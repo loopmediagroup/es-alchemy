@@ -10,7 +10,7 @@ describe('Testing signature', { useTmpDir: true }, () => {
   let offerId;
 
   beforeEach(async ({ dir }) => {
-    index = Index({ endpoint: process.env.elasticsearchEndpoint });
+    index = Index({ endpoint: process.env.opensearchEndpoint });
     registerEntitiesForIndex(index);
     expect(await index.index.versions.persist(dir)).to.equal(true);
     expect(await index.index.versions.load(dir)).to.equal(undefined);

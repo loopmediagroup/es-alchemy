@@ -1,7 +1,7 @@
 {
   "name": "es-alchemy",
   "version": "0.0.0-development",
-  "description": "Simplification of Elasticsearch interactions",
+  "description": "Simplification of Opensearch interactions",
   "main": "lib/index.js",
   "scripts": {
     "clean": "rm -rf lib",
@@ -26,6 +26,7 @@
   },
   "keywords": [
     "elasticsearch",
+    "opensearch",
     "abstraction",
     "simplification",
     "sdk",
@@ -44,7 +45,7 @@
     "@babel/core": "7.16.0",
     "@babel/register": "7.16.0",
     "@blackflux/eslint-plugin-rules": "2.0.4",
-    "@blackflux/robo-config-plugin": "5.3.7",
+    "@blackflux/robo-config-plugin": "5.3.8",
     "babel-eslint": "10.1.0",
     "babel-preset-latest-node": "5.5.1",
     "chai": "4.3.4",

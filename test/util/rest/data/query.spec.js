@@ -10,7 +10,7 @@ describe('Testing Rest Query', { useTmpDir: true, timeout: 10000 }, () => {
   let index;
 
   beforeEach(async ({ dir }) => {
-    index = Index({ endpoint: process.env.elasticsearchEndpoint });
+    index = Index({ endpoint: process.env.opensearchEndpoint });
     registerEntitiesForIndex(index);
     assert(await index.rest.mapping.create('offer') === true, 'Offer index exists');
     assert(await index.rest.alias.update('offer') === true, 'Offer alias exists');

@@ -35,7 +35,7 @@ module.exports.describe = (name, fn) => {
     useTmpDir: true
   }, () => {
     beforeEach(async ({ dir }) => {
-      index = Index({ endpoint: process.env.elasticsearchEndpoint });
+      index = Index({ endpoint: process.env.opensearchEndpoint });
       Object.entries(mdls).forEach(([k, v]) => {
         index.model.register(k, v);
       });

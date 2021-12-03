@@ -1,7 +1,7 @@
 {
   "@blackflux/robo-config-plugin": {
     "tasks": [
-      "assorted/@npm-opensource-es"
+      "assorted/@npm-opensource-os"
     ],
     "variables": {
       "nodeVersion": "12",
