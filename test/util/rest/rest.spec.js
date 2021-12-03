@@ -12,7 +12,7 @@ describe('Testing rest', { useTmpDir: true }, () => {
     init = async (opts = {}) => {
       // setup
       const index = Index({
-        endpoint: process.env.elasticsearchEndpoint,
+        endpoint: process.env.opensearchEndpoint,
         ...opts
       });
       registerEntitiesForIndex(index);

@@ -12,7 +12,7 @@ docker build \
   -f docker/Dockerfile \
   . &&
 docker run \
-  --link os1:elasticsearch \
+  --link os1:opensearch \
   -u`id -u`:`id -g` \
   -v $(pwd):/user/project \
   -v ~/.aws:/user/.aws \

@@ -7,7 +7,7 @@ describe('Testing stats', () => {
   let index;
 
   beforeEach(() => {
-    index = Index({ endpoint: process.env.elasticsearchEndpoint });
+    index = Index({ endpoint: process.env.opensearchEndpoint });
   });
 
   it('Testing nodes stats', async () => {

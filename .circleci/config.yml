@@ -72,7 +72,7 @@ jobs:
     docker:
       - image: circleci/node:12
         environment:
-          elasticsearchEndpoint: localhost:9200
+          opensearchEndpoint: localhost:9200
       - image: opensearchproject/opensearch:1.0.1
         environment:
           - discovery.type=single-node
@@ -135,7 +135,7 @@ jobs:
     docker:
       - image: circleci/node:14
         environment:
-          elasticsearchEndpoint: localhost:9200
+          opensearchEndpoint: localhost:9200
       - image: opensearchproject/opensearch:1.0.1
         environment:
           - discovery.type=single-node
@@ -184,7 +184,7 @@ jobs:
     docker:
       - image: circleci/node:16
         environment:
-          elasticsearchEndpoint: localhost:9200
+          opensearchEndpoint: localhost:9200
       - image: opensearchproject/opensearch:1.0.1
         environment:
           - discovery.type=single-node

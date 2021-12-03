@@ -16,7 +16,7 @@ describe('Testing prune', {
 
   before(() => {
     instantiateIndex = () => {
-      index = Index({ endpoint: process.env.elasticsearchEndpoint });
+      index = Index({ endpoint: process.env.opensearchEndpoint });
       registerEntitiesForIndex(index);
     };
     const [offerModelPath, offerIndexPath] = ['models', 'indices']
