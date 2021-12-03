@@ -16,7 +16,7 @@ describe('Testing synced', { useTmpDir: true }, () => {
 
   before(() => {
     instantiateIndex = () => {
-      index = Index({ endpoint: process.env.elasticsearchEndpoint });
+      index = Index({ endpoint: process.env.opensearchEndpoint });
       registerEntitiesForIndex(index);
     };
     persistAndLoadVersion = async (dir) => {

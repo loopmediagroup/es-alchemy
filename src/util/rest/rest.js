@@ -70,7 +70,7 @@ module.exports = (getFields, getRels, getMapping, getSpecs, models, versions, op
         validateStatus: () => true,
         url: [
           `${get(options, 'protocol', 'http')}:/`,
-          get(options, 'endpoint', 'elasticsearch:9200'),
+          get(options, 'endpoint', 'opensearch:9200'),
           idx.replace(/@/g, '%40').replace(/,/g, '%2C'),
           endpoint
         ].filter((e) => e !== '').join('/'),

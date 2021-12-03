@@ -9,7 +9,7 @@
 [![Semantic-Release](https://github.com/blackflux/js-gardener/blob/master/assets/icons/semver.svg)](https://github.com/semantic-release/semantic-release)
 [![Gardener](https://github.com/blackflux/js-gardener/blob/master/assets/badge.svg)](https://github.com/blackflux/js-gardener)
 
-Simplification of Elasticsearch interactions
+Simplification of Opensearch interactions
 
 ## Install
 
@@ -23,11 +23,11 @@ Outline of how [ESAlchemy](https://github.com/loopmediagroup/es-alchemy) can be 
 
 - Define data models
 - Define indices based on the data models
-- Generate (versioned) schemas for indices, create them in Elasticsearch and alias them for querying
+- Generate (versioned) schemas for indices, create them in Opensearch and alias them for querying
 - Obtain input data as defined in the source mappings of index and remap it
-- Insert remapped data into Elasticsearch
+- Insert remapped data into Opensearch
 - Build a query using the ES-Alchemy query syntax
-- Run query against Elasticsearch
+- Run query against Opensearch
 - Map result to simplified representation with paging information
 
 ### Model and Index Definitions
@@ -54,7 +54,7 @@ Example: **address.json**
 Preferably a folder `models` contains a json file for each model. An example can be
 found in the [test folder](test/models).
 
-Fields that can be used and how they get mapped in Elasticsearch can
+Fields that can be used and how they get mapped in Opensearch can
 be found [here](src/resources/field-definitions.js).
 
 #### Indices
@@ -101,7 +101,7 @@ Nodes are defined recursively and each node has the following fields:
 
 ##### settings
 
-Elasticsearch [index settings](https://www.elastic.co/guide/en/elasticsearch/reference/current/index-modules.html#index-modules-settings). Can only be defined top level.
+Opensearch [index settings](https://www.elastic.co/guide/en/elasticsearch/reference/current/index-modules.html#index-modules-settings). Can only be defined top level.
 
 ##### version
 
@@ -161,8 +161,8 @@ To indicate that a `to-many` relationship is defined, append `[]` to the model n
 Type: `boolean`<br>
 Default: `false`
 
-This flag sets `include_in_root` to true on the generated Elasticsearch mapping.
-Internally in Elasticsearch this means all fields get flattened into the root document of the mapping.
+This flag sets `include_in_root` to true on the generated Opensearch mapping.
+Internally in Opensearch this means all fields get flattened into the root document of the mapping.
 
 This is useful to reduce storage size by de-duplicating and to enforce
 `union` target style queries (see corresponding section for more on this).
@@ -190,7 +190,7 @@ Mappings can be obtained from indices by calling:
 
 `esa.index.getMapping("indexName");`
 
-To (re)create a mapping in Elasticsearch run:
+To (re)create a mapping in Opensearch run:
 
 ```js
 Promise.all(esa.index.list().map((idx) => esa.rest.mapping.recreate(idx)))
@@ -201,8 +201,8 @@ Promise.all(esa.index.list().map((idx) => esa.rest.mapping.recreate(idx)))
 
 ### Remapping and Ingesting Data
 
-To insert data into Elasticsearch we need a *source object*. Data is then extracted from this source object
-and remapped into a *target object* that can be ingested into Elasticsearch.
+To insert data into Opensearch we need a *source object*. Data is then extracted from this source object
+and remapped into a *target object* that can be ingested into Opensearch.
 
 To define how the source object gets remapped, the `sources` fields in the nodes of the index are used.
 
@@ -231,7 +231,7 @@ esa.rest.data
 
 ### Building Queries
 
-To query data in Elasticsearch we first need to build a query. This is done using the ESAlchemy query syntax.
+To query data in Opensearch we first need to build a query. This is done using the ESAlchemy query syntax.
 
 List of all available commands for `filterBy`, `orderBy` and `scoreBy` can be found [here](src/resources/action-map.js).
 
@@ -297,21 +297,21 @@ Results to skip at the beginning of the results.
 Type: `string`<br>
 Default: `http`
 
-The protocol for connecting to Elasticsearch. Can be `http` or `https`.
+The protocol for connecting to Opensearch. Can be `http` or `https`.
 
 #### endpoint
 
 Type: `string`<br>
-Default: `elasticsearch:9200`
+Default: `opensearch:9200`
 
-The endpoint for connecting to Elasticsearch. Common values include `localhost:9200`.
+The endpoint for connecting to Opensearch. Common values include `localhost:9200`.
 
 #### aws
 
 Type: `object`<br>
 Default: `{}`
 
-Allow connection to AWS Elasticsearch instance by passing
+Allow connection to AWS Opensearch instance by passing
 in object containing `accessKeyId` and `secretAccessKey`.
 
 #### responseHook
@@ -372,7 +372,7 @@ Available commands
 - `versions.getModel(name: String)` - get top level model for this index (should never be changed)
 - `register(name: String, definitions: Object)` - register an index with ES-Alchemy
 - `list()` - list all indices registered with ES-Alchemy
-- `getMapping(name: String)` - get the mapping for Elasticsearch for this index
+- `getMapping(name: String)` - get the mapping for Opensearch for this index
 - `getFields(name: String)` - get all fields (including nested) for this index
 
 #### data
@@ -386,31 +386,31 @@ Available commands
 
 #### rest
 
-Interacting with the rest api of Elasticsearch
+Interacting with the rest api of Opensearch
 
-- `call(method: String, name: String, options: Object)` - make direct API call to Elasticsearch
+- `call(method: String, name: String, options: Object)` - make direct API call to Opensearch
 - `alias.get(name: String)` - return the index version for alias
 - `alias.update(name: String)` - update alias for index, linking to current index version
 - `alias.updated(name: String)` - returns true if alias points to current index version
-- `mapping.apply(index: String)` - Creates tracked (known) indices in Elasticsearch when missing
+- `mapping.apply(index: String)` - Creates tracked (known) indices in Opensearch when missing
 - `mapping.applied(index: String)` - returns true if every local versions exists remotely
-- `mapping.create(name: String)` - create mapping on Elasticsearch (call when version changes)
-- `mapping.delete(name: String)` - delete mapping from Elasticsearch (deletes _all_ versions)
+- `mapping.create(name: String)` - create mapping on Opensearch (call when version changes)
+- `mapping.delete(name: String)` - delete mapping from Opensearch (deletes _all_ versions)
 - `mapping.exists(name: String)` - returns `true` if latest mapping exists
-- `mapping.get(name: String)` - get mapping details from Elasticsearch (against alias)
-- `mapping.list()` - Lists all mappings currently in Elasticsearch
-- `mapping.prune(index: String)` - Removes index versions from Elasticsearch that are not tracked (unknown)
+- `mapping.get(name: String)` - get mapping details from Opensearch (against alias)
+- `mapping.list()` - Lists all mappings currently in Opensearch
+- `mapping.prune(index: String)` - Removes index versions from Opensearch that are not tracked (unknown)
 - `mapping.pruned(index: String)` - returns true if all remote versions exist locally
-- `mapping.recreate(name: String)` - recreate mapping on Elasticsearch (deletes _all_ versions and recreates current version)
+- `mapping.recreate(name: String)` - recreate mapping on Opensearch (deletes _all_ versions and recreates current version)
 - `data.count(name: String, filter: Object = null)` - get number of indexed elements from alias
 - `data.exists(index: String, id: String)` - check if document exists in any index version
-- `data.query(name: String, filter: Object, options: Object)` - query for data in Elasticsearch against alias. Returns raw result body from elasticsearch.
-- `data.refresh(name: String)` - refresh Elasticsearch index, useful e.g. when testing (all versions)
+- `data.query(name: String, filter: Object, options: Object)` - query for data in Opensearch against alias. Returns raw result body from Opensearch.
+- `data.refresh(name: String)` - refresh Opensearch index, useful e.g. when testing (all versions)
 - `data.signature(index: String, id: String)` - get signature as `${_seq_no}_${_primary_term}_${idx}@${version}` in alias for document or `null_${idx}@${version}` if document does not exist
 - `data.stats()` - returns all the statistics for the nodes in a cluster like: indices, cpu usage and other meta
 - `data.synced(index: String)` - returns true if all local index version exists on remote and have the same document count
 - `data.uniques(index: String, fields: String[] || String, opts = { filterBy = {}, limit = 20, cursor = null, count = boolean })` - get unique values from index for field, using filter. When count true, the counts per unique are returned
-- `data.update(options: Object)` - update or delete documents in Elasticsearch (all index versions)
+- `data.update(options: Object)` - update or delete documents in Opensearch (all index versions)
 - `data.version(index: String, id: String)` - get version number in alias for document or null if document does not exist
 
 
@@ -422,10 +422,10 @@ All tests need to be run in docker. Start with:
 . manage.sh
 ```
 
-To test Elasticsearch works correctly, run
+To test Opensearch works correctly, run
 
 ```bash
-curl http://elasticsearch:9200/_cluster/health
+curl http://opensearch:9200/_cluster/health
 ```
 
 Run all tests with

@@ -8,7 +8,7 @@ describe('Testing alias update', () => {
   let getAliases;
 
   beforeEach(() => {
-    index = Index({ endpoint: process.env.elasticsearchEndpoint });
+    index = Index({ endpoint: process.env.opensearchEndpoint });
     registerEntitiesForIndex(index);
     getAliases = async () => {
       const r = await index.rest.call('GET', '_cat/aliases');

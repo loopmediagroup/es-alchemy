@@ -10,7 +10,7 @@ describe('Testing apply', {
   let getIndices;
 
   beforeEach(() => {
-    index = Index({ endpoint: process.env.elasticsearchEndpoint });
+    index = Index({ endpoint: process.env.opensearchEndpoint });
     registerEntitiesForIndex(index);
     getIndices = async (idx) => {
       const r = await index.rest.call('GET', `_cat/indices/${idx}@*`);
@@ -18,7 +18,7 @@ describe('Testing apply', {
     };
   });
 
-  it('Test adding missing index to ElasticSearch', async ({ dir }) => {
+  it('Test adding missing index to Opensearch', async ({ dir }) => {
     expect(await index.rest.mapping.create('offer')).to.equal(true);
     expect(index.index.versions.persist(dir)).to.equal(true);
     index.index.versions.load(dir);
@@ -29,7 +29,7 @@ describe('Testing apply', {
     expect(await index.rest.mapping.delete('offer')).to.equal(true);
   });
 
-  it('Test apply no missing index in ElasticSearch', async ({ dir }) => {
+  it('Test apply no missing index in Opensearch', async ({ dir }) => {
     expect(await index.rest.mapping.create('offer')).to.equal(true);
     expect(index.index.versions.persist(dir)).to.equal(true);
     index.index.versions.load(dir);

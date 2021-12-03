@@ -9,7 +9,7 @@ describe('Testing count', { useTmpDir: true }, () => {
   let offerId;
 
   beforeEach(async ({ dir }) => {
-    index = Index({ endpoint: process.env.elasticsearchEndpoint });
+    index = Index({ endpoint: process.env.opensearchEndpoint });
     registerEntitiesForIndex(index);
     offerId = uuid4();
     expect(await index.rest.mapping.create('offer')).to.equal(true);

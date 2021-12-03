@@ -7,7 +7,7 @@ describe('Testing stats', () => {
   let index;
 
   beforeEach(() => {
-    index = Index({ endpoint: process.env.elasticsearchEndpoint });
+    index = Index({ endpoint: process.env.opensearchEndpoint });
   });
 
   it('Testing nodes stats', async () => {
@@ -17,7 +17,6 @@ describe('Testing stats', () => {
       nodes: Joi.object()
         .pattern(Joi.string(), Joi.object()
           .keys({
-            attributes: Joi.object(),
             indices: Joi.object(),
             os: Joi.object().keys({
               cpu: Joi.object().keys({

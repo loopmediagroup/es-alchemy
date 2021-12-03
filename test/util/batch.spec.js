@@ -7,7 +7,7 @@ describe('Testing batch files', { timeout: 10000 }, () => {
   let index;
 
   beforeEach(() => {
-    index = Index({ endpoint: process.env.elasticsearchEndpoint });
+    index = Index({ endpoint: process.env.opensearchEndpoint });
   });
 
   it('Query with Batch Examples', async () => {
