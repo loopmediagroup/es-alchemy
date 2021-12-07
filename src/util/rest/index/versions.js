@@ -2,7 +2,7 @@ module.exports.getIndexVersions = async (call, idx) => {
   const result = await call('GET', '', {
     endpoint: `_cat/indices/${idx}@*`
   });
-  return result.body.map(({ index }) => index.split('@')[1]);
+  return Array.isArray(result.body) ? result.body.map(({ index }) => index.split('@')[1]) : [];
 };
 
 module.exports.createIndexVersion = (call, idx, mapping) => call(
