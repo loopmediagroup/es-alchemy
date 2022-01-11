@@ -67,13 +67,14 @@ jobs:
           key: yarn-packages-{{ checksum "yarn.lock" }}
           paths:
             - ~/.cache/yarn
+      - run: yarn global add semantic-release
       - run: yarn run semantic-release
   test-node-v12:
     docker:
       - image: circleci/node:12
         environment:
           opensearchEndpoint: localhost:9200
-      - image: opensearchproject/opensearch:1.0.1
+      - image: opensearchproject/opensearch:1.1.0
         environment:
           - discovery.type=single-node
           - plugins.security.disabled=true
@@ -136,7 +137,7 @@ jobs:
       - image: circleci/node:14
         environment:
           opensearchEndpoint: localhost:9200
-      - image: opensearchproject/opensearch:1.0.1
+      - image: opensearchproject/opensearch:1.1.0
         environment:
           - discovery.type=single-node
           - plugins.security.disabled=true
@@ -185,7 +186,7 @@ jobs:
       - image: circleci/node:16
         environment:
           opensearchEndpoint: localhost:9200
-      - image: opensearchproject/opensearch:1.0.1
+      - image: opensearchproject/opensearch:1.1.0
         environment:
           - discovery.type=single-node
           - plugins.security.disabled=true
