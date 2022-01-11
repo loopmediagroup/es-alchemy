@@ -4,13 +4,12 @@ docker run \
   --name os1 \
   -e "discovery.type=single-node" \
   -e "plugins.security.disabled=true" \
-  -d opensearchproject/opensearch:1.0.1
+  -d opensearchproject/opensearch:1.1.0
 
 docker build \
   -t lambda-environment-node \
   --network="host" \
-  -f docker/Dockerfile \
-  . &&
+  docker/. &&
 docker run \
   --link os1:opensearch \
   -u`id -u`:`id -g` \
