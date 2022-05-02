@@ -1,7 +1,7 @@
-const { expect } = require('chai');
-const { describe } = require('node-tdd');
-const Index = require('../../src/index');
-const { queryMappings } = require('../helper');
+import { expect } from 'chai';
+import { describe } from 'node-tdd';
+import Index from '../../src/index.js';
+import { queryMappings } from '../helper.js';
 
 describe('Testing batch files', { timeout: 10000 }, () => {
   let index;

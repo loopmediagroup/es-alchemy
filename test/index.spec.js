@@ -1,18 +1,19 @@
-const expect = require('chai').expect;
-const { describe } = require('node-tdd');
-const sfs = require('smart-fs');
-const chai = require('chai');
-const deepEqualInAnyOrder = require('deep-equal-in-any-order');
-const Index = require('../src/index');
-const {
+import { describe } from 'node-tdd';
+import fs from 'smart-fs';
+import * as chai from 'chai';
+import deepEqualInAnyOrder from 'deep-equal-in-any-order';
+import Index from '../src/index.js';
+import {
   indices,
   mappings,
   fields,
   rels,
   registerEntitiesForIndex
-} = require('./helper');
+} from './helper.js';
 
 chai.use(deepEqualInAnyOrder);
+
+const { expect } = chai;
 
 describe('Testing index', {
   useTmpDir: true
@@ -85,7 +86,7 @@ describe('Testing index', {
 
   it('Testing persist', ({ dir }) => {
     expect(index.index.versions.persist(dir)).to.equal(true);
-    expect(sfs.walkDir(dir).sort()).to.deep.equal(
+    expect(fs.walkDir(dir).sort()).to.deep.equal(
       [
         'address@1e828e9acf686cccdcf433488398ca26e8ba43e8.json',
         'location@7a6186ede8ebd095c25a03dc18438d43d7f7bf15.json',

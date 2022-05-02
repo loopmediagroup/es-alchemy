@@ -1,8 +1,8 @@
-const crypto = require('crypto');
+import crypto from 'crypto';
 
-const { buildQuery } = require('../../util/filter');
+import { buildQuery } from '../../util/filter.js';
 
-module.exports = {
+export default {
   distance: ([l, p, loc]) => ({
     _geo_distance: {
       [l]: loc,

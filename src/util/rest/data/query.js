@@ -1,11 +1,11 @@
-const assert = require('assert');
-const get = require('lodash.get');
-const cloneDeep = require('lodash.clonedeep');
-const objectScan = require('object-scan');
-const objectFields = require('object-fields');
-const fieldDefinitions = require('../../../resources/field-definitions');
+import assert from 'assert';
+import get from 'lodash.get';
+import cloneDeep from 'lodash.clonedeep';
+import objectScan from 'object-scan';
+import objectFields from 'object-fields';
+import fieldDefinitions from '../../../resources/field-definitions.js';
 
-module.exports = (call, idx, rels, specs, models, filter) => call('GET', idx, {
+export default (call, idx, rels, specs, models, filter) => call('GET', idx, {
   body: (() => {
     // PART 1: workaround for https://github.com/elastic/elasticsearch/issues/23796
     // inject id requests for all entries

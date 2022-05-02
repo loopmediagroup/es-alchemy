@@ -1,12 +1,12 @@
 // Translate model from esalchemy syntax to ES syntax
-const assert = require('assert');
-const fieldDefinitions = require('../resources/field-definitions');
+import assert from 'assert';
+import fieldDefinitions from '../resources/field-definitions.js';
 
 const getFieldDef = (fieldType) => fieldDefinitions[
   fieldType.endsWith('[]') ? fieldType.slice(0, -2) : fieldType
 ];
 
-module.exports = ({
+export default ({
   compile: (specs) => {
     assert(
       specs.fields instanceof Object && !Array.isArray(specs.fields),

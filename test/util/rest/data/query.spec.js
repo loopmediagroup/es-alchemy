@@ -1,10 +1,10 @@
-const assert = require('assert');
-const { expect } = require('chai');
-const { describe } = require('node-tdd');
-const { v4: uuid4 } = require('uuid');
-const Index = require('../../../../src/index');
-const { registerEntitiesForIndex } = require('../../../helper');
-const { objectEncode } = require('../../../../src/util/paging');
+import assert from 'assert';
+import { expect } from 'chai';
+import { describe } from 'node-tdd';
+import { v4 as uuid4 } from 'uuid';
+import Index from '../../../../src/index.js';
+import { registerEntitiesForIndex } from '../../../helper.js';
+import { objectEncode } from '../../../../src/util/paging.js';
 
 describe('Testing Rest Query', { useTmpDir: true, timeout: 10000 }, () => {
   let index;

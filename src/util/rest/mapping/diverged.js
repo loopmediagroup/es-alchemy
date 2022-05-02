@@ -1,5 +1,5 @@
-const isEqual = require('lodash.isequal');
-const traverse = require('../../../misc/traverse');
+import isEqual from 'lodash.isequal';
+import traverse from '../../../misc/traverse.js';
 
 const listDocuments = async (call, idx, cursor) => {
   const result = await call('GET', idx, {
@@ -14,7 +14,7 @@ const listDocuments = async (call, idx, cursor) => {
   return result.body.hits.hits.map(({ _id: id }) => id);
 };
 
-module.exports = async (call, versions, mapping, idx, cursor = null) => {
+export default async (call, versions, mapping, idx, cursor = null) => {
   const localVersions = Object.keys(versions.get(idx))
     .map((version) => `${idx}@${version}`);
   if (cursor !== null) {

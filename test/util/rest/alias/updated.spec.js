@@ -1,9 +1,9 @@
-const path = require('path');
-const { expect } = require('chai');
-const { describe } = require('node-tdd');
-const sfs = require('smart-fs');
-const Index = require('../../../../src/index');
-const { registerEntitiesForIndex } = require('../../../helper');
+import path from 'path';
+import fs from 'smart-fs';
+import { expect } from 'chai';
+import { describe } from 'node-tdd';
+import Index from '../../../../src/index.js';
+import { registerEntitiesForIndex } from '../../../helper.js';
 
 describe('Testing alias updated', {
   useTmpDir: true
@@ -28,9 +28,9 @@ describe('Testing alias updated', {
     setupNewVersion = async () => {
       instantiateIndex();
       const [offerModelPath, offerIndexPath] = ['models', 'indices']
-        .map((v) => path.join(__dirname, '..', '..', '..', `${v}`, 'offer.json'));
-      const updatedOfferModel = sfs.smartRead(offerModelPath);
-      const updatedOfferIndex = sfs.smartRead(offerIndexPath);
+        .map((v) => path.join(fs.dirname(import.meta.url), '..', '..', '..', `${v}`, 'offer.json'));
+      const updatedOfferModel = fs.smartRead(offerModelPath);
+      const updatedOfferIndex = fs.smartRead(offerIndexPath);
       updatedOfferModel.fields.subhead = 'string';
       updatedOfferIndex.fields.push('subhead');
       index.model.register('offer', updatedOfferModel);

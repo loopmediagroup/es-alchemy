@@ -1,6 +1,6 @@
-const assert = require('assert');
-const { buildQuery } = require('../../util/filter');
-const extractPrefix = require('../../util/extract-prefix');
+import assert from 'assert';
+import { buildQuery } from '../../util/filter.js';
+import extractPrefix from '../../util/extract-prefix.js';
 
 const remap = `
 double remap(def value, def map) {
@@ -25,7 +25,7 @@ const buildNestedQuery = (filter, ctx, target) => (filter === null
   ? { match_all: {} }
   : buildQuery(filter, ctx.allowedFields, extractPrefix(target, ctx.allowedFields)));
 
-module.exports = {
+export default {
   random: ([target, seed, map, filter = null], ctx) => ({
     script_score: {
       script: {

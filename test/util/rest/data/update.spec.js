@@ -1,13 +1,13 @@
-const path = require('path');
-const { expect } = require('chai');
-const { describe } = require('node-tdd');
-const get = require('lodash.get');
-const Joi = require('joi-strict');
-const sfs = require('smart-fs');
-const { v4: uuid4 } = require('uuid');
-const Index = require('../../../../src/index');
-const { registerEntitiesForIndex } = require('../../../helper');
-const { objectEncode } = require('../../../../src/util/paging');
+import path from 'path';
+import { expect } from 'chai';
+import { describe } from 'node-tdd';
+import get from 'lodash.get';
+import Joi from 'joi-strict';
+import fs from 'smart-fs';
+import { v4 as uuid4 } from 'uuid';
+import Index from '../../../../src/index.js';
+import { registerEntitiesForIndex } from '../../../helper.js';
+import { objectEncode } from '../../../../src/util/paging.js';
 
 describe('Testing data formats', { useTmpDir: true }, () => {
   let index;
@@ -31,9 +31,9 @@ describe('Testing data formats', { useTmpDir: true }, () => {
       expect(index.index.versions.load(dir)).to.equal(undefined);
     };
     const [offerModelPath, offerIndexPath] = ['models', 'indices']
-      .map((v) => path.join(__dirname, '..', '..', '..', `${v}`, 'offer.json'));
-    updatedOfferModel = sfs.smartRead(offerModelPath);
-    updatedOfferIndex = sfs.smartRead(offerIndexPath);
+      .map((v) => path.join(fs.dirname(import.meta.url), '..', '..', '..', `${v}`, 'offer.json'));
+    updatedOfferModel = fs.smartRead(offerModelPath);
+    updatedOfferIndex = fs.smartRead(offerIndexPath);
     updatedOfferModel.fields.subhead = 'string';
     updatedOfferIndex.fields.push('subhead');
     queryVersions = async (idx, fields = ['id', 'meta', 'subhead']) => {

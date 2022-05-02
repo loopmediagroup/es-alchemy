@@ -12,7 +12,7 @@ const mkFn = (
   return r;
 };
 
-module.exports = {
+export default {
   date: mkFn({ type: 'date', format: 'yyyy-MM-dd' }),
   boolean: mkFn({ type: 'boolean' }),
   integer: mkFn({ type: 'long' }),

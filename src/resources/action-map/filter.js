@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   nest: (p, l) => ({
     nested: {
       path: p,

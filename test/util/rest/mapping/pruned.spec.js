@@ -1,9 +1,9 @@
-const path = require('path');
-const { expect } = require('chai');
-const { describe } = require('node-tdd');
-const sfs = require('smart-fs');
-const Index = require('../../../../src/index');
-const { registerEntitiesForIndex } = require('../../../helper');
+import path from 'path';
+import { expect } from 'chai';
+import { describe } from 'node-tdd';
+import fs from 'smart-fs';
+import Index from '../../../../src/index.js';
+import { registerEntitiesForIndex } from '../../../helper.js';
 
 describe('Testing pruned', {
   useTmpDir: true
@@ -28,9 +28,9 @@ describe('Testing pruned', {
     setupNewVersion = async () => {
       instantiateIndex();
       const [offerModelPath, offerIndexPath] = ['models', 'indices']
-        .map((v) => path.join(__dirname, '..', '..', '..', `${v}`, 'offer.json'));
-      const updatedOfferModel = sfs.smartRead(offerModelPath);
-      const updatedOfferIndex = sfs.smartRead(offerIndexPath);
+        .map((v) => path.join(fs.dirname(import.meta.url), '..', '..', '..', `${v}`, 'offer.json'));
+      const updatedOfferModel = fs.smartRead(offerModelPath);
+      const updatedOfferIndex = fs.smartRead(offerIndexPath);
       updatedOfferModel.fields.subhead = 'string';
       updatedOfferIndex.fields.push('subhead');
       index.model.register('offer', updatedOfferModel);
@@ -61,7 +61,7 @@ describe('Testing pruned', {
       'offer@a61d200f03686939f0e9b2b924a6d8d7f5acf468'
     ]);
     instantiateIndex();
-    sfs.unlinkSync(path.join(dir, 'offer@c1d54c12486d569d308e2c6f3554b6146b35a60a.json'));
+    fs.unlinkSync(path.join(dir, 'offer@c1d54c12486d569d308e2c6f3554b6146b35a60a.json'));
     expect(index.index.versions.load(dir)).to.equal(undefined);
     expect(await index.rest.mapping.pruned('offer')).to.equal(false);
   });

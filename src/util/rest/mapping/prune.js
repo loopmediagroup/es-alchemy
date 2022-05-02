@@ -1,7 +1,7 @@
-const assert = require('assert');
-const { getIndexVersions, deleteIndexVersion } = require('../index/versions');
+import assert from 'assert';
+import { getIndexVersions, deleteIndexVersion } from '../index/versions.js';
 
-module.exports = async (call, versions, idx) => {
+export default async (call, versions, idx) => {
   const localVersions = Object.keys(versions.get(idx));
   const remoteVersions = await getIndexVersions(call, idx);
   const versionsToPrune = remoteVersions.filter((i) => !localVersions.includes(i));

@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   and: (f) => ({
     bool: {
       filter: f
