@@ -1,10 +1,11 @@
 import get from 'lodash.get';
 import { expect } from 'chai';
 import { describe } from 'node-tdd';
-import * as filter from '../../../src/resources/action-map/filter.js';
+// eslint-disable-next-line import/no-named-default
+import { default as filter } from '../../../src/resources/action-map/filter.js';
 
 const normalize = (q) => {
-  const result = filter.default.search('name', q);
+  const result = filter.search('name', q);
   const ws = get(result, 'bool.filter');
   return ws.map((w) => get(w, 'query_string.query'));
 };
