@@ -1,8 +1,8 @@
-const { expect } = require('chai');
-const set = require('lodash.set');
-const { describe } = require('node-tdd');
-const Joi = require('joi-strict');
-const Versions = require('../../src/util/versions');
+import { expect } from 'chai';
+import set from 'lodash.set';
+import { describe } from 'node-tdd';
+import Joi from 'joi-strict';
+import Versions from '../../src/util/versions.js';
 
 describe('Testing Versions', {
   useTmpDir: true

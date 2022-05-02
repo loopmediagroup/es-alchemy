@@ -1,21 +1,19 @@
-const objectEncode = (obj) => Buffer.from(JSON.stringify(obj)).toString('base64');
-module.exports.objectEncode = objectEncode;
+export const objectEncode = (obj) => Buffer.from(JSON.stringify(obj)).toString('base64');
 
 const objectDecode = (base64) => JSON.parse(Buffer.from(base64, 'base64').toString('utf8'));
 
-module.exports.fromCursor = (cursor) => {
+export const fromCursor = (cursor) => {
   const { limit, offset, searchAfter } = objectDecode(cursor);
   return { limit, offset, searchAfter };
 };
 
-const toCursor = ({
+export const toCursor = ({
   limit = 20,
   offset = 0,
   searchAfter = []
 } = {}) => objectEncode({ limit, offset, searchAfter });
-module.exports.toCursor = toCursor;
 
-const generatePage = ({
+export const generatePage = ({
   hits = null,
   countReturned,
   countTotal,
@@ -57,9 +55,8 @@ const generatePage = ({
     size: limit
   };
 };
-module.exports.generatePage = generatePage;
 
-module.exports.buildPageObject = (hits, filter) => generatePage({
+export const buildPageObject = (hits, filter) => generatePage({
   hits,
   countReturned: hits.hits.length,
   countTotal: hits.total.value,

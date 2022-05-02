@@ -1,10 +1,10 @@
-const path = require('path');
-const { expect } = require('chai');
-const { describe } = require('node-tdd');
-const { v4: uuid4 } = require('uuid');
-const sfs = require('smart-fs');
-const Index = require('../../../../src/index');
-const { registerEntitiesForIndex } = require('../../../helper');
+import path from 'path';
+import { expect } from 'chai';
+import { describe } from 'node-tdd';
+import { v4 as uuid4 } from 'uuid';
+import fs from 'smart-fs';
+import Index from '../../../../src/index.js';
+import { registerEntitiesForIndex } from '../../../helper.js';
 
 describe('Testing synced', { useTmpDir: true }, () => {
   let index;
@@ -30,9 +30,9 @@ describe('Testing synced', { useTmpDir: true }, () => {
     setupNewVersion = async () => {
       instantiateIndex();
       const [offerModelPath, offerIndexPath] = ['models', 'indices']
-        .map((v) => path.join(__dirname, '..', '..', '..', `${v}`, 'offer.json'));
-      const updatedOfferModel = sfs.smartRead(offerModelPath);
-      const updatedOfferIndex = sfs.smartRead(offerIndexPath);
+        .map((v) => path.join(fs.dirname(import.meta.url), '..', '..', '..', `${v}`, 'offer.json'));
+      const updatedOfferModel = fs.smartRead(offerModelPath);
+      const updatedOfferIndex = fs.smartRead(offerIndexPath);
       updatedOfferModel.fields.subhead = 'string';
       updatedOfferIndex.fields.push('subhead');
       index.model.register('offer', updatedOfferModel);

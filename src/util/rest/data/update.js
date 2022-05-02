@@ -1,8 +1,8 @@
-const assert = require('assert');
-const Joi = require('joi-strict');
-const aliasGet = require('../alias/get');
+import assert from 'assert';
+import Joi from 'joi-strict';
+import aliasGet from '../alias/get.js';
 
-module.exports = async (call, versions, actions_) => {
+export default async (call, versions, actions_) => {
   Joi.assert(actions_, Joi.array().items(Joi.object().keys({
     idx: Joi.string().valid(...versions.list()),
     action: Joi.string().valid('update', 'delete'),

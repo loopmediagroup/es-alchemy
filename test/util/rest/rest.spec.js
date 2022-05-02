@@ -1,8 +1,8 @@
-const { expect } = require('chai');
-const { describe } = require('node-tdd');
-const { v4: uuid4 } = require('uuid');
-const Index = require('../../../src/index');
-const { registerEntitiesForIndex } = require('../../helper');
+import { expect } from 'chai';
+import { describe } from 'node-tdd';
+import { v4 as uuid4 } from 'uuid';
+import Index from '../../../src/index.js';
+import { registerEntitiesForIndex } from '../../helper.js';
 
 describe('Testing rest', { useTmpDir: true }, () => {
   let init;

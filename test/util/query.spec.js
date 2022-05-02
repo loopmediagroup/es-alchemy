@@ -1,8 +1,8 @@
-const { expect } = require('chai');
-const { describe } = require('node-tdd');
-const Index = require('../../src/index');
-const { toCursor } = require('../../src/util/paging');
-const { registerEntitiesForIndex, query } = require('../helper');
+import { expect } from 'chai';
+import { describe } from 'node-tdd';
+import Index from '../../src/index.js';
+import { toCursor } from '../../src/util/paging.js';
+import { registerEntitiesForIndex, query } from '../helper.js';
 
 describe('Testing Query Creation', () => {
   let index;

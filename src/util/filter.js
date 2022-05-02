@@ -1,7 +1,7 @@
-const assert = require('assert');
-const actionMapFilter = require('../resources/action-map/filter');
-const actionMapBool = require('../resources/action-map/bool');
-const extractPrefix = require('./extract-prefix');
+import assert from 'assert';
+import actionMapFilter from '../resources/action-map/filter.js';
+import actionMapBool from '../resources/action-map/bool.js';
+import extractPrefix from './extract-prefix.js';
 
 const buildRec = (filterBy, allowedFields, root) => {
   // handle actual filter clause
@@ -60,4 +60,4 @@ const buildRec = (filterBy, allowedFields, root) => {
   return ['', actionMapBool[clause](clause === 'not' ? results[0] : results)];
 };
 
-module.exports.buildQuery = (filterBy, allowedFields, root = null) => buildRec(filterBy, allowedFields, root)[1];
+export const buildQuery = (filterBy, allowedFields, root = null) => buildRec(filterBy, allowedFields, root)[1];

@@ -10,7 +10,8 @@
       "projectName": "es-alchemy",
       "owner": "simlu",
       "ownerName": "Loop Media Group",
-      "mergeBot": "GITL-BuildBot"
+      "mergeBot": "GITL-BuildBot",
+      "nccEnabled": false
     }
   }
 }

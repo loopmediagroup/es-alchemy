@@ -1,7 +1,7 @@
-const assert = require('assert');
-const get = require('lodash.get');
+import assert from 'assert';
+import get from 'lodash.get';
 
-module.exports = (call, idx, id) => call('GET', `${idx}@*`, {
+export default (call, idx, id) => call('GET', `${idx}@*`, {
   endpoint: '_count',
   body: { query: { match: { _id: id } } }
 })

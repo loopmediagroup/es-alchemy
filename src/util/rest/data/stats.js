@@ -1,4 +1,4 @@
-module.exports = (call) => call(
+export default (call) => call(
   'GET',
   '_nodes',
   { endpoint: 'stats' }

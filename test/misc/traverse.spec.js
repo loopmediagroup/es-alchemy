@@ -1,6 +1,6 @@
-const { expect } = require('chai');
-const { describe } = require('node-tdd');
-const traverse = require('../../src/misc/traverse');
+import { expect } from 'chai';
+import { describe } from 'node-tdd';
+import traverse from '../../src/misc/traverse.js';
 
 describe('Testing traverse', () => {
   it('Test all indices are equal', () => {

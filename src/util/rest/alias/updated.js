@@ -1,4 +1,4 @@
-module.exports = async (call, idx, mapping) => {
+export default async (call, idx, mapping) => {
   // eslint-disable-next-line no-underscore-dangle
   const version = `${idx}@${mapping.mappings._meta.hash}`;
   const r = await call('GET', '', { endpoint: `${version}/_alias/${idx}` });

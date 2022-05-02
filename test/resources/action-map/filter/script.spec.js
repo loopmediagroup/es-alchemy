@@ -1,6 +1,6 @@
-const expect = require('chai').expect;
-const { v4: uuid4 } = require('uuid');
-const { describe, upsert, query } = require('../../../helper-filter');
+import { expect } from 'chai';
+import { v4 as uuid4 } from 'uuid';
+import { describe, upsert, query } from '../../../helper-filter.js';
 
 const getTimeline = (type, {
   startDate = '2021-07-20T00:00:00.000Z',

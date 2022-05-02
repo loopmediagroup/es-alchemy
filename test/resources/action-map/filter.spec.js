@@ -1,10 +1,10 @@
-const get = require('lodash.get');
-const expect = require('chai').expect;
-const { describe } = require('node-tdd');
-const { search } = require('../../../src/resources/action-map/filter');
+import get from 'lodash.get';
+import { expect } from 'chai';
+import { describe } from 'node-tdd';
+import * as filter from '../../../src/resources/action-map/filter.js';
 
 const normalize = (q) => {
-  const result = search('name', q);
+  const result = filter.default.search('name', q);
   const ws = get(result, 'bool.filter');
   return ws.map((w) => get(w, 'query_string.query'));
 };

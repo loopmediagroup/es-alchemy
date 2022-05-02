@@ -1,9 +1,9 @@
-const path = require('path');
-const { expect } = require('chai');
-const { describe } = require('node-tdd');
-const sfs = require('smart-fs');
-const Index = require('../../../../src/index');
-const { registerEntitiesForIndex } = require('../../../helper');
+import path from 'path';
+import { expect } from 'chai';
+import { describe } from 'node-tdd';
+import fs from 'smart-fs';
+import Index from '../../../../src/index.js';
+import { registerEntitiesForIndex } from '../../../helper.js';
 
 describe('Testing prune', {
   useTmpDir: true
@@ -20,9 +20,9 @@ describe('Testing prune', {
       registerEntitiesForIndex(index);
     };
     const [offerModelPath, offerIndexPath] = ['models', 'indices']
-      .map((v) => path.join(__dirname, '..', '..', '..', `${v}`, 'offer.json'));
-    updatedOfferModel = sfs.smartRead(offerModelPath);
-    updatedOfferIndex = sfs.smartRead(offerIndexPath);
+      .map((v) => path.join(fs.dirname(import.meta.url), '..', '..', '..', `${v}`, 'offer.json'));
+    updatedOfferModel = fs.smartRead(offerModelPath);
+    updatedOfferIndex = fs.smartRead(offerIndexPath);
     updatedOfferModel.fields.subhead = 'string';
     updatedOfferIndex.fields.push('subhead');
   });
@@ -50,7 +50,7 @@ describe('Testing prune', {
       'offer@c1d54c12486d569d308e2c6f3554b6146b35a60a'
     ]);
     instantiateIndex();
-    sfs.unlinkSync(path.join(dir, 'offer@a61d200f03686939f0e9b2b924a6d8d7f5acf468.json'));
+    fs.unlinkSync(path.join(dir, 'offer@a61d200f03686939f0e9b2b924a6d8d7f5acf468.json'));
     index.index.versions.load(dir);
     expect(await index.rest.mapping.prune('offer')).to.deep.equal(['offer@a61d200f03686939f0e9b2b924a6d8d7f5acf468']);
     expect(await getIndices()).to.deep.equal(['offer@c1d54c12486d569d308e2c6f3554b6146b35a60a']);

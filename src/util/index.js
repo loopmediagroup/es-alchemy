@@ -1,7 +1,7 @@
 // Translate index from esalchemy syntax to ES syntax
-const assert = require('assert');
-const get = require('lodash.get');
-const objectHash = require('object-hash');
+import assert from 'assert';
+import get from 'lodash.get';
+import objectHash from 'object-hash';
 
 const buildPropertiesRec = (node, models) => {
   assert(
@@ -72,44 +72,42 @@ const extractRelsRec = (node, prefix = []) => Object
     );
   }, {});
 
-module.exports = ({
-  generateMapping: (name, specs, models) => {
-    assert(
-      !get(specs, 'model', '').endsWith('[]'),
-      'Root node can not be Array.'
-    );
-    assert(
-      Object.keys(specs).every((e) => [
-        'model', 'fields', 'sources', 'nested', 'flat', 'settings'
-      ].includes(e)),
-      'Bad index definition provided.'
-    );
-    const properties = buildPropertiesRec({
-      model: specs.model,
-      fields: specs.fields,
-      sources: specs.sources,
-      nested: specs.nested,
-      flat: specs.flat
-    }, models);
-    const def = {
-      dynamic: 'false',
-      properties,
-      _meta: {}
-    };
-    const result = { mappings: def };
-    if (specs.settings !== undefined) {
-      result.settings = specs.settings;
-    }
-    // todo: remove if case (breaking)
-    if (Object.keys(result).length === 1 && result.mappings !== undefined) {
-      // eslint-disable-next-line no-underscore-dangle
-      def._meta.hash = objectHash(result.mappings);
-    } else {
-      // eslint-disable-next-line no-underscore-dangle
-      def._meta.hash = objectHash(result);
-    }
-    return result;
-  },
-  extractFields: (specs) => extractFieldsRec(specs),
-  extractRels: (spec) => extractRelsRec(spec)
-});
+export const generateMapping = (name, specs, models) => {
+  assert(
+    !get(specs, 'model', '').endsWith('[]'),
+    'Root node can not be Array.'
+  );
+  assert(
+    Object.keys(specs).every((e) => [
+      'model', 'fields', 'sources', 'nested', 'flat', 'settings'
+    ].includes(e)),
+    'Bad index definition provided.'
+  );
+  const properties = buildPropertiesRec({
+    model: specs.model,
+    fields: specs.fields,
+    sources: specs.sources,
+    nested: specs.nested,
+    flat: specs.flat
+  }, models);
+  const def = {
+    dynamic: 'false',
+    properties,
+    _meta: {}
+  };
+  const result = { mappings: def };
+  if (specs.settings !== undefined) {
+    result.settings = specs.settings;
+  }
+  // todo: remove if case (breaking)
+  if (Object.keys(result).length === 1 && result.mappings !== undefined) {
+    // eslint-disable-next-line no-underscore-dangle
+    def._meta.hash = objectHash(result.mappings);
+  } else {
+    // eslint-disable-next-line no-underscore-dangle
+    def._meta.hash = objectHash(result);
+  }
+  return result;
+};
+export const extractFields = (specs) => extractFieldsRec(specs);
+export const extractRels = (spec) => extractRelsRec(spec);

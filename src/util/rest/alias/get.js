@@ -1,6 +1,6 @@
-const assert = require('assert');
+import assert from 'assert';
 
-module.exports = async (call, idx) => {
+export default async (call, idx) => {
   const result = (await call('GET', '', {
     endpoint: `_cat/aliases/${idx}`
   })).body;

@@ -93,7 +93,7 @@ jobs:
       - image: circleci/node:14
         environment:
           opensearchEndpoint: localhost:9200
-      - image: opensearchproject/opensearch:1.1.0
+      - image: opensearchproject/opensearch:1.2.0
         environment:
           - discovery.type=single-node
           - plugins.security.disabled=true
@@ -142,7 +142,7 @@ jobs:
       - image: circleci/node:16
         environment:
           opensearchEndpoint: localhost:9200
-      - image: opensearchproject/opensearch:1.1.0
+      - image: opensearchproject/opensearch:1.2.0
         environment:
           - discovery.type=single-node
           - plugins.security.disabled=true
@@ -186,7 +186,7 @@ jobs:
       - image: circleci/node:17
         environment:
           opensearchEndpoint: localhost:9200
-      - image: opensearchproject/opensearch:1.1.0
+      - image: opensearchproject/opensearch:1.2.0
         environment:
           - discovery.type=single-node
           - plugins.security.disabled=true

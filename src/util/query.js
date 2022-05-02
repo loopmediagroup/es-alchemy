@@ -1,11 +1,11 @@
-const assert = require('assert');
-const get = require('lodash.get');
-const set = require('lodash.set');
-const isEqual = require('lodash.isequal');
-const actionMap = require('../resources/action-map');
-const { fromCursor } = require('./paging');
-const { buildQuery } = require('./filter');
-const extractPrefix = require('./extract-prefix');
+import assert from 'assert';
+import get from 'lodash.get';
+import set from 'lodash.set';
+import isEqual from 'lodash.isequal';
+import actionMap from '../resources/action-map.js';
+import { fromCursor } from './paging.js';
+import { buildQuery } from './filter.js';
+import extractPrefix from './extract-prefix.js';
 
 const splitPath = (fullPath, mapping, allowedFields) => {
   if (typeof fullPath !== 'string' || !fullPath.includes('.')) {
@@ -28,7 +28,7 @@ const splitPath = (fullPath, mapping, allowedFields) => {
   return [fullPath, idx === 0 ? null : fullPathSplit.splice(0, idx).join('.')];
 };
 
-module.exports.build = (allowedFields, mapping, {
+export const build = (allowedFields, mapping, {
   toReturn = [''],
   filterBy = [],
   orderBy = [],

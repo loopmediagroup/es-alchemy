@@ -1,15 +1,15 @@
-const assert = require('assert');
-const path = require('path');
-const get = require('lodash.get');
-const set = require('lodash.set');
-const has = require('lodash.has');
-const isEqual = require('lodash.isequal');
-const cloneDeep = require('lodash.clonedeep');
-const sfs = require('smart-fs');
-const Joi = require('joi-strict');
-const objectScan = require('object-scan');
-const objectFields = require('object-fields');
-const { extractFields, extractRels } = require('./index');
+import assert from 'assert';
+import path from 'path';
+import get from 'lodash.get';
+import set from 'lodash.set';
+import has from 'lodash.has';
+import isEqual from 'lodash.isequal';
+import cloneDeep from 'lodash.clonedeep';
+import fs from 'smart-fs';
+import Joi from 'joi-strict';
+import objectScan from 'object-scan';
+import objectFields from 'object-fields';
+import { extractFields, extractRels } from './index.js';
 
 const versionSchema = Joi.object().keys({
   timestamp: Joi.number().integer(),
@@ -43,7 +43,7 @@ const validate = (() => {
   return (indexVersions) => scanner(indexVersions, {});
 })();
 
-module.exports = () => {
+export default () => {
   const indexVersions = {};
   const getVersions = (index) => {
     const result = indexVersions[index];
@@ -84,8 +84,8 @@ module.exports = () => {
       Object.entries(indices).forEach(([idx, def]) => {
         const key = `${idx}@${get(def, 'mapping.mappings._meta.hash')}.json`;
         const filePath = path.join(folder, key);
-        if (!sfs.existsSync(filePath)) {
-          sfs.smartWrite(filePath, {
+        if (!fs.existsSync(filePath)) {
+          fs.smartWrite(filePath, {
             timestamp: Math.floor(new Date().getTime() / 1000),
             ...def
           });
@@ -96,12 +96,12 @@ module.exports = () => {
     },
     load: (folder) => {
       assert(Object.keys(indexVersions).length === 0, 'Cannot call load multiple times');
-      const files = sfs.walkDir(folder)
+      const files = fs.walkDir(folder)
         .filter((f) => f.endsWith('.json'))
         .map((f) => f.slice(0, -5));
       assert(files.length !== 0, 'No files found');
       files.forEach((file) => {
-        const def = sfs.smartRead(path.join(folder, `${file}.json`));
+        const def = fs.smartRead(path.join(folder, `${file}.json`));
         Joi.assert(def, versionSchema);
         const defPath = file.split('@');
         def.prepare = (() => {

@@ -1,16 +1,16 @@
-const assert = require('assert');
-const get = require('lodash.get');
-const cloneDeep = require('lodash.clonedeep');
-const model = require('./util/model');
-const index = require('./util/index');
-const data = require('./util/data');
-const query = require('./util/query');
-const Versions = require('./util/versions');
-const rest = require('./util/rest/rest');
-const { generatePage } = require('./util/paging');
-const loadJsonInDir = require('./util/load-json-in-dir');
+import assert from 'assert';
+import get from 'lodash.get';
+import cloneDeep from 'lodash.clonedeep';
+import model from './util/model.js';
+import { generateMapping, extractFields, extractRels } from './util/index.js';
+import { page, remap } from './util/data.js';
+import { build } from './util/query.js';
+import Versions from './util/versions.js';
+import rest from './util/rest/rest.js';
+import { generatePage } from './util/paging.js';
+import loadJsonInDir from './util/load-json-in-dir.js';
 
-module.exports = (options) => {
+const fn = (options) => {
   const versions = Versions();
   const models = {};
   const registerModel = (name, specs) => {
@@ -25,9 +25,9 @@ module.exports = (options) => {
     assert(!name.includes('@'), 'Index name must not include `@`.');
     indices[name] = {
       specs: { name, ...specs },
-      mapping: index.generateMapping(name, specs, models),
-      fields: index.extractFields(specs).concat('_id'),
-      rels: index.extractRels(specs)
+      mapping: generateMapping(name, specs, models),
+      fields: extractFields(specs).concat('_id'),
+      rels: extractRels(specs)
     };
   };
 
@@ -54,11 +54,11 @@ module.exports = (options) => {
       getSpecs: (idx) => cloneDeep(indices[idx].specs)
     },
     data: {
-      remap: (idx, input) => data.remap(indices[idx].specs, input, models),
-      page: (esResult, filter) => data.page(esResult, filter)
+      remap: (idx, input) => remap(indices[idx].specs, input, models),
+      page: (esResult, filter) => page(esResult, filter)
     },
     query: {
-      build: (idx = null, opts = {}) => query.build(
+      build: (idx = null, opts = {}) => build(
         idx === null ? null : indices[idx].fields,
         idx === null ? null : indices[idx].mapping,
         opts
@@ -76,4 +76,6 @@ module.exports = (options) => {
   };
 };
 
-module.exports.loadJsonInDir = loadJsonInDir;
+fn.loadJsonInDir = loadJsonInDir;
+
+export default fn;

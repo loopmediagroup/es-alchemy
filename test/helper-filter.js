@@ -1,39 +1,31 @@
-const path = require('path');
-const assert = require('assert');
-const { expect } = require('chai');
-const sfs = require('smart-fs');
-const { describe } = require('node-tdd');
-const Index = require('../src/index');
+/* eslint-disable mocha/no-exports */
+import path from 'path';
+import assert from 'assert';
+import { expect } from 'chai';
+import fs from 'smart-fs';
+import { describe as desc } from 'node-tdd';
+import Index from '../src/index.js';
 
 let index;
 
 const getCallerFile = () => {
   const originalFunc = Error.prepareStackTrace;
-  const err = new Error();
-  let callerfile;
-  try {
-    Error.prepareStackTrace = (_, stack) => stack;
-    const currentfile = err.stack.shift().getFileName();
-    while (err.stack.length) {
-      callerfile = err.stack.shift().getFileName();
-      if (currentfile !== callerfile) {
-        break;
-      }
-    }
-  } catch (e) { /* ignored */ }
+  Error.prepareStackTrace = (_, stack) => stack;
+  const result = new Error().stack[2].getFileName().slice(5);
   Error.prepareStackTrace = originalFunc;
-  return callerfile;
+  return result;
 };
 
-module.exports.describe = (name, fn) => {
+export const describe = (name, fn) => {
   const testDir = getCallerFile().replace(/\.spec\.js$/, '');
-  const idx = sfs.smartRead(path.join(testDir, 'index.json'));
-  const mdls = sfs.smartRead(path.join(testDir, 'models.json'));
+  const idx = fs.smartRead(path.join(testDir, 'index.json'));
+  const mdls = fs.smartRead(path.join(testDir, 'models.json'));
   const idxName = idx.model;
 
-  describe(name, {
+  desc(name, {
     useTmpDir: true
   }, () => {
+    // eslint-disable-next-line mocha/no-top-level-hooks
     beforeEach(async ({ dir }) => {
       index = Index({ endpoint: process.env.opensearchEndpoint });
       Object.entries(mdls).forEach(([k, v]) => {
@@ -46,16 +38,16 @@ module.exports.describe = (name, fn) => {
       expect(await index.index.versions.load(dir)).to.equal(undefined);
     });
 
+    // eslint-disable-next-line mocha/no-top-level-hooks
     afterEach(async () => {
       assert(await index.rest.mapping.delete(idxName) === true, `${idxName} index delete failed`);
     });
 
-    // eslint-disable-next-line mocha/no-setup-in-describe
     fn(() => index);
   });
 };
 
-module.exports.upsert = async (model, models) => {
+export const upsert = async (model, models) => {
   expect(await index.rest.data.update(models.map((o) => ({
     idx: model,
     action: 'update',
@@ -64,7 +56,7 @@ module.exports.upsert = async (model, models) => {
   expect(await index.rest.data.refresh(model), `${model} refresh failed`).to.equal(true);
 };
 
-module.exports.query = async (model, filterParams) => {
+export const query = async (model, filterParams) => {
   const filter = index.query.build(model, filterParams);
   const queryResult = await index.rest.data.query(model, filter);
   return index.data.page(queryResult, filter).payload;
