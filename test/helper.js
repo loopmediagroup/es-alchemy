@@ -1,32 +1,21 @@
-const path = require('path');
-const Index = require('../src/index');
+import fs from 'smart-fs';
+import path from 'path';
+import Index from '../src/index.js';
 
-const models = Index.loadJsonInDir(path.join(__dirname, 'models'));
-const indices = Index.loadJsonInDir(path.join(__dirname, 'indices'));
-const mappings = Index.loadJsonInDir(path.join(__dirname, 'mappings'));
-const fields = Index.loadJsonInDir(path.join(__dirname, 'fields'));
-const rels = Index.loadJsonInDir(path.join(__dirname, 'rels'));
-const remaps = Index.loadJsonInDir(path.join(__dirname, 'remaps'));
-const query = Index.loadJsonInDir(path.join(__dirname, 'query'));
-const queryMappings = Index.loadJsonInDir(path.join(__dirname, 'query', 'mappings'));
+export const models = Index.loadJsonInDir(path.join(fs.dirname(import.meta.url), 'models'));
+export const indices = Index.loadJsonInDir(path.join(fs.dirname(import.meta.url), 'indices'));
+export const mappings = Index.loadJsonInDir(path.join(fs.dirname(import.meta.url), 'mappings'));
+export const fields = Index.loadJsonInDir(path.join(fs.dirname(import.meta.url), 'fields'));
+export const rels = Index.loadJsonInDir(path.join(fs.dirname(import.meta.url), 'rels'));
+export const remaps = Index.loadJsonInDir(path.join(fs.dirname(import.meta.url), 'remaps'));
+export const query = Index.loadJsonInDir(path.join(fs.dirname(import.meta.url), 'query'));
+export const queryMappings = Index.loadJsonInDir(path.join(fs.dirname(import.meta.url), 'query', 'mappings'));
 
-const registerEntitiesForIndex = (index) => {
+export const registerEntitiesForIndex = (index) => {
   Object.entries(models).forEach(([name, specs]) => {
     index.model.register(name, specs);
   });
   Object.entries(indices).forEach(([name, specs]) => {
     index.index.register(name, specs);
   });
-};
-
-module.exports = {
-  models,
-  indices,
-  mappings,
-  fields,
-  rels,
-  remaps,
-  query,
-  queryMappings,
-  registerEntitiesForIndex
 };

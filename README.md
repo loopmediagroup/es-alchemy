@@ -174,7 +174,7 @@ Note that an index can only be registered once all models used in the index have
 
 <!-- eslint-disable import/no-unresolved -->
 ```js
-const ESA = require('es-alchemy');
+import ESA from 'es-alchemy';
 
 const esa = ESA({ endpoint: 'localhost:9200' });
 
@@ -330,7 +330,7 @@ Example:
 
 <!-- eslint-disable import/no-unresolved -->
 ```js
-const ESA = require('es-alchemy');
+import ESA from 'es-alchemy';
 
 ESA({
   responseHook: ({ request, response }) => {

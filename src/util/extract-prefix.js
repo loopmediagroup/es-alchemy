@@ -1,6 +1,6 @@
-const assert = require('assert');
+import assert from 'assert';
 
-module.exports = (field, allowedFields) => {
+export default (field, allowedFields) => {
   const allowedParent = allowedFields === null
     ? field
     : [field, field.slice(0, field.lastIndexOf('.'))].find((f) => allowedFields.includes(f));

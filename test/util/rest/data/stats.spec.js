@@ -1,7 +1,7 @@
-const { expect } = require('chai');
-const Joi = require('joi-strict');
-const { describe } = require('node-tdd');
-const Index = require('../../../../src/index');
+import { expect } from 'chai';
+import Joi from 'joi-strict';
+import { describe } from 'node-tdd';
+import Index from '../../../../src/index.js';
 
 describe('Testing stats', () => {
   let index;

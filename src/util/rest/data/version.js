@@ -1,7 +1,7 @@
-const assert = require('assert');
-const get = require('lodash.get');
+import assert from 'assert';
+import get from 'lodash.get';
 
-module.exports = (call, idx, mapping, id) => call('GET', idx, { endpoint: `_doc/${id}?_source=false` })
+export default (call, idx, mapping, id) => call('GET', idx, { endpoint: `_doc/${id}?_source=false` })
   .then((r) => {
     const isFound = get(r, 'body.found', null);
     assert([null, true, false].includes(isFound));

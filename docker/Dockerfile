@@ -6,7 +6,7 @@ WORKDIR /user
 ENV HOME /user
 
 RUN touch ~/.bashrc && \
-  curl -o- -L https://yarnpkg.com/install.sh | bash && \
+  yarn -v || npm install --global yarn && \
   source ~/.bashrc
 
 RUN touch ~/.bashrc && \
@@ -22,7 +22,5 @@ RUN chmod -R 757 /user
 
 # set correct execution env
 ENV LAMBDA_TASK_ROOT /user/project
-# disable babel trying to access root file location
-ENV BABEL_DISABLE_CACHE 1
 
 ENTRYPOINT (cd project && bash)

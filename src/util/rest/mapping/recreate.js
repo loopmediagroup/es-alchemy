@@ -1,4 +1,4 @@
-const del = require('./delete');
-const create = require('./create');
+import del from './delete.js';
+import create from './create.js';
 
-module.exports = (call, idx, mapping) => del(call, idx).then((r) => r && create(call, idx, mapping));
+export default (call, idx, mapping) => del(call, idx).then((r) => r && create(call, idx, mapping));

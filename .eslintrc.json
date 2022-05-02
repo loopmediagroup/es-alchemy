@@ -6,7 +6,7 @@
     "plugin:markdown/recommended"
   ],
   "rules": {
-    "@blackflux/rules/istanbul-prevent-ignore": 1,
+    "@blackflux/rules/c8-prevent-ignore": 1,
     "@blackflux/rules/kebab-case-enforce": 1,
     "max-len": [
       "error",
@@ -99,7 +99,12 @@
         "commonjs": true
       }
     ],
-    "mocha/no-mocha-arrows": 0
+    "mocha/no-mocha-arrows": 0,
+    "import/extensions": [
+      2,
+      "always"
+    ],
+    "import/prefer-default-export": 0
   },
   "env": {
     "es6": true,
@@ -112,5 +117,8 @@
     "mocha",
     "@blackflux/rules"
   ],
-  "parser": "@babel/eslint-parser"
+  "parser": "@babel/eslint-parser",
+  "parserOptions": {
+    "requireConfigFile": false
+  }
 }

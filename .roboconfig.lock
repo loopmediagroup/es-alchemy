@@ -1,5 +1,6 @@
 {
   "@blackflux/robo-config-plugin": [
+    ".c8rc.json",
     ".circleci/config.yml",
     ".dependabot/config.yml",
     ".editorconfig",
@@ -12,12 +13,12 @@
     ".releaserc.json",
     "LICENSE",
     "README.md",
-    "babel.config.json",
     "docker/Dockerfile",
     "gardener.js",
     "manage.sh",
     "package.json",
     "src/index.js",
+    "test/hot.js",
     "test/index.spec.js"
   ]
 }

@@ -1,4 +1,4 @@
-module.exports = (...lists) => {
+export default (...lists) => {
   const result = [];
   const cursor = [...Array(lists.length).keys()].map(() => 0);
   const len = Math.max(...lists.map(({ length }) => length));

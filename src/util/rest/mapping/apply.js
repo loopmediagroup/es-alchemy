@@ -1,7 +1,7 @@
-const assert = require('assert');
-const { getIndexVersions, createIndexVersion } = require('../index/versions');
+import assert from 'assert';
+import { getIndexVersions, createIndexVersion } from '../index/versions.js';
 
-module.exports = async (call, versions, idx) => {
+export default async (call, versions, idx) => {
   const localVersions = versions.get(idx);
   const remoteVersions = await getIndexVersions(call, idx);
   const versionsToCreate = Object.entries(localVersions).filter(([key]) => !remoteVersions.includes(key));

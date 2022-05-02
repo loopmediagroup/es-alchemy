@@ -1,6 +1,6 @@
-const expect = require('chai').expect;
-const Index = require('../../src/index');
-const { remaps, registerEntitiesForIndex } = require('../helper');
+import { expect } from 'chai';
+import Index from '../../src/index.js';
+import { remaps, registerEntitiesForIndex } from '../helper.js';
 
 describe('Testing fields meta', () => {
   let index;

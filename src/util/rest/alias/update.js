@@ -1,6 +1,6 @@
-const get = require('lodash.get');
+import get from 'lodash.get';
 
-module.exports = (call, idx, mapping) => call('POST', '', {
+export default (call, idx, mapping) => call('POST', '', {
   endpoint: '_aliases',
   body: {
     actions: [

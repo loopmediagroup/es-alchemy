@@ -1,11 +1,11 @@
-const assert = require('assert');
-const get = require('lodash.get');
-const Joi = require('joi-strict');
-const { fromCursor, toCursor } = require('../../paging');
-const { buildQuery } = require('../../filter');
-const extractPrefix = require('../../extract-prefix');
+import assert from 'assert';
+import get from 'lodash.get';
+import Joi from 'joi-strict';
+import { fromCursor, toCursor } from '../../paging.js';
+import { buildQuery } from '../../filter.js';
+import extractPrefix from '../../extract-prefix.js';
 
-module.exports = (call, idx, allowedFields, fields, opts) => {
+export default (call, idx, allowedFields, fields, opts) => {
   Joi.assert(opts, Joi.object().keys({
     filterBy: Joi.object().optional(),
     limit: Joi.number().integer().min(1).optional(),

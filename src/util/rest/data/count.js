@@ -1,6 +1,6 @@
-const get = require('lodash.get');
+import get from 'lodash.get';
 
-module.exports = (call, idx, filter = null) => call('POST', idx, {
+export default (call, idx, filter = null) => call('POST', idx, {
   endpoint: '_count',
   body: filter !== null ? { query: filter.query } : {}
 })

@@ -1,9 +1,9 @@
-const bool = require('./action-map/bool');
-const filter = require('./action-map/filter');
-const order = require('./action-map/order');
-const score = require('./action-map/score');
+import bool from './action-map/bool.js';
+import filter from './action-map/filter.js';
+import order from './action-map/order.js';
+import score from './action-map/score.js';
 
-module.exports = {
+export default {
   bool,
   filter,
   order,
