@@ -16,6 +16,7 @@ export default {
   date: mkFn({ type: 'date', format: 'yyyy-MM-dd' }),
   boolean: mkFn({ type: 'boolean' }),
   integer: mkFn({ type: 'long' }),
+  email: mkFn({ type: 'keyword' }),
   uuid: mkFn({ type: 'keyword' }),
   id: mkFn({ type: 'keyword' }),
   keyword: mkFn({ type: 'keyword' }),
