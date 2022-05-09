@@ -133,6 +133,7 @@ export default () => {
       }
       validate(indexVersions);
     },
+    raw: () => JSON.parse(JSON.stringify(indexVersions)),
     list: (index = null) => (index === null
       ? Object.keys(indexVersions)
       : Object.keys(getVersions(index)).map((v) => `${index}@${v}`)),

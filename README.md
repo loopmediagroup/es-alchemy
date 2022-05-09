@@ -367,6 +367,7 @@ Available commands
 - `versions.list(name: String)` - List versions locally known for index
 - `versions.persist(folder: String)` - persist index versions to a specified folder (history of versions)
 - `versions.load(folderOrObject: String|Object)` - loads persisted index versions into memory
+- `versions.raw()` - return raw internal data that can be loaded later
 - `versions.getFields(name: String)` - get union of fields for all index versions
 - `versions.getRels(name: String)` - get union of rels for this index (returned as object mapping to node type)
 - `versions.getModel(name: String)` - get top level model for this index (should never be changed)

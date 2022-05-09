@@ -22,6 +22,7 @@ describe('Testing Versions', {
   it('Testing load as object', ({ fixture }) => {
     const r = versions.load(fixture('versions'));
     expect(r).to.equal(undefined);
+    expect(versions.raw()).to.deep.equal(fixture('versions'));
   });
 
   it('Testing list', () => {

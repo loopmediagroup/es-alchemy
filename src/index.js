@@ -45,7 +45,8 @@ const fn = (options) => {
         getRels: (idx) => versions.getRels(idx),
         list: (idx) => versions.list(idx).sort(),
         persist: (folder) => versions.persist(indices, folder),
-        load: (folder) => versions.load(folder)
+        load: (folder) => versions.load(folder),
+        raw: () => versions.raw()
       },
       register: (idx, specs) => registerIndex(idx, specs),
       list: () => Object.keys(indices).sort(),
