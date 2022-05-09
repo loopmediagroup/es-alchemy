@@ -1,0 +1,229 @@
+{
+  "offer": {
+    "c1d54c12486d569d308e2c6f3554b6146b35a60a": {
+      "timestamp": 1604966907,
+      "specs": {
+        "name": "offer",
+        "model": "offer",
+        "fields": [
+          "id",
+          "headline",
+          "meta",
+          "flags"
+        ],
+        "sources": [
+          ""
+        ],
+        "nested": {
+          "locations": {
+            "model": "location[]",
+            "fields": [
+              "id",
+              "name"
+            ],
+            "sources": [
+              "locations"
+            ],
+            "nested": {
+              "address": {
+                "model": "address",
+                "fields": [
+                  "id",
+                  "street",
+                  "city",
+                  "country",
+                  "centre",
+                  "area",
+                  "timezone",
+                  "keywords",
+                  "created"
+                ],
+                "sources": [
+                  "address"
+                ],
+                "flat": true
+              },
+              "tags": {
+                "model": "tag[]",
+                "fields": [
+                  "id",
+                  "name"
+                ],
+                "sources": [
+                  "tags"
+                ]
+              }
+            }
+          },
+          "tags": {
+            "model": "tag[]",
+            "fields": [
+              "id",
+              "name"
+            ],
+            "sources": [
+              "locations.tags"
+            ],
+            "flat": true
+          },
+          "flatAddress": {
+            "model": "address[]",
+            "fields": [
+              "id",
+              "centre",
+              "keywords",
+              "created"
+            ],
+            "sources": [
+              "locations.address"
+            ],
+            "flat": true
+          }
+        }
+      },
+      "mapping": {
+        "mappings": {
+          "dynamic": "false",
+          "properties": {
+            "id": {
+              "type": "keyword"
+            },
+            "headline": {
+              "type": "text"
+            },
+            "meta": {
+              "type": "object",
+              "enabled": false
+            },
+            "flags": {
+              "type": "keyword"
+            },
+            "locations": {
+              "properties": {
+                "id": {
+                  "type": "keyword"
+                },
+                "name": {
+                  "type": "keyword"
+                },
+                "address": {
+                  "properties": {
+                    "id": {
+                      "type": "keyword"
+                    },
+                    "street": {
+                      "type": "text"
+                    },
+                    "city": {
+                      "type": "text"
+                    },
+                    "country": {
+                      "type": "text"
+                    },
+                    "centre": {
+                      "type": "geo_point"
+                    },
+                    "area": {
+                      "type": "geo_shape"
+                    },
+                    "timezone": {
+                      "type": "text"
+                    },
+                    "keywords": {
+                      "type": "keyword"
+                    },
+                    "created": {
+                      "type": "date",
+                      "format": "yyyy-MM-dd'T'HH:mm:ss.SSSX"
+                    }
+                  },
+                  "type": "nested",
+                  "include_in_root": true
+                },
+                "tags": {
+                  "properties": {
+                    "id": {
+                      "type": "keyword"
+                    },
+                    "name": {
+                      "type": "text"
+                    }
+                  },
+                  "type": "nested"
+                }
+              },
+              "type": "nested"
+            },
+            "tags": {
+              "properties": {
+                "id": {
+                  "type": "keyword"
+                },
+                "name": {
+                  "type": "text"
+                }
+              },
+              "type": "nested",
+              "include_in_root": true
+            },
+            "flatAddress": {
+              "properties": {
+                "id": {
+                  "type": "keyword"
+                },
+                "centre": {
+                  "type": "geo_point"
+                },
+                "keywords": {
+                  "type": "keyword"
+                },
+                "created": {
+                  "type": "date",
+                  "format": "yyyy-MM-dd'T'HH:mm:ss.SSSX"
+                }
+              },
+              "type": "nested",
+              "include_in_root": true
+            }
+          },
+          "_meta": {
+            "hash": "c1d54c12486d569d308e2c6f3554b6146b35a60a"
+          }
+        }
+      },
+      "fields": [
+        "id",
+        "headline",
+        "meta",
+        "flags",
+        "locations.id",
+        "locations.name",
+        "locations.address.id",
+        "locations.address.street",
+        "locations.address.city",
+        "locations.address.country",
+        "locations.address.centre",
+        "locations.address.area",
+        "locations.address.timezone",
+        "locations.address.keywords",
+        "locations.address.created",
+        "locations.tags.id",
+        "locations.tags.name",
+        "tags.id",
+        "tags.name",
+        "flatAddress.id",
+        "flatAddress.centre",
+        "flatAddress.keywords",
+        "flatAddress.created",
+        "_id"
+      ],
+      "rels": {
+        "locations": "location[]",
+        "locations.address": "address",
+        "locations.tags": "tag[]",
+        "tags": "tag[]",
+        "flatAddress": "address[]"
+      }
+    }
+  }
+}

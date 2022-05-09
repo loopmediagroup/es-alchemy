@@ -19,6 +19,11 @@ describe('Testing Versions', {
     };
   });
 
+  it('Testing load as object', ({ fixture }) => {
+    const r = versions.load(fixture('versions'));
+    expect(r).to.equal(undefined);
+  });
+
   it('Testing list', () => {
     loadOfferIndex();
     const result = versions.list();
