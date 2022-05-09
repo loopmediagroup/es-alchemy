@@ -94,39 +94,43 @@ export default () => {
       });
       return result;
     },
-    load: (folder) => {
-      assert(Object.keys(indexVersions).length === 0, 'Cannot call load multiple times');
-      const files = fs.walkDir(folder)
-        .filter((f) => f.endsWith('.json'))
-        .map((f) => f.slice(0, -5));
-      assert(files.length !== 0, 'No files found');
-      files.forEach((file) => {
-        const def = fs.smartRead(path.join(folder, `${file}.json`));
-        Joi.assert(def, versionSchema);
-        const defPath = file.split('@');
-        def.prepare = (() => {
-          const retainer = objectFields.Retainer(def.fields);
-          const relsToCheck = Object.entries(def.rels)
-            .filter(([_, v]) => v.endsWith('[]'))
-            .map(([k]) => k);
-          const emptyToNull = objectScan(relsToCheck, {
-            useArraySelector: false,
-            breakFn: ({ value, parent, property }) => {
-              if (Array.isArray(value) && value.length === 0) {
-                // eslint-disable-next-line no-param-reassign
-                parent[property] = null;
+    load: (folderOrDef) => {
+      if (typeof folderOrDef === 'string') {
+        assert(Object.keys(indexVersions).length === 0, 'Cannot call load multiple times');
+        const files = fs.walkDir(folderOrDef)
+          .filter((f) => f.endsWith('.json'))
+          .map((f) => f.slice(0, -5));
+        assert(files.length !== 0, 'No files found');
+        files.forEach((file) => {
+          const def = fs.smartRead(path.join(folderOrDef, `${file}.json`));
+          Joi.assert(def, versionSchema);
+          const defPath = file.split('@');
+          def.prepare = (() => {
+            const retainer = objectFields.Retainer(def.fields);
+            const relsToCheck = Object.entries(def.rels)
+              .filter(([_, v]) => v.endsWith('[]'))
+              .map(([k]) => k);
+            const emptyToNull = objectScan(relsToCheck, {
+              useArraySelector: false,
+              breakFn: ({ value, parent, property }) => {
+                if (Array.isArray(value) && value.length === 0) {
+                  // eslint-disable-next-line no-param-reassign
+                  parent[property] = null;
+                }
               }
-            }
-          });
-          return (doc_) => {
-            const doc = cloneDeep(doc_);
-            retainer(doc);
-            emptyToNull(doc);
-            return doc;
-          };
-        })();
-        set(indexVersions, defPath, def);
-      });
+            });
+            return (doc_) => {
+              const doc = cloneDeep(doc_);
+              retainer(doc);
+              emptyToNull(doc);
+              return doc;
+            };
+          })();
+          set(indexVersions, defPath, def);
+        });
+      } else {
+        Object.assign(indexVersions, folderOrDef);
+      }
       validate(indexVersions);
     },
     list: (index = null) => (index === null
