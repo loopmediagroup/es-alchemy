@@ -100,4 +100,8 @@ describe('Testing index', {
     expect(index.index.versions.persist(dir)).to.equal(true);
     expect(index.index.versions.load(dir)).to.equal(undefined);
   });
+
+  it('Testing raw', async () => {
+    expect(index.index.versions.raw()).to.deep.equal({});
+  });
 });
