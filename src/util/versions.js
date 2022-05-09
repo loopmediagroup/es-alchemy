@@ -129,7 +129,11 @@ export default () => {
           set(indexVersions, defPath, def);
         });
       } else {
-        Object.assign(indexVersions, folderOrDef);
+        objectScan(['*.*'], {
+          filterFn: ({ key, value }) => {
+            set(indexVersions, key, value);
+          }
+        })(folderOrDef);
       }
       validate(indexVersions);
     },
