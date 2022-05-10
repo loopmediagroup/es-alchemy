@@ -108,7 +108,7 @@ export default () => {
         });
       } else {
         assert(Object.keys(folderOrDef).length !== 0, 'No definition found');
-        Object.assign(indexVersions, folderOrDef);
+        Object.assign(indexVersions, cloneDeep(folderOrDef));
       }
       objectScan(['*.*'], {
         filterFn: ({ value: def }) => {
