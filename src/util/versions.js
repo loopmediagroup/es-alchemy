@@ -95,16 +95,25 @@ export default () => {
       return result;
     },
     load: (folderOrDef) => {
+      assert(Object.keys(indexVersions).length === 0, 'Cannot call load multiple times');
       if (typeof folderOrDef === 'string') {
-        assert(Object.keys(indexVersions).length === 0, 'Cannot call load multiple times');
         const files = fs.walkDir(folderOrDef)
           .filter((f) => f.endsWith('.json'))
           .map((f) => f.slice(0, -5));
         assert(files.length !== 0, 'No files found');
         files.forEach((file) => {
           const def = fs.smartRead(path.join(folderOrDef, `${file}.json`));
-          Joi.assert(def, versionSchema);
           const defPath = file.split('@');
+          set(indexVersions, defPath, def);
+        });
+      } else {
+        assert(Object.keys(folderOrDef).length !== 0, 'No definition found');
+        Object.assign(indexVersions, folderOrDef);
+      }
+      objectScan(['*.*'], {
+        filterFn: ({ value: def }) => {
+          Joi.assert(def, versionSchema);
+          // eslint-disable-next-line no-param-reassign
           def.prepare = (() => {
             const retainer = objectFields.Retainer(def.fields);
             const relsToCheck = Object.entries(def.rels)
@@ -126,15 +135,8 @@ export default () => {
               return doc;
             };
           })();
-          set(indexVersions, defPath, def);
-        });
-      } else {
-        objectScan(['*.*'], {
-          filterFn: ({ key, value }) => {
-            set(indexVersions, key, value);
-          }
-        })(folderOrDef);
-      }
+        }
+      })(indexVersions);
       validate(indexVersions);
     },
     raw: () => JSON.parse(JSON.stringify(indexVersions)),
