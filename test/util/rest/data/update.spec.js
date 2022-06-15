@@ -419,7 +419,46 @@ describe('Testing data formats', { useTmpDir: true }, () => {
     ]);
   });
 
-  it('Testing empty update', async () => {
-    expect(await index.rest.data.update([])).to.equal(true);
+  it('Testing empty update throws', async ({ capture }) => {
+    const r = await capture(() => index.rest.data.update([]));
+    expect(r).to.deep.contain({ message: 'No Actions provided' });
+  });
+
+  it('Testing update with raw response', async ({ dir }) => {
+    await setupTwoIndices(dir);
+    const r = await index.rest.data.update([{
+      idx: 'offer',
+      action: 'update',
+      doc: index.data.remap('offer', { id: offerId, meta: { k1: 'v2' } }),
+      signature: '0_1_offer@a61d200f03686939f0e9b2b924a6d8d7f5acf468'
+    }], true);
+    expect(r).to.deep.contain({
+      errors: false,
+      items: [{
+        update: {
+          _index: 'offer@c1d54c12486d569d308e2c6f3554b6146b35a60a',
+          _type: '_doc',
+          _id: offerId,
+          _version: 2,
+          result: 'updated',
+          _shards: { total: 2, successful: 1, failed: 0 },
+          _seq_no: 1,
+          _primary_term: 1,
+          status: 200
+        }
+      }, {
+        update: {
+          _index: 'offer@a61d200f03686939f0e9b2b924a6d8d7f5acf468',
+          _type: '_doc',
+          _id: offerId,
+          _version: 2,
+          result: 'updated',
+          _shards: { total: 2, successful: 1, failed: 0 },
+          _seq_no: 1,
+          _primary_term: 1,
+          status: 200
+        }
+      }]
+    });
   });
 });

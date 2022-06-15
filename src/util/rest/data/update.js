@@ -2,7 +2,7 @@ import assert from 'assert';
 import Joi from 'joi-strict';
 import aliasGet from '../alias/get.js';
 
-export default async (call, versions, actions_) => {
+export default async (call, versions, actions_, raw) => {
   Joi.assert(actions_, Joi.array().items(Joi.object().keys({
     idx: Joi.string().valid(...versions.list()),
     action: Joi.string().valid('update', 'delete'),
@@ -70,7 +70,7 @@ export default async (call, versions, actions_) => {
   });
 
   if (payload.length === 0) {
-    return true;
+    throw new Error('No Actions provided');
   }
   const r = await call('POST', '', {
     endpoint: '_bulk',
@@ -79,6 +79,9 @@ export default async (call, versions, actions_) => {
     json: false
   });
   assert(r.statusCode === 200, r.body);
+  if (raw === true) {
+    return r.body;
+  }
   if (r.body.errors === false) {
     return true;
   }

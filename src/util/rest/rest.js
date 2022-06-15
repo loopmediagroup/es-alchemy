@@ -133,7 +133,7 @@ export default (getFields, getRels, getMapping, getSpecs, models, versions, opti
       stats: () => dataStats(call),
       synced: (idx) => dataSynced(call, versions, idx),
       uniques: (idx, field, opts = {}) => dataUniques(call, idx, getFields(idx), field, opts),
-      update: (opts) => dataUpdate(call, versions, opts),
+      update: (actions, raw = false) => dataUpdate(call, versions, actions, raw),
       version: (idx, id) => dataVersion(call, idx, getMapping(idx), id)
     }
   };
