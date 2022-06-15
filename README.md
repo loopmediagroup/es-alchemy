@@ -411,7 +411,7 @@ Interacting with the rest api of Opensearch
 - `data.stats()` - returns all the statistics for the nodes in a cluster like: indices, cpu usage and other meta
 - `data.synced(index: String)` - returns true if all local index version exists on remote and have the same document count
 - `data.uniques(index: String, fields: String[] || String, opts = { filterBy = {}, limit = 20, cursor = null, count = boolean })` - get unique values from index for field, using filter. When count true, the counts per unique are returned
-- `data.update(options: Object)` - update or delete documents in Opensearch (all index versions)
+- `data.update(actions: Object, raw: Boolean = false)` - update or delete documents in Opensearch (all index versions), raw flag always resolves with full response
 - `data.version(index: String, id: String)` - get version number in alias for document or null if document does not exist
 
 
