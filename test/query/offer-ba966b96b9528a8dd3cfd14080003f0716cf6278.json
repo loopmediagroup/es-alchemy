@@ -211,7 +211,13 @@
                       {
                         "query_string": {
                           "default_field": "name",
-                          "query": "Hoffman-Lee*"
+                          "query": "hoffman*"
+                        }
+                      },
+                      {
+                        "query_string": {
+                          "default_field": "name",
+                          "query": "lee*"
                         }
                       }
                     ]
@@ -223,7 +229,13 @@
                       {
                         "query_string": {
                           "default_field": "desc",
-                          "query": "Hoffman-Lee*"
+                          "query": "hoffman*"
+                        }
+                      },
+                      {
+                        "query_string": {
+                          "default_field": "desc",
+                          "query": "lee*"
                         }
                       }
                     ]
@@ -241,7 +253,13 @@
                                 {
                                   "query_string": {
                                     "default_field": "keywords.names",
-                                    "query": "Hoffman-Lee*"
+                                    "query": "hoffman*"
+                                  }
+                                },
+                                {
+                                  "query_string": {
+                                    "default_field": "keywords.names",
+                                    "query": "lee*"
                                   }
                                 }
                               ]
@@ -264,7 +282,13 @@
                                 {
                                   "query_string": {
                                     "default_field": "venues.name",
-                                    "query": "Hoffman-Lee*"
+                                    "query": "hoffman*"
+                                  }
+                                },
+                                {
+                                  "query_string": {
+                                    "default_field": "venues.name",
+                                    "query": "lee*"
                                   }
                                 }
                               ]
@@ -287,7 +311,13 @@
                                 {
                                   "query_string": {
                                     "default_field": "venues.desc",
-                                    "query": "Hoffman-Lee*"
+                                    "query": "hoffman*"
+                                  }
+                                },
+                                {
+                                  "query_string": {
+                                    "default_field": "venues.desc",
+                                    "query": "lee*"
                                   }
                                 }
                               ]
@@ -310,7 +340,13 @@
                                 {
                                   "query_string": {
                                     "default_field": "categories.name",
-                                    "query": "Hoffman-Lee*"
+                                    "query": "hoffman*"
+                                  }
+                                },
+                                {
+                                  "query_string": {
+                                    "default_field": "categories.name",
+                                    "query": "lee*"
                                   }
                                 }
                               ]

@@ -184,13 +184,13 @@
                       {
                         "query_string": {
                           "default_field": "name",
-                          "query": "Kara*"
+                          "query": "kara*"
                         }
                       },
                       {
                         "query_string": {
                           "default_field": "name",
-                          "query": "Leon*"
+                          "query": "leon*"
                         }
                       }
                     ]
@@ -202,13 +202,13 @@
                       {
                         "query_string": {
                           "default_field": "desc",
-                          "query": "Kara*"
+                          "query": "kara*"
                         }
                       },
                       {
                         "query_string": {
                           "default_field": "desc",
-                          "query": "Leon*"
+                          "query": "leon*"
                         }
                       }
                     ]
@@ -226,13 +226,13 @@
                                 {
                                   "query_string": {
                                     "default_field": "offers.name",
-                                    "query": "Kara*"
+                                    "query": "kara*"
                                   }
                                 },
                                 {
                                   "query_string": {
                                     "default_field": "offers.name",
-                                    "query": "Leon*"
+                                    "query": "leon*"
                                   }
                                 }
                               ]
@@ -255,13 +255,13 @@
                                 {
                                   "query_string": {
                                     "default_field": "offers.desc",
-                                    "query": "Kara*"
+                                    "query": "kara*"
                                   }
                                 },
                                 {
                                   "query_string": {
                                     "default_field": "offers.desc",
-                                    "query": "Leon*"
+                                    "query": "leon*"
                                   }
                                 }
                               ]
@@ -284,13 +284,13 @@
                                 {
                                   "query_string": {
                                     "default_field": "keywords.names",
-                                    "query": "Kara*"
+                                    "query": "kara*"
                                   }
                                 },
                                 {
                                   "query_string": {
                                     "default_field": "keywords.names",
-                                    "query": "Leon*"
+                                    "query": "leon*"
                                   }
                                 }
                               ]
@@ -313,13 +313,13 @@
                                 {
                                   "query_string": {
                                     "default_field": "categories.name",
-                                    "query": "Kara*"
+                                    "query": "kara*"
                                   }
                                 },
                                 {
                                   "query_string": {
                                     "default_field": "categories.name",
-                                    "query": "Leon*"
+                                    "query": "leon*"
                                   }
                                 }
                               ]

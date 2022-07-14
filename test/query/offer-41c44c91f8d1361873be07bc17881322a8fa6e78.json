@@ -241,29 +241,6 @@
                 },
                 {
                   "nested": {
-                    "path": "business",
-                    "query": {
-                      "bool": {
-                        "filter": [
-                          {
-                            "bool": {
-                              "filter": [
-                                {
-                                  "query_string": {
-                                    "default_field": "business.name",
-                                    "query": "2a42ef0bb9db4e1998b732f6c10914a8*"
-                                  }
-                                }
-                              ]
-                            }
-                          }
-                        ]
-                      }
-                    }
-                  }
-                },
-                {
-                  "nested": {
                     "path": "venues",
                     "query": {
                       "bool": {
@@ -297,6 +274,29 @@
                                 {
                                   "query_string": {
                                     "default_field": "venues.desc",
+                                    "query": "2a42ef0bb9db4e1998b732f6c10914a8*"
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "nested": {
+                    "path": "business",
+                    "query": {
+                      "bool": {
+                        "filter": [
+                          {
+                            "bool": {
+                              "filter": [
+                                {
+                                  "query_string": {
+                                    "default_field": "business.name",
                                     "query": "2a42ef0bb9db4e1998b732f6c10914a8*"
                                   }
                                 }

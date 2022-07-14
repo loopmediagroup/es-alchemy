@@ -202,13 +202,13 @@
                       {
                         "query_string": {
                           "default_field": "name",
-                          "query": "Andrea*"
+                          "query": "andrea*"
                         }
                       },
                       {
                         "query_string": {
                           "default_field": "name",
-                          "query": "Reynolds*"
+                          "query": "reynolds*"
                         }
                       }
                     ]
@@ -220,13 +220,13 @@
                       {
                         "query_string": {
                           "default_field": "desc",
-                          "query": "Andrea*"
+                          "query": "andrea*"
                         }
                       },
                       {
                         "query_string": {
                           "default_field": "desc",
-                          "query": "Reynolds*"
+                          "query": "reynolds*"
                         }
                       }
                     ]
@@ -244,13 +244,71 @@
                                 {
                                   "query_string": {
                                     "default_field": "keywords.names",
-                                    "query": "Andrea*"
+                                    "query": "andrea*"
                                   }
                                 },
                                 {
                                   "query_string": {
                                     "default_field": "keywords.names",
-                                    "query": "Reynolds*"
+                                    "query": "reynolds*"
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "nested": {
+                    "path": "venues",
+                    "query": {
+                      "bool": {
+                        "filter": [
+                          {
+                            "bool": {
+                              "filter": [
+                                {
+                                  "query_string": {
+                                    "default_field": "venues.name",
+                                    "query": "andrea*"
+                                  }
+                                },
+                                {
+                                  "query_string": {
+                                    "default_field": "venues.name",
+                                    "query": "reynolds*"
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "nested": {
+                    "path": "venues",
+                    "query": {
+                      "bool": {
+                        "filter": [
+                          {
+                            "bool": {
+                              "filter": [
+                                {
+                                  "query_string": {
+                                    "default_field": "venues.desc",
+                                    "query": "andrea*"
+                                  }
+                                },
+                                {
+                                  "query_string": {
+                                    "default_field": "venues.desc",
+                                    "query": "reynolds*"
                                   }
                                 }
                               ]
@@ -273,71 +331,13 @@
                                 {
                                   "query_string": {
                                     "default_field": "business.name",
-                                    "query": "Andrea*"
+                                    "query": "andrea*"
                                   }
                                 },
                                 {
                                   "query_string": {
                                     "default_field": "business.name",
-                                    "query": "Reynolds*"
-                                  }
-                                }
-                              ]
-                            }
-                          }
-                        ]
-                      }
-                    }
-                  }
-                },
-                {
-                  "nested": {
-                    "path": "venues",
-                    "query": {
-                      "bool": {
-                        "filter": [
-                          {
-                            "bool": {
-                              "filter": [
-                                {
-                                  "query_string": {
-                                    "default_field": "venues.name",
-                                    "query": "Andrea*"
-                                  }
-                                },
-                                {
-                                  "query_string": {
-                                    "default_field": "venues.name",
-                                    "query": "Reynolds*"
-                                  }
-                                }
-                              ]
-                            }
-                          }
-                        ]
-                      }
-                    }
-                  }
-                },
-                {
-                  "nested": {
-                    "path": "venues",
-                    "query": {
-                      "bool": {
-                        "filter": [
-                          {
-                            "bool": {
-                              "filter": [
-                                {
-                                  "query_string": {
-                                    "default_field": "venues.desc",
-                                    "query": "Andrea*"
-                                  }
-                                },
-                                {
-                                  "query_string": {
-                                    "default_field": "venues.desc",
-                                    "query": "Reynolds*"
+                                    "query": "reynolds*"
                                   }
                                 }
                               ]

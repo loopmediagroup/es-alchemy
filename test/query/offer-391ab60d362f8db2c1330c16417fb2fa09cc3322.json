@@ -211,7 +211,7 @@
                       {
                         "query_string": {
                           "default_field": "name",
-                          "query": "Lose*"
+                          "query": "lose*"
                         }
                       },
                       {
@@ -253,7 +253,7 @@
                       {
                         "query_string": {
                           "default_field": "desc",
-                          "query": "Lose*"
+                          "query": "lose*"
                         }
                       },
                       {
@@ -301,7 +301,7 @@
                                 {
                                   "query_string": {
                                     "default_field": "keywords.names",
-                                    "query": "Lose*"
+                                    "query": "lose*"
                                   }
                                 },
                                 {
@@ -354,7 +354,7 @@
                                 {
                                   "query_string": {
                                     "default_field": "venues.name",
-                                    "query": "Lose*"
+                                    "query": "lose*"
                                   }
                                 },
                                 {
@@ -407,7 +407,7 @@
                                 {
                                   "query_string": {
                                     "default_field": "venues.desc",
-                                    "query": "Lose*"
+                                    "query": "lose*"
                                   }
                                 },
                                 {
@@ -460,7 +460,7 @@
                                 {
                                   "query_string": {
                                     "default_field": "categories.name",
-                                    "query": "Lose*"
+                                    "query": "lose*"
                                   }
                                 },
                                 {

@@ -204,7 +204,7 @@
                       {
                         "query_string": {
                           "default_field": "name",
-                          "query": "Two*"
+                          "query": "two*"
                         }
                       },
                       {
@@ -240,7 +240,7 @@
                       {
                         "query_string": {
                           "default_field": "desc",
-                          "query": "Two*"
+                          "query": "two*"
                         }
                       },
                       {
@@ -282,7 +282,7 @@
                                 {
                                   "query_string": {
                                     "default_field": "offers.name",
-                                    "query": "Two*"
+                                    "query": "two*"
                                   }
                                 },
                                 {
@@ -329,7 +329,7 @@
                                 {
                                   "query_string": {
                                     "default_field": "offers.desc",
-                                    "query": "Two*"
+                                    "query": "two*"
                                   }
                                 },
                                 {
@@ -376,7 +376,7 @@
                                 {
                                   "query_string": {
                                     "default_field": "keywords.names",
-                                    "query": "Two*"
+                                    "query": "two*"
                                   }
                                 },
                                 {
@@ -423,7 +423,7 @@
                                 {
                                   "query_string": {
                                     "default_field": "categories.name",
-                                    "query": "Two*"
+                                    "query": "two*"
                                   }
                                 },
                                 {

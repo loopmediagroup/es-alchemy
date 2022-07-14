@@ -190,24 +190,6 @@
           },
           {
             "nested": {
-              "path": "types",
-              "query": {
-                "bool": {
-                  "filter": [
-                    {
-                      "terms": {
-                        "types.id": [
-                          "ee334616-4d0f-5b1f-992a-53f34123cf58"
-                        ]
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          {
-            "nested": {
               "path": "availabilities",
               "query": {
                 "bool": {
@@ -239,6 +221,24 @@
                         "availabilities.created": {
                           "lte": "now-0m"
                         }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "nested": {
+              "path": "types",
+              "query": {
+                "bool": {
+                  "filter": [
+                    {
+                      "terms": {
+                        "types.id": [
+                          "ee334616-4d0f-5b1f-992a-53f34123cf58"
+                        ]
                       }
                     }
                   ]
