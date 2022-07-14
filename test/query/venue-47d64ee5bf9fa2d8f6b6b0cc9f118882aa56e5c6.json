@@ -184,7 +184,7 @@
                       {
                         "query_string": {
                           "default_field": "name",
-                          "query": "Always*"
+                          "query": "always*"
                         }
                       },
                       {
@@ -220,7 +220,7 @@
                       {
                         "query_string": {
                           "default_field": "desc",
-                          "query": "Always*"
+                          "query": "always*"
                         }
                       },
                       {
@@ -262,7 +262,7 @@
                                 {
                                   "query_string": {
                                     "default_field": "offers.name",
-                                    "query": "Always*"
+                                    "query": "always*"
                                   }
                                 },
                                 {
@@ -309,7 +309,7 @@
                                 {
                                   "query_string": {
                                     "default_field": "offers.desc",
-                                    "query": "Always*"
+                                    "query": "always*"
                                   }
                                 },
                                 {
@@ -356,7 +356,7 @@
                                 {
                                   "query_string": {
                                     "default_field": "keywords.names",
-                                    "query": "Always*"
+                                    "query": "always*"
                                   }
                                 },
                                 {
@@ -403,7 +403,7 @@
                                 {
                                   "query_string": {
                                     "default_field": "categories.name",
-                                    "query": "Always*"
+                                    "query": "always*"
                                   }
                                 },
                                 {
