@@ -1,4 +1,5 @@
 import { expect } from 'chai';
+import { describe } from 'node-tdd';
 import Index from '../../src/index.js';
 import { remaps, registerEntitiesForIndex } from '../helper.js';
 
