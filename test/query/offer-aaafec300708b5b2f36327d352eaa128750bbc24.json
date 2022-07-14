@@ -190,44 +190,6 @@
           },
           {
             "nested": {
-              "path": "collections",
-              "query": {
-                "bool": {
-                  "filter": [
-                    {
-                      "match": {
-                        "collections.id": {
-                          "query": "c7e2965d-f9a7-472c-8cb3-119f0648c0a0",
-                          "operator": "and"
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          {
-            "nested": {
-              "path": "regions",
-              "query": {
-                "bool": {
-                  "filter": [
-                    {
-                      "match": {
-                        "regions.id": {
-                          "query": "4b6aea7e-e85a-445d-8726-89e90f28516e",
-                          "operator": "and"
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          {
-            "nested": {
               "path": "availabilities",
               "query": {
                 "bool": {
@@ -258,6 +220,44 @@
                       "range": {
                         "availabilities.created": {
                           "lte": "now-0m"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "nested": {
+              "path": "regions",
+              "query": {
+                "bool": {
+                  "filter": [
+                    {
+                      "match": {
+                        "regions.id": {
+                          "query": "4b6aea7e-e85a-445d-8726-89e90f28516e",
+                          "operator": "and"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "nested": {
+              "path": "collections",
+              "query": {
+                "bool": {
+                  "filter": [
+                    {
+                      "match": {
+                        "collections.id": {
+                          "query": "c7e2965d-f9a7-472c-8cb3-119f0648c0a0",
+                          "operator": "and"
                         }
                       }
                     }

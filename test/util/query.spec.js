@@ -22,6 +22,10 @@ describe('Testing Query Creation', () => {
         limit: v.limit,
         offset: v.offset
       });
+      // fs.smartWrite(
+      //   path.join(fs.dirname(import.meta.url), '..', 'query', `${k}.json`),
+      //   { ...v, result }
+      // );
       expect(result, `Debug: ${JSON.stringify(result)}`).to.deep.equalInAnyOrder(v.result);
     });
   });
@@ -78,25 +82,25 @@ describe('Testing Query Creation', () => {
                   {
                     query_string: {
                       default_field: 'name',
-                      query: 'Crème*'
+                      query: 'creme*'
                     }
                   },
                   {
                     query_string: {
                       default_field: 'name',
-                      query: 'Brulée*'
+                      query: 'brulee*'
                     }
                   },
                   {
                     query_string: {
                       default_field: 'name',
-                      query: 'garçon*'
+                      query: 'garcon*'
                     }
                   },
                   {
                     query_string: {
                       default_field: 'name',
-                      query: 'niÑo*'
+                      query: 'nino*'
                     }
                   }
                 ]

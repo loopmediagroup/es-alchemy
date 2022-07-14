@@ -182,24 +182,6 @@
           },
           {
             "nested": {
-              "path": "venues",
-              "query": {
-                "bool": {
-                  "filter": [
-                    {
-                      "terms": {
-                        "venues.id": [
-                          "eeeb3902-a641-4d68-b995-833b7455d65b"
-                        ]
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          {
-            "nested": {
               "path": "availabilities",
               "query": {
                 "bool": {
@@ -231,6 +213,24 @@
                         "availabilities.created": {
                           "lte": "now-0m"
                         }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "nested": {
+              "path": "venues",
+              "query": {
+                "bool": {
+                  "filter": [
+                    {
+                      "terms": {
+                        "venues.id": [
+                          "eeeb3902-a641-4d68-b995-833b7455d65b"
+                        ]
                       }
                     }
                   ]

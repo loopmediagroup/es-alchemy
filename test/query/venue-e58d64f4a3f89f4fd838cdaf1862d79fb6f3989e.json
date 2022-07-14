@@ -184,7 +184,7 @@
                       {
                         "query_string": {
                           "default_field": "name",
-                          "query": "Well*"
+                          "query": "well*"
                         }
                       },
                       {
@@ -232,7 +232,7 @@
                       {
                         "query_string": {
                           "default_field": "desc",
-                          "query": "Well*"
+                          "query": "well*"
                         }
                       },
                       {
@@ -286,7 +286,7 @@
                                 {
                                   "query_string": {
                                     "default_field": "offers.name",
-                                    "query": "Well*"
+                                    "query": "well*"
                                   }
                                 },
                                 {
@@ -345,7 +345,7 @@
                                 {
                                   "query_string": {
                                     "default_field": "offers.desc",
-                                    "query": "Well*"
+                                    "query": "well*"
                                   }
                                 },
                                 {
@@ -404,7 +404,7 @@
                                 {
                                   "query_string": {
                                     "default_field": "keywords.names",
-                                    "query": "Well*"
+                                    "query": "well*"
                                   }
                                 },
                                 {
@@ -463,7 +463,7 @@
                                 {
                                   "query_string": {
                                     "default_field": "categories.name",
-                                    "query": "Well*"
+                                    "query": "well*"
                                   }
                                 },
                                 {

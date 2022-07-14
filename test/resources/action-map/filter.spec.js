@@ -1,8 +1,8 @@
 import get from 'lodash.get';
 import { expect } from 'chai';
 import { describe } from 'node-tdd';
-// eslint-disable-next-line import/no-named-default
-import { default as filter } from '../../../src/resources/action-map/filter.js';
+import Index from '../../../src/index.js';
+import filter from '../../../src/resources/action-map/filter.js';
 
 const normalize = (q) => {
   const result = filter.search('name', q);
@@ -10,37 +10,57 @@ const normalize = (q) => {
   return ws.map((w) => get(w, 'query_string.query'));
 };
 
+const normalizeOS = async (index, text) => {
+  const { body } = await index.rest.call('GET', '', {
+    endpoint: '_analyze?pretty',
+    body: {
+      tokenizer: 'standard',
+      filter: [
+        'lowercase',
+        'asciifolding',
+        'apostrophe'
+      ],
+      text
+    }
+  });
+  return body.tokens
+    .filter(({ type }) => type !== '<EMOJI>')
+    .map(({ token }) => `${token}*`);
+};
+
+const t = async (index, text) => {
+  const r1 = normalize(text);
+  const r2 = await normalizeOS(index, text);
+  expect(r1).to.deep.equal(r2);
+};
+
 describe('Testing search filter', () => {
-  it('Testing match words', () => {
-    expect(normalize('Crème Brulée garçon niÑo'))
-      .to.deep.equal(['Crème*', 'Brulée*', 'garçon*', 'niÑo*']);
+  let index;
+  before(() => {
+    index = Index({ endpoint: process.env.opensearchEndpoint });
   });
 
-  it('Testing match with dashes', () => {
-    expect(normalize('a-b c- -d'))
-      .to.deep.equal(['a-b*', 'c*', 'd*']);
+  it('Testing match words', async () => {
+    await t(index, 'Crème Brulée garçon niÑo');
   });
 
-  it('Testing match excluded chars', () => {
-    expect(normalize('> = < 😀'))
-      .to.deep.equal([]);
+  it('Testing match with dashes', async () => {
+    await t(index, 'a-b c- -d -');
   });
 
-  it('Testing string containing quotes', () => {
-    expect(normalize('Use this "offer" so it’s permanently “Unavailable”'))
-      .to.deep.equal([
-        'Use*',
-        'this*',
-        'offer*',
-        'so*',
-        'it’s*',
-        'permanently*',
-        'Unavailable*'
-      ]);
+  it('Testing match excluded chars', async () => {
+    await t(index, "> = < 😀 ` ’ '");
   });
 
-  it('Testing empty search', () => {
-    expect(normalize(''))
-      .to.deep.equal([]);
+  it('Testing string containing quotes', async () => {
+    await t(index, 'Use this "offer" so it’s permanently “Unavailable”');
+  });
+
+  it('Testing empty search', async () => {
+    await t(index, '');
+  });
+
+  it('Testing apostrophe mid work', async () => {
+    await t(index, "you’are`there'now");
   });
 });

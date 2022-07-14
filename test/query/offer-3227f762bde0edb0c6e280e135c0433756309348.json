@@ -211,7 +211,7 @@
                       {
                         "query_string": {
                           "default_field": "name",
-                          "query": "Hoffman*"
+                          "query": "hoffman*"
                         }
                       }
                     ]
@@ -223,7 +223,7 @@
                       {
                         "query_string": {
                           "default_field": "desc",
-                          "query": "Hoffman*"
+                          "query": "hoffman*"
                         }
                       }
                     ]
@@ -241,7 +241,7 @@
                                 {
                                   "query_string": {
                                     "default_field": "keywords.names",
-                                    "query": "Hoffman*"
+                                    "query": "hoffman*"
                                   }
                                 }
                               ]
@@ -264,7 +264,7 @@
                                 {
                                   "query_string": {
                                     "default_field": "venues.name",
-                                    "query": "Hoffman*"
+                                    "query": "hoffman*"
                                   }
                                 }
                               ]
@@ -287,7 +287,7 @@
                                 {
                                   "query_string": {
                                     "default_field": "venues.desc",
-                                    "query": "Hoffman*"
+                                    "query": "hoffman*"
                                   }
                                 }
                               ]
@@ -310,7 +310,7 @@
                                 {
                                   "query_string": {
                                     "default_field": "categories.name",
-                                    "query": "Hoffman*"
+                                    "query": "hoffman*"
                                   }
                                 }
                               ]
