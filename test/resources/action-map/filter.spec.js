@@ -67,4 +67,8 @@ describe('Testing search filter', () => {
   it('Testing underscore', async () => {
     await t(index, 'you_are_here B_Dashboard _before after_ _both_');
   });
+
+  it('Testing ascii folding', async () => {
+    await t(index, 'FrFrç');
+  });
 });
