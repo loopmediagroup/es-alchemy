@@ -63,4 +63,8 @@ describe('Testing search filter', () => {
   it('Testing apostrophe mid work', async () => {
     await t(index, "you’are`there'now");
   });
+
+  it('Testing underscore', async () => {
+    await t(index, 'you_are_here B_Dashboard _before after_ _both_');
+  });
 });
