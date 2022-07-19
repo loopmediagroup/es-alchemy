@@ -69,6 +69,6 @@ describe('Testing search filter', () => {
   });
 
   it('Testing ascii folding', async () => {
-    await t(index, 'FrFrç');
+    await t(index, 'FrFrç asd');
   });
 });
