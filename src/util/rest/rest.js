@@ -74,7 +74,7 @@ export default (getFields, getRels, getMapping, getSpecs, models, versions, opti
           idx.replace(/@/g, '%40').replace(/,/g, '%2C'),
           endpoint
         ].filter((e) => e !== '').join('/'),
-        data: body,
+        ...(body === null ? {} : { data: body }),
         headers: requestHeaders
       });
 
