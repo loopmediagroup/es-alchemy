@@ -71,4 +71,12 @@ describe('Testing search filter', () => {
   it('Testing ascii folding', async () => {
     await t(index, 'FrFrç asd');
   });
+
+  it('Testing dot separation', async () => {
+    await t(index, 'first.last');
+  });
+
+  it('Testing plus separation', async () => {
+    await t(index, 'first+last');
+  });
 });

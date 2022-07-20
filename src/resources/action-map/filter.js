@@ -129,11 +129,11 @@ export default {
   }),
   search: (l, r) => ({
     bool: {
-      filter: (r.match(/(?:[a-zA-Z0-9À-ÖØ-öø-ÿ_]|\b['’]\b)+/g) || [])
+      filter: (r.match(/(?:[a-zA-Z0-9À-ÖØ-öø-ÿ_.]|\b['’]\b)+/g) || [])
         .filter((e) => !!e)
         .map((e) => e
           .split(/['’]/)[0]
-          .normalize('NFKD').replace(/[^\w]/g, '')
+          .normalize('NFKD').replace(/[^\w.]/g, '')
           .toLowerCase())
         .map((e) => ({
           query_string: {
