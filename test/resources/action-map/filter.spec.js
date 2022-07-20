@@ -75,4 +75,8 @@ describe('Testing search filter', () => {
   it('Testing dot separation', async () => {
     await t(index, 'first.last');
   });
+
+  it('Testing plus separation', async () => {
+    await t(index, 'first+last');
+  });
 });
