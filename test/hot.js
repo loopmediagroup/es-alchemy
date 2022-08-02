@@ -6,13 +6,14 @@ import { URL } from 'url';
 const lookup = {};
 
 export const resolve = async (specifier, context, defaultResolve) => {
-  const result = defaultResolve(specifier, context, defaultResolve);
+  const result = await defaultResolve(specifier, context, defaultResolve);
   const child = new URL(result.url);
 
   if (
     child.protocol === 'nodejs:'
     || child.protocol === 'node:'
     || child.pathname.includes('/node_modules/')
+    || context.parentURL === undefined
   ) {
     return result;
   }
