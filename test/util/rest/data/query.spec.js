@@ -633,10 +633,13 @@ describe('Testing Rest Query', { useTmpDir: true, timeout: 10000 }, () => {
         offer9 = { id: uuid4(), locations: [location3], flags: ['featured'] };
       });
 
-      it('Testing multiple scoring', async () => {
+      it('Testing multiple scoring lowest score wins', async () => {
         await upsert('offer', [offer1, offer2, offer3, offer4, offer5, offer6, offer7, offer8, offer9]);
         expect((await query('offer', {
           toReturn: ['id', 'flags', 'locations.id', 'locations.address.centre'],
+          orderBy: [
+            ['_score', 'asc']
+          ],
           scoreBy: [
             ['distance', 'locations.address.centre', [0, 0], [
               [0, 7], [157, 7], [157, 3], [314, 3], [314, 2]
@@ -645,15 +648,15 @@ describe('Testing Rest Query', { useTmpDir: true, timeout: 10000 }, () => {
             ['==', 'flags', 'featured', [[0, 0], [1, 0], [1, 11]]]
           ]
         }, { raw: true })).hits.hits.map((o) => o.sort)).to.deep.equal([
-          [18, offer3.id],
-          [14, offer6.id],
-          [13, offer9.id],
-          [10, offer2.id],
-          [7, offer1.id],
-          [6, offer5.id],
-          [5, offer8.id],
+          [2, offer7.id],
           [3, offer4.id],
-          [2, offer7.id]
+          [5, offer8.id],
+          [6, offer5.id],
+          [7, offer1.id],
+          [10, offer2.id],
+          [13, offer9.id],
+          [14, offer6.id],
+          [18, offer3.id]
         ]);
       });
 
