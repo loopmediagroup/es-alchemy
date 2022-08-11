@@ -70,12 +70,15 @@ export const build = (allowedFields, mapping, {
         .map(([path, query]) => (path !== '' ? ({ nested: { path, query, score_mode: 'max' } }) : query))
     ]);
   }
+  const addScore = (
+    scoreBy.length !== 0
+    && !orderBy.some(([field, order]) => field === '_score' && ['asc', 'desc'].includes(order))
+  );
+  const addId = !orderBy.some(([field, order]) => field === '_id' && ['asc', 'desc'].includes(order));
   result.sort = [
     ...orderBy,
-    ...(scoreBy.length !== 0 ? [['_score', 'desc', null]] : []),
-    ...(get(orderBy.slice(-1), '[0][0]') === '_id' && ['asc', 'desc'].includes(get(orderBy.slice(-1), '[0][1]'))
-      ? []
-      : [['_id', 'asc']])
+    ...(addScore ? [['_score', 'desc']] : []),
+    ...(addId ? [['_id', 'asc']] : [])
   ]
     .map((e) => actionMap.order[e[1]]([...splitPath(e[0], mapping, allowedFields), ...e.slice(2)], { allowedFields }));
   if (result.search_after.length === 0) {
