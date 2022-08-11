@@ -72,9 +72,9 @@ export const build = (allowedFields, mapping, {
   }
   const addScore = (
     scoreBy.length !== 0
-    && orderBy.some(([field, order]) => field === '_score' && ['asc', 'desc'].includes(order))
+    && !orderBy.some(([field, order]) => field === '_score' && ['asc', 'desc'].includes(order))
   );
-  const addId = orderBy.some(([field, order]) => field === '_id' && ['asc', 'desc'].includes(order));
+  const addId = !orderBy.some(([field, order]) => field === '_id' && ['asc', 'desc'].includes(order));
   result.sort = [
     ...orderBy,
     ...(addScore ? [['_score', 'desc']] : []),
