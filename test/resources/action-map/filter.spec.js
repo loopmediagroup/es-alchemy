@@ -79,4 +79,16 @@ describe('Testing search filter', () => {
   it('Testing plus separation', async () => {
     await t(index, 'first+last');
   });
+
+  it('Testing email', async () => {
+    await t(index, 'some.name+u10@test.com');
+  });
+
+  it('Testing dot suffix', async () => {
+    await t(index, 'A. THE');
+  });
+
+  it('Testing underscore suffix', async () => {
+    await t(index, 'A_ THE');
+  });
 });
