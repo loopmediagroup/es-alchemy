@@ -70,25 +70,16 @@ export const build = (allowedFields, mapping, {
         .map(([path, query]) => (path !== '' ? ({ nested: { path, query, score_mode: 'max' } }) : query))
     ]);
   }
-  const sort = [...orderBy];
-  let addScore = scoreBy.length !== 0;
-  let addId = true;
-  for (let i = 0; i < sort.length; i += 1) {
-    const [field, order] = sort[i];
-    if (field === '_score' && ['asc', 'desc'].includes(order)) {
-      addScore = false;
-    }
-    if (field === '_id' && ['asc', 'desc'].includes(order)) {
-      addId = false;
-    }
-  }
-  if (addScore) {
-    sort.push(['_score', 'desc']);
-  }
-  if (addId) {
-    sort.push(['_id', 'asc']);
-  }
-  result.sort = sort
+  const addScore = (
+    scoreBy.length !== 0
+    && orderBy.some(([field, order]) => field === '_score' && ['asc', 'desc'].includes(order))
+  );
+  const addId = orderBy.some(([field, order]) => field === '_id' && ['asc', 'desc'].includes(order));
+  result.sort = [
+    ...orderBy,
+    ...(addScore ? [['_score', 'desc']] : []),
+    ...(addId ? [['_id', 'asc']] : [])
+  ]
     .map((e) => actionMap.order[e[1]]([...splitPath(e[0], mapping, allowedFields), ...e.slice(2)], { allowedFields }));
   if (result.search_after.length === 0) {
     delete result.search_after;
