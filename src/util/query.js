@@ -6,6 +6,7 @@ import actionMap from '../resources/action-map.js';
 import { fromCursor } from './paging.js';
 import { buildQuery } from './filter.js';
 import extractPrefix from './extract-prefix.js';
+import { normalize } from './index.js';
 
 const splitPath = (fullPath, mapping, allowedFields) => {
   if (typeof fullPath !== 'string' || !fullPath.includes('.')) {
@@ -76,11 +77,19 @@ export const build = (allowedFields, mapping, {
   );
   const addId = !orderBy.some(([field, order]) => field === '_id' && ['asc', 'desc'].includes(order));
   result.sort = [
-    ...orderBy,
+    ...orderBy.map(([field, ...args]) => [
+      typeof field === 'string' ? normalize(field) : field,
+      ...args
+    ]),
     ...(addScore ? [['_score', 'desc']] : []),
     ...(addId ? [['_id', 'asc']] : [])
   ]
     .map((e) => actionMap.order[e[1]]([...splitPath(e[0], mapping, allowedFields), ...e.slice(2)], { allowedFields }));
+  assert(
+    allowedFields === null
+    || orderBy.every(([f]) => f === null || allowedFields.includes(f) || ['_id', '_score'].includes(f)),
+    'Unexpected field in orderBy'
+  );
   if (result.search_after.length === 0) {
     delete result.search_after;
   }
