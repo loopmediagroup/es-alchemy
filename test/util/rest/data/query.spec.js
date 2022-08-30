@@ -755,7 +755,7 @@ describe('Testing Rest Query', { useTmpDir: true, timeout: 10000 }, () => {
       it('Testing mapping function as linear function', async () => {
         await upsert('address', [address1, address2, address3, address4]);
         expect((await query('address', {
-          toReturn: ['id', 'centre', 'street'],
+          toReturn: ['id', 'centre'],
           scoreBy: [['distance', 'centre', [0, 0], [[5, 5], [1000, 1], [2000, 0]]]]
         }, { raw: true })).hits.hits.map((a) => a.sort)).to.deep.equal([
           [5, address1.id],
