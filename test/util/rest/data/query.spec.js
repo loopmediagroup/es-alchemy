@@ -714,7 +714,7 @@ describe('Testing Rest Query', { useTmpDir: true, timeout: 10000 }, () => {
           const r = await query('address', {
             toReturn: ['id', 'centre', 'street'],
             filterBy: { and: [['street', 'search', street]] },
-            orderBy: [['street.raw', 'asc']]
+            orderBy: [['street$raw', 'asc']]
           }, { raw: true });
           // eslint-disable-next-line no-underscore-dangle
           return r.hits.hits.map((h) => h._source);
@@ -723,6 +723,21 @@ describe('Testing Rest Query', { useTmpDir: true, timeout: 10000 }, () => {
         expect(await get('debacle')).to.deep.equal([address1]);
         expect(await get('it\'s')).to.deep.equal([address1]);
         expect(await get('dbcl')).to.deep.equal([]);
+      });
+
+      it('Testing exact', async () => {
+        await upsert('address', [address1]);
+        const get = async (street) => {
+          const r = await query('address', {
+            toReturn: ['id', 'centre', 'street'],
+            filterBy: { and: [['street$raw', '==', street]] },
+            orderBy: [['street$raw', 'asc']]
+          }, { raw: true });
+          // eslint-disable-next-line no-underscore-dangle
+          return r.hits.hits.map((h) => h._source);
+        };
+        expect(await get('debacle it\'s')).to.deep.equal([]);
+        expect(await get('débâcle it\'s')).to.deep.equal([address1]);
       });
 
       it('Testing mapping function as step function', async () => {
