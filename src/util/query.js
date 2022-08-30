@@ -66,7 +66,12 @@ export const build = (allowedFields, mapping, {
       ...scoreBy
         .map((s) => [
           extractPrefix(s[1], allowedFields),
-          { function_score: actionMap.score[s[0]](s.slice(1), { allowedFields }) }
+          {
+            function_score: actionMap.score[s[0]](
+              [normalize(s[1]), ...s.slice(2)],
+              { allowedFields }
+            )
+          }
         ])
         .map(([path, query]) => (path !== '' ? ({ nested: { path, query, score_mode: 'max' } }) : query))
     ]);
