@@ -2,6 +2,7 @@
 import assert from 'assert';
 import get from 'lodash.get';
 import objectHash from 'object-hash';
+import objectScan from 'object-scan';
 
 const buildPropertiesRec = (node, models) => {
   assert(
@@ -53,14 +54,6 @@ const buildPropertiesRec = (node, models) => {
   );
 };
 
-const extractFieldsRec = (node, prefix = []) => Object
-  .entries(node.nested || {})
-  .map(([relName, childNode]) => extractFieldsRec(childNode, prefix.concat(relName)))
-  .reduce(
-    (p, c) => p.concat(c),
-    node.fields.map((field) => prefix.concat(typeof field === 'string' ? field : field.name).join('.'))
-  );
-
 const extractRelsRec = (node, prefix = []) => Object
   .entries(node.nested || {})
   .reduce((prev, [relName, childNode]) => {
@@ -109,5 +102,31 @@ export const generateMapping = (name, specs, models) => {
   }
   return result;
 };
-export const extractFields = (specs) => extractFieldsRec(specs);
+
+const extractFieldsScanner = objectScan([
+  '**{nested.*}.fields[*]',
+  '**{nested.*}.fields[*].name',
+  '**{nested.*}.fields[*].overwrite.fields.*.type'
+], {
+  filterFn: ({ isLeaf }) => isLeaf,
+  rtn: ({ key, value, getParents }) => {
+    const result = [];
+    let i = 0;
+    while (key[i] !== 'fields') {
+      result.push(key[i + 1]);
+      i += 2;
+    }
+    if (key.length - i === 6) {
+      const parents = getParents();
+      result.push(`${parents[3].name}$${key[key.length - 2]}`);
+    } else {
+      result.push(value);
+    }
+    return result.join('.');
+  },
+  afterFn: ({ result }) => result.reverse()
+});
+
+export const extractFields = (specs) => extractFieldsScanner(specs);
 export const extractRels = (spec) => extractRelsRec(spec);
+export const normalize = (field) => field.replace('$', '.');

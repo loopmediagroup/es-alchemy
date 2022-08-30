@@ -4,6 +4,7 @@ import Joi from 'joi-strict';
 import { fromCursor, toCursor } from '../../paging.js';
 import { buildQuery } from '../../filter.js';
 import extractPrefix from '../../extract-prefix.js';
+import { normalize } from '../../index.js';
 
 export default (call, idx, allowedFields, fields, opts) => {
   Joi.assert(opts, Joi.object().keys({
@@ -12,6 +13,10 @@ export default (call, idx, allowedFields, fields, opts) => {
     cursor: Joi.string().optional(),
     count: Joi.boolean().optional()
   }).nand('limit', 'cursor'));
+  assert(
+    (Array.isArray(fields) ? fields : [fields]).every((f) => allowedFields.includes(f)),
+    'Unexpected field provided'
+  );
   const cursorPayload = opts.cursor === undefined ? null : fromCursor(opts.cursor);
   const after = get(cursorPayload, 'searchAfter', null);
   const limit = get(cursorPayload, 'limit', get(opts, 'limit', 20));
@@ -28,6 +33,7 @@ export default (call, idx, allowedFields, fields, opts) => {
           ...(after === null ? {} : { after }),
           size: limit,
           sources: (Array.isArray(fields) ? fields : [fields])
+            .map((f) => normalize(f))
             .map((field) => ({ [field]: { terms: { field } } }))
         }
       }
@@ -51,8 +57,8 @@ export default (call, idx, allowedFields, fields, opts) => {
       const result = {
         uniques: uniques.buckets.map((e) => {
           const value = Array.isArray(fields)
-            ? fields.map((field) => e.key[field])
-            : e.key[fields];
+            ? fields.map((field) => e.key[normalize(field)])
+            : e.key[normalize(fields)];
           return count ? [value, e.doc_count] : value;
         })
       };

@@ -2,6 +2,8 @@
   "id",
   "centre",
   "street",
+  "street$raw",
   "city",
+  "city$raw",
   "created"
 ]

@@ -2,6 +2,7 @@ import assert from 'assert';
 import actionMapFilter from '../resources/action-map/filter.js';
 import actionMapBool from '../resources/action-map/bool.js';
 import extractPrefix from './extract-prefix.js';
+import { normalize } from './index.js';
 
 const buildRec = (filterBy, allowedFields, root) => {
   // handle actual filter clause
@@ -12,7 +13,10 @@ const buildRec = (filterBy, allowedFields, root) => {
     );
     const prefix = extractPrefix(filterBy[0], allowedFields);
     assert(root === null || prefix.startsWith(root), 'Can only reference relative paths in sort filters.');
-    return [prefix === root ? '' : prefix, actionMapFilter[filterBy[1]](filterBy[0], ...filterBy.slice(2))];
+    return [
+      prefix === root ? '' : prefix,
+      actionMapFilter[filterBy[1]](normalize(filterBy[0]), ...filterBy.slice(2))
+    ];
   }
 
   // handle "or" and "and" clauses

@@ -19,7 +19,7 @@ describe('Testing uniques()', (index) => {
     const person1 = { id: uuid4(), name: 'Lars' };
     const person2 = { id: uuid4(), name: 'Lars' };
     await upsert('person', [person1, person2]);
-    const r1 = await index().rest.data.uniques('person', 'name.raw');
+    const r1 = await index().rest.data.uniques('person', 'name$raw');
     expect(r1.uniques).to.deep.equal(['Lars']);
   });
 
@@ -34,7 +34,7 @@ describe('Testing uniques()', (index) => {
     };
     const person2 = { id: uuid4(), name: 'Lars', children: [{ id: uuid4(), name: 'John' }] };
     await upsert('person', [person1, person2]);
-    const r1 = await index().rest.data.uniques('person', 'children.name.raw');
+    const r1 = await index().rest.data.uniques('person', 'children.name$raw');
     expect(r1.uniques).to.deep.equal(['David', 'John']);
   });
 
@@ -68,7 +68,7 @@ describe('Testing uniques()', (index) => {
       ]
     };
     await upsert('person', [person1, person2]);
-    const r1 = await index().rest.data.uniques('person', ['children.name.raw', 'children.id']);
+    const r1 = await index().rest.data.uniques('person', ['children.name$raw', 'children.id']);
     expect(r1.uniques).to.deep.equal([
       ['David', '0692008d-1c99-415f-9aa5-574cbca3c852'],
       ['Jane', '028ea4b3-e420-4ed7-ba9d-c416ada2e796'],
@@ -80,8 +80,8 @@ describe('Testing uniques()', (index) => {
   it('Testing multiple uniques', async () => {
     await setupData();
     const r1 = await index().rest.data.uniques('person', [
-      'surname.raw',
-      'name.raw'
+      'surname$raw',
+      'name$raw'
     ]);
     expect(r1.uniques).to.deep.equal([
       ['x', 'a'],
@@ -94,8 +94,8 @@ describe('Testing uniques()', (index) => {
   it('Testing multiple uniques with count', async () => {
     await setupData();
     const r1 = await index().rest.data.uniques('person', [
-      'surname.raw',
-      'name.raw'
+      'surname$raw',
+      'name$raw'
     ], { count: true });
     expect(r1.uniques).to.deep.equal([
       [['x', 'a'], 3],
@@ -107,51 +107,51 @@ describe('Testing uniques()', (index) => {
 
   it('Test single page with count', async () => {
     await setupData();
-    const r1 = await index().rest.data.uniques('person', 'name.raw', { count: true });
+    const r1 = await index().rest.data.uniques('person', 'name$raw', { count: true });
     expect(r1.uniques).to.deep.equal([['a', 4], ['b', 2], ['c', 1]]);
     expect('cursor' in r1).to.equal(false);
   });
 
   it('Test single item paging', async () => {
     await setupData();
-    const r1 = await index().rest.data.uniques('person', 'name.raw', { limit: 1 });
+    const r1 = await index().rest.data.uniques('person', 'name$raw', { limit: 1 });
     expect(r1.uniques).to.deep.equal(['a']);
     expect('cursor' in r1).to.equal(true);
 
-    const r2 = await index().rest.data.uniques('person', 'name.raw', { cursor: r1.cursor });
+    const r2 = await index().rest.data.uniques('person', 'name$raw', { cursor: r1.cursor });
     expect(r2.uniques).to.deep.equal(['b']);
     expect('cursor' in r2).to.equal(true);
 
-    const r3 = await index().rest.data.uniques('person', 'name.raw', { cursor: r2.cursor });
+    const r3 = await index().rest.data.uniques('person', 'name$raw', { cursor: r2.cursor });
     expect(r3.uniques).to.deep.equal(['c']);
     expect('cursor' in r3).to.equal(true);
 
-    const r4 = await index().rest.data.uniques('person', 'name.raw', { cursor: r3.cursor });
+    const r4 = await index().rest.data.uniques('person', 'name$raw', { cursor: r3.cursor });
     expect(r4.uniques).to.deep.equal([]);
     expect('cursor' in r4).to.equal(false);
   });
 
   it('Test two item paging', async () => {
     await setupData();
-    const r1 = await index().rest.data.uniques('person', 'name.raw', { limit: 2 });
+    const r1 = await index().rest.data.uniques('person', 'name$raw', { limit: 2 });
     expect(r1.uniques).to.deep.equal(['a', 'b']);
     expect('cursor' in r1).to.equal(true);
 
-    const r2 = await index().rest.data.uniques('person', 'name.raw', { cursor: r1.cursor });
+    const r2 = await index().rest.data.uniques('person', 'name$raw', { cursor: r1.cursor });
     expect(r2.uniques).to.deep.equal(['c']);
     expect('cursor' in r2).to.equal(false);
   });
 
   it('Test single page', async () => {
     await setupData();
-    const r1 = await index().rest.data.uniques('person', 'name.raw');
+    const r1 = await index().rest.data.uniques('person', 'name$raw');
     expect(r1.uniques).to.deep.equal(['a', 'b', 'c']);
     expect('cursor' in r1).to.equal(false);
   });
 
   it('Test filter option', async () => {
     await setupData();
-    const r1 = await index().rest.data.uniques('person', 'name.raw', {
+    const r1 = await index().rest.data.uniques('person', 'name$raw', {
       filterBy: { and: [['name', 'in', ['a', 'b']]] }
     });
     expect(r1.uniques).to.deep.equal(['a', 'b']);
@@ -170,7 +170,7 @@ describe('Testing uniques()', (index) => {
 
   it('Test limit and cursor provided', async ({ capture }) => {
     await setupData();
-    const err = await capture(() => index().rest.data.uniques('person', 'name.raw', { limit: 1, cursor: '123' }));
+    const err = await capture(() => index().rest.data.uniques('person', 'name$raw', { limit: 1, cursor: '123' }));
     expect(err.message).to.include('"limit" must not exist simultaneously with [cursor]');
   });
 });
