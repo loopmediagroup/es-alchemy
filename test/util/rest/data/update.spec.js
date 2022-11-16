@@ -84,7 +84,6 @@ describe('Testing data formats', { useTmpDir: true }, () => {
       Joi.object().keys({
         delete: Joi.object().keys({
           _index: Joi.string(),
-          _type: Joi.string().valid('_doc'),
           _id: Joi.string(),
           status: Joi.number().valid(409),
           error: Joi.object().keys({
@@ -117,7 +116,6 @@ describe('Testing data formats', { useTmpDir: true }, () => {
       Joi.object().keys({
         create: Joi.object().keys({
           _index: Joi.string(),
-          _type: Joi.string().valid('_doc'),
           _id: Joi.string(),
           status: Joi.number().valid(409),
           error: Joi.object().keys({
@@ -156,7 +154,6 @@ describe('Testing data formats', { useTmpDir: true }, () => {
       Joi.object().keys({
         update: Joi.object().keys({
           _index: Joi.string(),
-          _type: Joi.string().valid('_doc'),
           _id: Joi.string(),
           status: Joi.number().valid(409),
           error: Joi.object().keys({
@@ -437,7 +434,6 @@ describe('Testing data formats', { useTmpDir: true }, () => {
       items: [{
         update: {
           _index: 'offer@c1d54c12486d569d308e2c6f3554b6146b35a60a',
-          _type: '_doc',
           _id: offerId,
           _version: 2,
           result: 'updated',
@@ -449,7 +445,6 @@ describe('Testing data formats', { useTmpDir: true }, () => {
       }, {
         update: {
           _index: 'offer@a61d200f03686939f0e9b2b924a6d8d7f5acf468',
-          _type: '_doc',
           _id: offerId,
           _version: 2,
           result: 'updated',

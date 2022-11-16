@@ -4,7 +4,7 @@ docker run \
   --name os1 \
   -e "discovery.type=single-node" \
   -e "plugins.security.disabled=true" \
-  -d opensearchproject/opensearch:1.3.0
+  -d opensearchproject/opensearch:2.3.0
 
 docker build \
   -t lambda-environment-node \
@@ -19,4 +19,4 @@ docker run \
   -it lambda-environment-node
 
 docker stop os1 -t 0
-docker rm -f os1
+docker rm -f -v os1
