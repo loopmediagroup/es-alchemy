@@ -264,7 +264,6 @@ describe('Testing Rest Query', { useTmpDir: true, timeout: 10000 }, () => {
       }, { raw: true })).hits.hits).to.deep.equal([
         {
           _index: 'offer@c1d54c12486d569d308e2c6f3554b6146b35a60a',
-          _type: '_doc',
           _id: offer1.id,
           _score: null,
           _source: { headline: 'First' },
@@ -272,7 +271,6 @@ describe('Testing Rest Query', { useTmpDir: true, timeout: 10000 }, () => {
         },
         {
           _index: 'offer@c1d54c12486d569d308e2c6f3554b6146b35a60a',
-          _type: '_doc',
           _id: offer2.id,
           _score: null,
           _source: { headline: 'Second' },
@@ -280,7 +278,6 @@ describe('Testing Rest Query', { useTmpDir: true, timeout: 10000 }, () => {
         },
         {
           _index: 'offer@c1d54c12486d569d308e2c6f3554b6146b35a60a',
-          _type: '_doc',
           _id: offer3.id,
           _score: null,
           _source: { headline: 'Third' },
@@ -288,7 +285,6 @@ describe('Testing Rest Query', { useTmpDir: true, timeout: 10000 }, () => {
         },
         {
           _index: 'offer@c1d54c12486d569d308e2c6f3554b6146b35a60a',
-          _type: '_doc',
           _id: offer4.id,
           _score: null,
           _source: { headline: 'Fourth' },
