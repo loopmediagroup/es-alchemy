@@ -1,1 +1,1 @@
-export default (call, idx, mapping) => call('GET', idx, { endpoint: '_mapping' });
+export default ({ call, idx }) => call('GET', idx, { endpoint: '_mapping' });
