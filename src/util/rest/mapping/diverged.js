@@ -14,7 +14,12 @@ const listDocuments = async (call, idx, cursor) => {
   return result.body.hits.hits.map(({ _id: id }) => id);
 };
 
-export default async (call, versions, mapping, idx, cursor = null) => {
+export default async ({
+  call,
+  versions,
+  idx,
+  cursor = null
+}) => {
   const localVersions = Object.keys(versions.get(idx))
     .map((version) => `${idx}@${version}`);
   if (cursor !== null) {

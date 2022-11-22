@@ -104,37 +104,50 @@ export default (getFields, getRels, getMapping, getSpecs, models, versions, opti
     }
   };
 
+  const Ctx = (kwargs = {}) => ({
+    call,
+    versions,
+    ...('idx' in kwargs ? {
+      mapping: getMapping(kwargs.idx),
+      rels: getRels(kwargs.idx),
+      specs: getSpecs(kwargs.idx),
+      allowedFields: getFields(kwargs.idx)
+    } : {}),
+    models,
+    ...kwargs
+  });
+
   return {
     call: (method, idx, opts = {}) => call(method, idx, opts),
     alias: {
-      get: (idx) => aliasGet(call, idx),
-      update: (idx) => aliasUpdate(call, idx, getMapping(idx)),
-      updated: (idx) => aliasUpdated(call, idx, getMapping(idx))
+      get: (idx) => aliasGet(Ctx({ idx })),
+      update: (idx) => aliasUpdate(Ctx({ idx })),
+      updated: (idx) => aliasUpdated(Ctx({ idx }))
     },
     mapping: {
-      applied: (idx) => mappingApplied(call, versions, idx),
-      apply: (idx) => mappingApply(call, versions, idx),
-      create: (idx) => mappingCreate(call, idx, getMapping(idx)),
-      delete: (idx) => mappingDelete(call, idx),
-      diverged: (idx, cursor) => mappingDiverged(call, versions, getMapping(idx), idx, cursor),
-      exists: (idx) => mappingExists(call, idx, getMapping(idx)),
-      get: (idx) => mappingGet(call, idx, getMapping(idx)),
-      list: () => mappingList(call),
-      prune: (idx) => mappingPrune(call, versions, idx),
-      pruned: (idx) => mappingPruned(call, versions, idx),
-      recreate: (idx) => mappingRecreate(call, idx, getMapping(idx))
+      applied: (idx) => mappingApplied(Ctx({ idx })),
+      apply: (idx) => mappingApply(Ctx({ idx })),
+      create: (idx) => mappingCreate(Ctx({ idx })),
+      delete: (idx) => mappingDelete(Ctx({ idx })),
+      diverged: (idx, cursor) => mappingDiverged(Ctx({ idx, cursor })),
+      exists: (idx) => mappingExists(Ctx({ idx })),
+      get: (idx) => mappingGet(Ctx({ idx })),
+      list: () => mappingList(Ctx()),
+      prune: (idx) => mappingPrune(Ctx({ idx })),
+      pruned: (idx) => mappingPruned(Ctx({ idx })),
+      recreate: (idx) => mappingRecreate(Ctx({ idx }))
     },
     data: {
-      count: (idx, filter) => dataCount(call, idx, filter),
-      exists: (idx, id) => dataExists(call, idx, id),
-      query: (idx, filter) => dataQuery(call, idx, getRels(idx), getSpecs(idx), models, filter),
-      refresh: (idx) => dataRefresh(call, idx),
-      signature: (idx, id) => dataSignature(call, idx, getMapping(idx), id),
-      stats: () => dataStats(call),
-      synced: (idx) => dataSynced(call, versions, idx),
-      uniques: (idx, field, opts = {}) => dataUniques(call, idx, getFields(idx), field, opts),
-      update: (actions, raw = false) => dataUpdate(call, versions, actions, raw),
-      version: (idx, id) => dataVersion(call, idx, getMapping(idx), id)
+      count: (idx, filter) => dataCount(Ctx({ idx, filter })),
+      exists: (idx, id) => dataExists(Ctx({ idx, id })),
+      query: (idx, filter) => dataQuery(Ctx({ idx, filter })),
+      refresh: (idx) => dataRefresh(Ctx({ idx })),
+      signature: (idx, id) => dataSignature(Ctx({ idx, id })),
+      stats: () => dataStats(Ctx()),
+      synced: (idx) => dataSynced(Ctx({ idx })),
+      uniques: (idx, fields, opts = {}) => dataUniques(Ctx({ idx, fields, opts })),
+      update: (actions, raw = false) => dataUpdate(Ctx({ actions, raw })),
+      version: (idx, id) => dataVersion(Ctx({ idx, id }))
     }
   };
 };

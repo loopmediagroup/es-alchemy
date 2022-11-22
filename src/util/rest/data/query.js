@@ -5,7 +5,9 @@ import objectScan from 'object-scan';
 import objectFields from 'object-fields';
 import fieldDefinitions from '../../../resources/field-definitions.js';
 
-export default (call, idx, rels, specs, models, filter) => call('GET', idx, {
+export default ({
+  call, idx, rels, specs, models, filter
+}) => call('GET', idx, {
   body: (() => {
     // PART 1: workaround for https://github.com/elastic/elasticsearch/issues/23796
     // inject id requests for all entries

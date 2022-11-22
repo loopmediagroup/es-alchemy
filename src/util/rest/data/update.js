@@ -2,8 +2,13 @@ import assert from 'assert';
 import Joi from 'joi-strict';
 import aliasGet from '../alias/get.js';
 
-export default async (call, versions, actions_, raw) => {
-  Joi.assert(actions_, Joi.array().items(Joi.object().keys({
+export default async ({
+  call,
+  versions,
+  actions,
+  raw
+}) => {
+  Joi.assert(actions, Joi.array().items(Joi.object().keys({
     idx: Joi.string().valid(...versions.list()),
     action: Joi.string().valid('update', 'delete'),
     id: Joi.string().optional(),
@@ -13,13 +18,13 @@ export default async (call, versions, actions_, raw) => {
   }).or('id', 'doc')));
 
   const aliases = {};
-  const uniqueIndices = [...new Set(actions_.map(({ idx }) => idx))];
+  const uniqueIndices = [...new Set(actions.map(({ idx }) => idx))];
   await Promise.all(uniqueIndices.map((idx) => (async () => {
-    aliases[idx] = await aliasGet(call, idx);
+    aliases[idx] = await aliasGet({ call, idx });
   })()));
 
   const payload = [];
-  actions_.forEach((action) => {
+  actions.forEach((action) => {
     const idx = action.idx;
     const alias = aliases[idx];
     const id = action.id || action.doc.id;

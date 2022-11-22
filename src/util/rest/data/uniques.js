@@ -6,7 +6,9 @@ import { buildQuery } from '../../filter.js';
 import extractPrefix from '../../extract-prefix.js';
 import { normalize } from '../../index.js';
 
-export default (call, idx, allowedFields, fields, opts) => {
+export default ({
+  call, idx, allowedFields, fields, opts
+}) => {
   Joi.assert(opts, Joi.object().keys({
     filterBy: Joi.object().optional(),
     limit: Joi.number().integer().min(1).optional(),
