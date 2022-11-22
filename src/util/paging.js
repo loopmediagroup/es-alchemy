@@ -16,7 +16,7 @@ export const fromCursor = ({
     let signature;
     [cursor, signature] = cursor_.split('_');
     if (signature !== makeSignature(cursor, cursorSecret)) {
-      throw new Error('Cursor Signature Mismatch');
+      return {};
     }
   }
   const { limit, offset, searchAfter } = objectDecode(cursor);
