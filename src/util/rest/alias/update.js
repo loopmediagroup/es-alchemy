@@ -1,6 +1,6 @@
 import get from 'lodash.get';
 
-export default (call, idx, mapping) => call('POST', '', {
+export default ({ call, idx, mapping }) => call('POST', '', {
   endpoint: '_aliases',
   body: {
     actions: [

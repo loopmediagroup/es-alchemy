@@ -1,7 +1,7 @@
-export default (call, index, mapping) => call(
+export default ({ call, idx, mapping }) => call(
   'HEAD',
   // eslint-disable-next-line no-underscore-dangle
-  `${index}@${mapping.mappings._meta.hash}`,
+  `${idx}@${mapping.mappings._meta.hash}`,
   { body: null }
 )
   .then((r) => r.statusCode === 200);
