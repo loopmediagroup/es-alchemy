@@ -56,7 +56,7 @@ const fn = (options) => {
     },
     data: {
       remap: (idx, input) => remap(indices[idx].specs, input, models),
-      page: (esResult, filter) => page(esResult, filter)
+      page: (esResult, filter) => page(esResult, filter, options?.cursorSecret)
     },
     query: {
       build: (idx = null, opts = {}) => build(

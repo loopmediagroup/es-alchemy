@@ -7,7 +7,12 @@ import extractPrefix from '../../extract-prefix.js';
 import { normalize } from '../../index.js';
 
 export default ({
-  call, idx, allowedFields, fields, opts
+  call,
+  idx,
+  allowedFields,
+  fields,
+  opts,
+  cursorSecret
 }) => {
   Joi.assert(opts, Joi.object().keys({
     filterBy: Joi.object().optional(),
@@ -19,7 +24,7 @@ export default ({
     (Array.isArray(fields) ? fields : [fields]).every((f) => allowedFields.includes(f)),
     'Unexpected field provided'
   );
-  const cursorPayload = opts.cursor === undefined ? null : fromCursor(opts.cursor);
+  const cursorPayload = opts.cursor === undefined ? null : fromCursor({ cursor: opts.cursor });
   const after = get(cursorPayload, 'searchAfter', null);
   const limit = get(cursorPayload, 'limit', get(opts, 'limit', 20));
   const count = opts.count === undefined ? false : opts.count;
@@ -67,7 +72,8 @@ export default ({
       if (uniques.buckets.length === limit) {
         result.cursor = toCursor({
           limit,
-          searchAfter: uniques.after_key
+          searchAfter: uniques.after_key,
+          cursorSecret
         });
       }
       return result;
