@@ -38,7 +38,7 @@ export const build = (allowedFields, mapping, {
   limit,
   offset,
   cursor
-}, cursorSecret) => {
+}, { cursorSecret }) => {
   assert(cursor === undefined || offset === undefined, 'Cannot override offset with cursor.');
   assert(Array.isArray(toReturn));
   const cursorPayload = cursor !== undefined ? fromCursor({ cursor, cursorSecret }) : null;

@@ -63,7 +63,7 @@ const fn = (options) => {
         idx === null ? null : indices[idx].fields,
         idx === null ? null : indices[idx].mapping,
         opts,
-        options?.cursorSecret
+        options
       )
     },
     rest: rest(
