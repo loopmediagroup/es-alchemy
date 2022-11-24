@@ -5,7 +5,11 @@ export const objectEncode = (obj) => Buffer.from(JSON.stringify(obj)).toString('
 const objectDecode = (base64) => JSON.parse(Buffer.from(base64, 'base64').toString('utf8'));
 
 const makeSignature = (cursor, cursorSecret) => crypto
-  .createHash('md5').update(cursor).update(cursorSecret).digest('base64');
+  .createHash('md5')
+  .update(cursor)
+  .update(cursorSecret)
+  .digest('base64')
+  .slice(0, -2);
 
 export const fromCursor = ({
   cursor: cursor_,

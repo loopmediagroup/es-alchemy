@@ -46,7 +46,7 @@ describe('Testing paging.', () => {
   it('Testing cursor secret', () => {
     const cursorPayload = { limit: 10, offset: 10, searchAfter: [] };
     const cursor = toCursor({ ...cursorPayload, cursorSecret });
-    expect(cursor).to.equal('eyJsaW1pdCI6MTAsIm9mZnNldCI6MTAsInNlYXJjaEFmdGVyIjpbXX0=_dTAv7E6IZQ+wHptaBIxmcA==');
+    expect(cursor).to.equal('eyJsaW1pdCI6MTAsIm9mZnNldCI6MTAsInNlYXJjaEFmdGVyIjpbXX0=_dTAv7E6IZQ+wHptaBIxmcA');
     expect(fromCursor({ cursor, cursorSecret }))
       .to.deep.equal(cursorPayload);
   });
@@ -63,7 +63,7 @@ describe('Testing paging.', () => {
   it('Testing cursor with signature and no secret provided', () => {
     const cursorPayload = { limit: 10, offset: 10, searchAfter: [] };
     const cursor = toCursor({ ...cursorPayload, cursorSecret });
-    expect(cursor).to.equal('eyJsaW1pdCI6MTAsIm9mZnNldCI6MTAsInNlYXJjaEFmdGVyIjpbXX0=_dTAv7E6IZQ+wHptaBIxmcA==');
+    expect(cursor).to.equal('eyJsaW1pdCI6MTAsIm9mZnNldCI6MTAsInNlYXJjaEFmdGVyIjpbXX0=_dTAv7E6IZQ+wHptaBIxmcA');
     expect(fromCursor({ cursor }))
       .to.deep.equal(cursorPayload);
   });
