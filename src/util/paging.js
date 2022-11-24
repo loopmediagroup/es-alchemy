@@ -31,7 +31,7 @@ export const toCursor = ({
 } = {}) => {
   const cursor = objectEncode({ limit, offset, searchAfter });
   return typeof cursorSecret === 'string'
-    ? makeSignature(cursor, cursorSecret)
+    ? [cursor, makeSignature(cursor, cursorSecret)].join('_')
     : cursor;
 };
 
