@@ -31,6 +31,7 @@ export default (getFields, getRels, getMapping, getSpecs, models, versions, opti
   const sessionToken = get(options, 'aws.sessionToken');
   const accessKeyId = get(options, 'aws.accessKeyId');
   const secretAccessKey = get(options, 'aws.secretAccessKey');
+  const cursorSecret = get(options, 'cursor.secret');
   const interceptor = [accessKeyId, secretAccessKey].includes(undefined)
     ? undefined
     : aws4Interceptor({ region, service: 'es' }, { accessKeyId, secretAccessKey });
@@ -114,6 +115,7 @@ export default (getFields, getRels, getMapping, getSpecs, models, versions, opti
       allowedFields: getFields(kwargs.idx)
     } : {}),
     models,
+    cursorSecret,
     ...kwargs
   });
 
