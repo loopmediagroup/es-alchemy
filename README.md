@@ -309,6 +309,14 @@ Default: `{}`
 Allow connection to AWS Opensearch instance by passing
 in object containing `accessKeyId` and `secretAccessKey`.
 
+#### cursorSecret
+
+Type: `string`<br>
+Default: _undefined_
+
+When passed all cursors are signed and the signature checked on decoding.
+For security reasons this should always be passed when the cursor can be modified by malicious actors.
+
 #### responseHook
 
 Type: `function`<br>

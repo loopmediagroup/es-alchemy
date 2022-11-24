@@ -41,7 +41,7 @@ export const build = (allowedFields, mapping, {
 }) => {
   assert(cursor === undefined || offset === undefined, 'Cannot override offset with cursor.');
   assert(Array.isArray(toReturn));
-  const cursorPayload = cursor !== undefined ? fromCursor(cursor) : null;
+  const cursorPayload = cursor !== undefined ? fromCursor({ cursor }) : null;
   const result = {
     _source: toReturn,
     search_after: Array.isArray(searchAfter) && searchAfter.length !== 0
