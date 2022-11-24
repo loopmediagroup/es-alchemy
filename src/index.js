@@ -62,7 +62,8 @@ const fn = (options) => {
       build: (idx = null, opts = {}) => build(
         idx === null ? null : indices[idx].fields,
         idx === null ? null : indices[idx].mapping,
-        opts
+        opts,
+        options
       )
     },
     rest: rest(
