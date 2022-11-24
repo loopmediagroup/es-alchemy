@@ -24,7 +24,10 @@ export default ({
     (Array.isArray(fields) ? fields : [fields]).every((f) => allowedFields.includes(f)),
     'Unexpected field provided'
   );
-  const cursorPayload = opts.cursor === undefined ? null : fromCursor({ cursor: opts.cursor });
+  const cursorPayload = opts.cursor === undefined ? null : fromCursor({
+    cursor: opts.cursor,
+    cursorSecret
+  });
   const after = get(cursorPayload, 'searchAfter', null);
   const limit = get(cursorPayload, 'limit', get(opts, 'limit', 20));
   const count = opts.count === undefined ? false : opts.count;
