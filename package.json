@@ -45,7 +45,7 @@
     "@babel/eslint-parser": "7.19.1",
     "@babel/register": "7.18.9",
     "@blackflux/eslint-plugin-rules": "2.1.0",
-    "@blackflux/robo-config-plugin": "7.9.14",
+    "@blackflux/robo-config-plugin": "7.9.20",
     "c8": "7.12.0",
     "chai": "4.3.7",
     "deep-equal-in-any-order": "2.0.0",
