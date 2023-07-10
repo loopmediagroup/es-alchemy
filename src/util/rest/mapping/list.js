@@ -1,2 +1,7 @@
 export default ({ call }) => call('GET', '_cat', { endpoint: 'indices' })
-  .then((r) => [...new Set(r.body.map((idx) => idx.index.split('@')[0]))]);
+  .then((r) => {
+    const indices = r.body
+      .filter(({ index }) => index.includes('@'))
+      .map(({ index }) => index.split('@')[0]);
+    return [...new Set(indices)];
+  });
