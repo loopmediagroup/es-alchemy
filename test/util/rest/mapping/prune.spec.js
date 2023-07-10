@@ -31,7 +31,9 @@ describe('Testing prune', {
     instantiateIndex();
     getIndices = async () => {
       const r = await index.rest.call('GET', '_cat/indices');
-      return r.body.map(({ index: indexVersion }) => indexVersion);
+      return r.body
+        .filter(({ index: indexVersion }) => indexVersion.includes('@'))
+        .map(({ index: indexVersion }) => indexVersion);
     };
   });
 
