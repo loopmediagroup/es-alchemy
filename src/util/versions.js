@@ -8,7 +8,7 @@ import cloneDeep from 'lodash.clonedeep';
 import fs from 'smart-fs';
 import Joi from 'joi-strict';
 import objectScan from 'object-scan';
-import objectFields from 'object-fields';
+import { Retainer } from 'object-fields';
 import { extractFields, extractRels } from './index.js';
 
 const versionSchema = Joi.object().keys({
@@ -115,7 +115,7 @@ export default () => {
           Joi.assert(def, versionSchema);
           // eslint-disable-next-line no-param-reassign
           def.prepare = (() => {
-            const retainer = objectFields.Retainer(def.fields);
+            const retainer = Retainer(def.fields);
             const relsToCheck = Object.entries(def.rels)
               .filter(([_, v]) => v.endsWith('[]'))
               .map(([k]) => k);
