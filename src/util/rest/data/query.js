@@ -2,7 +2,7 @@ import assert from 'assert';
 import get from 'lodash.get';
 import cloneDeep from 'lodash.clonedeep';
 import objectScan from 'object-scan';
-import objectFields from 'object-fields';
+import { getParents, Retainer } from 'object-fields';
 import fieldDefinitions from '../../../resources/field-definitions.js';
 
 export default ({
@@ -13,7 +13,7 @@ export default ({
     // inject id requests for all entries
     const filterNew = cloneDeep(filter);
     // eslint-disable-next-line no-underscore-dangle
-    filterNew._source.push(...objectFields.getParents(filterNew._source).map((p) => `${p}.id`));
+    filterNew._source.push(...getParents(filterNew._source).map((p) => `${p}.id`));
     // eslint-disable-next-line no-underscore-dangle
     filterNew._source = [...new Set(filterNew._source)].sort();
     // eslint-disable-next-line no-underscore-dangle
@@ -61,7 +61,7 @@ export default ({
     // inject empty arrays where no results
     const injectArrays = (() => {
       // eslint-disable-next-line no-underscore-dangle
-      const arrays = objectFields.getParents(filter._source)
+      const arrays = getParents(filter._source)
         .filter((e) => rels[e].endsWith('[]'))
         .map((e) => e.split('.'))
         .reduce((p, c) => {
@@ -85,7 +85,7 @@ export default ({
       return (input) => scanner(input);
     })();
     // eslint-disable-next-line no-underscore-dangle
-    const retainResult = objectFields.Retainer(filter._source);
+    const retainResult = Retainer(filter._source);
     esResult.body.hits.hits.forEach((r) => {
       // eslint-disable-next-line no-underscore-dangle,no-param-reassign
       r._source._id = r._id;
