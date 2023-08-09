@@ -1,5 +1,5 @@
-import fs from 'smart-fs';
 import path from 'path';
+import fs from 'smart-fs';
 
 // load all json files in directory
 // returns `{ [FILENAME_WITHOUT_EXT]: FILE_CONTENT }`

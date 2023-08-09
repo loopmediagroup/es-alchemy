@@ -1,5 +1,5 @@
 import get from 'lodash.get';
-import axios from 'axios';
+import axios from '@blackflux/axios';
 import { aws4Interceptor } from 'aws4-axios';
 import mappingApplied from './mapping/applied.js';
 import mappingApply from './mapping/apply.js';

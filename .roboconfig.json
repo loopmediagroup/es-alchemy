@@ -4,7 +4,7 @@
       "assorted/@npm-opensource-os"
     ],
     "variables": {
-      "nodeVersion": "14",
+      "nodeVersion": "16",
       "repoKey": "loopmediagroup/es-alchemy",
       "packageName": "es-alchemy",
       "projectName": "es-alchemy",

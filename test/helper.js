@@ -1,5 +1,5 @@
-import fs from 'smart-fs';
 import path from 'path';
+import fs from 'smart-fs';
 import Index from '../src/index.js';
 
 export const models = Index.loadJsonInDir(path.join(fs.dirname(import.meta.url), 'models'));
