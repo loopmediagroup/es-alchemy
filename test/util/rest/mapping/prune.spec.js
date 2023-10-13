@@ -32,7 +32,7 @@ describe('Testing prune', {
     getIndices = async () => {
       const r = await index.rest.call('GET', '_cat/indices');
       return r.body
-        .filter(({ index: indexVersion }) => indexVersion !== '.opensearch-observability')
+        .filter(({ index: indexVersion }) => indexVersion[0] !== '.')
         .map(({ index: indexVersion }) => indexVersion);
     };
   });
