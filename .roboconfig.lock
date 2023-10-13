@@ -14,6 +14,7 @@
     "LICENSE",
     "README.md",
     "docker/Dockerfile",
+    "eslint.config.js",
     "gardener.js",
     "manage.sh",
     "package.json",
