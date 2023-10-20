@@ -196,10 +196,10 @@
           ]
         ]
       },
-      "polys": [
-        {
-          "type": "Polygon",
-          "coordinates": [
+      "polys": {
+        "type": "Multipolygon",
+        "coordinates": [
+          [
             [
               [
                 -119.4923403,
@@ -231,8 +231,8 @@
               ]
             ]
           ]
-        }
-      ],
+        ]
+      },
       "timezone": "America/Vancouver",
       "keywords": [
         "kw1",
