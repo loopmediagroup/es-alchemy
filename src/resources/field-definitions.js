@@ -46,10 +46,10 @@ export default {
     {
       marshall: (vs) => (
         Array.isArray(vs) && vs.length !== 0
-          ? vs.map((v) => ({ type: 'Polygon', coordinates: v }))
+          ? { type: 'Multipolygon', coordinates: vs }
           : null
       ),
-      unmarshall: (vs) => (vs !== null ? vs.map(({ coordinates }) => coordinates) : null)
+      unmarshall: (vs) => (vs !== null ? vs.coordinates : null)
     }
   ),
   datetime: mkFn({ type: 'date', format: "yyyy-MM-dd'T'HH:mm:ss.SSSX" }),
