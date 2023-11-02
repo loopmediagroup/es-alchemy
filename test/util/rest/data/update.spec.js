@@ -132,11 +132,19 @@ describe('Testing data formats', { useTmpDir: true }, () => {
   });
 
   it('Testing update with signature', async () => {
+    const signatureNonExisting = await index.rest.data.signature('offer', offerId);
     expect(await index.rest.data.update([{
       idx: 'offer',
       action: 'update',
-      doc: index.data.remap('offer', { id: offerId, meta: { k1: 'v1' } })
+      doc: index.data.remap('offer', { id: offerId, meta: { k1: 'v1' } }),
+      signature: signatureNonExisting
     }])).to.equal(true);
+    expect(await index.rest.data.refresh('offer')).to.equal(true);
+    const queryFilter = index.query.build('offer', { toReturn: ['id'] });
+    const queryResult = await index.rest.data.query('offer', queryFilter);
+    // eslint-disable-next-line no-underscore-dangle
+    expect(queryResult?.hits?.hits?.[0]?._source).to.deep.equal({ id: offerId });
+
     const signature = await index.rest.data.signature('offer', offerId);
     expect(await index.rest.data.update([{
       idx: 'offer',

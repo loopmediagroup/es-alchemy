@@ -57,19 +57,22 @@ export default async ({
         signature.if_seq_no = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
         signature.if_primary_term = Math.ceil(Math.random() * Number.MAX_SAFE_INTEGER);
       }
+      const actualAction = isAlias && isSignatureNull && action.action === 'update' ? 'create' : action.action;
       payload.push({
-        [isAlias && isSignatureNull && action.action === 'update' ? 'create' : action.action]: {
+        [actualAction]: {
           _index: index,
           _id: id,
           ...(isAlias ? signature : {})
         }
       });
       if (action.action === 'update') {
-        // `update` performs no action when exact document already indexed (reduced load)
-        payload.push({
-          doc: content.prepare(action.doc),
-          doc_as_upsert: !isAlias || !hasSignature
-        });
+        const doc = content.prepare(action.doc);
+        if (actualAction === 'create') {
+          payload.push(doc);
+        } else {
+          // `update` performs no action when exact document already indexed (reduced load)
+          payload.push({ doc, doc_as_upsert: !isAlias || !hasSignature });
+        }
       }
     });
   });
