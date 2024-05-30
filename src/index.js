@@ -7,7 +7,7 @@ import { page, remap } from './util/data.js';
 import { build } from './util/query.js';
 import Versions from './util/versions.js';
 import rest from './util/rest/rest.js';
-import { generatePage } from './util/paging.js';
+import { fromCursor, generatePage } from './util/paging.js';
 import loadJsonInDir from './util/load-json-in-dir.js';
 
 const fn = (options) => {
@@ -56,7 +56,7 @@ const fn = (options) => {
     },
     data: {
       remap: (idx, input) => remap(indices[idx].specs, input, models),
-      page: (esResult, filter) => page(esResult, filter, options?.cursorSecret)
+      page: (esResult, filter, meta = null) => page(esResult, filter, meta, options?.cursorSecret)
     },
     query: {
       build: (idx = null, opts = {}) => build(
@@ -65,6 +65,12 @@ const fn = (options) => {
         opts,
         options
       )
+    },
+    cursor: {
+      extract: (cursor) => fromCursor({
+        cursor,
+        cursorSecret: options?.cursorSecret
+      })
     },
     rest: rest(
       (idx) => get(indices[idx], 'fields', null),
