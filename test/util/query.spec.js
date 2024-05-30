@@ -50,6 +50,14 @@ describe('Testing Query Creation', () => {
     });
   });
 
+  it('Testing cursor extract', () => {
+    const content = { limit: 10, offset: 10 };
+    expect(index.cursor.extract(toCursor(content))).to.deep.equal({
+      ...content,
+      searchAfter: []
+    });
+  });
+
   it('Testing query.build with cursor limit override', () => {
     expect(index.query.build(undefined, {
       cursor: toCursor({ limit: 10, offset: 10 }),

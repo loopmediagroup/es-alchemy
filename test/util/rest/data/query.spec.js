@@ -152,6 +152,34 @@ describe('Testing Rest Query', { useTmpDir: true, timeout: 10000 }, () => {
       });
     });
 
+    it('Testing paging with meta', async () => {
+      const [offerId1, offerId2] = [uuid4(), uuid4()].sort();
+      const offer1 = { id: offerId1 };
+      const offer2 = { id: offerId2 };
+      await upsert('offer', [offer1, offer2]);
+      const filter = index.query.build('offer', {
+        toReturn: ['_id', 'id'],
+        orderBy: [['_id', 'asc']],
+        limit: 2
+      });
+      const queryResult = await index.rest.data.query('offer', filter);
+      // eslint-disable-next-line no-underscore-dangle
+      expect(queryResult.hits.hits.every((hit) => typeof hit._source._id === 'string')).to.equal(true);
+      const meta = { secret: '1234' };
+      const { next } = index.data.page(queryResult, filter, meta).page;
+      expect(next).to.deep.equal({
+        limit: 2,
+        offset: 2,
+        cursor: 'eyJsaW1pdCI6Miwib2Zmc2V0IjoyLCJzZWFyY2hBZnRlciI6W10sIm1ldGEiOnsic2VjcmV0IjoiMTIzNCJ9fQ=='
+      });
+      expect(index.cursor.extract(next.cursor)).to.deep.equal({
+        limit: 2,
+        meta,
+        offset: 2,
+        searchAfter: []
+      });
+    });
+
     it('Testing property type "geo_shape" returned as list', async () => {
       const offer = {
         id: uuid4(),

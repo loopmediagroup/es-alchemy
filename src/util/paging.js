@@ -23,17 +23,33 @@ export const fromCursor = ({
       return {};
     }
   }
-  const { limit, offset, searchAfter } = objectDecode(cursor);
-  return { limit, offset, searchAfter };
+  const {
+    limit,
+    offset,
+    searchAfter,
+    meta = null
+  } = objectDecode(cursor);
+  return {
+    limit,
+    offset,
+    searchAfter,
+    ...(meta === null ? {} : { meta })
+  };
 };
 
 export const toCursor = ({
   limit = 20,
   offset = 0,
   searchAfter = [],
+  meta,
   cursorSecret
 } = {}) => {
-  const cursor = objectEncode({ limit, offset, searchAfter });
+  const cursor = objectEncode({
+    limit,
+    offset,
+    searchAfter,
+    ...(meta === null ? {} : { meta })
+  });
   return typeof cursorSecret === 'string'
     ? [cursor, makeSignature(cursor, cursorSecret)].join('_')
     : cursor;
@@ -46,6 +62,7 @@ export const generatePage = ({
   searchAfter,
   limit,
   offset,
+  meta,
   cursorSecret
 }) => {
   const noSearchAfter = !Array.isArray(searchAfter) || searchAfter.length === 0;
@@ -55,21 +72,21 @@ export const generatePage = ({
     ...(hits === null ? {} : { searchAfter: hits.hits[hits.hits.length - 1].sort })
   } : null;
   if (scroll !== null) {
-    scroll.cursor = toCursor({ ...scroll, cursorSecret });
+    scroll.cursor = toCursor({ ...scroll, meta, cursorSecret });
   }
   const next = noSearchAfter && countReturned === limit ? {
     limit,
     offset: offset + limit
   } : null;
   if (next !== null) {
-    next.cursor = toCursor({ ...next, cursorSecret });
+    next.cursor = toCursor({ ...next, meta, cursorSecret });
   }
   const previous = noSearchAfter && offset > 0 ? {
     limit,
     offset: Math.max(0, offset - limit)
   } : null;
   if (previous !== null) {
-    previous.cursor = toCursor({ ...previous, cursorSecret });
+    previous.cursor = toCursor({ ...previous, meta, cursorSecret });
   }
   return {
     scroll,
@@ -83,12 +100,13 @@ export const generatePage = ({
   };
 };
 
-export const buildPageObject = (hits, filter, cursorSecret) => generatePage({
+export const buildPageObject = (hits, filter, meta, cursorSecret) => generatePage({
   hits,
   countReturned: hits.hits.length,
   countTotal: hits.total.value,
   searchAfter: filter.search_after,
   limit: filter.size,
   offset: filter.from,
+  meta,
   cursorSecret
 });

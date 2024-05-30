@@ -49,8 +49,8 @@ const remapRec = (specs, input, models) => {
 };
 
 export const remap = (specs, input, models) => remapRec(specs, input, models);
-export const page = (esResultBody, filter, cursorSecret) => ({
+export const page = (esResultBody, filter, meta, cursorSecret) => ({
   // eslint-disable-next-line no-underscore-dangle
   payload: esResultBody.hits.hits.map((r) => r._source),
-  page: buildPageObject(esResultBody.hits, filter, cursorSecret)
+  page: buildPageObject(esResultBody.hits, filter, meta, cursorSecret)
 });
