@@ -13,8 +13,8 @@ done
 docker run \
   --name os1 \
   -e "discovery.type=single-node" \
-  -e "plugins.security.disabled=true" \
-  -d opensearchproject/opensearch:2.9.0
+  -e "DISABLE_SECURITY_PLUGIN=true" \
+  -d opensearchproject/opensearch:2.13.0
 
 docker build \
   --build-arg COMMAND="$command" \

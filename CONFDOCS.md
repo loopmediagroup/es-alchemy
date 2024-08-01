@@ -8,6 +8,7 @@ Documents configuration tasks managed by [robo-config](https://github.com/blackf
   - <a name="blackfluxrobo-config-plugin-task-idx-ref-structnpm-dockerized">:open_file_folder:</a> <a href="#blackfluxrobo-config-plugin-task-ref-structnpm-dockerized">`struct/#npm-dockerized`</a>
     - <a name="blackfluxrobo-config-plugin-task-idx-ref-structforce-gardener-dockerized">:clipboard:</a> <a href="#blackfluxrobo-config-plugin-task-ref-structforce-gardener-dockerized">`struct/force-gardener-dockerized`</a>
     - <a name="blackfluxrobo-config-plugin-task-idx-ref-structnpm-base">:open_file_folder:</a> <a href="#blackfluxrobo-config-plugin-task-ref-structnpm-base">`struct/#npm-base`</a>
+      - <a name="blackfluxrobo-config-plugin-task-idx-ref-structtest-reg">:clipboard:</a> <a href="#blackfluxrobo-config-plugin-task-ref-structtest-reg">`struct/test-reg`</a>
       - <a name="blackfluxrobo-config-plugin-task-idx-ref-structtest-hot">:clipboard:</a> <a href="#blackfluxrobo-config-plugin-task-ref-structtest-hot">`struct/test-hot`</a>
       - <a name="blackfluxrobo-config-plugin-task-idx-ref-structtemplate-readme">:clipboard:</a> <a href="#blackfluxrobo-config-plugin-task-ref-structtemplate-readme">`struct/template-readme`</a>
       - <a name="blackfluxrobo-config-plugin-task-idx-ref-structtemplate-mocharc">:clipboard:</a> <a href="#blackfluxrobo-config-plugin-task-ref-structtemplate-mocharc">`struct/template-mocharc`</a>
@@ -93,7 +94,8 @@ Manage various configuration files for an opensearch open source npm package on 
 <code>│&nbsp;&nbsp;└─&nbsp;<a href="#blackfluxrobo-config-plugin-target-ref-srcindexjs">index.js</a></code><br/>
 <code>└─&nbsp;test</code><br/>
 <code>&nbsp;&nbsp;&nbsp;├─&nbsp;<a href="#blackfluxrobo-config-plugin-target-ref-testhotjs">hot.js</a></code><br/>
-<code>&nbsp;&nbsp;&nbsp;└─&nbsp;<a href="#blackfluxrobo-config-plugin-target-ref-testindexspecjs">index.spec.js</a></code><br/>
+<code>&nbsp;&nbsp;&nbsp;├─&nbsp;<a href="#blackfluxrobo-config-plugin-target-ref-testindexspecjs">index.spec.js</a></code><br/>
+<code>&nbsp;&nbsp;&nbsp;└─&nbsp;<a href="#blackfluxrobo-config-plugin-target-ref-testregjs">reg.js</a></code><br/>
         </ul>
       </td>
       <td align="left" valign="top">
@@ -159,7 +161,8 @@ Manage basic project structure for npm package on github enforcing docker.
 <code>│&nbsp;&nbsp;└─&nbsp;<a href="#blackfluxrobo-config-plugin-target-ref-srcindexjs">index.js</a></code><br/>
 <code>└─&nbsp;test</code><br/>
 <code>&nbsp;&nbsp;&nbsp;├─&nbsp;<a href="#blackfluxrobo-config-plugin-target-ref-testhotjs">hot.js</a></code><br/>
-<code>&nbsp;&nbsp;&nbsp;└─&nbsp;<a href="#blackfluxrobo-config-plugin-target-ref-testindexspecjs">index.spec.js</a></code><br/>
+<code>&nbsp;&nbsp;&nbsp;├─&nbsp;<a href="#blackfluxrobo-config-plugin-target-ref-testindexspecjs">index.spec.js</a></code><br/>
+<code>&nbsp;&nbsp;&nbsp;└─&nbsp;<a href="#blackfluxrobo-config-plugin-target-ref-testregjs">reg.js</a></code><br/>
         </ul>
       </td>
       <td align="left" valign="top">
@@ -232,7 +235,8 @@ Manage basic project structure for npm package on github.
 <code>│&nbsp;&nbsp;└─&nbsp;<a href="#blackfluxrobo-config-plugin-target-ref-srcindexjs">index.js</a></code><br/>
 <code>└─&nbsp;test</code><br/>
 <code>&nbsp;&nbsp;&nbsp;├─&nbsp;<a href="#blackfluxrobo-config-plugin-target-ref-testhotjs">hot.js</a></code><br/>
-<code>&nbsp;&nbsp;&nbsp;└─&nbsp;<a href="#blackfluxrobo-config-plugin-target-ref-testindexspecjs">index.spec.js</a></code><br/>
+<code>&nbsp;&nbsp;&nbsp;├─&nbsp;<a href="#blackfluxrobo-config-plugin-target-ref-testindexspecjs">index.spec.js</a></code><br/>
+<code>&nbsp;&nbsp;&nbsp;└─&nbsp;<a href="#blackfluxrobo-config-plugin-target-ref-testregjs">reg.js</a></code><br/>
         </ul>
       </td>
       <td align="left" valign="top">
@@ -252,11 +256,40 @@ Manage basic project structure for npm package on github.
   </tbody>
 </table>
 
+###### :clipboard: <a name="blackfluxrobo-config-plugin-task-ref-structtest-reg">struct/test-reg</a> (<a href="#blackfluxrobo-config-plugin-task-idx-ref-structtest-reg">`index`</a>)
+
+_Updating <a href="#blackfluxrobo-config-plugin-target-ref-testregjs">test/reg.js</a> using <a href="#blackfluxrobo-config-plugin-strat-ref-overwrite">overwrite</a>._
+
+- Create register file.
+
+<table>
+  <tbody>
+    <tr>
+      <th>Targets</th>
+      <th>Requires</th>
+    </tr>
+    <tr>
+      <td align="left" valign="top">
+        <ul>
+<code>project</code><br/>
+<code>└─&nbsp;test</code><br/>
+<code>&nbsp;&nbsp;&nbsp;└─&nbsp;<a href="#blackfluxrobo-config-plugin-target-ref-testregjs">reg.js</a></code><br/>
+        </ul>
+      </td>
+      <td align="left" valign="top">
+        <ul>
+          <li><a href="#blackfluxrobo-config-plugin-req-ref-javascript">javascript</a></li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
 ###### :clipboard: <a name="blackfluxrobo-config-plugin-task-ref-structtest-hot">struct/test-hot</a> (<a href="#blackfluxrobo-config-plugin-task-idx-ref-structtest-hot">`index`</a>)
 
 _Updating <a href="#blackfluxrobo-config-plugin-target-ref-testhotjs">test/hot.js</a> using <a href="#blackfluxrobo-config-plugin-strat-ref-overwrite">overwrite</a>._
 
-- Create custom loader file.
+- Create loader file.
 
 <table>
   <tbody>
@@ -1759,11 +1792,17 @@ The code owner is the gatekeeper of the project, ultimately responsible for all 
 
 Execute all configured js-gardener tasks.
 
+### <a name="blackfluxrobo-config-plugin-target-ref-testregjs">test/reg.js</a>  
+
+:small_blue_diamond: `other`
+
+*Registration hook to load custom loader.*
+
 ### <a name="blackfluxrobo-config-plugin-target-ref-testhotjs">test/hot.js</a>  
 
 :small_blue_diamond: `other`
 
-*Custom loader to allow hot reloading of files for testing.*
+*Loader to allow hot reloading of files for testing.*
 
 ### <a name="blackfluxrobo-config-plugin-target-ref-readmemd">README.md</a> ([`link`](https://help.github.com/en/articles/about-readmes)) 
 

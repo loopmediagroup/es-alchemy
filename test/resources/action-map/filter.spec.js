@@ -36,6 +36,7 @@ const t = async (index, text) => {
 
 describe('Testing search filter', () => {
   let index;
+
   before(() => {
     index = Index({ endpoint: process.env.opensearchEndpoint });
   });
