@@ -564,6 +564,7 @@ describe('Testing Rest Query', { useTmpDir: true, timeout: 10000 }, () => {
       let offer1;
       let offer2;
       let offer3;
+
       before(() => {
         offer1 = {
           id: uuid4(),
@@ -642,6 +643,7 @@ describe('Testing Rest Query', { useTmpDir: true, timeout: 10000 }, () => {
       let offer7;
       let offer8;
       let offer9;
+
       before(() => {
         location1 = { id: uuid4(), address: { centre: [0, 0] } };
         location2 = { id: uuid4(), address: { centre: [0.001, 0.001] } };
@@ -712,6 +714,7 @@ describe('Testing Rest Query', { useTmpDir: true, timeout: 10000 }, () => {
       let address2;
       let address3;
       let address4;
+
       before(() => {
         address1 = {
           id: uuid4(),

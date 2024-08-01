@@ -4,6 +4,7 @@ import { toCursor, fromCursor, generatePage } from '../../src/util/paging.js';
 
 describe('Testing paging.', () => {
   let cursorSecret;
+
   before(() => {
     cursorSecret = 'secret';
   });
