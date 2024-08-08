@@ -17,25 +17,27 @@ const listDocuments = async (call, idx, cursor) => {
 export default async ({
   call,
   versions,
+  esas = null,
   idx,
   cursor = null
 }) => {
-  const localVersions = Object.keys(versions.get(idx))
-    .map((version) => `${idx}@${version}`);
+  const logic = esas === null
+    ? Object.keys(versions.get(idx)).map((version) => [`${idx}@${version}`, call])
+    : esas.map((esa) => [`${idx}#${esa.id}`, esa.rest.call]);
   if (cursor !== null) {
     const cursorKeys = Object.keys(cursor);
-    if (!isEqual(localVersions, cursorKeys)) {
+    if (!isEqual(logic.map(([i]) => i), cursorKeys)) {
       throw new Error('Invalid cursor provided');
     }
   }
-  const docs = await Promise.all(localVersions.map((i) => {
+  const docs = await Promise.all(logic.map(([i, c]) => {
     if (cursor === null) {
-      return listDocuments(call, i, null);
+      return listDocuments(c, i.split('#')[0], null);
     }
     if (cursor[i] === null) {
       return Promise.resolve([]);
     }
-    return listDocuments(call, i, cursor[i]);
+    return listDocuments(c, i.split('#')[0], cursor[i]);
   }));
   const traverseResult = traverse(...docs);
   if (traverseResult.cursor.every((c) => c === null)) {
@@ -47,7 +49,7 @@ export default async ({
   return {
     result: traverseResult.result,
     cursor: traverseResult.cursor.reduce((prev, c, i) => Object.assign(prev, {
-      [localVersions[i]]: c
+      [logic[i][0]]: c
     }), {})
   };
 };
