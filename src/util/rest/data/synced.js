@@ -1,9 +1,16 @@
 import count from './count.js';
 
-export default async ({ call, versions, idx }) => {
-  const localVersions = Object.keys(versions.get(idx));
-  const countResult = await Promise.all(localVersions
-    .map((version) => count({ call, idx: `${idx}@${version}` })));
+export default async ({
+  call,
+  versions,
+  esas = null,
+  idx
+}) => {
+  const logic = esas === null
+    ? Object.keys(versions.get(idx)).map((version) => [`${idx}@${version}`, call])
+    : esas.map((esa) => [idx, esa.rest.call]);
+  const countResult = await Promise.all(logic
+    .map(([i, c]) => count({ call: c, idx: i })));
   if (countResult.some((c) => !Number.isInteger(c))) {
     return false;
   }
