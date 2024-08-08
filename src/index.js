@@ -1,6 +1,7 @@
 import assert from 'assert';
 import get from 'lodash.get';
 import cloneDeep from 'lodash.clonedeep';
+import objectHash from 'object-hash';
 import model from './util/model.js';
 import { generateMapping, extractFields, extractRels } from './util/index.js';
 import { page, remap } from './util/data.js';
@@ -32,6 +33,7 @@ const fn = (options) => {
   };
 
   return {
+    id: objectHash(options).replace(/-/g, ''),
     paging: {
       generatePage
     },

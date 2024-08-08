@@ -32,6 +32,7 @@ describe('Testing diverged', {
       expect(await index.rest.mapping.create('offer')).to.equal(true);
       expect(index.index.versions.persist(dir)).to.equal(true);
       expect(index.index.versions.load(dir)).to.equal(undefined);
+      expect(await index.rest.alias.update('offer')).to.equal(true);
       expect(await index.rest.data.update([{
         idx: 'offer',
         action: 'update',
@@ -58,6 +59,24 @@ describe('Testing diverged', {
     expect(await index.rest.mapping.diverged('offer')).to.deep.equal({
       result: [],
       cursor: { 'offer@c1d54c12486d569d308e2c6f3554b6146b35a60a': offerId1 }
+    });
+  });
+
+  it('Testing two esas', async ({ dir }) => {
+    await createAndPersistEntity(dir, {
+      id: offerId1,
+      headline: 'headline'
+    });
+    expect(typeof index.id).to.equal('string');
+    const esa1 = { ...index, id: '48d0066a4e6c45a59af1725856ab2b485a802b47' };
+    const esa2 = { ...index, id: '5de30238b7d34884853e146f4c3f9acbdb80fd1d' };
+    const esas = [esa1, esa2];
+    expect(await index.rest.mapping.diverged('offer', null, esas)).to.deep.equal({
+      result: [],
+      cursor: {
+        'offer#48d0066a4e6c45a59af1725856ab2b485a802b47': offerId1,
+        'offer#5de30238b7d34884853e146f4c3f9acbdb80fd1d': offerId1
+      }
     });
   });
 
