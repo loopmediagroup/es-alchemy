@@ -131,7 +131,7 @@ export default (getFields, getRels, getMapping, getSpecs, models, versions, opti
       apply: (idx) => mappingApply(Ctx({ idx })),
       create: (idx) => mappingCreate(Ctx({ idx })),
       delete: (idx) => mappingDelete(Ctx({ idx })),
-      diverged: (idx, cursor) => mappingDiverged(Ctx({ idx, cursor })),
+      diverged: (idx, cursor, esas = null) => mappingDiverged(Ctx({ idx, cursor, esas })),
       exists: (idx) => mappingExists(Ctx({ idx })),
       get: (idx) => mappingGet(Ctx({ idx })),
       list: () => mappingList(Ctx()),
