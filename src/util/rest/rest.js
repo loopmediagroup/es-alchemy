@@ -146,7 +146,7 @@ export default (getFields, getRels, getMapping, getSpecs, models, versions, opti
       refresh: (idx) => dataRefresh(Ctx({ idx })),
       signature: (idx, id) => dataSignature(Ctx({ idx, id })),
       stats: () => dataStats(Ctx()),
-      synced: (idx) => dataSynced(Ctx({ idx })),
+      synced: (idx, esas = null) => dataSynced(Ctx({ idx, esas })),
       uniques: (idx, fields, opts = {}) => dataUniques(Ctx({ idx, fields, opts })),
       update: (actions, raw = false) => dataUpdate(Ctx({ actions, raw })),
       version: (idx, id) => dataVersion(Ctx({ idx, id }))

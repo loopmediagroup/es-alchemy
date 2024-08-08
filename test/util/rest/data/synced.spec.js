@@ -49,6 +49,7 @@ describe('Testing synced', { useTmpDir: true }, () => {
           subhead: 'subhead'
         })
       }])).to.equal(true);
+      expect(await index.rest.alias.update('offer')).to.equal(true);
       expect(await index.rest.data.refresh('offer')).to.equal(true);
     };
 
@@ -60,6 +61,16 @@ describe('Testing synced', { useTmpDir: true }, () => {
 
   afterEach(async () => {
     expect(await index.rest.mapping.delete('offer')).to.equal(true);
+  });
+
+  it('Test documents are synced with esas', async () => {
+    await setupNewVersion();
+    expect(await index.rest.mapping.apply('offer')).to.deep.equal(['offer@a61d200f03686939f0e9b2b924a6d8d7f5acf468']);
+    await updateDocument();
+    const esa1 = { ...index, id: '48d0066a4e6c45a59af1725856ab2b485a802b47' };
+    const esa2 = { ...index, id: '5de30238b7d34884853e146f4c3f9acbdb80fd1d' };
+    const esas = [esa1, esa2];
+    expect(await index.rest.data.synced('offer', esas)).to.equal(true);
   });
 
   it('Test documents are synced', async () => {
