@@ -67,16 +67,15 @@ describe('Testing diverged', {
       id: offerId1,
       headline: 'headline'
     });
-    const esa = {
-      ...index,
-      id: '48d0066a4e6c45a59af1725856ab2b485a802b47'
-    };
-    const esas = [index, esa];
+    expect(typeof index.id).to.equal('string');
+    const esa1 = { ...index, id: '48d0066a4e6c45a59af1725856ab2b485a802b47' };
+    const esa2 = { ...index, id: '5de30238b7d34884853e146f4c3f9acbdb80fd1d' };
+    const esas = [esa1, esa2];
     expect(await index.rest.mapping.diverged('offer', null, esas)).to.deep.equal({
       result: [],
       cursor: {
         'offer#48d0066a4e6c45a59af1725856ab2b485a802b47': offerId1,
-        'offer#d3f64928f27430b9e1ec6865203f33d3afc17a3b': offerId1
+        'offer#5de30238b7d34884853e146f4c3f9acbdb80fd1d': offerId1
       }
     });
   });
