@@ -33,7 +33,7 @@ const fn = (options) => {
   };
 
   return {
-    id: objectHash(options).replace(/-/g, ''),
+    id: get(options, 'id', objectHash(options).replace(/-/g, '')),
     paging: {
       generatePage
     },
