@@ -22,6 +22,16 @@
       "sources": [
         "address"
       ]
+    },
+    "offer": {
+      "type": "memory",
+      "model": "offer",
+      "fields": [
+        "id"
+      ],
+      "sources": [
+        "offer"
+      ]
     }
   }
 }
