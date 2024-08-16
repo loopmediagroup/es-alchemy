@@ -52,18 +52,8 @@ const fn = (options) => {
       },
       register: (idx, specs) => registerIndex(idx, specs),
       list: () => Object.keys(indices).sort(),
-      getMapping: (idx, exclude = null) => {
-        if (exclude === null) {
-          return cloneDeep(indices[idx].mapping);
-        }
-        const { name, ...specs } = indices[idx].specs;
-        return generateMapping(name, specs, models, exclude);
-      },
-      getFields: (idx, exclude = null) => (
-        exclude === null
-          ? cloneDeep(indices[idx].fields)
-          : extractFields(indices[idx].specs, exclude).concat('_id')
-      ),
+      getMapping: (idx) => cloneDeep(indices[idx].mapping),
+      getFields: (idx) => cloneDeep(indices[idx].fields),
       getSpecs: (idx) => cloneDeep(indices[idx].specs)
     },
     data: {
