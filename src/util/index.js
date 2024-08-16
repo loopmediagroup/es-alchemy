@@ -4,13 +4,13 @@ import get from 'lodash.get';
 import objectHash from 'object-hash';
 import objectScan from 'object-scan';
 
-const buildPropertiesRec = (node, models, exclude) => {
+const buildPropertiesRec = (node, models) => {
   assert(
     node instanceof Object && Array.isArray(node) === false,
     'Invalid specs definition.'
   );
   assert(
-    Object.keys(node).every((e) => ['model', 'type', 'fields', 'sources', 'nested', 'flat'].includes(e)),
+    Object.keys(node).every((e) => ['model', 'fields', 'sources', 'nested', 'flat'].includes(e)),
     'Unknown specs entry provided.'
   );
   assert(
@@ -31,33 +31,27 @@ const buildPropertiesRec = (node, models, exclude) => {
     'Model name not registered.'
   );
   assert(
-    node.type === undefined || typeof node.type === 'string',
-    'Invalid type field provided'
-  );
-  assert(
     node.fields.every((f) => typeof model.compiled.fields[typeof f === 'string' ? f : f.name] === 'function'),
     'Unknown field provided.'
   );
   const nested = Object.entries(node.nested || {});
-  return nested
-    .filter(([_, value]) => !exclude.includes(value.type))
-    .reduce(
-      (prev, [key, value]) => Object.assign(prev, {
-        [key]: {
-          properties: buildPropertiesRec(value, models, exclude),
-          type: 'nested',
-          ...(get(value, 'flat', false) === true ? { include_in_root: true } : {})
-        }
-      }),
-      node.fields
-        .reduce((prev, key) => {
-          const isString = typeof key === 'string';
-          const k = isString ? key : key.name;
-          // eslint-disable-next-line no-param-reassign
-          prev[k] = model.compiled.fields[k](...(isString ? [] : [get(key, 'overwrite', {})]));
-          return prev;
-        }, {})
-    );
+  return nested.reduce(
+    (prev, [key, value]) => Object.assign(prev, {
+      [key]: {
+        properties: buildPropertiesRec(value, models),
+        type: 'nested',
+        ...(get(value, 'flat', false) === true ? { include_in_root: true } : {})
+      }
+    }),
+    node.fields
+      .reduce((prev, key) => {
+        const isString = typeof key === 'string';
+        const k = isString ? key : key.name;
+        // eslint-disable-next-line no-param-reassign
+        prev[k] = model.compiled.fields[k](...(isString ? [] : [get(key, 'overwrite', {})]));
+        return prev;
+      }, {})
+  );
 };
 
 const extractRelsRec = (node, prefix = []) => Object
@@ -71,7 +65,7 @@ const extractRelsRec = (node, prefix = []) => Object
     );
   }, {});
 
-export const generateMapping = (name, specs, models, exclude = []) => {
+export const generateMapping = (name, specs, models) => {
   assert(
     !get(specs, 'model', '').endsWith('[]'),
     'Root node can not be Array.'
@@ -88,7 +82,7 @@ export const generateMapping = (name, specs, models, exclude = []) => {
     sources: specs.sources,
     nested: specs.nested,
     flat: specs.flat
-  }, models, exclude);
+  }, models);
   const def = {
     dynamic: 'false',
     properties,
@@ -115,7 +109,6 @@ const extractFieldsScanner = objectScan([
   '**{nested.*}.fields[*].overwrite.fields.*.type'
 ], {
   filterFn: ({ isLeaf }) => isLeaf,
-  breakFn: ({ value, context }) => context.exclude.includes(value?.type),
   rtn: ({ key, value, getParents }) => {
     const result = [];
     let i = 0;
@@ -134,6 +127,6 @@ const extractFieldsScanner = objectScan([
   afterFn: ({ result }) => result.reverse()
 });
 
-export const extractFields = (specs, exclude = []) => extractFieldsScanner(specs, { exclude });
+export const extractFields = (specs) => extractFieldsScanner(specs);
 export const extractRels = (spec) => extractRelsRec(spec);
 export const normalize = (field) => field.replace('$', '.');
