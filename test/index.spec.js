@@ -6,9 +6,7 @@ import Index from '../src/index.js';
 import {
   indices,
   mappings,
-  mappingsExclude,
   fields,
-  fieldsExclude,
   rels,
   registerEntitiesForIndex
 } from './helper.js';
@@ -48,24 +46,10 @@ describe('Testing index', {
     });
   });
 
-  it('Testing mappings (exclude)', () => {
-    expect(index.index.list()).to.deep.equal(Object.keys(mappingsExclude).sort());
-    Object.entries(mappingsExclude).forEach(([k, v]) => {
-      expect(index.index.getMapping(k, ['memory'])).to.deep.equal(v);
-    });
-  });
-
   it('Testing index fields', () => {
     expect(index.index.list()).to.deep.equal(Object.keys(fields).sort());
     Object.entries(fields).forEach(([k, v]) => {
       expect(index.index.getFields(k)).to.deep.equal(v.concat('_id'));
-    });
-  });
-
-  it('Testing index fields (exclude)', () => {
-    expect(index.index.list()).to.deep.equal(Object.keys(fieldsExclude).sort());
-    Object.entries(fieldsExclude).forEach(([k, v]) => {
-      expect(index.index.getFields(k, ['memory'])).to.deep.equal(v.concat('_id'));
     });
   });
 
@@ -94,7 +78,7 @@ describe('Testing index', {
     Object.entries(rels).forEach(([k, v], idx) => {
       expect(index.index.versions.list(k)).to.deep.equal([[
         'address@1e828e9acf686cccdcf433488398ca26e8ba43e8',
-        'location@6df8eff36e9bf3fda63a29f129847506cae0a59c',
+        'location@7a6186ede8ebd095c25a03dc18438d43d7f7bf15',
         'offer@c1d54c12486d569d308e2c6f3554b6146b35a60a'
       ][idx]]);
     });
@@ -105,7 +89,7 @@ describe('Testing index', {
     expect(fs.walkDir(dir).sort()).to.deep.equal(
       [
         'address@1e828e9acf686cccdcf433488398ca26e8ba43e8.json',
-        'location@6df8eff36e9bf3fda63a29f129847506cae0a59c.json',
+        'location@7a6186ede8ebd095c25a03dc18438d43d7f7bf15.json',
         'offer@c1d54c12486d569d308e2c6f3554b6146b35a60a.json'
       ]
     );

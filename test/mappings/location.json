@@ -1,7 +1,7 @@
 {
   "mappings": {
     "_meta": {
-      "hash": "6df8eff36e9bf3fda63a29f129847506cae0a59c"
+      "hash": "7a6186ede8ebd095c25a03dc18438d43d7f7bf15"
     },
     "dynamic": "false",
     "properties": {
@@ -42,14 +42,6 @@
           },
           "timezone": {
             "type": "text"
-          }
-        },
-        "type": "nested"
-      },
-      "offer": {
-        "properties": {
-          "id": {
-            "type": "keyword"
           }
         },
         "type": "nested"
