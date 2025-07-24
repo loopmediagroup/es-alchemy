@@ -72,7 +72,7 @@
     "lib"
   ],
   "dependencies": {
-    "@blackflux/axios": "2.0.2",
+    "@blackflux/axios": "3.0.2",
     "aws4-axios": "3.4.0",
     "joi-strict": "4.0.1",
     "lodash.clonedeep": "4.5.0",
