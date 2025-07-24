@@ -8,7 +8,7 @@ Simplification of Opensearch interactions
 
 ## Install
 
-```bash
+```
 npm i --save es-alchemy
 ```
 
@@ -427,18 +427,18 @@ Interacting with the rest api of Opensearch
 
 All tests need to be run in docker. Start with:
 
-```bash
+```
 . manage.sh
 ```
 
 To test Opensearch works correctly, run
 
-```bash
+```
 curl http://opensearch:9200/_cluster/health
 ```
 
 Run all tests with
 
-```bash
+```
 npm t
 ```
