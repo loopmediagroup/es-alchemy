@@ -115,7 +115,7 @@ ${remap}
 double result = 0;
 long timestamp = Instant.parse(params.timestamp).getEpochSecond();
 for (int i = 0; i < doc[params.target].length; i++) {
-  long age = timestamp - doc[params.target][i].getMillis() / 1000;
+  long age = timestamp - doc[params.target][i].toInstant().toEpochMilli() / 1000;
   result = Math.max(result, remap(age, params.map));
 }
 return result;
