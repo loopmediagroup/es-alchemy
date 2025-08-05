@@ -34,7 +34,10 @@ export default (getFields, getRels, getMapping, getSpecs, models, versions, opti
   const cursorSecret = get(options, 'cursor.secret');
   const interceptor = [accessKeyId, secretAccessKey].includes(undefined)
     ? undefined
-    : aws4Interceptor({ region, credentials: { accessKeyId, secretAccessKey }, service: 'es' });
+    : aws4Interceptor({
+      options: { region, service: 'es' },
+      credentials: { accessKeyId, secretAccessKey }
+    });
   const ax = axios.create({});
   ax.defaults.headers = {};
   const call = async (method, idx, {
