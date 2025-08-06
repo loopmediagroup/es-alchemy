@@ -38,14 +38,14 @@ export default (getFields, getRels, getMapping, getSpecs, models, versions, opti
       options: { region, service: 'es' },
       credentials: { accessKeyId, secretAccessKey }
     });
-  const ax = axios.create({});
-  ax.defaults.headers = {};
   const call = async (method, idx, {
     endpoint = '',
     body = {},
     headers = {},
     json = true
   } = {}) => {
+    const ax = axios.create({});
+    ax.defaults.headers = {};
     const interceptorId = ax.interceptors.request.use(interceptor);
     try {
       const requestHeaders = {
